@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Mojo AI Studio is a marketplace for practical AI-built software, automation tools, and workflow bundles."
+    />
+    <title>Mojo AI Studio | AI-Built Software Marketplace</title>
+    <link rel="stylesheet" href="styles/mockups.css" />
+  </head>
+  <body>
+    <span class="anchor-target" id="market"></span>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="#apps">Apps</a>
+          <a href="#bundles">Bundles</a>
+          <a href="#compare">Compare</a>
+          <a href="#support">Support</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="#support">Talk to Mojo</a>
+          <a class="button dark" href="#apps">Browse apps</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">AI-built software marketplace</p>
+          <h1>Buy focused AI apps that solve real workflow problems.</h1>
+          <p>
+            Mojo AI Studio builds practical software for sales, operations, content, research,
+            legal review, and decision support. Pick one app, compare plans, or bundle a complete
+            operating system for your team.
+          </p>
+          <form class="hero-search" data-search-form>
+            <label class="sr-only" for="hero-search-input">Search apps</label>
+            <input id="hero-search-input" type="search" placeholder="Search sales research, data cleanup, contract review..." />
+            <button type="submit">Search marketplace</button>
+          </form>
+          <div class="hero-proof" aria-label="Marketplace highlights">
+            <span><b>38</b> apps planned</span>
+            <span><b>12 min</b> typical setup</span>
+            <span><b>Solo + team</b> plans</span>
+          </div>
+        </div>
+
+        <div class="hero-showcase" aria-label="Mojo AI Studio product preview">
+          <img src="assets/ai-software-showcase.png" alt="AI software dashboards and app screens" />
+          <div class="showcase-card">
+            <span>Featured bundle</span>
+            <b>Revenue Stack</b>
+            <small>LeadLens, BriefForge, FlowDesk</small>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="category-bar" aria-label="App categories">
+        <button class="active" type="button" data-category="all">Recommended</button>
+        <button type="button" data-category="sales">Sales</button>
+        <button type="button" data-category="operations">Operations</button>
+        <button type="button" data-category="content">Content</button>
+        <button type="button" data-category="research">Research</button>
+        <button type="button" data-category="legal">Legal</button>
+        <button type="button" data-category="analytics">Analytics</button>
+      </section>
+
+      <section class="section catalog-layout" id="apps">
+        <aside class="facet-panel" aria-label="Marketplace filters">
+          <div class="facet-heading">
+            <b>Marketplace</b>
+            <button type="button" data-reset>Reset</button>
+          </div>
+          <label class="filter-check"><input type="checkbox" value="ready" checked data-filter /> Ready to deploy</label>
+          <label class="filter-check"><input type="checkbox" value="team" checked data-filter /> Team workspace</label>
+          <label class="filter-check"><input type="checkbox" value="api" data-filter /> API access</label>
+          <label class="filter-check"><input type="checkbox" value="setup" data-filter /> Done-for-you setup</label>
+          <div class="facet-block">
+            <span>Popular integrations</span>
+            <em>Gmail</em><em>HubSpot</em><em>Sheets</em><em>Slack</em>
+          </div>
+          <div class="facet-block">
+            <span>Price range</span>
+            <strong>$29 - $199/mo</strong>
+            <i class="range-line"></i>
+          </div>
+        </aside>
+
+        <div class="catalog">
+          <div class="section-heading">
+            <div>
+              <p class="kicker">App catalog</p>
+              <h2>Choose the app that matches the job.</h2>
+            </div>
+            <p data-result-count>Showing 8 apps</p>
+          </div>
+
+          <article class="spotlight">
+            <div>
+              <span class="pill">Best for revenue teams</span>
+              <h3>LeadLens Revenue Suite</h3>
+              <p>
+                Research prospects, enrich account context, identify buying signals, and draft
+                first-touch outreach from one clean workspace.
+              </p>
+              <div class="meta-row"><span>4.9 rating</span><span>12 min setup</span><span>HubSpot + Gmail</span></div>
+            </div>
+            <div class="price-panel">
+              <span>Team plan</span>
+              <b>$149</b>
+              <small>per month</small>
+              <button type="button" data-detail="LeadLens Revenue Suite">View suite</button>
+            </div>
+          </article>
+
+          <div class="app-grid" data-app-grid>
+            <article class="app-card" data-category="sales" data-tags="ready team gmail hubspot csv outreach research" data-name="LeadLens">
+              <div class="app-icon blue">L</div>
+              <span>Sales</span>
+              <h3>LeadLens</h3>
+              <p>Prospect research, account summaries, and warm outreach drafts from lists or URLs.</p>
+              <div class="meta-row"><small>4.9</small><small>Gmail</small><small>CSV</small></div>
+              <footer><b>$29/mo</b><button type="button" data-detail="LeadLens">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="operations" data-tags="ready team api slack workflow automation alerts" data-name="FlowDesk">
+              <div class="app-icon green">F</div>
+              <span>Operations</span>
+              <h3>FlowDesk</h3>
+              <p>Turn recurring tasks into monitored workflows with owner handoffs and escalation notes.</p>
+              <div class="meta-row"><small>4.7</small><small>Slack</small><small>API</small></div>
+              <footer><b>$79/mo</b><button type="button" data-detail="FlowDesk">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="legal" data-tags="ready team setup pdf contract review export" data-name="ClausePilot">
+              <div class="app-icon amber">C</div>
+              <span>Legal</span>
+              <h3>ClausePilot</h3>
+              <p>Summarize contracts, extract risky clauses, and generate review notes for counsel.</p>
+              <div class="meta-row"><small>4.8</small><small>PDF</small><small>Export</small></div>
+              <footer><b>$89/mo</b><button type="button" data-detail="ClausePilot">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="content" data-tags="ready team video docs newsletter social clips" data-name="ClipSmith">
+              <div class="app-icon coral">S</div>
+              <span>Content</span>
+              <h3>ClipSmith</h3>
+              <p>Repurpose recordings into summaries, newsletters, posts, scripts, and clip outlines.</p>
+              <div class="meta-row"><small>4.9</small><small>Video</small><small>Docs</small></div>
+              <footer><b>$39/mo</b><button type="button" data-detail="ClipSmith">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="research" data-tags="ready team web docs brief executive research" data-name="BriefForge">
+              <div class="app-icon slate">B</div>
+              <span>Research</span>
+              <h3>BriefForge</h3>
+              <p>Generate executive briefs from links, documents, transcripts, and market updates.</p>
+              <div class="meta-row"><small>4.8</small><small>Docs</small><small>Web</small></div>
+              <footer><b>$49/mo</b><button type="button" data-detail="BriefForge">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="analytics" data-tags="ready team sheets csv data cleanup charts analytics" data-name="Data Concierge">
+              <div class="app-icon violet">D</div>
+              <span>Analytics</span>
+              <h3>Data Concierge</h3>
+              <p>Clean spreadsheets, classify rows, explain anomalies, and create starter charts.</p>
+              <div class="meta-row"><small>4.6</small><small>Sheets</small><small>CSV</small></div>
+              <footer><b>$59/mo</b><button type="button" data-detail="Data Concierge">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="operations" data-tags="ready team gmail calendar meeting notes followup" data-name="Meeting Memory">
+              <div class="app-icon blue">M</div>
+              <span>Operations</span>
+              <h3>Meeting Memory</h3>
+              <p>Convert meeting notes into decisions, owners, deadlines, and follow-up messages.</p>
+              <div class="meta-row"><small>4.7</small><small>Calendar</small><small>Gmail</small></div>
+              <footer><b>$35/mo</b><button type="button" data-detail="Meeting Memory">Details</button></footer>
+            </article>
+            <article class="app-card" data-category="content" data-tags="ready api team prompts library workflow content" data-name="Prompt Vault">
+              <div class="app-icon green">P</div>
+              <span>Content</span>
+              <h3>Prompt Vault</h3>
+              <p>Organize reusable prompts, team examples, version notes, and output scoring.</p>
+              <div class="meta-row"><small>4.5</small><small>API</small><small>Teams</small></div>
+              <footer><b>$25/mo</b><button type="button" data-detail="Prompt Vault">Details</button></footer>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section compare-section" id="compare">
+        <div class="compare-copy">
+          <p class="kicker">Buyer confidence</p>
+          <h2>Every app page should answer the questions buyers already have.</h2>
+          <p>
+            Mojo listings are structured around outcomes, setup time, integrations, limitations,
+            and the next upgrade path. The site can grow into a full marketplace without losing clarity.
+          </p>
+        </div>
+        <div class="detail-panel">
+          <div class="detail-tabs"><span class="active">Overview</span><span>Integrations</span><span>Reviews</span><span>Changelog</span></div>
+          <div class="detail-grid">
+            <article><span>Setup</span><b>12 minutes</b></article>
+            <article><span>Best for</span><b>Revenue teams</b></article>
+            <article><span>Inputs</span><b>CSV, URLs, CRM</b></article>
+            <article><span>Outputs</span><b>Briefs, scores, emails</b></article>
+          </div>
+          <div class="comparison-table">
+            <div><b>Plan</b><b>Solo</b><b>Team</b><b>Studio</b></div>
+            <div><span>Apps included</span><span>1</span><span>3</span><span>Custom</span></div>
+            <div><span>Workspace seats</span><span>1</span><span>5</span><span>Unlimited</span></div>
+            <div><span>Onboarding</span><span>Guide</span><span>Session</span><span>Done-for-you</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bundles-section" id="bundles">
+        <div class="section-heading">
+          <div>
+            <p class="kicker">Curated systems</p>
+            <h2>Bundle apps into a working system.</h2>
+          </div>
+          <p>Start with one app, then upgrade into a packaged workflow when the job gets bigger.</p>
+        </div>
+        <div class="bundle-grid">
+          <article>
+            <span>Revenue Stack</span>
+            <h3>Find, research, and follow up with better-fit leads.</h3>
+            <p>LeadLens, BriefForge, FlowDesk</p>
+            <b>$199/mo</b>
+          </article>
+          <article>
+            <span>Operator Stack</span>
+            <h3>Automate reporting, cleanup, and weekly business rituals.</h3>
+            <p>FlowDesk, Data Concierge, BriefForge</p>
+            <b>$179/mo</b>
+          </article>
+          <article>
+            <span>Creator Stack</span>
+            <h3>Repurpose raw ideas and recordings into publishable assets.</h3>
+            <p>ClipSmith, Prompt Vault, BriefForge</p>
+            <b>$129/mo</b>
+          </article>
+        </div>
+      </section>
+
+      <section class="section support-section" id="support">
+        <article>
+          <span>Implementation</span>
+          <h3>Built, documented, and supported by Mojo AI Studio.</h3>
+          <p>Each product can include setup notes, changelogs, privacy notes, known limitations, and upgrade guidance.</p>
+        </article>
+        <article>
+          <span>Marketplace growth</span>
+          <h3>A structure that can hold every app you ship next.</h3>
+          <p>Categories, bundles, filters, and detail pages give the site room to grow without becoming a pile of sales pages.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="#top">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Marketplace</b>
+        <a href="#apps">Apps</a>
+        <a href="#bundles">Bundles</a>
+        <a href="#compare">Compare plans</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="#support">Implementation</a>
+        <a href="#support">Support</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </footer>
+
+    <dialog class="app-dialog" data-dialog>
+      <button class="dialog-close" type="button" data-close aria-label="Close app details">x</button>
+      <span class="pill" data-dialog-category>Mojo app</span>
+      <h2 data-dialog-title>App details</h2>
+      <p data-dialog-copy></p>
+      <div class="detail-grid">
+        <article><span>Setup</span><b data-dialog-setup>12 min</b></article>
+        <article><span>Plan</span><b data-dialog-plan>Solo</b></article>
+        <article><span>Integrates</span><b data-dialog-integrations>Gmail</b></article>
+        <article><span>Output</span><b data-dialog-output>Briefs</b></article>
+      </div>
+      <a class="button dark" href="#support" data-close-link>Ask about this app</a>
+    </dialog>
+
+    <script src="scripts/mockups.js"></script>
+  </body>
+</html>
