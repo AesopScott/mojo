@@ -1,3 +1,16 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "number": 1,
+      "title": "Build the website into the three different pieces that it needs to support. .",
+      "description": "1. Custom AI Development\n2. Selling Products\n3. Referral to watchmebuildai.com",
+      "category": "Orchestration",
+      "priority": 75,
+      "impact": "major",
+      "status": "backlog",
+      "created_at": "2026-05-23",
+      "completed_at": null,
+      "dependencies": []
+    }
+  ]
 }
