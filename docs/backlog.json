@@ -7,10 +7,83 @@
       "category": "Orchestration",
       "priority": 75,
       "impact": "major",
-      "status": "backlog",
+      "status": "ready",
       "created_at": "2026-05-23",
       "completed_at": null,
-      "dependencies": []
+      "dependencies": [],
+      "plan": "## Overview\n\nBuild MojoAiStudio.com as three distinct sub-sites: /products (marketplace with Stripe), /development (custom services intake), /WatchAI (learning referral to watchmebuildai.com). All share consistent navigation, branding, and single-user authentication. Marketplace uses static product data and client-side shopping cart. Development services capture briefs via custom email endpoint. Learning path redirects to external watchmebuildai.com with referral tracking.\n\n## Phases\n\n1. Foundation & Infrastructure (5 tasks) — Deploy pipeline, folder structure, shared nav/footer, Stripe setup, email endpoint\n2. Products Marketplace (6 tasks) — Product data, listing page, detail pages, shopping cart, Stripe checkout, confirmation\n3. Development Services (4 tasks) — Services landing, brief form, email integration, confirmation\n4. Learning Referral (3 tasks) — WatchAI landing, CTAs to watchmebuildai.com, referral tracking\n5. Testing & Deployment (4 tasks) — End-to-end testing, Stripe verification, form testing, MochaHost deployment\n\n## First Proof Unit\n\nNavigation header and footer deployed — All three sub-sites display consistent header with three nav links (Products | Development | Learn) and footer with shared branding. UI check: open each site, DevTools inspection confirms header/footer present on all three.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Navigation header and footer deployed",
+          "expectedBehavior": "All three sub-sites (/products, /development, /WatchAI) display consistent header with three nav links and footer with shared branding.",
+          "proofType": "ui-check",
+          "exactCommand": "Open MojoAiStudio.com/products, /development, /WatchAI in browser. DevTools (F12) → Elements tab. Inspect header — confirm three nav links. Scroll to footer — confirm present. Repeat for each site.",
+          "expectedInitialFailure": "Header does not exist; pages are unstyled or have inconsistent navigation.",
+          "expectedPassingEvidence": "Header with three nav links visible on all three pages; footer with matching styling present.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 2,
+          "title": "Product listing page loads and displays products",
+          "expectedBehavior": "Navigate to MojoAiStudio.com/products and see product cards with name, price, description, and 'View Details' link.",
+          "proofType": "ui-check",
+          "exactCommand": "Open MojoAiStudio.com/products. Wait for load (check Network tab). Inspect for product cards with: name, price, description, 'View Details' button. Count cards, confirm match with products.json. Click card to navigate to detail page.",
+          "expectedInitialFailure": "Page is blank; products don't load; data not wired to UI.",
+          "expectedPassingEvidence": "At least 3 product cards visible with all required fields; clicking navigates to detail page.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 3,
+          "title": "Shopping cart persists across browser sessions",
+          "expectedBehavior": "Add product to cart, close browser, reopen, and cart still contains the product.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/products\n2. Add product to cart\n3. Verify cart displays item\n4. Close browser completely\n5. Reopen and navigate to MojoAiStudio.com/products\n6. Check cart — confirm product still there\n7. DevTools (F12) → Application → Local Storage → confirm 'cart' key exists",
+          "expectedInitialFailure": "Cart is empty after closing and reopening browser.",
+          "expectedPassingEvidence": "Product remains in cart; localStorage contains cart data with at least one item.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 4,
+          "title": "Stripe checkout integration works in test mode",
+          "expectedBehavior": "Add product to cart, checkout with test card (4242 4242 4242 4242), receive success confirmation with order number.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/products, add to cart, proceed to checkout\n2. Confirm Stripe payment form loads\n3. Enter test card: 4242 4242 4242 4242, future expiry (12/26), CVC 123\n4. Click 'Pay'\n5. Verify payment succeeds\n6. Confirm order confirmation page shows order number and items\n7. Check Stripe Dashboard → Payments — confirm test payment appears\n8. Check browser console (F12 → Console) — no JavaScript errors",
+          "expectedInitialFailure": "Stripe form doesn't load; payment fails; confirmation page doesn't appear.",
+          "expectedPassingEvidence": "Successful test payment in Stripe Dashboard; order confirmation page displays; no console errors.",
+          "waiverGuidance": "Requires manual testing with Stripe test environment."
+        },
+        {
+          "number": 5,
+          "title": "Development brief form submits and email is delivered",
+          "expectedBehavior": "Fill out /development form, submit, receive confirmation, and admin@MojoAiStudio.com receives email with submission details.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/development\n2. Fill form with sample data (project name, scope, timeline, budget)\n3. Click 'Submit'\n4. Verify no client-side errors (check Network tab for successful POST)\n5. Confirm confirmation page displays ('Thank you...')\n6. Check admin@MojoAiStudio.com inbox — verify email received with submitted data\n7. Check SPAM folder — confirm email not filtered",
+          "expectedInitialFailure": "Form doesn't submit; confirmation page doesn't appear; email not received.",
+          "expectedPassingEvidence": "Form submits successfully; confirmation page appears; email arrives in inbox with all data.",
+          "waiverGuidance": "Manual testing required; email delivery depends on external service."
+        },
+        {
+          "number": 6,
+          "title": "WatchAI landing page displays and CTAs work",
+          "expectedBehavior": "Navigate to MojoAiStudio.com/WatchAI and see educational content with CTAs that redirect to watchmebuildai.com.",
+          "proofType": "ui-check",
+          "exactCommand": "1. Open MojoAiStudio.com/WatchAI\n2. Verify page content loads (educational overview text visible)\n3. Inspect for CTA buttons — confirm at least 2 CTAs present\n4. Click CTA — verify browser redirects to watchmebuildai.com\n5. DevTools Network tab → click CTA → verify URL contains watchmebuildai.com and referral parameters\n6. Confirm no 404 errors",
+          "expectedInitialFailure": "Page is blank; CTAs don't exist; CTAs don't redirect to watchmebuildai.com.",
+          "expectedPassingEvidence": "Page displays educational content; at least 2 working CTAs redirect to watchmebuildai.com; no 404 errors.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 7,
+          "title": "All three sites deployed to MochaHost via GitHub",
+          "expectedBehavior": "Push code to main branch, and all three sites are live with latest code within 2 minutes.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Make a small test change (e.g., update footer text)\n2. Commit and push: git add . && git commit -m 'test: verify deployment' && git push origin main\n3. Check GitHub Actions (repo → Actions tab) — confirm workflow runs and succeeds\n4. Wait 1-2 minutes for MochaHost deployment\n5. Open the updated page in browser\n6. Verify test change is visible (search page source or inspect element)\n7. Confirm no errors in GitHub Actions log",
+          "expectedInitialFailure": "GitHub Actions workflow doesn't exist or fails; MochaHost doesn't update; test change not visible.",
+          "expectedPassingEvidence": "GitHub Actions succeeds; test change appears on live site within 2 minutes; no deployment errors.",
+          "waiverGuidance": "Manual verification of deployment pipeline required."
+        }
+      ]
     }
   ]
 }
