@@ -15,7 +15,8 @@
       "inputs": "CSV, URLs, CRM",
       "outputs": "Briefs, scores, emails",
       "featured": true,
-      "featuredLabel": "Best for revenue teams"
+      "featuredLabel": "Best for revenue teams",
+      "polarPriceId": "POLAR_LEADLENS_SUITE_PRICE_ID"
     },
     {
       "id": "leadlens",
@@ -31,7 +32,8 @@
       "inputs": "CSV, LinkedIn URLs",
       "outputs": "Account briefs, outreach emails",
       "iconColor": "blue",
-      "iconLetter": "L"
+      "iconLetter": "L",
+      "polarPriceId": "POLAR_LEADLENS_PRICE_ID"
     },
     {
       "id": "flowdesk",
@@ -47,7 +49,8 @@
       "inputs": "Task lists, schedules",
       "outputs": "Workflow reports, alerts",
       "iconColor": "green",
-      "iconLetter": "F"
+      "iconLetter": "F",
+      "polarPriceId": "POLAR_FLOWDESK_PRICE_ID"
     },
     {
       "id": "clausepilot",
@@ -63,7 +66,8 @@
       "inputs": "PDF contracts",
       "outputs": "Clause summaries, risk flags",
       "iconColor": "amber",
-      "iconLetter": "C"
+      "iconLetter": "C",
+      "polarPriceId": "POLAR_CLAUSEPILOT_PRICE_ID"
     },
     {
       "id": "clipsmith",
@@ -79,7 +83,8 @@
       "inputs": "Video recordings, transcripts",
       "outputs": "Newsletters, social posts, scripts",
       "iconColor": "coral",
-      "iconLetter": "S"
+      "iconLetter": "S",
+      "polarPriceId": "POLAR_CLIPSMITH_PRICE_ID"
     },
     {
       "id": "briefforge",
@@ -95,7 +100,8 @@
       "inputs": "Links, PDFs, transcripts",
       "outputs": "Executive briefs, summaries",
       "iconColor": "slate",
-      "iconLetter": "B"
+      "iconLetter": "B",
+      "polarPriceId": "POLAR_BRIEFFORGE_PRICE_ID"
     },
     {
       "id": "data-concierge",
@@ -111,7 +117,8 @@
       "inputs": "Spreadsheets, CSV files",
       "outputs": "Cleaned data, charts, anomaly reports",
       "iconColor": "violet",
-      "iconLetter": "D"
+      "iconLetter": "D",
+      "polarPriceId": "POLAR_DATACONCIERGE_PRICE_ID"
     },
     {
       "id": "meeting-memory",
@@ -127,7 +134,8 @@
       "inputs": "Meeting notes, transcripts",
       "outputs": "Action items, follow-up emails",
       "iconColor": "blue",
-      "iconLetter": "M"
+      "iconLetter": "M",
+      "polarPriceId": "POLAR_MEETINGMEMORY_PRICE_ID"
     },
     {
       "id": "prompt-vault",
@@ -143,7 +151,8 @@
       "inputs": "Prompts, examples",
       "outputs": "Prompt library, version history",
       "iconColor": "green",
-      "iconLetter": "P"
+      "iconLetter": "P",
+      "polarPriceId": "POLAR_PROMPTVAULT_PRICE_ID"
     }
   ],
   "bundles": [
@@ -153,7 +162,8 @@
       "tagline": "Find, research, and follow up with better-fit leads.",
       "apps": ["LeadLens", "BriefForge", "FlowDesk"],
       "price": 199,
-      "billingPeriod": "month"
+      "billingPeriod": "month",
+      "polarPriceId": "POLAR_BUNDLE_REVENUE_PRICE_ID"
     },
     {
       "id": "operator-stack",
@@ -161,7 +171,8 @@
       "tagline": "Automate reporting, cleanup, and weekly business rituals.",
       "apps": ["FlowDesk", "Data Concierge", "BriefForge"],
       "price": 179,
-      "billingPeriod": "month"
+      "billingPeriod": "month",
+      "polarPriceId": "POLAR_BUNDLE_OPERATOR_PRICE_ID"
     },
     {
       "id": "creator-stack",
@@ -169,7 +180,8 @@
       "tagline": "Repurpose raw ideas and recordings into publishable assets.",
       "apps": ["ClipSmith", "Prompt Vault", "BriefForge"],
       "price": 129,
-      "billingPeriod": "month"
+      "billingPeriod": "month",
+      "polarPriceId": "POLAR_BUNDLE_CREATOR_PRICE_ID"
     }
   ]
 }

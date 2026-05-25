@@ -144,7 +144,7 @@ if (!$sent) {
 $replySubject = 'We received your brief — Mojo AI Studio';
 $replyBody    = "Hi {$contactName},\n\n";
 $replyBody   .= "Thanks for submitting a project brief to Mojo AI Studio.\n\n";
-$replyBody   .= "We've received your brief for "{$projectName}" and will review it ";
+$replyBody   .= "We've received your brief for \"{$projectName}\" and will review it ";
 $replyBody   .= "within two business days.\n\n";
 $replyBody   .= "If you have anything to add in the meantime, just reply to this email.\n\n";
 $replyBody   .= "— Mojo AI Studio\n";

@@ -24,9 +24,7 @@
           <a href="/WatchAI">Learn</a>
         </div>
         <div class="nav-actions">
-          <button class="button ghost" type="button" data-cart-toggle aria-label="View cart">
-            Cart <span data-cart-count></span>
-          </button>
+          <a class="button ghost" href="/development">Work with Mojo</a>
           <a class="button dark" href="#apps">Browse apps</a>
         </div>
       </nav>
@@ -118,7 +116,7 @@
               <span>Team plan</span>
               <b>$149</b>
               <small>per month</small>
-              <button type="button" data-detail="LeadLens Revenue Suite">View suite</button>
+              <a class="button" href="#" data-polar-checkout="POLAR_LEADLENS_SUITE_PRICE_ID">Subscribe — $149/mo</a>
             </div>
           </article>
 
@@ -133,7 +131,7 @@
                 <b>$29/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="LeadLens">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="leadlens" data-price="29" data-name="LeadLens">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_LEADLENS_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -147,7 +145,7 @@
                 <b>$79/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="FlowDesk">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="flowdesk" data-price="79" data-name="FlowDesk">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_FLOWDESK_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -161,7 +159,7 @@
                 <b>$89/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="ClausePilot">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="clausepilot" data-price="89" data-name="ClausePilot">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_CLAUSEPILOT_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -175,7 +173,7 @@
                 <b>$39/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="ClipSmith">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="clipsmith" data-price="39" data-name="ClipSmith">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_CLIPSMITH_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -189,7 +187,7 @@
                 <b>$49/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="BriefForge">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="briefforge" data-price="49" data-name="BriefForge">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_BRIEFFORGE_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -203,7 +201,7 @@
                 <b>$59/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="Data Concierge">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="dataconcierge" data-price="59" data-name="Data Concierge">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_DATACONCIERGE_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -217,7 +215,7 @@
                 <b>$35/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="Meeting Memory">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="meetingmemory" data-price="35" data-name="Meeting Memory">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_MEETINGMEMORY_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -231,7 +229,7 @@
                 <b>$25/mo</b>
                 <div class="card-actions">
                   <button type="button" data-detail="Prompt Vault">Details</button>
-                  <button type="button" class="button dark" data-add-to-cart="promptvault" data-price="25" data-name="Prompt Vault">Add to cart</button>
+                  <a class="button dark" href="#" data-polar-checkout="POLAR_PROMPTVAULT_PRICE_ID">Subscribe</a>
                 </div>
               </footer>
             </article>
@@ -343,13 +341,18 @@
         <article><span>Output</span><b data-dialog-output>Briefs</b></article>
       </div>
       <div class="dialog-actions">
-        <button type="button" class="button dark" data-dialog-add-to-cart>Add to cart</button>
+        <a class="button dark" href="#" data-dialog-polar-checkout>Subscribe</a>
         <a class="button ghost" href="/development" data-close-link>Ask about custom work</a>
       </div>
     </dialog>
 
+    <!-- Polar.sh checkout SDK — replace POLAR_ORG_SLUG with your organization slug -->
+    <script>
+      window.polar = window.polar || { queue: [] };
+      window.polar.queue.push(['configure', { organization: 'POLAR_ORG_SLUG' }]);
+    </script>
+    <script async src="https://cdn.polar.sh/embed.js"></script>
     <script src="../scripts/mockups.js"></script>
-    <script src="scripts/cart.js"></script>
     <script src="scripts/listing.js"></script>
   </body>
 </html>

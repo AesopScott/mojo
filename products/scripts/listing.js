@@ -1,7 +1,8 @@
 /**
  * listing.js — Category filtering, search, and app detail dialog for the products page.
  *
- * Depends on: mockups.js (window.appDetails), cart.js (window.MojoCart)
+ * Depends on: mockups.js (window.appDetails)
+ * Checkout: handled by Polar.sh SDK via [data-polar-checkout] attributes on links/buttons.
  */
 
 (function () {
@@ -56,14 +57,15 @@
   function bindSearchForm() {
     var form = document.querySelector('[data-search-form]');
     if (!form) { return; }
+
+    var input = form.querySelector('input[type="search"]');
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var input = form.querySelector('input[type="search"]');
       searchQuery = input ? input.value.trim().toLowerCase() : '';
       applyFilters();
     });
 
-    var input = form ? form.querySelector('input[type="search"]') : null;
     if (input) {
       input.addEventListener('input', function () {
         searchQuery = input.value.trim().toLowerCase();
@@ -78,7 +80,8 @@
     var category = card.getAttribute('data-category');
     var tags = (card.getAttribute('data-tags') || '').split(' ');
     var name = (card.getAttribute('data-name') || '').toLowerCase();
-    var description = (card.querySelector('p') ? card.querySelector('p').textContent : '').toLowerCase();
+    var descEl = card.querySelector('p');
+    var description = descEl ? descEl.textContent.toLowerCase() : '';
 
     if (activeCategory !== 'all' && category !== activeCategory) { return false; }
 
@@ -88,7 +91,9 @@
     }
 
     if (searchQuery) {
-      var matchesSearch = name.includes(searchQuery) || description.includes(searchQuery) || tags.some(function (t) { return t.includes(searchQuery); });
+      var matchesSearch = name.includes(searchQuery)
+        || description.includes(searchQuery)
+        || tags.some(function (t) { return t.includes(searchQuery); });
       if (!matchesSearch) { return false; }
     }
 
@@ -122,8 +127,7 @@
 
     document.querySelectorAll('[data-detail]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var appName = btn.getAttribute('data-detail');
-        openDialog(appName);
+        openDialog(btn.getAttribute('data-detail'));
       });
     });
 
@@ -132,6 +136,7 @@
       closeBtn.addEventListener('click', function () { dialog.close(); });
     }
 
+    // Close on backdrop click
     dialog.addEventListener('click', function (e) {
       if (e.target === dialog) { dialog.close(); }
     });
@@ -144,33 +149,29 @@
     var details = window.appDetails && window.appDetails[appName];
     if (!details) { return; }
 
-    // Find the app card to get price and id
+    // Find matching card to read Polar price ID from the subscribe link
     var card = document.querySelector('[data-name="' + appName + '"]');
-    var priceText = card ? (card.querySelector('footer b') || { textContent: '' }).textContent : '';
-    var price = priceText.replace(/[^0-9]/g, '');
-    var productId = card ? (card.getAttribute('data-add-to-cart') || appName.toLowerCase().replace(/\s+/g, '')) : '';
+    var subscribeLink = card ? card.querySelector('[data-polar-checkout]') : null;
+    var polarPriceId = subscribeLink ? subscribeLink.getAttribute('data-polar-checkout') : '';
 
-    var titleEl = dialog.querySelector('[data-dialog-title]');
-    var categoryEl = dialog.querySelector('[data-dialog-category]');
-    var copyEl = dialog.querySelector('[data-dialog-copy]');
-    var setupEl = dialog.querySelector('[data-dialog-setup]');
-    var planEl = dialog.querySelector('[data-dialog-plan]');
-    var integrationsEl = dialog.querySelector('[data-dialog-integrations]');
-    var outputEl = dialog.querySelector('[data-dialog-output]');
-    var addToCartBtn = dialog.querySelector('[data-dialog-add-to-cart]');
+    // Populate dialog fields
+    var set = function (sel, val) {
+      var el = dialog.querySelector(sel);
+      if (el) { el.textContent = val; }
+    };
 
-    if (titleEl) { titleEl.textContent = appName; }
-    if (categoryEl) { categoryEl.textContent = details.category || 'Mojo app'; }
-    if (copyEl) { copyEl.textContent = details.copy || ''; }
-    if (setupEl) { setupEl.textContent = details.setup || '—'; }
-    if (planEl) { planEl.textContent = details.plan || '—'; }
-    if (integrationsEl) { integrationsEl.textContent = (details.integrations || []).join(', ') || '—'; }
-    if (outputEl) { outputEl.textContent = details.output || '—'; }
+    set('[data-dialog-title]', appName);
+    set('[data-dialog-category]', details.category || 'Mojo app');
+    set('[data-dialog-copy]', details.copy || '');
+    set('[data-dialog-setup]', details.setup || '—');
+    set('[data-dialog-plan]', details.plan || '—');
+    set('[data-dialog-integrations]', (details.integrations || []).join(', ') || '—');
+    set('[data-dialog-output]', details.output || '—');
 
-    if (addToCartBtn) {
-      addToCartBtn.setAttribute('data-product-id', productId);
-      addToCartBtn.setAttribute('data-product-name', appName);
-      addToCartBtn.setAttribute('data-product-price', price);
+    // Wire the dialog Subscribe link to the same Polar price ID as the card
+    var dialogCheckout = dialog.querySelector('[data-dialog-polar-checkout]');
+    if (dialogCheckout && polarPriceId) {
+      dialogCheckout.setAttribute('data-polar-checkout', polarPriceId);
     }
 
     dialog.showModal();
