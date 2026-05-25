@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Submit a custom AI development brief to Mojo AI Studio. Describe your workflow problem and we'll respond within two business days."
+    />
+    <title>Mojo AI Studio | Project Brief</title>
+    <link rel="stylesheet" href="../../styles/shared.css" />
+    <style>
+      .brief-form-section {
+        max-width: 720px;
+        padding: 60px 0 80px;
+      }
+
+      .brief-form {
+        display: grid;
+        gap: 22px;
+        margin-top: 36px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field label {
+        font-weight: 800;
+        font-size: 0.92rem;
+        color: var(--ink);
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.97rem;
+        outline: 0;
+        transition: border-color 0.15s ease;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--blue);
+      }
+
+      .field textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .field .hint {
+        font-size: 0.83rem;
+        color: var(--muted);
+      }
+
+      .form-submit {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .form-submit .button {
+        min-width: 200px;
+      }
+
+      .form-note {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/products">Products</a>
+          <a href="/development" class="active">Development</a>
+          <a href="/WatchAI">Learn</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="/development">← Back to services</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section brief-form-section">
+        <p class="kicker">Project Brief</p>
+        <h1>Tell us about your project.</h1>
+        <p>
+          Describe the workflow problem you're trying to solve, your current tools, and what you
+          need the AI to do. We'll review and respond within two business days.
+        </p>
+
+        <form
+          class="brief-form"
+          id="brief-form"
+          method="POST"
+          action="/api/submit-brief"
+          novalidate
+        >
+          <div class="field">
+            <label for="project-name">Project name or working title</label>
+            <input
+              id="project-name"
+              name="projectName"
+              type="text"
+              placeholder="e.g. Lead research automation"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-name">Your name</label>
+            <input
+              id="contact-name"
+              name="contactName"
+              type="text"
+              placeholder="First and last name"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-email">Email address</label>
+            <input
+              id="contact-email"
+              name="contactEmail"
+              type="email"
+              placeholder="you@company.com"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="problem-description">What problem are you solving?</label>
+            <textarea
+              id="problem-description"
+              name="problemDescription"
+              placeholder="Describe the workflow, the pain point, and what a good outcome looks like..."
+              required
+            ></textarea>
+            <span class="hint">Be as specific as you can — the more context you give, the more accurate our estimate will be.</span>
+          </div>
+
+          <div class="field">
+            <label for="current-tools">What tools do you currently use?</label>
+            <input
+              id="current-tools"
+              name="currentTools"
+              type="text"
+              placeholder="e.g. HubSpot, Google Sheets, Slack, Notion..."
+            />
+          </div>
+
+          <div class="field">
+            <label for="timeline">When do you need this?</label>
+            <select id="timeline" name="timeline">
+              <option value="">Select a timeline</option>
+              <option value="asap">As soon as possible</option>
+              <option value="1-month">Within 1 month</option>
+              <option value="3-months">Within 3 months</option>
+              <option value="flexible">Flexible / not urgent</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="budget">Approximate budget</label>
+            <select id="budget" name="budget">
+              <option value="">Select a range</option>
+              <option value="under-5k">Under $5,000</option>
+              <option value="5k-15k">$5,000 – $15,000</option>
+              <option value="15k-50k">$15,000 – $50,000</option>
+              <option value="50k-plus">$50,000+</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="anything-else">Anything else we should know?</label>
+            <textarea
+              id="anything-else"
+              name="anythingElse"
+              placeholder="Technical constraints, existing data, team context, or anything else relevant..."
+            ></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button class="button dark" type="submit">Submit brief →</button>
+            <p class="form-note">We'll respond within two business days at the email address you provided.</p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Development</b>
+        <a href="/development">How it works</a>
+        <a href="/development/pages/brief.html">Start a project</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/products">Browse apps</a>
+        <a href="/WatchAI">Learn to build AI</a>
+        <a href="/">Home</a>
+      </div>
+    </footer>
+
+    <script src="../../scripts/brief-form.js"></script>
+  </body>
+</html>
