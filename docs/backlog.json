@@ -86,6 +86,80 @@
           "waiverGuidance": "Manual verification of deployment pipeline required."
         }
       ]
+    },
+    {
+      "number": 2,
+      "title": "Set up Polar.sh account and activate product checkout",
+      "description": "Create Polar.sh account and organization, create all 12 products/bundles with monthly pricing, and replace all POLAR_*_PRICE_ID placeholder values in products/index.html and products/data/products.json so that Subscribe buttons open the Polar checkout overlay.",
+      "category": "Integration",
+      "priority": 60,
+      "impact": "major",
+      "status": "backlog",
+      "created_at": "2026-05-25",
+      "completed_at": null,
+      "pr_url": null,
+      "dependencies": [],
+      "branch": null,
+      "plan": null,
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Polar.sh org and 12 products created",
+          "expectedBehavior": "Polar.sh dashboard shows organization 'mojo-ai-studio' with 12 products (9 individual + 3 bundles), each with a monthly price and a Price ID.",
+          "proofType": "ui-check",
+          "exactCommand": "Log in to polar.sh → Dashboard → Products. Confirm all 12 products exist with correct names and monthly pricing.",
+          "expectedInitialFailure": "No organization or products exist in Polar.sh.",
+          "expectedPassingEvidence": "12 products visible in Polar.sh dashboard with Price IDs copied.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 2,
+          "title": "Subscribe buttons open Polar checkout overlay",
+          "expectedBehavior": "Click any Subscribe button on MojoAiStudio.com/products — Polar checkout overlay appears with the correct product name and price.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/products\n2. Click Subscribe on any app card\n3. Confirm Polar checkout overlay opens (not a page redirect)\n4. Verify product name and price match the card\n5. Check browser console — no errors\n6. Repeat for one bundle Subscribe button",
+          "expectedInitialFailure": "Nothing happens on Subscribe click (placeholder Price ID has no Polar product).",
+          "expectedPassingEvidence": "Polar checkout overlay opens with correct product; no console errors.",
+          "waiverGuidance": "Requires Polar.sh account and products to be created first (PU1)."
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Live test development brief form on MochaHost",
+      "description": "Submit the /development brief form on the live MojoAiStudio.com server and verify the full email flow: form submits successfully, confirmation page appears, admin email arrives at admin@MojoAiStudio.com with all submitted data, and auto-reply arrives at the submitter's inbox.",
+      "category": "Testing",
+      "priority": 50,
+      "impact": "minor",
+      "status": "backlog",
+      "created_at": "2026-05-25",
+      "completed_at": null,
+      "pr_url": null,
+      "dependencies": [],
+      "branch": null,
+      "plan": null,
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Form submits and confirmation page appears",
+          "expectedBehavior": "Filling all required fields and clicking Submit redirects to /development/pages/confirmation.html with no errors.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/development → click 'Start a project'\n2. Fill: Project Name, Contact Name, Contact Email (use ravenshroud@gmail.com), Problem Description\n3. Click Submit\n4. DevTools Network tab → confirm POST /api/submit-brief returns 200 with {\"ok\":true}\n5. Confirm browser redirects to /development/pages/confirmation.html",
+          "expectedInitialFailure": "POST returns 500 or network error; page doesn't redirect.",
+          "expectedPassingEvidence": "200 response with {\"ok\":true}; confirmation page displays.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 2,
+          "title": "Admin email and auto-reply both delivered",
+          "expectedBehavior": "admin@MojoAiStudio.com receives brief email with all submitted fields; submitter receives auto-reply.",
+          "proofType": "manual-script",
+          "exactCommand": "1. After PU1 form submission\n2. Check admin@MojoAiStudio.com inbox — confirm email with subject 'New Project Brief' containing submitted data\n3. Check SPAM folder if not in inbox\n4. Check ravenshroud@gmail.com inbox — confirm auto-reply received\n5. Verify Reply-To on admin email points to submitter address",
+          "expectedInitialFailure": "No email received; email in spam; fields missing from email body.",
+          "expectedPassingEvidence": "Both emails arrive in inbox with correct content and addressing.",
+          "waiverGuidance": "If email goes to spam, note MochaHost server reputation issue and consider adding SPF/DKIM records."
+        }
+      ]
     }
   ]
 }
