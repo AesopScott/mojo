@@ -77,23 +77,33 @@ Stripe webhook endpoint for payment events (charge.succeeded, invoice.paid, etc.
 
 ---
 
-## POST `/api/email-handler` (or `/functions/send-email` for serverless)
+## POST `/api/submit-brief`
 
-Email submission endpoint for /development form.
+Email submission endpoint for /development brief form. Served by PHP on MochaHost; `.htaccess` rewrites `/api/submit-brief` → `/api/submit-brief.php`.
 
 **Producers**
-- `development/scripts/form-submit.js:*` — client-side form handler POSTs submission data (Task 3.3)
-- `api/email-handler.js:*` — receives POST, sends email to admin (Task 1.5)
+- `api/submit-brief.php:1` — receives POST, validates, sends email via PHP `mail()`, returns JSON
+- `.htaccess:8` — Apache rewrite rule strips `.php` extension
 
 **Consumers**
-- `api/email-handler.js:*` — sends email to `admin@MojoAiStudio.com` (Task 1.5)
-- Task 3.3 validation test — form submission must successfully POST (proof unit 5)
+- `scripts/brief-form.js:34` — `fetch('/api/submit-brief', { method: 'POST', headers: { 'Content-Type': 'application/json' } })`
+- User submits brief form at `/development/pages/brief.html` (proof unit 5)
 
-**Expected behavior:** Receives form data (project name, scope, timeline, budget, contact info), validates fields, sends email to admin, returns success response with confirmation message.
+**Expected behavior:** Receives JSON body, validates required fields, sends email to `admin@MojoAiStudio.com` via `mail()`, sends auto-reply to submitter, returns `{ "ok": true }` on success or `{ "ok": false, "message": "..." }` with 4xx/5xx status on error.
 
-**Shape:** Request body — `{ projectName, scope, timeline, budget, contactEmail, contactName, ... }` (exact schema in Task 3.2)
+**Shape:**
+```
+Request:  POST /api/submit-brief  Content-Type: application/json
+Body:     { projectName, contactName, contactEmail, problemDescription,
+            currentTools?, timeline?, budget?, anythingElse? }
+Response: 200 { "ok": true }
+          422 { "ok": false, "message": "Missing required fields: ..." }
+          500 { "ok": false, "message": "Email could not be sent..." }
+```
 
-**Status:** ⚠ ambiguous decision — Task 1.5 says "use SendGrid, Mailgun, or SMTP" but doesn't lock the choice. Environment variable names not defined. Recommend deciding on email service and documenting env vars in Task 1.5 before Task 3.3 wires the form.
+**Admin email override:** Set `MOJO_ADMIN_EMAIL` env var in cPanel → PHP → Environment Variables. Defaults to `admin@MojoAiStudio.com`.
+
+**Status:** ✓ implemented — producer (`api/submit-brief.php`) and consumer (`scripts/brief-form.js`) paired. Email service: PHP `mail()` via MochaHost.
 
 ---
 
@@ -176,7 +186,7 @@ CTAs on /WatchAI section redirect to external learning platform.
 | GET `/products/pages/[id]` | Task 2.3 | Task 2.2, Task 2.3, user | ✓ |
 | GET `/products/pages/cart.html` | Task 2.4 | Task 2.2, Task 2.3, user | ✓ |
 | POST `/api/stripe-webhook` | Stripe, Task 2.5 | Task 2.5, Stripe Dashboard | ⚠ orphan consumer — needs Stripe Dashboard registration |
-| POST `/api/email-handler` | Task 3.3 | Task 1.5, Task 3.3 | ⚠ ambiguous — email service not locked in |
+| POST `/api/submit-brief` | `api/submit-brief.php` | `scripts/brief-form.js`, user | ✓ implemented (PHP mail) |
 | GET `/development` | Task 3.1 | Task 1.3, user | ✓ |
 | GET `/development/pages/brief.html` | Task 3.2 | Task 3.1, Task 3.3, user | ✓ |
 | GET `/WatchAI` | Task 4.1 | Task 1.3, user | ✓ |

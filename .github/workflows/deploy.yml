@@ -37,4 +37,3 @@ jobs:
             **/.DS_Store
             **/README.md
             cgi-bin/**
-            .htaccess
