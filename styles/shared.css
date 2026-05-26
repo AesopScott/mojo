@@ -1264,3 +1264,223 @@ a[aria-disabled="true"] {
     align-items: stretch;
   }
 }
+
+/* ════════════════════════════════════════════
+   PORTAL — Auth + Dashboard
+   ════════════════════════════════════════════ */
+
+/* ─── Auth page layout ─── */
+
+.portal-section {
+  display: flex;
+  justify-content: center;
+  padding-block: 80px;
+}
+
+.auth-card {
+  width: min(480px, 100%);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 16px rgba(15, 23, 42, 0.06);
+}
+
+/* ─── Tab switcher ─── */
+
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+
+.auth-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.auth-tab.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--blue, #2563eb);
+}
+
+/* ─── Auth forms ─── */
+
+.auth-form h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 24px;
+}
+
+.auth-form .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.auth-form label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: var(--blue, #2563eb);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.auth-form .button {
+  width: 100%;
+  margin-top: 8px;
+  justify-content: center;
+  min-height: 46px;
+}
+
+.auth-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.auth-link {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  color: var(--ink);
+}
+
+/* ─── Dashboard ─── */
+
+.portal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.portal-header h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  margin-bottom: 4px;
+}
+
+.portal-email {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.portal-loading {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.portal-empty {
+  padding: 48px 0;
+  color: var(--muted);
+}
+
+.portal-empty p {
+  margin-bottom: 4px;
+}
+
+/* ─── Purchase cards ─── */
+
+.purchase-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.purchase-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.purchase-card-header h3 {
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.purchase-date {
+  font-size: 0.825rem;
+  color: var(--muted);
+}
+
+.purchase-status {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.purchase-status--active   { background: #dcfce7; color: #166534; }
+.purchase-status--trialing { background: #dbeafe; color: #1e40af; }
+.purchase-status--cancelled{ background: #f3f4f6; color: #6b7280; }
+.purchase-status--past-due { background: #fef2f2; color: #dc2626; }
+.purchase-status--expired  { background: #fef2f2; color: #dc2626; }
+.purchase-status--unknown  { background: #f3f4f6; color: #6b7280; }
+
+.purchase-card-body {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.purchase-card-body b {
+  color: var(--ink);
+}
+
+.purchase-card-footer {
+  border-top: 1px solid var(--soft-line, var(--line));
+  padding-top: 14px;
+}

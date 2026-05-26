@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Mojo AI Studio | My Purchases</title>
+    <link rel="stylesheet" href="../styles/shared.css?v=__CACHE_BUST__" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/products">Products</a>
+          <a href="/development">Development</a>
+          <a href="/WatchAI">Learn</a>
+        </div>
+        <div class="nav-actions">
+          <button type="button" class="button ghost" id="signout-btn">Sign out</button>
+          <a class="button dark" href="/products">Browse apps</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="portal-header">
+          <div>
+            <p class="kicker">My account</p>
+            <h1 id="portal-greeting">Loading…</h1>
+            <p id="portal-email" class="portal-email"></p>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <p id="purchases-loading" class="portal-loading">Loading your purchases…</p>
+
+        <!-- Empty state -->
+        <div id="purchases-empty" class="portal-empty" hidden>
+          <p>No purchases yet.</p>
+          <p>Visit the marketplace to find AI tools built for real work.</p>
+          <a class="button dark" href="/products" style="margin-top: 16px; display: inline-flex;">
+            Browse the marketplace →
+          </a>
+        </div>
+
+        <!-- Purchase list — populated by dashboard.js -->
+        <div id="purchases-list" hidden></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Marketplace</b>
+        <a href="/products">Browse apps</a>
+        <a href="/products#compare">Compare plans</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/development">Custom development</a>
+        <a href="/WatchAI">Learn to build AI</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script src="../scripts/firebase-config.js?v=__CACHE_BUST__"></script>
+    <script src="scripts/dashboard.js?v=__CACHE_BUST__"></script>
+  </body>
+</html>
