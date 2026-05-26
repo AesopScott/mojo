@@ -120,15 +120,17 @@ Returns `{ "valid": true/false, "expires_at": "…" }`. Gate Pro features on `va
 
 ---
 
-## Polar.sh Webhook (optional)
+## Polar.sh Webhook (GAIN)
 
-Polar.sh can send webhook events (subscription created, cancelled, etc.) to a server endpoint.
+Polar delivers subscription events to the GAIN Firebase Cloud Function via Svix.
 
-**If needed:** Create `api/polar-webhook.php` to handle events (e.g., send a welcome email on new subscription).
-**Endpoint to register:** `https://MojoAiStudio.com/api/polar-webhook`
-**Events to consider:** `subscription.created`, `subscription.cancelled`, `order.created`
+**Endpoint:** `https://polarwebhook-hmkyyu2gma-uc.a.run.app`
+**Webhook name in Polar:** `gain_webhook`
+**Secret:** stored in Firebase Secret Manager as `POLAR_WEBHOOK_SECRET`
+**Events subscribed:** `order.created`, `order.paid`, `order.refunded`, `subscription.created`, `subscription.updated`, `subscription.revoked`, `subscription.past_due`, `refund.created`, `refund.updated`
+**Source file:** `functions/index.js` → `exports.polarWebhook`
 
-**Status:** ⏳ not implemented — low priority for initial launch. Add when post-purchase automation is needed.
+**Status:** ✓ live and tested — verified 200 response + Firestore write on 2026-05-26.
 
 ---
 
@@ -154,13 +156,13 @@ open-ended service engagements — only fixed-price digital products and subscri
 | Polar API key (gain-production) | yes | `POLAR_ACCESS_TOKEN` env var in GAIN | ✓ created |
 | GAIN checkout link (`gain-checkout`) | yes | "Upgrade to Pro" button on governainow.com | ✓ created |
 | License key validation in GAIN | yes | governainow.com codebase | ⏳ not built |
-| Polar webhook (GAIN) | yes | `https://governainow.com/api/polar-webhook` | ✓ registered in Polar / ⏳ endpoint not built |
+| Polar webhook (GAIN) | yes | `https://polarwebhook-hmkyyu2gma-uc.a.run.app` | ✓ live and tested |
 
 ---
 
 ## Audit Trail
 
-**Last update:** 2026-05-26 — added GAIN Pro license key benefit config; added license key validation spec.
+**Last update:** 2026-05-26 — webhook live; corrected endpoint URL to `polarwebhook-hmkyyu2gma-uc.a.run.app`; added GAIN Pro license key benefit config; added license key validation spec.
 
 **2026-05-25** — replaced Stripe configuration with Polar.sh after switching payment platforms.
 

@@ -97,6 +97,6 @@ Cancel any time
 - **Trial period:** Do NOT set a trial period — GAIN's free plan is the trial (unlimited time, object-capped). Polar trial period should be left off.
 - **Billing interval:** Monthly (annual option can be added later).
 - **Cover image:** Use `assets/gain-product-image.svg` — keep consistent across all three products.
-- **Webhook:** `https://polarwebhook-ybz2g7wg4a-uc.a.run.app` — subscribe to `order.created`, `subscription.created`, `subscription.updated`, `subscription.canceled`.
+- **Webhook:** `https://polarwebhook-hmkyyu2gma-uc.a.run.app` — subscribe to `order.created`, `subscription.created`, `subscription.updated`, `subscription.canceled`, `subscription.revoked`.
 - **Success URL / redirect:** `https://mojoaistudio.com/portal/` — sends the buyer to the customer portal after checkout.
 - **Org slug:** `mind-share-media-llc`
