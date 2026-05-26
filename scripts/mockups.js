@@ -1,4 +1,12 @@
 const appDetails = {
+  "GAIN — Govern AI Now": {
+    category: "Governance",
+    copy: "A multi-tenant AI governance platform. Build your program from use-case intake through risk register, AI Impact Assessments, compliance checklists (NIST AI RMF, ISO 42001, EU AI Act, HIPAA, and more), and an append-only audit trail.",
+    setup: "20 min",
+    plan: "Pro — $100/mo",
+    integrations: ["Google Workspace", "CSV"],
+    output: "Governance program, audit trail",
+  },
   "LeadLens Revenue Suite": {
     category: "Revenue bundle",
     copy: "A bundled revenue workflow for turning raw prospect lists into account briefs, buying-signal summaries, CRM notes, and first-touch outreach drafts.",
