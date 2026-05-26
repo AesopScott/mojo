@@ -12,7 +12,7 @@ window.gainPlans = [
     tagline: 'Startups / single-product orgs',
     price: '$100',
     interval: '/mo',
-    url: 'https://polar.sh',
+    polarPriceId: '636b0777-d111-414e-968c-455bd5161d3d',
     features: [
       '1 workspace',
       'Up to 10 team members',
@@ -34,7 +34,7 @@ window.gainPlans = [
     price: '$250',
     interval: '/mo',
     featured: true,
-    url: 'https://polar.sh',
+    polarPriceId: '54ceb640-dba6-4fb3-94ef-9ca4a93d6fb5',
     features: [
       '3 workspaces',
       'Up to 25 team members',
@@ -53,7 +53,7 @@ window.gainPlans = [
     tagline: 'Large enterprise / multi-BU',
     price: '$500',
     interval: '/mo',
-    url: 'https://polar.sh',
+    polarPriceId: 'f95729d1-af9a-4025-8929-b9ba83a174f1',
     features: [
       'Unlimited workspaces',
       'Unlimited team members',

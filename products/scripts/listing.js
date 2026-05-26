@@ -135,7 +135,14 @@
     }).join('');
 
     if (cta) {
-      cta.setAttribute('href', plan.url);
+      // Drive the Polar embed overlay via data-polar-checkout.
+      // Falls back to polar.sh root if the price ID is somehow absent.
+      if (plan.polarPriceId) {
+        cta.setAttribute('data-polar-checkout', plan.polarPriceId);
+        cta.removeAttribute('href');
+        cta.removeAttribute('target');
+        cta.removeAttribute('rel');
+      }
     }
   }
 

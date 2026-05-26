@@ -132,7 +132,7 @@
             <article><span>Pro</span><b>$100/mo</b></article>
             <article><span>Business</span><b>$250/mo</b></article>
             <article><span>Enterprise</span><b>$500/mo</b></article>
-            <article><span>Free trial</span><b>14 days</b></article>
+            <article><span>Free plan</span><b>Always free</b></article>
           </div>
           <div class="comparison-table">
             <div><b>Plan</b><b>Free</b><b>Pro $100/mo</b><b>Business $250/mo</b><b>Enterprise $500/mo</b></div>
@@ -189,7 +189,7 @@
       <span class="pill">Governance · Live Now</span>
       <h2>GAIN — Govern AI Now</h2>
       <p>A multi-tenant AI governance platform — risk register, AI Impact Assessments, compliance checklists for NIST AI RMF, ISO 42001, EU AI Act, HIPAA, and more.</p>
-      <p class="gain-price-note">Free starter forever · Paid plans $100 – $500/mo · 14-day trial on all paid tiers</p>
+      <p class="gain-price-note">Free plan forever — limited objects · Paid plans unlock higher limits · Cancel any time</p>
 
       <div class="plan-tabs" role="tablist" aria-label="GAIN plan options">
         <button class="plan-tab" type="button" role="tab" data-plan="pro" aria-selected="false">
@@ -215,11 +215,16 @@
       </ul>
 
       <div class="dialog-actions">
-        <a class="button dark" href="https://polar.sh" target="_blank" rel="noopener" data-gain-trial-cta>Start 14-day trial</a>
+        <a class="button dark" href="https://polar.sh" target="_blank" rel="noopener" data-gain-trial-cta>Subscribe</a>
         <a class="button ghost" href="https://governainow.com" target="_blank" rel="noopener">Start free at governainow.com</a>
       </div>
     </dialog>
 
+    <script>
+      window.polar = window.polar || { queue: [] };
+      window.polar.queue.push(['configure', { organization: 'mind-share-media-llc' }]);
+    </script>
+    <script async src="https://cdn.polar.sh/embed.js"></script>
     <script src="../scripts/mockups.js?v=__CACHE_BUST__"></script>
     <script src="scripts/listing.js?v=__CACHE_BUST__"></script>
   </body>

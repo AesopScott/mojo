@@ -57,6 +57,16 @@ Client-side JavaScript that intercepts `[data-polar-checkout]` attribute clicks 
 Each Subscribe button needs the **Price ID** of the corresponding Polar.sh product price.
 Price IDs are found in Polar.sh Dashboard → Products → [Product] → Prices → copy the ID.
 
+**GAIN (live — wired to Polar overlay):**
+
+| Plan | Price ID | Price |
+|---|---|---|
+| GAIN Pro | `636b0777-d111-414e-968c-455bd5161d3d` | $100/mo |
+| GAIN Business | `54ceb640-dba6-4fb3-94ef-9ca4a93d6fb5` | $250/mo |
+| GAIN Enterprise | `f95729d1-af9a-4025-8929-b9ba83a174f1` | $500/mo |
+
+**Future products (placeholders — replace when Polar products are created):**
+
 | Placeholder | Product | Price |
 |---|---|---|
 | `POLAR_LEADLENS_SUITE_PRICE_ID` | LeadLens Revenue Suite | $149/mo |
@@ -141,8 +151,10 @@ open-ended service engagements — only fixed-price digital products and subscri
 | Polar.js SDK script | yes | `products/index.html` | ✓ present |
 | 12 product Price IDs | yes | HTML + products.json | ⚠ all placeholders |
 | GAIN Pro license key benefit | yes | polar.sh dashboard | ✓ configured |
+| Polar API key (gain-production) | yes | `POLAR_ACCESS_TOKEN` env var in GAIN | ✓ created |
+| GAIN checkout link (`gain-checkout`) | yes | "Upgrade to Pro" button on governainow.com | ✓ created |
 | License key validation in GAIN | yes | governainow.com codebase | ⏳ not built |
-| Polar webhook | optional | `api/polar-webhook.php` | ⏳ not built |
+| Polar webhook (GAIN) | yes | `https://governainow.com/api/polar-webhook` | ✓ registered in Polar / ⏳ endpoint not built |
 
 ---
 
