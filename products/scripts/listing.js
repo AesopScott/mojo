@@ -149,10 +149,11 @@
     var details = window.appDetails && window.appDetails[appName];
     if (!details) { return; }
 
-    // Find matching card to read Polar price ID from the subscribe link
+    // Find matching card — read Polar price ID or external URL from it
     var card = document.querySelector('[data-name="' + appName + '"]');
     var subscribeLink = card ? card.querySelector('[data-polar-checkout]') : null;
     var polarPriceId = subscribeLink ? subscribeLink.getAttribute('data-polar-checkout') : '';
+    var externalUrl = card ? (card.getAttribute('data-external-url') || '') : '';
 
     // Populate dialog fields
     var set = function (sel, val) {
@@ -168,13 +169,68 @@
     set('[data-dialog-integrations]', (details.integrations || []).join(', ') || '—');
     set('[data-dialog-output]', details.output || '—');
 
-    // Wire the dialog Subscribe link to the same Polar price ID as the card
+    // Wire the dialog action button: external URL (live product) > real Polar ID > placeholder
     var dialogCheckout = dialog.querySelector('[data-dialog-polar-checkout]');
-    if (dialogCheckout && polarPriceId) {
-      dialogCheckout.setAttribute('data-polar-checkout', polarPriceId);
+    if (dialogCheckout) {
+      // Reset any state from previous dialog open
+      dialogCheckout.removeAttribute('data-polar-checkout');
+      dialogCheckout.removeAttribute('target');
+      dialogCheckout.removeAttribute('rel');
+      dialogCheckout.setAttribute('href', '#');
+
+      if (externalUrl) {
+        // Live product — link directly to its own site
+        dialogCheckout.setAttribute('href', externalUrl);
+        dialogCheckout.setAttribute('target', '_blank');
+        dialogCheckout.setAttribute('rel', 'noopener');
+        dialogCheckout.removeAttribute('aria-disabled');
+        dialogCheckout.removeAttribute('title');
+        dialogCheckout.textContent = 'Get Started Free';
+      } else if (polarPriceId && !isPlaceholderId(polarPriceId)) {
+        // Live Polar price ID — wire to Polar checkout
+        dialogCheckout.setAttribute('data-polar-checkout', polarPriceId);
+        dialogCheckout.removeAttribute('aria-disabled');
+        dialogCheckout.removeAttribute('title');
+        dialogCheckout.textContent = 'Subscribe';
+      } else {
+        // Placeholder — disable until Polar is configured
+        dialogCheckout.setAttribute('aria-disabled', 'true');
+        dialogCheckout.setAttribute('title', 'Coming soon — not yet available');
+        dialogCheckout.textContent = 'Coming soon';
+      }
     }
 
     dialog.showModal();
+  }
+
+  /** ── Placeholder guard ── */
+
+  /**
+   * Detect any [data-polar-checkout] element that still holds a placeholder value
+   * (i.e. the string starts with "POLAR_"). Mark it aria-disabled so the Polar SDK
+   * never receives the call, prevent the default link/button action, and show a
+   * "Coming soon" tooltip. Also skips wiring the dialog Subscribe link when the
+   * resolved price ID is a placeholder.
+   */
+  function isPlaceholderId(id) {
+    return !id || id.indexOf('POLAR_') === 0;
+  }
+
+  function guardPlaceholderCheckout() {
+    document.querySelectorAll('[data-polar-checkout]').forEach(function (el) {
+      if (!isPlaceholderId(el.getAttribute('data-polar-checkout'))) { return; }
+      el.setAttribute('aria-disabled', 'true');
+      el.setAttribute('title', 'Coming soon — not yet available');
+      // Relabel the button so users see "Coming soon" rather than a silent non-action.
+      // Preserve any price suffix, e.g. "Subscribe — $149/mo" → "Coming soon — $149/mo".
+      var text = el.textContent || '';
+      var priceSuffix = text.match(/—\s*\$[\d,.]+\/\w+/);
+      el.textContent = 'Coming soon' + (priceSuffix ? ' ' + priceSuffix[0] : '');
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    });
   }
 
   /** ── Init ── */
@@ -184,6 +240,7 @@
     bindFilterCheckboxes();
     bindSearchForm();
     bindDetailButtons();
+    guardPlaceholderCheckout();
     applyFilters();
   }
 

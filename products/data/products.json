@@ -1,6 +1,28 @@
 {
   "products": [
     {
+      "id": "gain",
+      "name": "GAIN — Govern AI Now",
+      "category": "governance",
+      "tags": ["ready", "team", "compliance", "governance", "api", "audit"],
+      "description": "Build your AI governance program from intake to audit — risk register, impact assessments, and compliance checklists for NIST AI RMF, ISO 42001, EU AI Act, HIPAA, FERPA, GLBA, and more.",
+      "price": 100,
+      "billingPeriod": "month",
+      "plan": "Pro plan",
+      "rating": 4.9,
+      "setupMinutes": 20,
+      "integrations": ["Google Workspace", "CSV"],
+      "inputs": "AI system inventory, use cases",
+      "outputs": "Governance program, risk register, audit trail",
+      "iconColor": "blue",
+      "iconLetter": "G",
+      "featured": false,
+      "status": "live",
+      "externalUrl": "https://governainow.com",
+      "polarPriceId": null,
+      "notes": "Live product — direct link to governainow.com. Polar price ID to be added after Polar.sh account setup."
+    },
+    {
       "id": "leadlens-revenue-suite",
       "name": "LeadLens Revenue Suite",
       "category": "sales",
