@@ -80,6 +80,36 @@ Price IDs are found in Polar.sh Dashboard → Products → [Product] → Prices 
 
 ---
 
+## Product Benefits (license keys)
+
+Polar can automatically issue license keys to subscribers as an "Automated Benefit."
+GAIN Pro is the first product configured this way.
+
+### GAIN — Pro License
+
+| Setting | Value |
+|---|---|
+| Benefit type | License Keys |
+| Description | Pro License |
+| Key prefix | `pro` → keys are issued as `pro-XXXXXXXX-…` |
+| Expires | ✓ 1 Month — auto-renewed each billing cycle |
+| Limit Activations | ✗ off |
+| Limit Usage | ✗ off |
+
+**How it works:** When a customer completes checkout, Polar issues a `pro-…` key and emails it to them. The key expires after 1 month but is automatically renewed as long as the subscription is active. If the subscription lapses, the key expires and GAIN should downgrade the account to Free.
+
+**GAIN must validate keys server-side** via the Polar License Keys API:
+```
+POST https://api.polar.sh/v1/users/licenses/validate
+Authorization: Bearer <POLAR_ACCESS_TOKEN>
+{ "key": "pro-…", "organization_id": "…" }
+```
+Returns `{ "valid": true/false, "expires_at": "…" }`. Gate Pro features on `valid: true`.
+
+**Status:** ✓ configured in Polar Dashboard for GAIN Pro product.
+
+---
+
 ## Polar.sh Webhook (optional)
 
 Polar.sh can send webhook events (subscription created, cancelled, etc.) to a server endpoint.
@@ -110,12 +140,16 @@ open-ended service engagements — only fixed-price digital products and subscri
 | Org slug in HTML | yes | `products/index.html` | ⚠ placeholder |
 | Polar.js SDK script | yes | `products/index.html` | ✓ present |
 | 12 product Price IDs | yes | HTML + products.json | ⚠ all placeholders |
+| GAIN Pro license key benefit | yes | polar.sh dashboard | ✓ configured |
+| License key validation in GAIN | yes | governainow.com codebase | ⏳ not built |
 | Polar webhook | optional | `api/polar-webhook.php` | ⏳ not built |
 
 ---
 
 ## Audit Trail
 
-**Last update:** 2026-05-25 — replaced Stripe configuration with Polar.sh after switching payment platforms.
+**Last update:** 2026-05-26 — added GAIN Pro license key benefit config; added license key validation spec.
+
+**2026-05-25** — replaced Stripe configuration with Polar.sh after switching payment platforms.
 
 **Previous registry:** `stripe-config.md` — archived; Stripe is no longer used on this project.
