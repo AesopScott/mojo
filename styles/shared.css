@@ -303,6 +303,11 @@ p {
   line-height: 1.65;
 }
 
+.hero h1 {
+  font-size: clamp(1.6rem, 3.5vw, 3.35rem);
+  line-height: 1.1;
+}
+
 .hero-copy > p:not(.kicker) {
   max-width: 650px;
   font-size: 1.12rem;
