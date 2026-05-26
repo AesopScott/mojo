@@ -1269,6 +1269,68 @@ a[aria-disabled="true"] {
    PORTAL — Auth + Dashboard
    ════════════════════════════════════════════ */
 
+/* ─── Polar.sh customer portal iframe ─── */
+
+.polar-portal-section {
+  padding-block: 48px 0;
+}
+
+.polar-portal-header {
+  margin-bottom: 32px;
+}
+
+.polar-portal-header h1 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  margin-bottom: 8px;
+}
+
+.polar-portal-header p {
+  color: var(--muted);
+  max-width: 520px;
+}
+
+.polar-portal-wrap {
+  position: relative;
+  width: 100%;
+  min-height: 680px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.polar-portal-wrap iframe {
+  display: block;
+  width: 100%;
+  min-height: 680px;
+  border: none;
+}
+
+.polar-portal-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  padding: 48px 32px;
+}
+
+.polar-portal-fallback-inner {
+  max-width: 480px;
+  text-align: center;
+}
+
+.polar-portal-fallback-inner h2 {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  margin-bottom: 12px;
+}
+
+.polar-portal-fallback-inner p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 /* ─── Auth page layout ─── */
 
 .portal-section {

@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex" />
-    <title>Mojo AI Studio | Sign In</title>
+    <title>Mojo AI Studio | My Account</title>
     <link rel="stylesheet" href="../styles/shared.css?v=__CACHE_BUST__" />
   </head>
   <body>
@@ -20,81 +20,44 @@
           <a href="/WatchAI">Learn</a>
         </div>
         <div class="nav-actions">
-          <a class="button ghost active" href="/portal/" aria-current="page">Sign in</a>
+          <a class="button ghost active" href="/portal/" aria-current="page">My account</a>
           <a class="button dark" href="/products">Browse apps</a>
         </div>
       </nav>
     </header>
 
     <main>
-      <section class="section portal-section">
-        <div class="auth-card">
-          <div class="auth-tabs" role="tablist" aria-label="Sign in or create account">
-            <button class="auth-tab is-active" type="button" role="tab"
-                    data-tab="signin" aria-selected="true">Sign in</button>
-            <button class="auth-tab" type="button" role="tab"
-                    data-tab="signup" aria-selected="false">Create account</button>
+      <section class="section portal-section polar-portal-section">
+        <div class="polar-portal-header">
+          <p class="kicker">Customer portal</p>
+          <h1>Purchases &amp; subscriptions</h1>
+          <p>Manage your GAIN subscription, view invoices, and update billing — all in one place.</p>
+        </div>
+
+        <!-- Polar.sh customer portal iframe.
+             Org slug is injected by the deploy workflow from the POLAR_ORG repo variable.
+             Until configured, the fallback link below is shown. -->
+        <div class="polar-portal-wrap" id="polar-portal-wrap">
+          <iframe
+            id="polar-portal-frame"
+            src="https://polar.sh/__POLAR_ORG__/portal"
+            title="Manage your purchases and subscriptions"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+
+          <!-- Shown by JS if the iframe src still contains the placeholder -->
+          <div class="polar-portal-fallback" id="polar-portal-fallback" hidden>
+            <div class="polar-portal-fallback-inner">
+              <p class="kicker">Coming soon</p>
+              <h2>Checkout is being configured.</h2>
+              <p>
+                The customer portal will be live shortly. In the meantime, email
+                <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>
+                with any billing questions.
+              </p>
+            </div>
           </div>
-
-          <!-- Google sign-in (works for both sign-in and sign-up) -->
-          <button type="button" class="button-google" id="google-signin-btn">
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-              <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/>
-              <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-              <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.548 0 9s.348 2.825.957 4.039l3.007-2.332z"/>
-              <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
-            </svg>
-            Continue with Google
-          </button>
-
-          <div class="auth-divider"><span>or</span></div>
-          <div class="auth-error" id="google-error" role="alert" hidden></div>
-
-          <!-- Sign in -->
-          <form id="signin-form" class="auth-form" novalidate>
-            <div class="form-field">
-              <label for="signin-email">Email</label>
-              <input type="email" id="signin-email" name="email"
-                     autocomplete="email" required />
-            </div>
-
-            <div class="form-field">
-              <label for="signin-password">Password</label>
-              <input type="password" id="signin-password" name="password"
-                     autocomplete="current-password" required />
-            </div>
-
-            <div class="auth-error" id="signin-error" role="alert" hidden></div>
-
-            <button type="submit" class="button dark">Sign in</button>
-            <a class="auth-link" href="#" id="forgot-password">Forgot password?</a>
-          </form>
-
-          <!-- Sign up -->
-          <form id="signup-form" class="auth-form" novalidate hidden>
-            <div class="form-field">
-              <label for="signup-email">Email</label>
-              <input type="email" id="signup-email" name="email"
-                     autocomplete="email" required />
-            </div>
-
-            <div class="form-field">
-              <label for="signup-password">Password</label>
-              <input type="password" id="signup-password" name="new-password"
-                     autocomplete="new-password" required minlength="8" />
-              <small class="field-hint">At least 8 characters</small>
-            </div>
-
-            <div class="form-field">
-              <label for="signup-confirm">Confirm password</label>
-              <input type="password" id="signup-confirm" name="confirm-password"
-                     autocomplete="new-password" required minlength="8" />
-            </div>
-
-            <div class="auth-error" id="signup-error" role="alert" hidden></div>
-
-            <button type="submit" class="button dark">Create account</button>
-          </form>
         </div>
       </section>
     </main>
@@ -120,10 +83,18 @@
       </div>
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-    <script src="../scripts/firebase-config.js?v=__CACHE_BUST__"></script>
-    <script src="scripts/portal-auth.js?v=__CACHE_BUST__"></script>
+    <script>
+      // If the org slug was never injected (POLAR_ORG not set in repo vars),
+      // the iframe src will still contain the literal placeholder — hide it and
+      // show the fallback message instead.
+      (function () {
+        var frame = document.getElementById('polar-portal-frame');
+        var fallback = document.getElementById('polar-portal-fallback');
+        if (frame && frame.src.indexOf('__POLAR_ORG__') !== -1) {
+          frame.hidden = true;
+          if (fallback) { fallback.hidden = false; }
+        }
+      }());
+    </script>
   </body>
 </html>

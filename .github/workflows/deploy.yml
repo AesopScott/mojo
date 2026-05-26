@@ -19,10 +19,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inject cache-bust token
+      - name: Inject cache-bust token and config tokens
+        env:
+          POLAR_ORG: ${{ vars.POLAR_ORG }}
         run: |
           BUST="${GITHUB_SHA:0:7}"
+          ORG="${POLAR_ORG:-}"
           find . -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
+          find . -name "*.js"   -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
+          if [ -n "$ORG" ]; then
+            find . -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
+          fi
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
