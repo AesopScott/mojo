@@ -98,17 +98,17 @@
           </div>
 
           <div class="app-grid" data-app-grid>
-            <article class="app-card app-card--live" data-category="governance" data-tags="ready team compliance governance api audit" data-name="GAIN — Govern AI Now" data-external-url="https://governainow.com">
+            <article class="app-card app-card--live" data-category="governance" data-tags="ready team compliance governance api audit" data-name="GAIN — Govern AI Now">
               <div class="app-icon blue">G</div>
               <span>Governance <span class="pill pill--live">Live Now</span></span>
               <h3>GAIN — Govern AI Now</h3>
-              <p>Build your AI governance program from intake to audit — risk register, impact assessments, and compliance checklists for NIST AI RMF, ISO 42001, EU AI Act, HIPAA, and more.</p>
-              <div class="meta-row"><small>4.9</small><small>Google</small><small>CSV</small></div>
+              <p>Build your AI governance program from intake to audit — risk register, AI Impact Assessments, and compliance checklists for NIST AI RMF, ISO 42001, EU AI Act, HIPAA, and more.</p>
+              <div class="meta-row"><small>3 plans</small><small>Google</small><small>CSV</small></div>
               <footer>
-                <b>Free / $100/mo</b>
+                <b>$0 – $500/mo</b>
                 <div class="card-actions">
-                  <button type="button" data-detail="GAIN — Govern AI Now">Details</button>
-                  <a class="button dark" href="https://governainow.com" target="_blank" rel="noopener">Get Started Free</a>
+                  <button type="button" data-gain-details>Compare plans</button>
+                  <a class="button dark" href="https://governainow.com" target="_blank" rel="noopener">Start Free</a>
                 </div>
               </footer>
             </article>
@@ -118,27 +118,31 @@
 
       <section class="section compare-section" id="compare">
         <div class="compare-copy">
-          <p class="kicker">Buyer confidence</p>
-          <h2>Know what you're getting before you buy.</h2>
+          <p class="kicker">GAIN — Govern AI Now</p>
+          <h2>Compare all four tiers.</h2>
           <p>
-            Every Mojo product listing is structured around outcomes, setup time, integrations,
-            and limitations — so you can evaluate it honestly.
+            Start free forever. Upgrade to Pro, Business, or Enterprise when your team,
+            AI system count, or compliance requirements grow.
           </p>
+          <a class="button dark" href="https://governainow.com/pricing.html" target="_blank" rel="noopener" style="margin-top:8px">Full pricing page →</a>
         </div>
         <div class="detail-panel">
-          <div class="detail-tabs"><span class="active">GAIN Overview</span></div>
-          <div class="detail-grid">
-            <article><span>Setup</span><b>Under 15 minutes</b></article>
-            <article><span>Best for</span><b>Compliance &amp; risk teams</b></article>
-            <article><span>Inputs</span><b>CSV, Google Sheets, manual</b></article>
-            <article><span>Outputs</span><b>Risk register, audit trail</b></article>
+          <div class="detail-tabs"><span class="active">Plan comparison</span></div>
+          <div class="detail-grid" style="grid-template-columns:repeat(4,1fr)">
+            <article><span>Pro</span><b>$100/mo</b></article>
+            <article><span>Business</span><b>$250/mo</b></article>
+            <article><span>Enterprise</span><b>$500/mo</b></article>
+            <article><span>Free trial</span><b>14 days</b></article>
           </div>
           <div class="comparison-table">
-            <div><b>Plan</b><b>Free</b><b>Pro ($100/mo)</b></div>
-            <div><span>Risk register</span><span>✓</span><span>✓</span></div>
-            <div><span>AI impact assessments</span><span>Limited</span><span>Unlimited</span></div>
-            <div><span>Framework support</span><span>NIST AI RMF</span><span>NIST + ISO + EU AI Act + HIPAA</span></div>
-            <div><span>Export</span><span>—</span><span>CSV / PDF</span></div>
+            <div><b>Plan</b><b>Free</b><b>Pro $100/mo</b><b>Business $250/mo</b><b>Enterprise $500/mo</b></div>
+            <div><span>AI systems tracked</span><span>3</span><span>15</span><span>35</span><span>Unlimited</span></div>
+            <div><span>Team members</span><span>3</span><span>10</span><span>25</span><span>Unlimited</span></div>
+            <div><span>Workspaces</span><span>1</span><span>1</span><span>3</span><span>Unlimited</span></div>
+            <div><span>AI Impact Assessments</span><span>—</span><span>✓</span><span>✓</span><span>✓</span></div>
+            <div><span>Sector checklists</span><span>—</span><span>✓</span><span>✓</span><span>✓</span></div>
+            <div><span>SSO</span><span>—</span><span>—</span><span>Google Workspace</span><span>SAML / Okta / Azure AD</span></div>
+            <div><span>Support SLA</span><span>Community</span><span>Email 48h</span><span>Email 24h</span><span>Email + Discord 8h</span></div>
           </div>
         </div>
       </section>
@@ -179,20 +183,40 @@
       </div>
     </footer>
 
-    <dialog class="app-dialog" data-dialog>
-      <button class="dialog-close" type="button" data-close aria-label="Close app details">✕</button>
-      <span class="pill" data-dialog-category>Mojo app</span>
-      <h2 data-dialog-title>App details</h2>
-      <p data-dialog-copy></p>
-      <div class="detail-grid">
-        <article><span>Setup</span><b data-dialog-setup>12 min</b></article>
-        <article><span>Plan</span><b data-dialog-plan>Solo</b></article>
-        <article><span>Integrates</span><b data-dialog-integrations>Gmail</b></article>
-        <article><span>Output</span><b data-dialog-output>Briefs</b></article>
+    <!-- GAIN plan-selector dialog -->
+    <dialog class="app-dialog gain-plan-dialog" data-gain-dialog>
+      <button class="dialog-close" type="button" data-gain-close aria-label="Close plan details">✕</button>
+      <span class="pill">Governance · Live Now</span>
+      <h2>GAIN — Govern AI Now</h2>
+      <p>A multi-tenant AI governance platform — risk register, AI Impact Assessments, compliance checklists for NIST AI RMF, ISO 42001, EU AI Act, HIPAA, and more.</p>
+      <p class="gain-price-note">Free starter forever · Paid plans $100 – $500/mo · 14-day trial on all paid tiers</p>
+
+      <div class="plan-tabs" role="tablist" aria-label="GAIN plan options">
+        <button class="plan-tab" type="button" role="tab" data-plan="pro" aria-selected="false">
+          <span class="plan-tab-name">Pro</span>
+          <span class="plan-tab-price">$100<small>/mo</small></span>
+          <span class="plan-tab-desc">Startups / single-product orgs</span>
+        </button>
+        <button class="plan-tab plan-tab--featured" type="button" role="tab" data-plan="business" aria-selected="true">
+          <span class="plan-tab-badge">Most popular</span>
+          <span class="plan-tab-name">Business</span>
+          <span class="plan-tab-price">$250<small>/mo</small></span>
+          <span class="plan-tab-desc">Mid-market / regulated industries</span>
+        </button>
+        <button class="plan-tab" type="button" role="tab" data-plan="enterprise" aria-selected="false">
+          <span class="plan-tab-name">Enterprise</span>
+          <span class="plan-tab-price">$500<small>/mo</small></span>
+          <span class="plan-tab-desc">Large enterprise / multi-BU</span>
+        </button>
       </div>
+
+      <ul class="gain-features" data-gain-features aria-live="polite">
+        <!-- populated by listing.js -->
+      </ul>
+
       <div class="dialog-actions">
-        <a class="button dark" href="#" aria-disabled="true" data-dialog-polar-checkout>Subscribe</a>
-        <a class="button ghost" href="/development" data-close-link>Ask about custom work</a>
+        <a class="button dark" href="https://governainow.com" target="_blank" rel="noopener" data-gain-trial-cta>Start 14-day trial</a>
+        <a class="button ghost" href="https://governainow.com" target="_blank" rel="noopener">Start free at governainow.com</a>
       </div>
     </dialog>
 
