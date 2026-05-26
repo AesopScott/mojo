@@ -194,6 +194,71 @@
     });
   }
 
+  /** ── GAIN MSSP plan-selector dialog ── */
+
+  var gainMsspDialog = null;
+  var gainMsspPlans = window.gainMsspPlans || [];
+  var activeMsspPlanId = 'business-mssp';
+
+  function renderMsspPlanFeatures(planId) {
+    var plan = gainMsspPlans.find(function (p) { return p.id === planId; });
+    var list = gainMsspDialog && gainMsspDialog.querySelector('[data-gain-mssp-features]');
+    var cta = gainMsspDialog && gainMsspDialog.querySelector('[data-gain-mssp-cta]');
+
+    if (!plan || !list) { return; }
+
+    list.innerHTML = plan.features.map(function (f) {
+      return '<li>' + escapeHtml(f) + '</li>';
+    }).join('');
+
+    if (cta && plan.polarPriceId) {
+      cta.setAttribute('data-polar-checkout', plan.polarPriceId);
+      cta.removeAttribute('href');
+      cta.removeAttribute('target');
+      cta.removeAttribute('rel');
+    }
+  }
+
+  function selectMsspPlanTab(planId) {
+    activeMsspPlanId = planId;
+    gainMsspDialog.querySelectorAll('.plan-tab').forEach(function (tab) {
+      var isActive = tab.getAttribute('data-mssp-plan') === planId;
+      tab.classList.toggle('is-active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    renderMsspPlanFeatures(planId);
+  }
+
+  function openGainMsspDialog() {
+    if (!gainMsspDialog) { return; }
+    selectMsspPlanTab('business-mssp');
+    gainMsspDialog.showModal();
+  }
+
+  function bindGainMsspDialog() {
+    gainMsspDialog = document.querySelector('[data-gain-mssp-dialog]');
+    if (!gainMsspDialog) { return; }
+
+    document.querySelectorAll('[data-gain-mssp-details]').forEach(function (btn) {
+      btn.addEventListener('click', openGainMsspDialog);
+    });
+
+    gainMsspDialog.querySelectorAll('.plan-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        selectMsspPlanTab(tab.getAttribute('data-mssp-plan'));
+      });
+    });
+
+    var closeBtn = gainMsspDialog.querySelector('[data-gain-mssp-close]');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function () { gainMsspDialog.close(); });
+    }
+
+    gainMsspDialog.addEventListener('click', function (e) {
+      if (e.target === gainMsspDialog) { gainMsspDialog.close(); }
+    });
+  }
+
   /** ── Utility ── */
 
   function escapeHtml(str) {
@@ -211,6 +276,7 @@
     bindFilterCheckboxes();
     bindSearchForm();
     bindGainDialog();
+    bindGainMsspDialog();
     applyFilters();
   }
 

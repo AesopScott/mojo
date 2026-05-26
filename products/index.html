@@ -85,7 +85,7 @@
               <p class="kicker">App catalog</p>
               <h2>Real AI apps, built and supported by Mojo.</h2>
             </div>
-            <p data-result-count>Showing 1 app</p>
+            <p data-result-count>Showing 2 apps</p>
           </div>
 
           <div class="app-grid" data-app-grid>
@@ -100,6 +100,21 @@
                 <div class="card-actions">
                   <button type="button" data-gain-details>Compare plans</button>
                   <a class="button dark" href="https://governainow.com" target="_blank" rel="noopener">Start Free</a>
+                </div>
+              </footer>
+            </article>
+
+            <article class="app-card app-card--live" data-category="governance" data-tags="ready team compliance governance api audit mssp" data-name="GAIN for MSSPs">
+              <div class="app-icon blue">G</div>
+              <span>Governance · MSSP <span class="pill pill--live">Live Now</span></span>
+              <h3>GAIN for MSSPs</h3>
+              <p>Manage AI governance for multiple client organizations under one provider account — each client gets a fully isolated workspace. Add client seats at $100/yr each.</p>
+              <div class="meta-row"><small>3 MSSP plans</small><small>Google</small><small>SAML</small></div>
+              <footer>
+                <b>$100 – $500/mo</b>
+                <div class="card-actions">
+                  <button type="button" data-gain-mssp-details>Compare plans</button>
+                  <a class="button dark" href="https://governainow.com/mssp-pricing.html" target="_blank" rel="noopener">Learn More</a>
                 </div>
               </footer>
             </article>
@@ -208,6 +223,43 @@
       <div class="dialog-actions">
         <a class="button dark" href="https://polar.sh" target="_blank" rel="noopener" data-gain-trial-cta>Subscribe</a>
         <a class="button ghost" href="https://governainow.com" target="_blank" rel="noopener">Start free at governainow.com</a>
+      </div>
+    </dialog>
+
+    <!-- GAIN MSSP plan-selector dialog -->
+    <dialog class="app-dialog gain-plan-dialog" data-gain-mssp-dialog>
+      <button class="dialog-close" type="button" data-gain-mssp-close aria-label="Close plan details">✕</button>
+      <span class="pill">Governance · MSSP · Live Now</span>
+      <h2>GAIN for MSSPs</h2>
+      <p>Manage AI governance across multiple client organizations from a single provider account. Each client gets a fully isolated workspace with its own team, risk register, and compliance program.</p>
+      <p class="gain-price-note">1 client workspace included · Add more at $100/yr each · Cancel any time</p>
+
+      <div class="plan-tabs" role="tablist" aria-label="GAIN MSSP plan options">
+        <button class="plan-tab" type="button" role="tab" data-mssp-plan="pro-mssp" aria-selected="false">
+          <span class="plan-tab-name">Pro MSSP</span>
+          <span class="plan-tab-price">$100<small>/mo</small></span>
+          <span class="plan-tab-desc">Up to 10 client workspaces</span>
+        </button>
+        <button class="plan-tab plan-tab--featured" type="button" role="tab" data-mssp-plan="business-mssp" aria-selected="true">
+          <span class="plan-tab-badge">Most popular</span>
+          <span class="plan-tab-name">Business MSSP</span>
+          <span class="plan-tab-price">$250<small>/mo</small></span>
+          <span class="plan-tab-desc">Up to 25 client workspaces</span>
+        </button>
+        <button class="plan-tab" type="button" role="tab" data-mssp-plan="enterprise-mssp" aria-selected="false">
+          <span class="plan-tab-name">Enterprise MSSP</span>
+          <span class="plan-tab-price">$500<small>/mo</small></span>
+          <span class="plan-tab-desc">Up to 100 client workspaces</span>
+        </button>
+      </div>
+
+      <ul class="gain-features" data-gain-mssp-features aria-live="polite">
+        <!-- populated by listing.js -->
+      </ul>
+
+      <div class="dialog-actions">
+        <a class="button dark" href="https://polar.sh" target="_blank" rel="noopener" data-gain-mssp-cta>Subscribe</a>
+        <a class="button ghost" href="https://governainow.com/mssp-pricing.html" target="_blank" rel="noopener">Full MSSP pricing →</a>
       </div>
     </dialog>
 

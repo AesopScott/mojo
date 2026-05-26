@@ -57,13 +57,24 @@ Client-side JavaScript that intercepts `[data-polar-checkout]` attribute clicks 
 Each Subscribe button needs the **Price ID** of the corresponding Polar.sh product price.
 Price IDs are found in Polar.sh Dashboard → Products → [Product] → Prices → copy the ID.
 
-**GAIN (live — wired to Polar overlay):**
+**GAIN standard plans (live — wired to Polar overlay):**
 
-| Plan | Price ID | Price |
-|---|---|---|
-| GAIN Pro | `636b0777-d111-414e-968c-455bd5161d3d` | $100/mo |
-| GAIN Business | `54ceb640-dba6-4fb3-94ef-9ca4a93d6fb5` | $250/mo |
-| GAIN Enterprise | `f95729d1-af9a-4025-8929-b9ba83a174f1` | $500/mo |
+| Plan | Product ID | Price ID | Price |
+|---|---|---|---|
+| GAIN Pro | `636b0777-d111-414e-968c-455bd5161d3d` | `1040e8c6-c3ad-4e49-9e5c-44919c8d440c` | $100/mo |
+| GAIN Business | `54ceb640-dba6-4fb3-94ef-9ca4a93d6fb5` | `4df8ac2c-f1ab-461d-b244-de4b79add839` | $250/mo |
+| GAIN Enterprise | `f95729d1-af9a-4025-8929-b9ba83a174f1` | `13d99fc9-5232-4620-8a55-efa3f0969d85` | $500/mo |
+
+**GAIN MSSP plans (live — wired to Polar overlay):**
+
+| Plan | Product ID | Price ID | Price |
+|---|---|---|---|
+| GAIN Pro MSSP | `e0063c13-5909-4059-b33c-dc94c1576496` | `0f2a5ee3-cb04-4240-b0f6-716bced6e688` | $100/mo |
+| GAIN Business MSSP | `a3db7a0e-d1ef-451b-a93f-7ce817af5b79` | `c4786ced-bcea-48cb-9ba7-ed959801e560` | $250/mo |
+| GAIN Enterprise MSSP | `c61fc9b0-e99a-4ae9-9365-63b18e3b103e` | `7bd568a6-4ae1-43e7-a8f5-70fe86413bfb` | $500/mo |
+| GAIN Client (per-seat add-on) | `01368bfd-1c98-4961-9b5e-25200c2593a1` | `8f35a699-bfbf-4924-b04d-f7f936b50681` | $100/yr |
+
+Note: `data-polar-checkout` uses **product IDs** (Polar embed accepts these for single-price products). Webhook `POLAR_PRICE_TO_PLAN` uses **price IDs** (what Polar sends in `data.price_id`).
 
 **Future products (placeholders — replace when Polar products are created):**
 
