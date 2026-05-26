@@ -12,7 +12,7 @@ window.gainPlans = [
     tagline: 'Startups / single-product orgs',
     price: '$100',
     interval: '/mo',
-    url: 'https://governainow.com/index.html?plan=pro',
+    url: 'https://polar.sh',
     features: [
       '1 workspace',
       'Up to 10 team members',
@@ -34,7 +34,7 @@ window.gainPlans = [
     price: '$250',
     interval: '/mo',
     featured: true,
-    url: 'https://governainow.com/index.html?plan=business',
+    url: 'https://polar.sh',
     features: [
       '3 workspaces',
       'Up to 25 team members',
@@ -53,7 +53,7 @@ window.gainPlans = [
     tagline: 'Large enterprise / multi-BU',
     price: '$500',
     interval: '/mo',
-    url: 'https://governainow.com/index.html?plan=enterprise',
+    url: 'https://polar.sh',
     features: [
       'Unlimited workspaces',
       'Unlimited team members',
