@@ -19,6 +19,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Inject cache-bust token
+        run: |
+          BUST="${GITHUB_SHA:0:7}"
+          find . -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
