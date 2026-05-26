@@ -1,39 +1,100 @@
-# GAIN — Govern AI Now
+# Polar.sh Checkout Copy — GAIN (Govern AI Now)
 
-**Build your AI governance program from intake to audit — without the consultant fees.**
-
-GAIN gives your team a structured, ready-to-use workspace for AI risk management. You get a risk register, impact assessments, compliance checklists, and audit trails built around the frameworks regulators and clients actually ask about.
+Paste the content below into each product's **"Customize how this product is presented during checkout"** field in the Polar.sh dashboard.
 
 ---
 
-## What's included
+## GAIN — Pro · $100/mo
 
-- **Risk register** — log every AI system your organization uses, rate impact and likelihood, assign owners
-- **Impact assessments** — guided templates for NIST AI RMF, ISO 42001, EU AI Act, and HIPAA
-- **Compliance checklists** — step-by-step controls mapped to each framework, with status tracking
-- **Audit trail** — exportable records showing reviewers what you assessed, when, and what you decided
-- **Google Sheets + CSV export** — your data in formats your team already uses
+**Product name:** GAIN — Pro
+
+**Description (paste into Polar checkout description field):**
+
+```
+GAIN (Govern AI Now) is the fastest way to build a real AI governance program — risk register, AI Impact Assessments, and compliance checklists mapped to NIST AI RMF, ISO 42001, EU AI Act, and HIPAA.
+
+The Pro plan is built for startups and single-product orgs getting governance right from day one. Track up to 15 AI systems, run your team of 10, and run AI Impact Assessments with sector-specific checklists — no consultant required.
+
+14-day free trial. Cancel any time.
+```
+
+**Benefits (one per line — these appear as checkmarks at checkout):**
+
+```
+Up to 15 AI systems tracked
+Up to 10 team members
+1 workspace
+AI Impact Assessments (AIA)
+Sector compliance checklists — NIST AI RMF, ISO 42001, EU AI Act, HIPAA
+Email support (48h response)
+14-day free trial, then $100/mo
+```
 
 ---
 
-## Who this is for
+## GAIN — Business · $250/mo
 
-Teams that need to demonstrate AI governance — to leadership, clients, auditors, or regulators — but don't have a dedicated compliance team or six-figure budget for external consultants.
+**Product name:** GAIN — Business
 
-Works for: compliance leads, legal and risk teams, AI product owners, and operations managers responsible for responsible AI adoption.
+**Description:**
+
+```
+GAIN (Govern AI Now) is the fastest way to build a real AI governance program — risk register, AI Impact Assessments, and compliance checklists mapped to NIST AI RMF, ISO 42001, EU AI Act, and HIPAA.
+
+The Business plan is built for mid-market teams and regulated industries that need multi-workspace control and faster support. Track up to 35 AI systems across 3 workspaces, bring in a team of 25, and get Google Workspace SSO out of the box.
+
+14-day free trial. Cancel any time.
+```
+
+**Benefits:**
+
+```
+Up to 35 AI systems tracked
+Up to 25 team members
+3 workspaces
+AI Impact Assessments (AIA)
+Sector compliance checklists — NIST AI RMF, ISO 42001, EU AI Act, HIPAA
+Google Workspace SSO
+Priority email support (24h response)
+14-day free trial, then $250/mo
+```
 
 ---
 
-## After you subscribe
+## GAIN — Enterprise · $500/mo
 
-You'll receive a **Pro license key** by email immediately after checkout — no waiting, no onboarding call required. Enter it in GAIN to unlock your workspace. A setup guide walks you through your first risk register entry in under 15 minutes.
+**Product name:** GAIN — Enterprise
 
-Your license key renews automatically each month with your subscription and is tied to your Polar account. You can view or copy it any time from your [Polar customer portal](https://polar.sh).
+**Description:**
 
-Questions? Email [admin@MojoAiStudio.com](mailto:admin@MojoAiStudio.com)
+```
+GAIN (Govern AI Now) is the fastest way to build a real AI governance program — risk register, AI Impact Assessments, and compliance checklists mapped to NIST AI RMF, ISO 42001, EU AI Act, and HIPAA.
+
+The Enterprise plan is built for large organizations and multi-business-unit deployments that need unlimited scale, enterprise SSO (SAML, Okta, Azure AD), and a dedicated support channel. Unlimited AI systems, unlimited team members, unlimited workspaces.
+
+14-day free trial. Cancel any time.
+```
+
+**Benefits:**
+
+```
+Unlimited AI systems tracked
+Unlimited team members
+Unlimited workspaces
+AI Impact Assessments (AIA)
+Sector compliance checklists — NIST AI RMF, ISO 42001, EU AI Act, HIPAA
+Enterprise SSO — SAML, Okta, Azure AD
+Email + Discord support (8h response SLA)
+14-day free trial, then $500/mo
+```
 
 ---
 
-## Cancellation
+## Notes for Polar setup
 
-Cancel any time from your Polar dashboard. No lock-in, no cancellation fees. Your data remains exportable before and after cancellation.
+- **Trial period:** Set to **14 days** on all three products.
+- **Billing interval:** Monthly (annual option can be added later).
+- **Cover image:** Use the GAIN governance graphic or the Mojo AI Studio brand mark — keep it consistent across all three products.
+- **Webhook:** `https://polarwebhook-ybz2g7wg4a-uc.a.run.app` — subscribe to `order.created`, `subscription.created`, `subscription.updated`, `subscription.canceled`.
+- **Success URL / redirect:** `https://mojoaistudio.com/portal/` — sends the buyer to the customer portal after checkout.
+- **Org slug:** Whatever slug you choose here is what goes in the GitHub Actions `POLAR_ORG` variable to activate the portal iframe.
