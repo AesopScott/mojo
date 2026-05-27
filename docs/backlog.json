@@ -40,17 +40,18 @@
     {
       "number": 4,
       "title": "Connect GAIN to Polar.sh and activate checkout buttons",
-      "description": "Create GAIN products in the Polar.sh account (Pro $100/mo, Business $250/mo, Enterprise $500/mo), wire the plan-selector dialog's 'Start 14-day trial' CTAs to Polar checkout overlays by replacing the governainow.com direct links with Polar price IDs, and confirm the checkout overlay opens with the correct plan.",
+      "description": "Create GAIN products in the Polar.sh account (Pro $100/mo, Business $250/mo, Enterprise $500/mo), wire the plan-selector dialog's 'Subscribe' CTAs to Polar checkout overlays via data-polar-checkout product IDs, and confirm the checkout overlay opens with the correct plan.",
       "category": "Integration",
       "priority": 60,
       "impact": "major",
-      "status": "backlog",
+      "status": "build-finished",
       "created_at": "2026-05-26",
-      "completed_at": null,
+      "completed_at": "2026-05-26",
       "pr_url": null,
       "dependencies": [2],
-      "branch": null,
+      "branch": "main",
       "plan": null,
+      "notes": "Products created in Polar (3 standard + 3 MSSP + 1 Client add-on). listing.js wires data-polar-checkout product IDs to the Subscribe CTA on dialog open. Polar webhook live at polarwebhook-hmkyyu2gma-uc.a.run.app — writes stripePlan to Firestore on subscription events. Awaiting manual PU#2 verification on live site (checkout overlay opens and shows correct plan).",
       "proofUnits": [
         {
           "number": 1,
@@ -60,17 +61,19 @@
           "exactCommand": "Log in to polar.sh → Dashboard → Products. Confirm GAIN Pro ($100/mo), Business ($250/mo), Enterprise ($500/mo) all exist with Price IDs.",
           "expectedInitialFailure": "No GAIN products in Polar.sh.",
           "expectedPassingEvidence": "3 products with Price IDs visible.",
-          "waiverGuidance": "N/A"
+          "waiverGuidance": "N/A",
+          "status": "passed"
         },
         {
           "number": 2,
           "title": "Polar checkout overlay opens from plan-selector dialog",
-          "expectedBehavior": "Clicking 'Start 14-day trial' in the GAIN plan dialog opens the Polar checkout overlay for the selected plan.",
+          "expectedBehavior": "Clicking 'Subscribe' in the GAIN plan dialog opens the Polar checkout overlay for the selected plan.",
           "proofType": "manual-script",
-          "exactCommand": "1. Open MojoAiStudio.com/products\n2. Click 'Compare plans' → select Pro tab\n3. Click 'Start 14-day trial'\n4. Confirm Polar checkout overlay opens showing GAIN Pro at $100/mo\n5. Repeat for Business and Enterprise tabs\n6. Check browser console — no errors",
-          "expectedInitialFailure": "Clicking CTA goes to governainow.com directly instead of Polar overlay.",
+          "exactCommand": "1. Open MojoAiStudio.com/products\n2. Click 'Compare plans' → select Pro tab\n3. Click 'Subscribe'\n4. Confirm Polar checkout overlay opens showing GAIN Pro at $100/mo\n5. Repeat for Business and Enterprise tabs\n6. Check browser console — no errors",
+          "expectedInitialFailure": "Clicking CTA goes to polar.sh root instead of overlay.",
           "expectedPassingEvidence": "Polar overlay opens for each plan with correct name and price.",
-          "waiverGuidance": "Requires Polar.sh account credentials and price IDs."
+          "waiverGuidance": "N/A",
+          "status": "pending-manual"
         }
       ]
     }
