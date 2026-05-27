@@ -4,7 +4,7 @@
  */
 
 var firebaseConfig = {
-  apiKey:            'AIzaSyALOOs1lXijU_YELtqYaCz_FhmTwipzCl4',
+  apiKey:            '__FIREBASE_API_KEY__',
   authDomain:        'mojo-f86de.firebaseapp.com',
   projectId:         'mojo-f86de',
   storageBucket:     'mojo-f86de.firebasestorage.app',
