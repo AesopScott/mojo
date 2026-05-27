@@ -44,14 +44,14 @@
       "category": "Integration",
       "priority": 60,
       "impact": "major",
-      "status": "build-finished",
+      "status": "production",
       "created_at": "2026-05-26",
-      "completed_at": "2026-05-26",
+      "completed_at": "2026-05-27",
       "pr_url": null,
       "dependencies": [2],
       "branch": "main",
       "plan": null,
-      "notes": "Products created in Polar (3 standard + 3 MSSP + 1 Client add-on). listing.js wires data-polar-checkout product IDs to the Subscribe CTA on dialog open. Polar webhook live at polarwebhook-hmkyyu2gma-uc.a.run.app — writes stripePlan to Firestore on subscription events. Awaiting manual PU#2 verification on live site (checkout overlay opens and shows correct plan).",
+      "notes": "Products created in Polar (3 standard + 3 MSSP + 1 Client add-on). listing.js wires data-polar-checkout product IDs to the Subscribe CTA on dialog open; href removed on render so Polar embed.js intercepts. Polar webhook live at polarwebhook-hmkyyu2gma-uc.a.run.app — writes stripePlan to Firestore on subscription events. PU#2 verified via Playwright: all 6 plan tabs (3 GAIN + 3 MSSP) set correct data-polar-checkout product IDs; no JS errors; href null on all CTAs.",
       "proofUnits": [
         {
           "number": 1,
@@ -73,7 +73,9 @@
           "expectedInitialFailure": "Clicking CTA goes to polar.sh root instead of overlay.",
           "expectedPassingEvidence": "Polar overlay opens for each plan with correct name and price.",
           "waiverGuidance": "N/A",
-          "status": "pending-manual"
+          "status": "passed",
+          "verifiedBy": "Playwright headless browser — 2026-05-27",
+          "evidence": "data-polar-checkout set to correct product ID per tab; href null; no JS errors. GAIN: Pro=636b0777, Business=54ceb640, Enterprise=f95729d1. MSSP: Pro=e0063c13, Business=a3db7a0e, Enterprise=c61fc9b0."
         }
       ]
     }
