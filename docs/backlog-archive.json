@@ -1,38 +1,50 @@
-﻿{
-  "archived_tasks": [
+{
+  "tasks": [
     {
-      "number": 1,
-      "title": "Build the website into the three different pieces that it needs to support. .",
-      "description": "1. Custom AI Development\n2. Selling Products\n3. Referral to watchmebuildai.com",
-      "category": "Orchestration",
-      "priority": 75,
+      "number": 4,
+      "title": "Connect GAIN to Polar.sh and activate checkout buttons",
+      "description": "Create GAIN products in the Polar.sh account (Pro $100/mo, Business $250/mo, Enterprise $500/mo), wire the plan-selector dialog's 'Subscribe' CTAs to Polar checkout overlays via data-polar-checkout product IDs, and confirm the checkout overlay opens with the correct plan.",
+      "category": "Integration",
+      "priority": 60,
       "impact": "major",
       "status": "production",
-      "created_at": "2026-05-23",
-      "completed_at": "2026-05-25",
-      "pr_url": "https://github.com/AesopScott/mojo/pull/1",
-      "dependencies": [],
-      "branch": "task/1-build-website-three-pieces",
+      "created_at": "2026-05-26",
+      "completed_at": "2026-05-28",
+      "pr_url": null,
+      "dependencies": [
+        2
+      ],
+      "branch": "main",
+      "plan": null,
+      "notes": "Products created in Polar (3 standard + 3 MSSP + 1 Client add-on). listing.js wires data-polar-checkout product IDs to the Subscribe CTA on dialog open; href removed on render so Polar embed.js intercepts. Polar webhook live at polarwebhook-hmkyyu2gma-uc.a.run.app — writes stripePlan to Firestore on subscription events. PU#2 verified via Playwright: all 6 plan tabs (3 GAIN + 3 MSSP) set correct data-polar-checkout product IDs; no JS errors; href null on all CTAs.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "GAIN Pro/Business/Enterprise products exist in Polar.sh",
+          "expectedBehavior": "Polar.sh dashboard shows 3 GAIN products with correct names and monthly prices.",
+          "proofType": "ui-check",
+          "exactCommand": "Log in to polar.sh → Dashboard → Products. Confirm GAIN Pro ($100/mo), Business ($250/mo), Enterprise ($500/mo) all exist with Price IDs.",
+          "expectedInitialFailure": "No GAIN products in Polar.sh.",
+          "expectedPassingEvidence": "3 products with Price IDs visible.",
+          "waiverGuidance": "N/A",
+          "status": "passed"
+        },
+        {
+          "number": 2,
+          "title": "Polar checkout overlay opens from plan-selector dialog",
+          "expectedBehavior": "Clicking 'Subscribe' in the GAIN plan dialog opens the Polar checkout overlay for the selected plan.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/products\n2. Click 'Compare plans' → select Pro tab\n3. Click 'Subscribe'\n4. Confirm Polar checkout overlay opens showing GAIN Pro at $100/mo\n5. Repeat for Business and Enterprise tabs\n6. Check browser console — no errors",
+          "expectedInitialFailure": "Clicking CTA goes to polar.sh root instead of overlay.",
+          "expectedPassingEvidence": "Polar overlay opens for each plan with correct name and price.",
+          "waiverGuidance": "N/A",
+          "status": "passed",
+          "verifiedBy": "Playwright headless browser — 2026-05-27",
+          "evidence": "data-polar-checkout set to correct product ID per tab; href null; no JS errors. GAIN: Pro=636b0777, Business=54ceb640, Enterprise=f95729d1. MSSP: Pro=e0063c13, Business=a3db7a0e, Enterprise=c61fc9b0."
+        }
+      ],
       "project_source": "mojo",
-      "promoted_via_pr": "1",
-      "promoted_at": "2026-05-25T00:00:00Z"
-    },
-    {
-      "number": 2,
-      "title": "Add GAIN to the marketplace with Pro/Business/Enterprise plan selector",
-      "description": "Add GAIN — Govern AI Now as the first live product on the Mojo marketplace. Remove all mock placeholder products. Build a plan-selector dialog showing Pro ($100/mo), Business ($250/mo), and Enterprise ($500/mo) tiers with real feature lists sourced from the GAIN repo pricing data. Update the compare section to show all four tiers (Free, Pro, Business, Enterprise).",
-      "category": "Marketplace",
-      "priority": 70,
-      "impact": "major",
-      "status": "production",
-      "created_at": "2026-05-25",
-      "completed_at": "2026-05-26",
-      "pr_url": "https://github.com/AesopScott/mojo/pull/3",
-      "dependencies": [],
-      "branch": "task/2-polar-setup-add-gain",
-      "project_source": "mojo",
-      "promoted_via_pr": "3",
-      "promoted_at": "2026-05-26T17:53:06Z"
+      "promoted_via_pr": null
     }
   ]
 }

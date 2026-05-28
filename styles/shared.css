@@ -1020,6 +1020,11 @@ p {
   color: var(--muted);
 }
 
+.aac-hero-media {
+  display: grid;
+  gap: 10px;
+}
+
 .aac-hero img,
 .aac-city-hero img {
   width: 100%;
@@ -1038,6 +1043,29 @@ p {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+
+.aac-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aac-stats span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--soft-line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  color: #4b596d;
+  font-size: 0.82rem;
+}
+
+.aac-stats b {
+  color: var(--ink);
+  font-weight: 850;
 }
 
 .aac-section {
