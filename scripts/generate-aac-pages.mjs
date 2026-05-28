@@ -223,7 +223,7 @@ function hubPage(chapters) {
               const selected = select.selectedOptions[0];
               if (groupLink && selected) {
                 groupLink.href = selected.dataset.groupUrl || groupLink.href;
-                groupLink.textContent = `Join the ${selected.textContent} group`;
+                groupLink.textContent = "Join the " + selected.textContent + " group";
               }
               cards.forEach((card) => {
                 card.hidden = card.dataset.city !== select.value;
