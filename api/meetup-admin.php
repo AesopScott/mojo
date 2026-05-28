@@ -514,6 +514,33 @@ GRAPHQL, ['input' => ['id' => $groupId, 'logoId' => '534450237']], $tokenPath);
         ]);
     }
 
+    if ($action === 'apply-dallas-photo') {
+        $confirm = (string) ($_GET['confirm'] ?? '');
+        if ($confirm !== 'apply Dallas photo') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation.',
+                'expected_confirm' => 'apply Dallas photo',
+            ]);
+        }
+
+        $photoResult = graphQL(<<<'GRAPHQL'
+mutation {
+  updateGroup(chapterId: "38530543", input: { coverPhotoId: 534450237 }) {
+    id
+    name
+    urlname
+    keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+  }
+}
+GRAPHQL, [], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'photo' => $photoResult,
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
