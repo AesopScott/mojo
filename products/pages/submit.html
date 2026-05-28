@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Submit your AI product for review to be listed on the MojoAIStudio.com marketplace."
+    />
+    <title>Mojo AI Studio | Submit Your Product</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0f0f1a" />
+    <link rel="stylesheet" href="../../styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      .submit-form-section {
+        max-width: 720px;
+        padding: 60px 0 80px;
+      }
+
+      .submit-form {
+        display: grid;
+        gap: 22px;
+        margin-top: 36px;
+      }
+
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+
+      .field label {
+        font-weight: 800;
+        font-size: 0.92rem;
+        color: var(--ink);
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        font-size: 0.97rem;
+        outline: 0;
+        transition: border-color 0.15s ease;
+      }
+
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--blue);
+      }
+
+      .field textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .field .hint {
+        font-size: 0.83rem;
+        color: var(--muted);
+      }
+
+      .form-submit {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .form-submit .button {
+        min-width: 200px;
+      }
+
+      .form-note {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/products" class="active">Products</a>
+          <a href="/development">Development</a>
+          <a href="/watch">Learn</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="/products#sell">← Back to marketplace</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section submit-form-section">
+        <p class="kicker">Sell on Mojo</p>
+        <h1>Submit your product for review.</h1>
+        <p>
+          Tell us about your AI product and we'll review it for the MojoAIStudio.com marketplace.
+          We're looking for practical AI tools that solve real workflow problems. If it's a good fit,
+          we'll reach out within five business days.
+        </p>
+
+        <form
+          class="submit-form"
+          id="product-submit-form"
+          method="POST"
+          action="/api/submit-product"
+          novalidate
+        >
+          <div class="field">
+            <label for="product-name">Product name</label>
+            <input
+              id="product-name"
+              name="productName"
+              type="text"
+              placeholder="e.g. ContractScan AI"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-name">Your name or company</label>
+            <input
+              id="contact-name"
+              name="contactName"
+              type="text"
+              placeholder="First and last name, or company name"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="contact-email">Email address</label>
+            <input
+              id="contact-email"
+              name="contactEmail"
+              type="email"
+              placeholder="you@company.com"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="product-url">Product URL or demo link</label>
+            <input
+              id="product-url"
+              name="productUrl"
+              type="url"
+              placeholder="https://yourproduct.com"
+            />
+            <span class="hint">A live product, landing page, or demo link helps us evaluate faster.</span>
+          </div>
+
+          <div class="field">
+            <label for="category">Product category</label>
+            <select id="category" name="category">
+              <option value="">Select a category</option>
+              <option value="governance">Governance &amp; Compliance</option>
+              <option value="sales">Sales &amp; CRM</option>
+              <option value="operations">Operations &amp; Productivity</option>
+              <option value="content">Content &amp; Marketing</option>
+              <option value="legal">Legal &amp; Contract Review</option>
+              <option value="research">Research &amp; Intelligence</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="product-description">What does your product do?</label>
+            <textarea
+              id="product-description"
+              name="productDescription"
+              placeholder="Describe the problem it solves, who it's for, and what makes it work..."
+              required
+            ></textarea>
+            <span class="hint">The more specific you are, the faster we can assess the fit.</span>
+          </div>
+
+          <div class="field">
+            <label for="pricing-model">Pricing model</label>
+            <select id="pricing-model" name="pricingModel">
+              <option value="">Select a model</option>
+              <option value="free">Free</option>
+              <option value="freemium">Freemium</option>
+              <option value="subscription">Subscription</option>
+              <option value="one-time">One-time purchase</option>
+              <option value="enterprise">Custom / Enterprise</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="target-user">Who is your target user?</label>
+            <input
+              id="target-user"
+              name="targetUser"
+              type="text"
+              placeholder="e.g. Compliance officers at mid-market companies"
+            />
+          </div>
+
+          <div class="field">
+            <label for="anything-else">Anything else we should know?</label>
+            <textarea
+              id="anything-else"
+              name="anythingElse"
+              placeholder="Integration requirements, current traction, launch timeline, or anything else relevant..."
+            ></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button class="button dark" type="submit">Submit for review →</button>
+            <p class="form-note">We'll respond within five business days at the email address you provided.</p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Marketplace</b>
+        <a href="/products#apps">Browse apps</a>
+        <a href="/products#sell">Sell on Mojo</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/development">Custom development</a>
+        <a href="/watch">Learn to build AI</a>
+        <a href="/">Home</a>
+      </div>
+    </footer>
+
+    <script src="../../scripts/product-form.js?v=__CACHE_BUST__"></script>
+  </body>
+</html>

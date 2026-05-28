@@ -30,6 +30,64 @@
     <meta name="twitter:description" content="Practical AI-built software for sales, operations, content, research, legal review, and compliance." />
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/og-image.png" />
     <link rel="stylesheet" href="../styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      .sell-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+        padding-top: 72px;
+        padding-bottom: 80px;
+        border-top: 1px solid var(--line);
+      }
+
+      .sell-copy h2 {
+        margin: 12px 0 16px;
+      }
+
+      .sell-copy p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .sell-steps {
+        display: grid;
+        gap: 32px;
+      }
+
+      .sell-step {
+        display: grid;
+        gap: 6px;
+      }
+
+      .sell-num {
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        color: var(--blue, #2563eb);
+        text-transform: uppercase;
+      }
+
+      .sell-step h3 {
+        font-size: 1rem;
+        font-weight: 800;
+        margin: 0;
+      }
+
+      .sell-step p {
+        color: var(--muted);
+        font-size: 0.93rem;
+        margin: 0;
+        line-height: 1.55;
+      }
+
+      @media (max-width: 680px) {
+        .sell-section {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+      }
+    </style>
   </head>
   <body>
     <span class="anchor-target" id="market"></span>
@@ -185,6 +243,32 @@
           <h3>Commission AI software built specifically for your team.</h3>
           <p>Custom development for teams with unique workflows. <a href="/development">Learn more →</a></p>
         </article>
+      </section>
+
+      <section class="section sell-section" id="sell">
+        <div class="sell-copy">
+          <p class="kicker">Sell on Mojo</p>
+          <h2>Built an AI product worth selling? List it here.</h2>
+          <p>MojoAIStudio.com is an AI-built software marketplace reaching buyers who are actively looking for practical AI tools. If you've built something — an app, a workflow tool, an agent — and want it in front of that audience, submit it for review. We keep the marketplace curated, so every listing earns its place.</p>
+          <a class="button dark" href="/products/pages/submit.html" style="margin-top:20px;display:inline-block">Submit your product →</a>
+        </div>
+        <div class="sell-steps">
+          <div class="sell-step">
+            <span class="sell-num">01</span>
+            <h3>Submit for review</h3>
+            <p>Tell us about your product — what it does, who it's for, and how it's priced. Takes about five minutes.</p>
+          </div>
+          <div class="sell-step">
+            <span class="sell-num">02</span>
+            <h3>We review it</h3>
+            <p>Our team evaluates fit, quality, and marketplace readiness. We respond within five business days.</p>
+          </div>
+          <div class="sell-step">
+            <span class="sell-num">03</span>
+            <h3>Get listed</h3>
+            <p>Approved products get a dedicated listing with pricing page and category placement in the marketplace.</p>
+          </div>
+        </div>
       </section>
     </main>
 
