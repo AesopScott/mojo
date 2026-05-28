@@ -886,11 +886,12 @@ GRAPHQL, [
 
             $updateResult = graphQL(<<<'GRAPHQL'
 mutation ($chapterId: ID!, $description: String!) {
-  updateGroup(chapterId: $chapterId, input: { welcomeBlurb: $description }) {
+  updateGroup(chapterId: $chapterId, input: { shortDesc: $description }) {
     id
     name
     urlname
     description
+    welcomeBlurb
     link
   }
 }
