@@ -345,6 +345,56 @@ GRAPHQL;
         ]);
     }
 
+    if ($action === 'network-groups') {
+        $query = trim((string) ($_GET['query'] ?? ''));
+
+        $filter = [];
+        if ($query !== '') {
+            $filter['query'] = $query;
+        }
+
+        $input = [
+            'first' => 25,
+            'sort' => 'createdDate',
+            'desc' => true,
+        ];
+        if (!empty($filter)) {
+            $input['filter'] = $filter;
+        }
+
+        $networkResult = graphQL(<<<'GRAPHQL'
+query ($input: ProNetworkGroupsSearchInput!) {
+  proNetworkByUrlname(urlname: "advanced-ai-concepts") {
+    id
+    name
+    urlname
+    groupsSearch(input: $input) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          urlname
+          city
+          state
+          country
+          zip
+          link
+          proNetwork { id urlname name }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'result' => $networkResult,
+        ]);
+    }
+
+
     if ($action === 'create-dallas-draft') {
         $confirm = (string) ($_GET['confirm'] ?? '');
         if ($confirm !== 'Advanced AI Concepts-Dallas') {
@@ -538,6 +588,169 @@ GRAPHQL, [], $tokenPath);
         respond(200, [
             'ok' => true,
             'photo' => $photoResult,
+        ]);
+    }
+
+    if ($action === 'copy-city') {
+        $name = trim((string) ($_GET['name'] ?? ''));
+        $city = trim((string) ($_GET['city'] ?? ''));
+        $state = strtoupper(trim((string) ($_GET['state'] ?? '')));
+        $zip = trim((string) ($_GET['zip'] ?? ''));
+        $urlname = strtolower(trim((string) ($_GET['urlname'] ?? '')));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+
+        if ($name === '' || $city === '' || $state === '' || $zip === '' || $urlname === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing required city copy fields.',
+                'required' => ['name', 'city', 'state', 'zip', 'urlname', 'confirm'],
+            ]);
+        }
+
+        if ($confirm !== $name) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Confirmation must match the target group name.',
+                'expected_confirm' => $name,
+            ]);
+        }
+
+        $existingResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    link
+    city
+    state
+    country
+    zip
+    proNetwork { id urlname name }
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+
+        $existing = $existingResult['response']['data']['groupByUrlname'] ?? null;
+        if (is_array($existing)) {
+            respond(200, [
+                'ok' => true,
+                'created' => false,
+                'reason' => 'Group already exists.',
+                'group' => $existing,
+            ]);
+        }
+
+        $sourceResult = graphQL(<<<'GRAPHQL'
+query {
+  groupByUrlname(urlname: "advanced-ai-concepts") {
+    id
+    name
+    description
+    customMemberLabel
+    activeTopics { id name urlkey }
+    keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+    proNetwork { id urlname name }
+  }
+}
+GRAPHQL, [], $tokenPath);
+
+        $source = $sourceResult['response']['data']['groupByUrlname'] ?? null;
+        if (!is_array($source)) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Unable to load source group.',
+                'source_result' => $sourceResult,
+            ]);
+        }
+
+        $topicIds = [];
+        foreach (($source['activeTopics'] ?? []) as $topic) {
+            if (!empty($topic['id'])) {
+                $topicIds[] = $topic['id'];
+            }
+        }
+
+        $draftInput = [
+            'name' => $name,
+            'description' => (string) ($source['description'] ?? ''),
+            'customMembersLabel' => (string) ($source['customMemberLabel'] ?? 'Members'),
+            'topics' => $topicIds,
+            'urlname' => $urlname,
+            'location' => [
+                'geoLocation' => [
+                    'country' => 'us',
+                    'zip' => $zip,
+                ],
+            ],
+        ];
+
+        $draftResult = graphQL(<<<'GRAPHQL'
+mutation ($input: CreateGroupDraftInput!) {
+  createGroupDraft(input: $input) {
+    token
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      activeTopics { id name urlkey }
+      keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+      proNetwork { id urlname name }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $draftInput], $tokenPath);
+
+        $draft = $draftResult['response']['data']['createGroupDraft'] ?? null;
+        $draftToken = is_array($draft) ? (string) ($draft['token'] ?? '') : '';
+        if ($draftToken === '' || !empty($draft['errors'])) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Draft creation failed.',
+                'draft' => $draftResult,
+            ]);
+        }
+
+        $publishResult = graphQL(<<<'GRAPHQL'
+mutation ($input: PublishGroupDraftInput!) {
+  publishGroupDraft(input: $input) {
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      activeTopics { id name urlkey }
+      keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+      proNetwork { id urlname name }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => ['token' => $draftToken]], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'created' => true,
+            'source' => [
+                'id' => $source['id'] ?? null,
+                'name' => $source['name'] ?? null,
+                'topic_count' => count($topicIds),
+                'photo_id' => $source['keyGroupPhoto']['id'] ?? null,
+                'pro_network' => $source['proNetwork']['urlname'] ?? null,
+            ],
+            'draft' => $draftResult,
+            'publish' => $publishResult,
+            'photo_note' => 'Meetup rejected reusing the source photo ID in the Dallas pilot; copy the main photo through the dashboard or a separate upload flow.',
         ]);
     }
 
