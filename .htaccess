@@ -36,6 +36,10 @@ Options -Indexes
     </FilesMatch>
 </IfModule>
 
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
 # ── MIME types ────────────────────────────────────────────────────────────────
 <IfModule mod_mime.c>
     AddType application/javascript .js

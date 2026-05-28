@@ -48,6 +48,17 @@ function loadEnvFile(string $path): void {
     }
 }
 
+function loadFirstEnvFile(array $paths): ?string {
+    foreach ($paths as $path) {
+        if (is_readable($path)) {
+            loadEnvFile($path);
+            return $path;
+        }
+    }
+
+    return null;
+}
+
 function envValue(string $name, string $default = ''): string {
     $value = getenv($name);
     return $value === false ? $default : trim($value);
@@ -155,7 +166,13 @@ function storeTokens(array $tokens, string $path): void {
     }
 }
 
-loadEnvFile(dirname(__DIR__, 3) . '/.env');
+$projectRoot = dirname(__DIR__, 3);
+$loadedEnv = loadFirstEnvFile([
+    $projectRoot . '/.env',
+    dirname($projectRoot) . '/.env',
+    dirname($projectRoot, 2) . '/.env',
+    dirname($projectRoot, 2) . '/mojo.env',
+]);
 
 $error = $_GET['error'] ?? '';
 if ($error !== '') {
@@ -179,6 +196,7 @@ if ($clientId === '' || $clientSecret === '') {
         'has_client_id' => $clientId !== '',
         'has_client_secret' => $clientSecret !== '',
         'redirect_uri' => $redirectUri,
+        'env_file_loaded' => $loadedEnv !== null,
     ], 500);
 }
 
