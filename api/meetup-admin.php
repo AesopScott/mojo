@@ -334,8 +334,24 @@ function eventKey(array $event): string {
 }
 
 function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
-    if ($targetUrlname === 'advanced-ai-concepts-dallas') {
-        return preg_replace('/[-+]\d{2}:\d{2}$/', '-05:00', $sourceDateTime) ?? $sourceDateTime;
+    $timeZones = [
+        'advanced-ai-concepts-boston' => 'America/New_York',
+        'advanced-ai-concepts-chicago' => 'America/Chicago',
+        'advanced-ai-concepts-dallas' => 'America/Chicago',
+        'advanced-ai-concepts-los-angeles' => 'America/Los_Angeles',
+        'advanced-ai-concepts-miami' => 'America/New_York',
+        'advanced-ai-concepts-new-york' => 'America/New_York',
+        'advanced-ai-concepts-san-francisco' => 'America/Los_Angeles',
+    ];
+
+    if (isset($timeZones[$targetUrlname])) {
+        try {
+            $localDateTime = substr($sourceDateTime, 0, 19);
+            $target = new DateTimeImmutable($localDateTime, new DateTimeZone($timeZones[$targetUrlname]));
+            return $target->format('Y-m-d\TH:i:sP');
+        } catch (Exception $exception) {
+            return $sourceDateTime;
+        }
     }
 
     return $sourceDateTime;
