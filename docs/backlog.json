@@ -7,33 +7,43 @@
       "category": "Testing",
       "priority": 50,
       "impact": "minor",
-      "status": "backlog",
+      "status": "ready",
       "created_at": "2026-05-25",
       "completed_at": null,
       "pr_url": null,
       "dependencies": [],
       "branch": null,
-      "plan": null,
+      "plan": "## Overview\n\nPure verification task — api/submit-brief.php is already built and deployed. This task confirms the live email flow works on MochaHost: form submits, admin notification arrives at admin@MojoAiStudio.com, and auto-reply arrives at the submitter.\n\n## Phases\n\n1. Pre-test verification: confirm /development loads and .htaccess routes POST to PHP handler\n2. Form submission test: fill required fields, submit, verify 200 {\"ok\":true} and confirmation redirect\n3. Email delivery: verify admin notification and auto-reply in both inboxes (not spam)\n4. Result documentation: record proof unit pass/fail in backlog.json\n\n## First Proof Unit\n\nLoad MojoAiStudio.com/development → DevTools Network tab → confirm 200 on page load and X-Content-Type-Options: nosniff in POST response headers (confirms PHP handler is reachable).",
       "proofUnits": [
         {
           "number": 1,
-          "title": "Form submits and confirmation page appears",
-          "expectedBehavior": "Filling all required fields and clicking Submit redirects to /development/pages/confirmation.html with no errors.",
+          "title": "Live routing and PHP handler reachable",
+          "expectedBehavior": "GET /development returns 200 and the brief form page renders; POST /api/submit-brief reaches the PHP handler (not a 404).",
           "proofType": "manual-script",
-          "exactCommand": "1. Open MojoAiStudio.com/development → click 'Start a project'\n2. Fill: Project Name, Contact Name, Contact Email (use ravenshroud@gmail.com), Problem Description\n3. Click Submit\n4. DevTools Network tab → confirm POST /api/submit-brief returns 200 with {\"ok\":true}\n5. Confirm browser redirects to /development/pages/confirmation.html",
-          "expectedInitialFailure": "POST returns 500 or network error; page doesn't redirect.",
-          "expectedPassingEvidence": "200 response with {\"ok\":true}; confirmation page displays.",
+          "exactCommand": "1. Open MojoAiStudio.com/development in browser\n2. Open DevTools → Network tab\n3. Confirm page load returns HTTP 200\n4. Confirm no console errors indicating missing resources\n5. Inspect POST response headers — confirm X-Content-Type-Options: nosniff is present (set by submit-brief.php)",
+          "expectedInitialFailure": "Page 404s, or response headers lack X-Content-Type-Options indicating PHP is not routing.",
+          "expectedPassingEvidence": "200 on /development; X-Content-Type-Options: nosniff in POST response headers.",
           "waiverGuidance": "N/A"
         },
         {
           "number": 2,
+          "title": "Form submits and confirmation page appears",
+          "expectedBehavior": "Filling all required fields and clicking Submit redirects to /development/pages/confirmation.html with no errors.",
+          "proofType": "manual-script",
+          "exactCommand": "1. Open MojoAiStudio.com/development → click Start a project\n2. Fill: Project Name, Contact Name, Contact Email (use ravenshroud@gmail.com), Problem Description\n3. Click Submit\n4. DevTools Network tab → confirm POST /api/submit-brief returns 200 with {\"ok\":true}\n5. Confirm browser redirects to /development/pages/confirmation.html",
+          "expectedInitialFailure": "POST returns 500 or network error; page does not redirect.",
+          "expectedPassingEvidence": "200 response with {\"ok\":true}; confirmation page displays.",
+          "waiverGuidance": "N/A"
+        },
+        {
+          "number": 3,
           "title": "Admin email and auto-reply both delivered",
           "expectedBehavior": "admin@MojoAiStudio.com receives brief email with all submitted fields; submitter receives auto-reply.",
           "proofType": "manual-script",
-          "exactCommand": "1. After PU1 form submission\n2. Check admin@MojoAiStudio.com inbox — confirm email with subject 'New Project Brief' containing submitted data\n3. Check SPAM folder if not in inbox\n4. Check ravenshroud@gmail.com inbox — confirm auto-reply received\n5. Verify Reply-To on admin email points to submitter address",
+          "exactCommand": "1. After PU2 form submission\n2. Check admin@MojoAiStudio.com inbox — confirm email with subject [Mojo Brief] containing submitted data\n3. Check SPAM folder if not in inbox\n4. Check ravenshroud@gmail.com inbox — confirm auto-reply received\n5. Verify Reply-To on admin email points to submitter address",
           "expectedInitialFailure": "No email received; email in spam; fields missing from email body.",
           "expectedPassingEvidence": "Both emails arrive in inbox with correct content and addressing.",
-          "waiverGuidance": "If email goes to spam, note MochaHost server reputation issue and consider adding SPF/DKIM records."
+          "waiverGuidance": "If email goes to spam, note MochaHost server reputation issue and log SPF/DKIM setup as a new backlog task."
         }
       ]
     }
