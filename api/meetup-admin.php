@@ -524,9 +524,11 @@ query ($urlname: String!) {
           title
           description
           eventUrl
+          eventType
           status
           dateTime
           duration
+          zoomMeetingId
           howToFindUs
           venue {
             id
