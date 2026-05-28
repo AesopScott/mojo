@@ -38,6 +38,7 @@
           <a href="/products">Products</a>
           <a href="/development">Development</a>
           <a href="/watch" class="active">Learn</a>
+          <a href="/sell">Sell</a>
         </div>
         <div class="nav-actions">
           <a class="button ghost" href="/watch/#events">Sessions</a>
@@ -55,7 +56,13 @@
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
         </div>
-        <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
+        <div class="aac-hero-media">
+          <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
+          <div class="aac-stats" id="aac-stats" hidden>
+            <span><b data-stat-week></b> visitors this week</span>
+            <span><b data-stat-day></b> today</span>
+          </div>
+        </div>
       </section>
     </header>
     <main>
@@ -313,5 +320,18 @@
       </div>
     </footer>
     </header>
+    <script>
+      fetch('/api/analytics')
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          if (!data || !data.ok) return;
+          var el = document.getElementById('aac-stats');
+          if (!el) return;
+          el.querySelector('[data-stat-week]').textContent = data.week.toLocaleString();
+          el.querySelector('[data-stat-day]').textContent = data.day.toLocaleString();
+          el.hidden = false;
+        })
+        .catch(function() {});
+    </script>
   </body>
 </html>

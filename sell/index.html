@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Sell your AI product on MojoAIStudio.com. Reach buyers actively looking for practical AI tools. 10% per sale, $100/yr per listing."
+    />
+    <title>Mojo AI Studio | Sell Your AI Product</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0f0f1a" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/sell" />
+    <meta property="og:title" content="Sell Your AI Product on Mojo AI Studio" />
+    <meta property="og:description" content="Reach AI-ready buyers. Keep 90% of every sale. $100/yr per listing on the MojoAIStudio.com marketplace." />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sell Your AI Product on Mojo AI Studio" />
+    <meta name="twitter:description" content="Reach AI-ready buyers. Keep 90% of every sale. $100/yr per listing." />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <link rel="stylesheet" href="../styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      /* ── Hero ────────────────────────────────────────────────── */
+      .sell-hero {
+        padding: 80px 0 72px;
+        max-width: 760px;
+      }
+
+      .sell-hero h1 {
+        margin: 14px 0 20px;
+        font-size: clamp(2rem, 4vw, 3rem);
+      }
+
+      .sell-hero p {
+        font-size: 1.08rem;
+        color: var(--muted);
+        line-height: 1.65;
+        max-width: 620px;
+        margin-bottom: 32px;
+      }
+
+      .hero-pricing {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 32px;
+      }
+
+      .hero-pricing-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 14px 22px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        min-width: 130px;
+      }
+
+      .hero-pricing-item b {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--ink);
+        line-height: 1.1;
+      }
+
+      .hero-pricing-item span {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      /* ── Value props ─────────────────────────────────────────── */
+      .value-section {
+        border-top: 1px solid var(--line);
+        padding-top: 72px;
+        padding-bottom: 72px;
+      }
+
+      .value-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 36px;
+        margin-top: 48px;
+      }
+
+      .value-card {
+        display: grid;
+        gap: 10px;
+      }
+
+      .value-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--blue, #2563eb);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 900;
+      }
+
+      .value-card h3 {
+        font-size: 1rem;
+        font-weight: 800;
+        margin: 0;
+      }
+
+      .value-card p {
+        color: var(--muted);
+        font-size: 0.93rem;
+        margin: 0;
+        line-height: 1.55;
+      }
+
+      /* ── How it works ────────────────────────────────────────── */
+      .how-section {
+        border-top: 1px solid var(--line);
+        padding-top: 72px;
+        padding-bottom: 72px;
+      }
+
+      .how-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 36px;
+        margin-top: 48px;
+      }
+
+      .how-step {
+        display: grid;
+        gap: 8px;
+      }
+
+      .how-num {
+        font-size: 0.75rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        color: var(--blue, #2563eb);
+        text-transform: uppercase;
+      }
+
+      .how-step h3 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        margin: 0;
+      }
+
+      .how-step p {
+        color: var(--muted);
+        font-size: 0.93rem;
+        margin: 0;
+        line-height: 1.55;
+      }
+
+      /* ── Criteria ────────────────────────────────────────────── */
+      .criteria-section {
+        border-top: 1px solid var(--line);
+        padding-top: 72px;
+        padding-bottom: 72px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: start;
+      }
+
+      .criteria-copy h2 {
+        margin: 12px 0 16px;
+      }
+
+      .criteria-copy p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .criteria-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 14px;
+      }
+
+      .criteria-list li {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+
+      .criteria-list li::before {
+        content: "✓";
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: var(--teal, #0d9488);
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1px;
+      }
+
+      /* ── CTA ─────────────────────────────────────────────────── */
+      .sell-cta-section {
+        border-top: 1px solid var(--line);
+        padding-top: 72px;
+        padding-bottom: 88px;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .sell-cta-section h2 {
+        margin: 12px 0 16px;
+      }
+
+      .sell-cta-section p {
+        color: var(--muted);
+        line-height: 1.65;
+        margin-bottom: 32px;
+      }
+
+      .cta-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      /* ── Responsive ──────────────────────────────────────────── */
+      @media (max-width: 780px) {
+        .value-grid,
+        .how-grid {
+          grid-template-columns: 1fr;
+          gap: 28px;
+        }
+
+        .criteria-section {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <span class="anchor-target" id="top"></span>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/products">Products</a>
+          <a href="/development">Development</a>
+          <a href="/watch">Learn</a>
+          <a href="/sell" class="active">Sell</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="/portal/">Sign in</a>
+          <a class="button dark" href="/products/pages/submit.html">Submit your product</a>
+        </div>
+      </nav>
+
+      <section class="section sell-hero">
+        <p class="kicker">Sell on Mojo</p>
+        <h1>Reach AI-ready buyers. Keep 90% of every sale.</h1>
+        <p>MojoAIStudio.com is a curated marketplace for practical AI-built software. If you've built a tool that solves real workflow problems, list it here and put it in front of buyers who are actively looking.</p>
+        <div class="hero-pricing">
+          <div class="hero-pricing-item">
+            <b>10%</b>
+            <span>of each sale — no upfront revenue risk</span>
+          </div>
+          <div class="hero-pricing-item">
+            <b>$100 / yr</b>
+            <span>per product listed on the marketplace</span>
+          </div>
+          <div class="hero-pricing-item">
+            <b>5 days</b>
+            <span>average review turnaround</span>
+          </div>
+        </div>
+        <a class="button dark" href="/products/pages/submit.html">Submit your product →</a>
+      </section>
+    </header>
+
+    <main>
+      <section class="section value-section">
+        <p class="kicker">Why list here</p>
+        <h2>Built for AI products, not generic software.</h2>
+        <div class="value-grid">
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">↗</div>
+            <h3>Buyers who are already sold on AI</h3>
+            <p>Everyone who finds our marketplace is already looking to adopt AI tools — you're not convincing them that AI matters, you're showing them yours is the right one.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">★</div>
+            <h3>Curated quality, not a landfill</h3>
+            <p>We review every product before it goes live. A curated marketplace means fewer listings competing for the same buyer — and every listing carries more weight.</p>
+          </div>
+          <div class="value-card">
+            <div class="value-icon" aria-hidden="true">$</div>
+            <h3>Simple economics</h3>
+            <p>10% of each sale and $100/yr per listing. No monthly platform fees, no setup cost, no rev-share tiers. You earn, we take a small slice when you earn.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section how-section" id="how">
+        <p class="kicker">How it works</p>
+        <h2>From submission to live listing in days.</h2>
+        <div class="how-grid">
+          <div class="how-step">
+            <span class="how-num">01</span>
+            <h3>Submit for review</h3>
+            <p>Fill out the product submission form. Tell us what your product does, who it's for, and how it's priced. Takes about five minutes and a working URL helps a lot.</p>
+          </div>
+          <div class="how-step">
+            <span class="how-num">02</span>
+            <h3>We review it</h3>
+            <p>Our team evaluates the product for marketplace fit, quality, and category placement. We respond within five business days — usually faster.</p>
+          </div>
+          <div class="how-step">
+            <span class="how-num">03</span>
+            <h3>Get listed</h3>
+            <p>Approved products get a dedicated marketplace listing with a pricing page, category placement, and inclusion in relevant searches. We handle the storefront.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section criteria-section" id="criteria">
+        <div class="criteria-copy">
+          <p class="kicker">What we look for</p>
+          <h2>We're selective because buyers expect quality.</h2>
+          <p>The marketplace stays useful to buyers by staying curated. Every product we list has been evaluated for fit and quality — which means yours will stand out when it's there.</p>
+        </div>
+        <ul class="criteria-list">
+          <li>A working product with a live demo or accessible URL</li>
+          <li>Solves a real, specific workflow problem</li>
+          <li>Clear, documented pricing</li>
+          <li>Defined target user — not "everyone"</li>
+          <li>AI is core to how the product works, not just a buzzword</li>
+          <li>Maintained and supported by the creator</li>
+        </ul>
+      </section>
+
+      <section class="sell-cta-section">
+        <p class="kicker">Ready to list?</p>
+        <h2>Submit your product in five minutes.</h2>
+        <p>Tell us what you've built and we'll take it from there. If it's a fit, you'll hear from us within five business days.</p>
+        <div class="cta-actions">
+          <a class="button dark" href="/products/pages/submit.html">Submit your product →</a>
+          <a class="button ghost" href="/products">Browse the marketplace</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Sell on Mojo</b>
+        <a href="#how">How it works</a>
+        <a href="#criteria">What we look for</a>
+        <a href="/products/pages/submit.html">Submit your product</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/products">Browse apps</a>
+        <a href="/development">Custom development</a>
+        <a href="/watch">Learn to build AI</a>
+      </div>
+    </footer>
+  </body>
+</html>
