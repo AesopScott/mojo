@@ -778,6 +778,37 @@ mutation ($input: PublishGroupDraftInput!) {
 }
 GRAPHQL, ['input' => ['token' => $draftToken]], $tokenPath);
 
+        $publishedGroup = $publishResult['response']['data']['publishGroupDraft']['group'] ?? null;
+        $publishedGroupId = is_array($publishedGroup) ? (string) ($publishedGroup['id'] ?? '') : '';
+        $networkResult = null;
+
+        if ($publishedGroupId !== '') {
+            $networkResult = graphQL(<<<'GRAPHQL'
+mutation ($input: AddGroupToNetworkInput!) {
+  addGroupToNetwork(input: $input) {
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      proNetwork { id urlname name }
+    }
+    network { id urlname name }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'networkId' => '1391637342781403051',
+                    'groupId' => $publishedGroupId,
+                ],
+            ], $tokenPath);
+        }
+
         respond(200, [
             'ok' => true,
             'created' => true,
@@ -790,6 +821,7 @@ GRAPHQL, ['input' => ['token' => $draftToken]], $tokenPath);
             ],
             'draft' => $draftResult,
             'publish' => $publishResult,
+            'network' => $networkResult,
             'photo_note' => 'Meetup rejected reusing the source photo ID in the Dallas pilot; copy the main photo through the dashboard or a separate upload flow.',
         ]);
     }
