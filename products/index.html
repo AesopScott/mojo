@@ -50,6 +50,37 @@
         line-height: 1.65;
       }
 
+      .sell-pricing {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        flex-wrap: wrap;
+      }
+
+      .sell-pricing-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 14px 20px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        min-width: 140px;
+      }
+
+      .sell-pricing-item b {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: var(--ink);
+        line-height: 1.1;
+      }
+
+      .sell-pricing-item span {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
       .sell-steps {
         display: grid;
         gap: 32px;
@@ -250,6 +281,16 @@
           <p class="kicker">Sell on Mojo</p>
           <h2>Built an AI product worth selling? List it here.</h2>
           <p>MojoAIStudio.com is an AI-built software marketplace reaching buyers who are actively looking for practical AI tools. If you've built something — an app, a workflow tool, an agent — and want it in front of that audience, submit it for review. We keep the marketplace curated, so every listing earns its place.</p>
+          <div class="sell-pricing">
+            <div class="sell-pricing-item">
+              <b>10%</b>
+              <span>of each sale — no upfront revenue risk</span>
+            </div>
+            <div class="sell-pricing-item">
+              <b>$100 / yr</b>
+              <span>per product listed on the marketplace</span>
+            </div>
+          </div>
           <a class="button dark" href="/products/pages/submit.html" style="margin-top:20px;display:inline-block">Submit your product →</a>
         </div>
         <div class="sell-steps">
