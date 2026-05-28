@@ -345,6 +345,69 @@ GRAPHQL;
         ]);
     }
 
+    if ($action === 'events') {
+        $urlname = trim((string) ($_GET['urlname'] ?? ''));
+        if ($urlname === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing urlname.']);
+        }
+
+        $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 20) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          description
+          eventUrl
+          status
+          dateTime
+          duration
+          timezone
+          howToFindUs
+          venue {
+            id
+            name
+            address
+            city
+            state
+            country
+            postalCode
+            lat
+            lon
+          }
+          venues {
+            id
+            name
+            address
+            city
+            state
+            country
+            postalCode
+            lat
+            lon
+          }
+          featuredEventPhoto { id baseUrl standardUrl thumbUrl }
+          group { id name urlname }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'result' => $eventsResult,
+        ]);
+    }
+
+
     if ($action === 'network-groups') {
         $query = trim((string) ($_GET['query'] ?? ''));
 
