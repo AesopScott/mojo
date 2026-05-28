@@ -247,6 +247,20 @@ function graphQL(string $query, array $variables, string $tokenPath): array {
     ];
 }
 
+function eventKey(array $event): string {
+    $title = strtolower(trim((string) ($event['title'] ?? '')));
+    $dateTime = (string) ($event['dateTime'] ?? '');
+    return $title . '|' . substr($dateTime, 0, 19);
+}
+
+function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
+    if ($targetUrlname === 'advanced-ai-concepts-dallas') {
+        return preg_replace('/[-+]\d{2}:\d{2}$/', '-05:00', $sourceDateTime) ?? $sourceDateTime;
+    }
+
+    return $sourceDateTime;
+}
+
 $projectRoot = dirname(__DIR__);
 $loadedEnv = loadFirstEnvFile([
     $projectRoot . '/.env',
@@ -403,6 +417,173 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
         respond(200, [
             'ok' => true,
             'result' => $eventsResult,
+        ]);
+    }
+
+    if ($action === 'copy-events') {
+        $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
+        $targetUrlname = trim((string) ($_GET['target'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+
+        if ($targetUrlname === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing target group urlname.']);
+        }
+
+        if ($confirm !== $targetUrlname) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Confirmation must match target urlname.',
+                'expected_confirm' => $targetUrlname,
+            ]);
+        }
+
+        $eventsQuery = <<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 50) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          description
+          eventUrl
+          status
+          dateTime
+          duration
+          howToFindUs
+          venue {
+            id
+            name
+          }
+          venues {
+            id
+            name
+          }
+          featuredEventPhoto { id baseUrl standardUrl thumbUrl }
+        }
+      }
+    }
+  }
+}
+GRAPHQL;
+
+        $sourceResult = graphQL($eventsQuery, ['urlname' => $sourceUrlname], $tokenPath);
+        $targetResult = graphQL($eventsQuery, ['urlname' => $targetUrlname], $tokenPath);
+
+        $sourceEdges = $sourceResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+        $targetEdges = $targetResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+
+        if (!is_array($sourceEdges) || !is_array($targetEdges)) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Unable to load source or target events.',
+                'source' => $sourceResult,
+                'target' => $targetResult,
+            ]);
+        }
+
+        $existing = [];
+        foreach ($targetEdges as $edge) {
+            $event = $edge['node'] ?? null;
+            if (is_array($event)) {
+                $existing[eventKey($event)] = true;
+            }
+        }
+
+        $created = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($sourceEdges as $edge) {
+            $sourceEvent = $edge['node'] ?? null;
+            if (!is_array($sourceEvent) || ($sourceEvent['status'] ?? '') !== 'ACTIVE') {
+                continue;
+            }
+
+            $copyDateTime = targetDateTime((string) ($sourceEvent['dateTime'] ?? ''), $targetUrlname);
+            $candidate = [
+                'title' => (string) ($sourceEvent['title'] ?? ''),
+                'dateTime' => $copyDateTime,
+            ];
+            $key = eventKey($candidate);
+
+            if (isset($existing[$key])) {
+                $skipped[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'dateTime' => $copyDateTime,
+                    'reason' => 'already exists',
+                ];
+                continue;
+            }
+
+            $input = [
+                'groupUrlname' => $targetUrlname,
+                'title' => (string) ($sourceEvent['title'] ?? ''),
+                'description' => (string) ($sourceEvent['description'] ?? ''),
+                'startDateTime' => $copyDateTime,
+                'duration' => (string) ($sourceEvent['duration'] ?? 'PT2H'),
+                'publishStatus' => 'PUBLISHED',
+                'isCopy' => true,
+            ];
+
+            if (!empty($sourceEvent['howToFindUs'])) {
+                $input['howToFindUs'] = (string) $sourceEvent['howToFindUs'];
+            }
+
+            $venues = $sourceEvent['venues'] ?? [];
+            if (is_array($venues) && !empty($venues[0]['id'])) {
+                $input['venueId'] = (string) $venues[0]['id'];
+            } elseif (!empty($sourceEvent['venue']['id'])) {
+                $input['venueId'] = (string) $sourceEvent['venue']['id'];
+            }
+
+            $createResult = graphQL(<<<'GRAPHQL'
+mutation ($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      status
+      dateTime
+      duration
+      venue { id name }
+      group { id name urlname }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+            $payload = $createResult['response']['data']['createEvent'] ?? null;
+            if (!is_array($payload) || !empty($payload['errors']) || empty($payload['event'])) {
+                $errors[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'result' => $createResult,
+                ];
+                continue;
+            }
+
+            $created[] = [
+                'source_id' => $sourceEvent['id'] ?? null,
+                'event' => $payload['event'],
+            ];
+            $existing[$key] = true;
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'source' => $sourceUrlname,
+            'target' => $targetUrlname,
+            'created' => $created,
+            'skipped' => $skipped,
+            'errors' => $errors,
         ]);
     }
 
