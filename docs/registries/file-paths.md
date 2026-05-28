@@ -102,7 +102,7 @@ Shared navigation header component included in all three sections.
 **Consumers**
 - `products/index.html:*` — includes header (Task 2.2)
 - `development/index.html:*` — includes header (Task 3.1)
-- `watchai/index.html:*` — includes header (Task 4.1)
+- `watch/index.html:*` — includes header (Task 4.1)
 
 **Expected format:** HTML fragment with three nav links: Products, Development, Learn.
 
@@ -122,7 +122,7 @@ Shared footer component included in all three sections.
 **Consumers**
 - `products/index.html:*` — includes footer (Task 2.2)
 - `development/index.html:*` — includes footer (Task 3.1)
-- `watchai/index.html:*` — includes footer (Task 4.1)
+- `watch/index.html:*` — includes footer (Task 4.1)
 
 **Expected format:** HTML fragment with shared branding and links.
 
@@ -143,7 +143,7 @@ Shared CSS styles for navigation, footer, and consistent branding.
 - `products/index.html:*` — links to shared CSS (Task 2.2)
 - `products/styles/listing.css:*` — may import or extend shared styles (Task 2.2)
 - `development/index.html:*` — links to shared CSS (Task 3.1)
-- `watchai/index.html:*` — links to shared CSS (Task 4.1)
+- `watch/index.html:*` — links to shared CSS (Task 4.1)
 
 **Expected location:** `styles/shared.css` relative to project root.
 

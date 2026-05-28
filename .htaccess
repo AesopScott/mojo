@@ -13,6 +13,9 @@ Options -Indexes
     # Pass the Authorization header through to PHP (needed if using token auth later)
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
+    # Keep the old learning page URL working after renaming /WatchAI to /watch.
+    RewriteRule ^WatchAI/?$ /watch/ [R=301,L,NC]
+
     # API: strip .php extension from explicit requests
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.php -f

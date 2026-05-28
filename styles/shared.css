@@ -871,7 +871,7 @@ p {
   padding: 36px 0 74px;
 }
 
-/* ─── WatchAI page ─── */
+/* ─── Watch page ─── */
 
 .watchai-hero {
   padding: 74px 0 48px;
@@ -940,6 +940,34 @@ p {
   justify-content: center;
 }
 
+.api-disclosure {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  padding-top: 42px;
+  padding-bottom: 42px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.api-disclosure h2 {
+  margin-bottom: 12px;
+}
+
+.api-disclosure p {
+  margin: 0;
+}
+
+.api-disclosure-panel {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
 /* ─── Card actions (products page) ─── */
 
 .card-actions {
@@ -974,7 +1002,7 @@ a[aria-disabled="true"] {
   margin-top: 18px;
 }
 
-/* ─── WatchAI feature icon ─── */
+/* ─── Watch feature icon ─── */
 
 .feature-icon {
   font-size: 2rem;
@@ -1176,6 +1204,7 @@ a[aria-disabled="true"] {
   .compare-section,
   .process-grid,
   .watchai-features,
+  .api-disclosure,
   .support-section {
     grid-template-columns: 1fr;
   }

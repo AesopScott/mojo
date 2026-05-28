@@ -143,16 +143,16 @@ Project brief intake form page.
 
 ---
 
-## GET `/WatchAI`
+## GET `/watch`
 
 Learning referral landing page.
 
 **Producers**
-- `watchai/index.html:1` — serves educational overview page (Task 4.1)
+- `watch/index.html:1` — serves educational overview page (Task 4.1)
 
 **Consumers**
-- Navigation header links to `/WatchAI` (Task 1.3, proof unit 1)
-- User visits `MojoAiStudio.com/WatchAI` (proof unit 6)
+- Navigation header links to `/watch` (Task 1.3, proof unit 1)
+- User visits `MojoAiStudio.com/watch` (proof unit 6)
 
 **Expected behavior:** Page explains AI learning path, contains 2+ CTAs that redirect to `watchmebuildai.com` with referral tracking parameters.
 
@@ -162,11 +162,11 @@ Learning referral landing page.
 
 ## GET → REDIRECT to `watchmebuildai.com`
 
-CTAs on /WatchAI section redirect to external learning platform.
+CTAs on /watch section redirect to external learning platform.
 
 **Producers**
-- `watchai/scripts/referral.js:*` — CTA click handlers redirect to watchmebuildai.com (Task 4.2)
-- `watchai/index.html:*` — CTA buttons with href or click handler (Task 4.1)
+- `watch/scripts/referral.js:*` — CTA click handlers redirect to watchmebuildai.com (Task 4.2)
+- `watch/index.html:*` — CTA buttons with href or click handler (Task 4.1)
 
 **Consumers**
 - User clicks "Start Learning", "Learn More", etc. (proof unit 6)
@@ -189,7 +189,7 @@ CTAs on /WatchAI section redirect to external learning platform.
 | POST `/api/submit-brief` | `api/submit-brief.php` | `scripts/brief-form.js`, user | ✓ implemented (PHP mail) |
 | GET `/development` | Task 3.1 | Task 1.3, user | ✓ |
 | GET `/development/pages/brief.html` | Task 3.2 | Task 3.1, Task 3.3, user | ✓ |
-| GET `/WatchAI` | Task 4.1 | Task 1.3, user | ✓ |
+| GET `/watch` | Task 4.1 | Task 1.3, user | ✓ |
 | GET → REDIRECT `watchmebuildai.com` | Task 4.2 | user, watchmebuildai.com | ⚠ ambiguous — referral program not confirmed |
 
 ---
@@ -204,7 +204,7 @@ CTAs on /WatchAI section redirect to external learning platform.
 - 8 endpoint entries identified
 - 5 entries with complete producer/consumer pairs ✓
 - 3 entries with gaps (orphan consumers, ambiguous decisions) ⚠
-- New identifiers introduced on this task: `/products`, `/api/stripe-webhook`, `/api/email-handler`, `/development`, `/WatchAI`, redirect to watchmebuildai.com
+- New identifiers introduced on this task: `/products`, `/api/stripe-webhook`, `/api/email-handler`, `/development`, `/watch`, redirect to watchmebuildai.com
 - Registries match current plan (3-Build_Plan.md): yes
 
 **Gaps identified:**
