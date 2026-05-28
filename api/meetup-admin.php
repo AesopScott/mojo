@@ -1434,6 +1434,69 @@ GRAPHQL, [
         ]);
     }
 
+    if ($action === 'attach-network') {
+        $urlname = strtolower(trim((string) ($_GET['urlname'] ?? '')));
+        $confirm = strtolower(trim((string) ($_GET['confirm'] ?? '')));
+
+        if ($urlname === '' || $confirm !== $urlname) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation. Set confirm to the group urlname.',
+                'expected_confirm' => $urlname,
+            ]);
+        }
+
+        $groupResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    link
+    proNetwork { id urlname name }
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+
+        $group = $groupResult['response']['data']['groupByUrlname'] ?? null;
+        $groupId = is_array($group) ? (string) ($group['id'] ?? '') : '';
+        if ($groupId === '') {
+            respond(404, [
+                'ok' => false,
+                'error' => 'Group not found.',
+                'group' => $groupResult,
+            ]);
+        }
+
+        $networkResult = graphQL(<<<'GRAPHQL'
+mutation ($input: AddGroupToNetworkInput!) {
+  addGroupToNetwork(input: $input) {
+    group {
+      id
+      name
+      urlname
+      link
+      proNetwork { id urlname name }
+    }
+    network { id urlname name }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'networkId' => '1391637342781403051',
+                'groupId' => $groupId,
+            ],
+        ], $tokenPath);
+
+        $errors = $networkResult['response']['data']['addGroupToNetwork']['errors'] ?? [];
+        respond(200, [
+            'ok' => empty($errors),
+            'group' => $group,
+            'network' => $networkResult,
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
