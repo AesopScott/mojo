@@ -591,6 +591,46 @@ GRAPHQL, [], $tokenPath);
         ]);
     }
 
+    if ($action === 'attach-dallas-network') {
+        $confirm = (string) ($_GET['confirm'] ?? '');
+        if ($confirm !== 'attach Dallas to network') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation.',
+                'expected_confirm' => 'attach Dallas to network',
+            ]);
+        }
+
+        $networkResult = graphQL(<<<'GRAPHQL'
+mutation {
+  addGroupToNetwork(input: {
+    networkId: "1391637342781403051",
+    groupId: "38530543"
+  }) {
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      proNetwork { id urlname name }
+    }
+    network { id urlname name }
+    errors { message field code }
+  }
+}
+GRAPHQL, [], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'network' => $networkResult,
+        ]);
+    }
+
+
     if ($action === 'copy-city') {
         $name = trim((string) ($_GET['name'] ?? ''));
         $city = trim((string) ($_GET['city'] ?? ''));
