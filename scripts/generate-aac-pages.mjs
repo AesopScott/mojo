@@ -109,6 +109,7 @@ function eventMonthDay(dateTime) {
 }
 
 function pageShell({ title, description, canonical, image, body, active = "" }) {
+  const imageType = image.endsWith(".png") ? "image/png" : "image/jpeg";
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -128,6 +129,8 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
     <meta property="og:title" content="${escapeHtml(title)}" />
     <meta property="og:description" content="${escapeHtml(description)}" />
     <meta property="og:image" content="${escapeHtml(image)}" />
+    <meta property="og:image:secure_url" content="${escapeHtml(image)}" />
+    <meta property="og:image:type" content="${imageType}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -252,7 +255,7 @@ function hubPage(chapters) {
     title: "Advanced AI Concepts | Mojo AI Studio",
     description: "Advanced AI Concepts meetup chapters and upcoming live sessions for builders exploring agents, memory, command centers, and AI systems.",
     canonical: "https://mojoaistudio.com/watch/",
-    image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.jpg",
+    image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.png",
     active: "active",
     body,
   });
