@@ -12,7 +12,7 @@ const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
 
 const cities = [
   { city: "Colorado Springs/Denver", state: "CO", slug: "colorado-springs", urlname: "advanced-ai-concepts" },
-  { city: "Dallas", state: "TX", slug: "dallas", urlname: "advanced-ai-concepts-dallas" },
+  { city: "Dallas-Fort Worth", state: "TX", slug: "dallas", urlname: "advanced-ai-concepts-dallas" },
   { city: "San Francisco", state: "CA", slug: "san-francisco", urlname: "advanced-ai-concepts-san-francisco" },
   { city: "Chicago", state: "IL", slug: "chicago", urlname: "advanced-ai-concepts-chicago" },
   { city: "Los Angeles", state: "CA", slug: "los-angeles", urlname: "advanced-ai-concepts-los-angeles" },
