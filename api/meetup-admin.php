@@ -284,6 +284,67 @@ GRAPHQL;
         respond(200, ['ok' => true, 'result' => graphQL($query, [], $tokenPath)]);
     }
 
+    if ($action === 'schema-type') {
+        $typeName = trim((string) ($_GET['type'] ?? ''));
+        if ($typeName === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing type.']);
+        }
+
+        $query = <<<'GRAPHQL'
+query ($name: String!) {
+  __type(name: $name) {
+    name
+    kind
+    fields {
+      name
+      args { name type { kind name ofType { kind name ofType { kind name } } } }
+      type { kind name ofType { kind name ofType { kind name } } }
+    }
+    inputFields {
+      name
+      type { kind name ofType { kind name ofType { kind name } } }
+    }
+  }
+}
+GRAPHQL;
+        respond(200, [
+            'ok' => true,
+            'result' => graphQL($query, ['name' => $typeName], $tokenPath),
+        ]);
+    }
+
+    if ($action === 'group') {
+        $urlname = trim((string) ($_GET['urlname'] ?? ''));
+        if ($urlname === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing urlname.']);
+        }
+
+        $query = <<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    description
+    customMembersLabel
+    urlname
+    timezone
+    city
+    state
+    country
+    zip
+    link
+    groupPhoto { id baseUrl preview }
+    topics { id name urlkey }
+    proNetwork { id urlname name }
+  }
+}
+GRAPHQL;
+        respond(200, [
+            'ok' => true,
+            'result' => graphQL($query, ['urlname' => $urlname], $tokenPath),
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
