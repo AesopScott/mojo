@@ -211,7 +211,7 @@ if ($clientId === '' || $clientSecret === '') {
 if ($transportError !== '') {
     renderPage('Token exchange failed', 'The request to Meetup could not be completed.', [
         'transport_error' => $transportError,
-    ], 502);
+    ], 200);
 }
 
 $tokens = json_decode($responseBody, true);
@@ -219,7 +219,7 @@ if (!is_array($tokens) || $status < 200 || $status >= 300) {
     renderPage('Token exchange rejected', 'Meetup did not accept the authorization code exchange.', [
         'http_status' => $status,
         'response' => $tokens ?? $responseBody,
-    ], 502);
+    ], 200);
 }
 
 $stored = false;
