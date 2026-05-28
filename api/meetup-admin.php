@@ -325,7 +325,6 @@ query ($urlname: String!) {
     id
     name
     description
-    customMembersLabel
     urlname
     timezone
     city
@@ -333,8 +332,6 @@ query ($urlname: String!) {
     country
     zip
     link
-    groupPhoto { id baseUrl preview }
-    topics { id name urlkey }
     proNetwork { id urlname name }
   }
 }
