@@ -19,6 +19,16 @@ const cities = [
   { city: "New York", state: "NY", slug: "new-york", urlname: "advanced-ai-concepts-new-york" },
   { city: "Boston", state: "MA", slug: "boston", urlname: "advanced-ai-concepts-boston" },
   { city: "Miami", state: "FL", slug: "miami", urlname: "advanced-ai-concepts-miami" },
+  { city: "Seattle", state: "WA", slug: "seattle", urlname: "advanced-ai-concepts-seattle" },
+  { city: "Phoenix", state: "AZ", slug: "phoenix", urlname: "advanced-ai-concepts-phoenix" },
+  { city: "Houston", state: "TX", slug: "houston", urlname: "advanced-ai-concepts-houston" },
+  { city: "San Antonio", state: "TX", slug: "san-antonio", urlname: "advanced-ai-concepts-san-antonio" },
+  { city: "The Triangle", state: "NC", slug: "the-triangle", urlname: "advanced-ai-concepts-the-triangle" },
+  { city: "Kansas City", state: "MO", slug: "kansas-city", urlname: "advanced-ai-concepts-kansas-city" },
+  { city: "Columbus", state: "OH", slug: "columbus", urlname: "advanced-ai-concepts-columbus" },
+  { city: "Philadelphia", state: "PA", slug: "philadelphia", urlname: "advanced-ai-concepts-philadelphia" },
+  { city: "Washington, DC", state: "DC", slug: "washington-dc", urlname: "advanced-ai-concepts-washington-dc" },
+  { city: "OKC", state: "OK", slug: "okc", urlname: "advanced-ai-concepts-okc" },
 ];
 
 function escapeHtml(value) {

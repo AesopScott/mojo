@@ -337,11 +337,22 @@ function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
     $timeZones = [
         'advanced-ai-concepts-boston' => 'America/New_York',
         'advanced-ai-concepts-chicago' => 'America/Chicago',
+        'advanced-ai-concepts-columbus' => 'America/New_York',
         'advanced-ai-concepts-dallas' => 'America/Chicago',
+        'advanced-ai-concepts-houston' => 'America/Chicago',
+        'advanced-ai-concepts-kansas-city' => 'America/Chicago',
         'advanced-ai-concepts-los-angeles' => 'America/Los_Angeles',
         'advanced-ai-concepts-miami' => 'America/New_York',
         'advanced-ai-concepts-new-york' => 'America/New_York',
+        'advanced-ai-concepts-okc' => 'America/Chicago',
+        'advanced-ai-concepts-philadelphia' => 'America/New_York',
+        'advanced-ai-concepts-phoenix' => 'America/Phoenix',
         'advanced-ai-concepts-san-francisco' => 'America/Los_Angeles',
+        'advanced-ai-concepts-san-antonio' => 'America/Chicago',
+        'advanced-ai-concepts-seattle' => 'America/Los_Angeles',
+        'advanced-ai-concepts-tampa' => 'America/New_York',
+        'advanced-ai-concepts-the-triangle' => 'America/New_York',
+        'advanced-ai-concepts-washington-dc' => 'America/New_York',
     ];
 
     if (isset($timeZones[$targetUrlname])) {
