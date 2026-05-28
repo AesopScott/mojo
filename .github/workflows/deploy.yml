@@ -52,4 +52,5 @@ jobs:
             **/.github/**
             **/.DS_Store
             **/README.md
+            **/AGENTS.md
             cgi-bin/**
