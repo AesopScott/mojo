@@ -1171,6 +1171,130 @@ GRAPHQL, [], $tokenPath);
         ]);
     }
 
+    if ($action === 'rename-event-title') {
+        $urlname = trim((string) ($_GET['urlname'] ?? ''));
+        $oldTitle = trim((string) ($_GET['old_title'] ?? ''));
+        $newTitle = trim((string) ($_GET['new_title'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+
+        if ($urlname === '' || $oldTitle === '' || $newTitle === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing required rename fields.',
+                'required' => ['urlname', 'old_title', 'new_title', 'confirm'],
+            ]);
+        }
+
+        if ($confirm !== $oldTitle . ' -> ' . $newTitle) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Confirmation must match the event rename.',
+                'expected_confirm' => $oldTitle . ' -> ' . $newTitle,
+            ]);
+        }
+
+        $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 50) {
+      edges {
+        node {
+          id
+          title
+          status
+          dateTime
+          eventUrl
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+
+        $group = $eventsResult['response']['data']['groupByUrlname'] ?? null;
+        if (!is_array($group)) {
+            respond(404, [
+                'ok' => false,
+                'error' => 'Group not found.',
+                'result' => $eventsResult,
+            ]);
+        }
+
+        $renamed = [];
+        $skipped = [];
+        $errors = [];
+        foreach (($group['events']['edges'] ?? []) as $edge) {
+            $event = $edge['node'] ?? null;
+            if (!is_array($event) || ($event['status'] ?? '') !== 'ACTIVE') {
+                continue;
+            }
+
+            $title = (string) ($event['title'] ?? '');
+            if ($title === $newTitle) {
+                $skipped[] = [
+                    'id' => $event['id'] ?? null,
+                    'title' => $title,
+                    'reason' => 'already renamed',
+                ];
+                continue;
+            }
+
+            if ($title !== $oldTitle) {
+                continue;
+            }
+
+            $editResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      dateTime
+      eventUrl
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'eventId' => (string) ($event['id'] ?? ''),
+                    'title' => $newTitle,
+                ],
+            ], $tokenPath);
+
+            $payload = $editResult['response']['data']['editEvent'] ?? null;
+            $payloadErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+            if (!empty($payloadErrors)) {
+                $errors[] = [
+                    'id' => $event['id'] ?? null,
+                    'title' => $title,
+                    'errors' => $payloadErrors,
+                ];
+                continue;
+            }
+
+            $renamed[] = [
+                'old_title' => $title,
+                'event' => $payload['event'] ?? null,
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'group' => [
+                'id' => $group['id'] ?? null,
+                'name' => $group['name'] ?? null,
+                'urlname' => $group['urlname'] ?? null,
+            ],
+            'renamed' => $renamed,
+            'skipped' => $skipped,
+            'errors' => $errors,
+        ]);
+    }
+
     if ($action === 'copy-event-photos') {
         $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
         $targetUrlname = trim((string) ($_GET['target'] ?? ''));
