@@ -439,6 +439,81 @@ GRAPHQL, ['input' => $input], $tokenPath);
         ]);
     }
 
+    if ($action === 'publish-dallas-draft') {
+        $confirm = (string) ($_GET['confirm'] ?? '');
+        $token = trim((string) ($_GET['token'] ?? ''));
+        if ($confirm !== 'publish Advanced AI Concepts-Dallas' || $token === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation or token.',
+                'expected_confirm' => 'publish Advanced AI Concepts-Dallas',
+            ]);
+        }
+
+        $publishResult = graphQL(<<<'GRAPHQL'
+mutation ($input: PublishGroupDraftInput!) {
+  publishGroupDraft(input: $input) {
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+      proNetwork { id urlname name }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => ['token' => $token]], $tokenPath);
+
+        $publishedGroup = $publishResult['response']['data']['publishGroupDraft']['group'] ?? null;
+        $groupId = is_array($publishedGroup) ? (string) ($publishedGroup['id'] ?? '') : '';
+
+        $networkResult = null;
+        if ($groupId !== '') {
+            $networkResult = graphQL(<<<'GRAPHQL'
+mutation {
+  addGroupToNetworkByUrlname(input: {
+    networkUrlname: "advanced-ai-concepts",
+    groupUrlname: "advanced-ai-concepts-dallas"
+  }) {
+    group { id name urlname proNetwork { id urlname name } }
+    network { id urlname name }
+    errors { message field code }
+  }
+}
+GRAPHQL, [], $tokenPath);
+        }
+
+        $photoResult = null;
+        if ($groupId !== '') {
+            $photoResult = graphQL(<<<'GRAPHQL'
+mutation ($input: UpdateGroupInput!) {
+  updateGroup(input: $input) {
+    group {
+      id
+      name
+      urlname
+      keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => ['id' => $groupId, 'logoId' => '534450237']], $tokenPath);
+        }
+
+        respond(200, [
+            'ok' => true,
+            'publish' => $publishResult,
+            'network' => $networkResult,
+            'photo' => $photoResult,
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
