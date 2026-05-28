@@ -13,6 +13,7 @@
 declare(strict_types=1);
 
 const MEETUP_TOKEN_ENDPOINT = 'https://secure.meetup.com/oauth2/access';
+const MEETUP_GRAPHQL_ENDPOINT = 'https://api.meetup.com/gql-ext';
 
 function loadEnvFile(string $path): void {
     if (!is_readable($path)) {
@@ -147,6 +148,54 @@ function postForm(string $url, array $fields): array {
     return [$status, $responseBody === false ? '' : $responseBody, ''];
 }
 
+function postJson(string $url, array $payload, string $accessToken): array {
+    $body = json_encode($payload);
+    if ($body === false) {
+        throw new RuntimeException('Unable to encode GraphQL request.');
+    }
+
+    if (function_exists('curl_init')) {
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $body,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => [
+                'Authorization: bearer ' . $accessToken,
+                'Content-Type: application/json',
+            ],
+            CURLOPT_TIMEOUT => 20,
+        ]);
+
+        $responseBody = curl_exec($curl);
+        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        $error = curl_error($curl);
+        curl_close($curl);
+
+        return [$status, $responseBody === false ? '' : $responseBody, $error];
+    }
+
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'POST',
+            'header' => "Authorization: bearer {$accessToken}\r\nContent-Type: application/json\r\n",
+            'content' => $body,
+            'timeout' => 20,
+            'ignore_errors' => true,
+        ],
+    ]);
+
+    $responseBody = file_get_contents($url, false, $context);
+    $status = 0;
+
+    if (isset($http_response_header[0]) && preg_match('/\s(\d{3})\s/', $http_response_header[0], $matches)) {
+        $status = (int) $matches[1];
+    }
+
+    return [$status, $responseBody === false ? '' : $responseBody, ''];
+}
+
 function storeTokens(array $tokens, string $path): void {
     if ($path === '') {
         return;
@@ -164,6 +213,35 @@ function storeTokens(array $tokens, string $path): void {
     if ($encoded === false || file_put_contents($path, $encoded . PHP_EOL, LOCK_EX) === false) {
         throw new RuntimeException('Unable to write token store.');
     }
+}
+
+function defaultTokenStore(?string $loadedEnv): string {
+    if ($loadedEnv === null) {
+        return '';
+    }
+
+    return dirname($loadedEnv) . '/meetup-oauth-token.json';
+}
+
+function querySelf(string $accessToken): array {
+    [$status, $responseBody, $transportError] = postJson(MEETUP_GRAPHQL_ENDPOINT, [
+        'query' => 'query { self { id name } }',
+    ], $accessToken);
+
+    if ($transportError !== '') {
+        return [
+            'ok' => false,
+            'transport_error' => $transportError,
+        ];
+    }
+
+    $payload = json_decode($responseBody, true);
+
+    return [
+        'ok' => $status >= 200 && $status < 300 && is_array($payload) && empty($payload['errors']),
+        'http_status' => $status,
+        'response' => $payload ?? $responseBody,
+    ];
 }
 
 $projectRoot = dirname(__DIR__, 3);
@@ -226,7 +304,7 @@ $stored = false;
 $storeError = null;
 
 try {
-    $tokenStore = envValue('MEETUP_TOKEN_STORE');
+    $tokenStore = envValue('MEETUP_TOKEN_STORE', defaultTokenStore($loadedEnv));
     if ($tokenStore !== '') {
         storeTokens($tokens, $tokenStore);
         $stored = true;
@@ -235,6 +313,8 @@ try {
     $storeError = $exception->getMessage();
 }
 
+$self = isset($tokens['access_token']) ? querySelf((string) $tokens['access_token']) : null;
+
 renderPage('Meetup authorization connected', 'The authorization code was exchanged successfully.', [
     'token_type' => $tokens['token_type'] ?? null,
     'expires_in' => $tokens['expires_in'] ?? null,
@@ -242,4 +322,5 @@ renderPage('Meetup authorization connected', 'The authorization code was exchang
     'refresh_token' => maskToken($tokens['refresh_token'] ?? null),
     'stored' => $stored,
     'store_error' => $storeError,
+    'self' => $self,
 ]);
