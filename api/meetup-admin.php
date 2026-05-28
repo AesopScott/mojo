@@ -1387,6 +1387,18 @@ GRAPHQL, [
             ], $tokenPath);
         }
 
+        $groupPhotoResult = null;
+        $sourcePhotoUrl = (string) ($source['keyGroupPhoto']['standardUrl'] ?? '');
+        if ($publishedGroupId !== '' && $sourcePhotoUrl !== '') {
+            $groupPhotoResult = createAndUploadPhoto(
+                $tokenPath,
+                $publishedGroupId,
+                $sourcePhotoUrl,
+                'GROUP_PHOTO',
+                true
+            );
+        }
+
         respond(200, [
             'ok' => true,
             'created' => true,
@@ -1400,7 +1412,7 @@ GRAPHQL, [
             'draft' => $draftResult,
             'publish' => $publishResult,
             'network' => $networkResult,
-            'photo_note' => 'Meetup rejected reusing the source photo ID in the Dallas pilot; copy the main photo through the dashboard or a separate upload flow.',
+            'group_photo' => $groupPhotoResult,
         ]);
     }
 
