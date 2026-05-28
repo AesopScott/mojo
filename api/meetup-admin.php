@@ -885,28 +885,22 @@ GRAPHQL, [
             }
 
             $updateResult = graphQL(<<<'GRAPHQL'
-mutation ($input: UpdateGroupInput!) {
-  updateGroup(input: $input) {
-    group {
-      id
-      name
-      urlname
-      description
-      link
-    }
-    errors { message field code }
+mutation ($chapterId: ID!, $description: String!) {
+  updateGroup(chapterId: $chapterId, input: { description: $description }) {
+    id
+    name
+    urlname
+    description
+    link
   }
 }
 GRAPHQL, [
-                'input' => [
-                    'id' => (string) $group['id'],
-                    'description' => $description,
-                ],
+                'chapterId' => (string) $group['id'],
+                'description' => $description,
             ], $tokenPath);
 
-            $payload = $updateResult['response']['data']['updateGroup'] ?? null;
-            $groupErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
-            $updatedGroup = is_array($payload) ? ($payload['group'] ?? null) : null;
+            $updatedGroup = $updateResult['response']['data']['updateGroup'] ?? null;
+            $groupErrors = $updateResult['response']['errors'] ?? [];
 
             if (!empty($groupErrors) || !is_array($updatedGroup)) {
                 $errors[] = [
