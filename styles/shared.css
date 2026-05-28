@@ -933,6 +933,12 @@ p {
   max-width: 480px;
 }
 
+.under-construction-note {
+  color: var(--text-muted, #6b7280);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
 .watchai-cta-block .cta-group {
   display: flex;
   gap: 12px;
