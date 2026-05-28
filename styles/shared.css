@@ -21,6 +21,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 96px;
 }
 
 body {
@@ -72,12 +73,15 @@ a {
 }
 
 .site-header {
-  padding-top: 16px;
+  padding-top: 96px;
 }
 
 .site-nav {
-  position: sticky;
+  position: fixed;
   top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1220px, calc(100% - 32px));
   z-index: 10;
   min-height: 68px;
   display: flex;
@@ -1195,6 +1199,10 @@ a[aria-disabled="true"] {
     flex-direction: column;
   }
 
+  .site-header {
+    padding-top: 180px;
+  }
+
   .brand {
     margin-right: 0;
   }
@@ -1232,6 +1240,10 @@ a[aria-disabled="true"] {
 }
 
 @media (max-width: 640px) {
+  .site-nav {
+    width: min(calc(100% - 24px), 1220px);
+  }
+
   .site-header,
   .section,
   .category-bar,
