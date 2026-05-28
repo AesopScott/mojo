@@ -811,6 +811,129 @@ GRAPHQL, ['input' => $input], $tokenPath);
         ]);
     }
 
+    if ($action === 'update-group-descriptions') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            respond(405, [
+                'ok' => false,
+                'error' => 'Use POST for description updates.',
+            ]);
+        }
+
+        $input = json_decode((string) file_get_contents('php://input'), true);
+        if (!is_array($input)) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Expected JSON body.',
+            ]);
+        }
+
+        $description = trim((string) ($input['description'] ?? ''));
+        $confirm = trim((string) ($input['confirm'] ?? ''));
+        if ($description === '' || $confirm !== 'update Advanced AI Concepts group descriptions') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing description or confirmation.',
+                'expected_confirm' => 'update Advanced AI Concepts group descriptions',
+            ]);
+        }
+
+        $networkResult = graphQL(<<<'GRAPHQL'
+query ($input: ProNetworkGroupsSearchInput!) {
+  proNetwork(urlname: "advanced-ai-concepts") {
+    id
+    name
+    urlname
+    groupsSearch(input: $input) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          urlname
+          city
+          state
+          link
+        }
+      }
+    }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'first' => 25,
+                'sort' => 'createdDate',
+                'desc' => true,
+            ],
+        ], $tokenPath);
+
+        $edges = $networkResult['response']['data']['proNetwork']['groupsSearch']['edges'] ?? [];
+        if (!is_array($edges) || empty($edges)) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'No Advanced AI Concepts network groups found.',
+                'network' => $networkResult,
+            ]);
+        }
+
+        $updates = [];
+        $errors = [];
+
+        foreach ($edges as $edge) {
+            $group = $edge['node'] ?? null;
+            if (!is_array($group) || empty($group['id'])) {
+                continue;
+            }
+
+            $updateResult = graphQL(<<<'GRAPHQL'
+mutation ($input: UpdateGroupInput!) {
+  updateGroup(input: $input) {
+    group {
+      id
+      name
+      urlname
+      description
+      link
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'id' => (string) $group['id'],
+                    'description' => $description,
+                ],
+            ], $tokenPath);
+
+            $payload = $updateResult['response']['data']['updateGroup'] ?? null;
+            $groupErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+            $updatedGroup = is_array($payload) ? ($payload['group'] ?? null) : null;
+
+            if (!empty($groupErrors) || !is_array($updatedGroup)) {
+                $errors[] = [
+                    'urlname' => (string) ($group['urlname'] ?? ''),
+                    'errors' => $groupErrors ?: ($updateResult['response']['errors'] ?? ['Unknown update failure']),
+                ];
+                continue;
+            }
+
+            $updates[] = [
+                'id' => (string) ($updatedGroup['id'] ?? ''),
+                'name' => (string) ($updatedGroup['name'] ?? ''),
+                'urlname' => (string) ($updatedGroup['urlname'] ?? ''),
+                'link' => (string) ($updatedGroup['link'] ?? ''),
+                'description_length' => strlen((string) ($updatedGroup['description'] ?? '')),
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'attempted' => count($edges),
+            'updated' => count($updates),
+            'groups' => $updates,
+            'errors' => $errors,
+        ]);
+    }
+
 
     if ($action === 'create-dallas-draft') {
         $confirm = (string) ($_GET['confirm'] ?? '');
