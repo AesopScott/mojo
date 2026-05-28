@@ -364,7 +364,7 @@ GRAPHQL;
 
         $networkResult = graphQL(<<<'GRAPHQL'
 query ($input: ProNetworkGroupsSearchInput!) {
-  proNetworkByUrlname(urlname: "advanced-ai-concepts") {
+  proNetwork(urlname: "advanced-ai-concepts") {
     id
     name
     urlname
