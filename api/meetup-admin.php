@@ -368,7 +368,6 @@ query ($urlname: String!) {
           status
           dateTime
           duration
-          timezone
           howToFindUs
           venue {
             id
