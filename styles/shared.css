@@ -992,16 +992,21 @@ p {
   margin-inline: auto;
   padding: 58px 0 46px;
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(360px, 1fr);
-  gap: 36px;
+  grid-template-columns: minmax(0, 0.82fr) minmax(420px, 1fr);
+  gap: 48px;
   align-items: center;
+}
+
+.aac-hero > div,
+.aac-city-hero > div {
+  min-width: 0;
 }
 
 .aac-hero h1,
 .aac-city-hero h1 {
   max-width: 760px;
   margin: 0 0 18px;
-  font-size: clamp(3rem, 6vw, 5.8rem);
+  font-size: 5rem;
   line-height: 0.95;
   letter-spacing: 0;
 }
@@ -1141,12 +1146,50 @@ p {
   gap: 10px;
 }
 
+.aac-city-session-picker {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+  margin-bottom: 16px;
+}
+
+.aac-city-session-picker label {
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aac-city-session-picker select {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 14px 38px rgba(23, 32, 51, 0.08);
+  font: inherit;
+  font-weight: 850;
+  padding: 0 44px 0 16px;
+}
+
 .aac-row-card {
   display: grid;
   grid-template-columns: minmax(160px, 0.35fr) minmax(210px, 0.45fr) 1fr;
   gap: 16px;
   align-items: center;
   padding: 18px 20px;
+}
+
+.aac-session-card {
+  grid-template-columns: minmax(210px, 0.35fr) 1fr auto;
+}
+
+.aac-session-card strong {
+  color: var(--blue);
+  font-size: 0.86rem;
+  font-weight: 850;
 }
 
 .aac-back-link {
@@ -1370,6 +1413,16 @@ a[aria-disabled="true"] {
 
 /* ─── Responsive ─── */
 
+@media (max-width: 1180px) {
+  .aac-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .aac-hero h1 {
+    font-size: 4.25rem;
+  }
+}
+
 @media (max-width: 980px) {
   .site-nav {
     align-items: flex-start;
@@ -1390,7 +1443,6 @@ a[aria-disabled="true"] {
 
   .pathway-grid,
   .hero,
-  .aac-hero,
   .aac-city-hero,
   .catalog-layout,
   .spotlight,
@@ -1441,6 +1493,11 @@ a[aria-disabled="true"] {
 
   .hero {
     padding-top: 44px;
+  }
+
+  .aac-hero h1,
+  .aac-city-hero h1 {
+    font-size: 3rem;
   }
 
   .hero-search {

@@ -149,7 +149,7 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
           <a href="/watch" class="${active}">Learn</a>
         </div>
         <div class="nav-actions">
-          <a class="button ghost" href="/watch/">Cities</a>
+          <a class="button ghost" href="/watch/#events">Sessions</a>
           <a class="button dark" href="https://www.meetup.com/advanced-ai-concepts/" target="_blank" rel="noopener">Join on Meetup</a>
         </div>
       </nav>
@@ -171,7 +171,6 @@ function eventsMarkup(events) {
 }
 
 function hubPage(chapters) {
-  const upcoming = chapters.flatMap((chapter) => chapter.events.map((event) => ({ ...event, chapter })));
   const body = `
       <section class="aac-hero">
         <div>
@@ -179,7 +178,7 @@ function hubPage(chapters) {
           <h1>Practical AI conversations for builders.</h1>
           <p>Join live online sessions about AI command centers, agentic workflows, memory, and the systems behind modern AI products.</p>
           <div class="aac-actions">
-            <a class="button dark" href="#cities">Find your city</a>
+            <a class="button dark" href="#events">Find your city</a>
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
         </div>
@@ -187,34 +186,40 @@ function hubPage(chapters) {
       </section>
     </header>
     <main>
-      <section class="section aac-section" id="cities">
-        <div class="aac-section-heading">
-          <p class="kicker">City chapters</p>
-          <h2>Choose the Meetup city closest to you.</h2>
-        </div>
-        <div class="aac-city-grid">
-          ${chapters.map((chapter) => `
-          <a class="aac-city-card" href="/watch/${chapter.slug}/">
-            <img src="/assets/advanced-ai-concepts/og-${chapter.slug}.jpg" alt="" />
-            <span>${escapeHtml(chapter.state)}</span>
-            <h3>${escapeHtml(chapter.city)}</h3>
-            <p>${chapter.events.length} upcoming events</p>
-          </a>`).join("")}
-        </div>
-      </section>
       <section class="section aac-section" id="events">
         <div class="aac-section-heading">
           <p class="kicker">Upcoming sessions</p>
           <h2>Same live sessions, shared across every city.</h2>
         </div>
-        <div class="aac-event-list">
-          ${upcoming.slice(0, 8).map((event) => `
-          <a class="aac-row-card" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener">
-            <strong>${escapeHtml(event.chapter.city)}</strong>
+        <div class="aac-city-session-picker">
+          <label for="aac-session-city">City</label>
+          <select id="aac-session-city" data-city-select>
+            ${chapters.map((chapter, index) => `
+            <option value="${escapeHtml(chapter.slug)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
+          </select>
+        </div>
+        <div class="aac-event-list" data-city-events>
+          ${chapters.map((chapter, index) => chapter.events.map((event) => `
+          <a class="aac-row-card aac-session-card" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
             <span>${escapeHtml(eventDateLabel(event.dateTime))}</span>
             <p>${escapeHtml(event.title)}</p>
-          </a>`).join("")}
+            <strong>RSVP</strong>
+          </a>`).join("")).join("")}
         </div>
+        <script>
+          (() => {
+            const select = document.querySelector("[data-city-select]");
+            const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
+            if (!select || !cards.length) return;
+            const syncCity = () => {
+              cards.forEach((card) => {
+                card.hidden = card.dataset.city !== select.value;
+              });
+            };
+            select.addEventListener("change", syncCity);
+            syncCity();
+          })();
+        </script>
       </section>
     </main>
     <footer class="site-footer">
@@ -224,7 +229,6 @@ function hubPage(chapters) {
       </div>
       <div>
         <b>Meetups</b>
-        <a href="#cities">Cities</a>
         <a href="#events">Upcoming events</a>
       </div>
       <div>
