@@ -162,6 +162,86 @@ function postJson(string $url, array $payload, string $accessToken): array {
     return [$status, $responseBody === false ? '' : $responseBody, ''];
 }
 
+function fetchBinary(string $url): array {
+    if (function_exists('curl_init')) {
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_TIMEOUT => 30,
+        ]);
+
+        $body = curl_exec($curl);
+        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        $contentType = (string) curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+        $error = curl_error($curl);
+        curl_close($curl);
+
+        return [$status, $body === false ? '' : $body, $contentType, $error];
+    }
+
+    $context = stream_context_create(['http' => ['timeout' => 30, 'ignore_errors' => true]]);
+    $body = file_get_contents($url, false, $context);
+    $status = 0;
+    $contentType = '';
+
+    if (isset($http_response_header)) {
+        foreach ($http_response_header as $header) {
+            if (preg_match('/^HTTP\/\S+\s(\d{3})\s/', $header, $matches)) {
+                $status = (int) $matches[1];
+            }
+            if (stripos($header, 'Content-Type:') === 0) {
+                $contentType = trim(substr($header, strlen('Content-Type:')));
+            }
+        }
+    }
+
+    return [$status, $body === false ? '' : $body, $contentType, ''];
+}
+
+function putBinary(string $url, string $body, string $contentType): array {
+    if (function_exists('curl_init')) {
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS => $body,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER => false,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: ' . $contentType,
+                'Content-Length: ' . strlen($body),
+            ],
+            CURLOPT_TIMEOUT => 60,
+        ]);
+
+        $responseBody = curl_exec($curl);
+        $status = (int) curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+        $error = curl_error($curl);
+        curl_close($curl);
+
+        return [$status, $responseBody === false ? '' : $responseBody, $error];
+    }
+
+    $context = stream_context_create([
+        'http' => [
+            'method' => 'PUT',
+            'header' => "Content-Type: {$contentType}\r\nContent-Length: " . strlen($body) . "\r\n",
+            'content' => $body,
+            'timeout' => 60,
+            'ignore_errors' => true,
+        ],
+    ]);
+
+    $responseBody = file_get_contents($url, false, $context);
+    $status = 0;
+
+    if (isset($http_response_header[0]) && preg_match('/\s(\d{3})\s/', $http_response_header[0], $matches)) {
+        $status = (int) $matches[1];
+    }
+
+    return [$status, $responseBody === false ? '' : $responseBody, ''];
+}
+
 function tokenStorePath(?string $loadedEnv): string {
     $configured = envValue('MEETUP_TOKEN_STORE');
     if ($configured !== '') {
@@ -259,6 +339,71 @@ function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
     }
 
     return $sourceDateTime;
+}
+
+function createAndUploadPhoto(string $tokenPath, string $groupId, string $sourceUrl, string $photoType, bool $setAsMain, ?string $eventId = null): array {
+    [$downloadStatus, $imageBody, $sourceContentType, $downloadError] = fetchBinary($sourceUrl);
+    if ($downloadError !== '' || $downloadStatus < 200 || $downloadStatus >= 300 || $imageBody === '') {
+        return [
+            'ok' => false,
+            'stage' => 'download',
+            'http_status' => $downloadStatus,
+            'error' => $downloadError,
+            'content_type' => $sourceContentType,
+        ];
+    }
+
+    $contentType = stripos($sourceContentType, 'png') !== false ? 'PNG' : 'JPEG';
+    $uploadContentType = $contentType === 'PNG' ? 'image/png' : 'image/jpeg';
+
+    $input = [
+        'groupId' => $groupId,
+        'photoType' => $photoType,
+        'contentType' => $contentType,
+        'setAsMain' => $setAsMain,
+    ];
+    if ($eventId !== null && $eventId !== '') {
+        $input['eventId'] = $eventId;
+    }
+
+    $placeholder = graphQL(<<<'GRAPHQL'
+mutation ($input: GroupEventPhotoCreateInput!) {
+  createGroupEventPhoto(input: $input) {
+    uploadUrl
+    imagePath
+    photo { id baseUrl standardUrl thumbUrl }
+    error { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+    $payload = $placeholder['response']['data']['createGroupEventPhoto'] ?? null;
+    $uploadUrl = is_array($payload) ? (string) ($payload['uploadUrl'] ?? '') : '';
+    if ($uploadUrl === '' || !empty($payload['error']) || !empty($placeholder['response']['errors'])) {
+        return [
+            'ok' => false,
+            'stage' => 'placeholder',
+            'placeholder' => $placeholder,
+        ];
+    }
+
+    [$uploadStatus, $uploadBody, $uploadError] = putBinary($uploadUrl, $imageBody, $uploadContentType);
+
+    return [
+        'ok' => $uploadError === '' && $uploadStatus >= 200 && $uploadStatus < 300,
+        'stage' => 'upload',
+        'download' => [
+            'http_status' => $downloadStatus,
+            'content_type' => $sourceContentType,
+            'bytes' => strlen($imageBody),
+        ],
+        'placeholder' => $payload,
+        'upload' => [
+            'http_status' => $uploadStatus,
+            'body' => $uploadBody,
+            'error' => $uploadError,
+        ],
+    ];
 }
 
 $projectRoot = dirname(__DIR__);
@@ -833,6 +978,196 @@ GRAPHQL, [], $tokenPath);
             'photo' => $photoResult,
         ]);
     }
+
+    if ($action === 'copy-dallas-group-photo') {
+        $confirm = (string) ($_GET['confirm'] ?? '');
+        if ($confirm !== 'copy Dallas group photo') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation.',
+                'expected_confirm' => 'copy Dallas group photo',
+            ]);
+        }
+
+        $sourceResult = graphQL(<<<'GRAPHQL'
+query {
+  groupByUrlname(urlname: "advanced-ai-concepts") {
+    keyGroupPhoto { id standardUrl baseUrl thumbUrl }
+  }
+}
+GRAPHQL, [], $tokenPath);
+        $sourcePhotoUrl = (string) ($sourceResult['response']['data']['groupByUrlname']['keyGroupPhoto']['standardUrl'] ?? '');
+        if ($sourcePhotoUrl === '') {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Source group photo URL not found.',
+                'source' => $sourceResult,
+            ]);
+        }
+
+        $uploadResult = createAndUploadPhoto($tokenPath, '38530543', $sourcePhotoUrl, 'GROUP_PHOTO', true);
+        $verifyResult = graphQL(<<<'GRAPHQL'
+query {
+  groupByUrlname(urlname: "advanced-ai-concepts-dallas") {
+    id
+    name
+    urlname
+    keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+  }
+}
+GRAPHQL, [], $tokenPath);
+
+        respond(200, [
+            'ok' => $uploadResult['ok'],
+            'upload' => $uploadResult,
+            'verify' => $verifyResult,
+        ]);
+    }
+
+    if ($action === 'copy-event-photos') {
+        $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
+        $targetUrlname = trim((string) ($_GET['target'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+
+        if ($targetUrlname === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing target group urlname.']);
+        }
+
+        if ($confirm !== $targetUrlname) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Confirmation must match target urlname.',
+                'expected_confirm' => $targetUrlname,
+            ]);
+        }
+
+        $eventsQuery = <<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 50) {
+      edges {
+        node {
+          id
+          title
+          dateTime
+          featuredEventPhoto { id standardUrl baseUrl thumbUrl }
+          group { id name urlname }
+        }
+      }
+    }
+  }
+}
+GRAPHQL;
+
+        $sourceResult = graphQL($eventsQuery, ['urlname' => $sourceUrlname], $tokenPath);
+        $targetResult = graphQL($eventsQuery, ['urlname' => $targetUrlname], $tokenPath);
+        $sourceEdges = $sourceResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+        $targetEdges = $targetResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+        $targetGroupId = (string) ($targetResult['response']['data']['groupByUrlname']['id'] ?? '');
+
+        if (!is_array($sourceEdges) || !is_array($targetEdges) || $targetGroupId === '') {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Unable to load source or target events.',
+                'source' => $sourceResult,
+                'target' => $targetResult,
+            ]);
+        }
+
+        $targetsByKey = [];
+        foreach ($targetEdges as $edge) {
+            $event = $edge['node'] ?? null;
+            if (is_array($event)) {
+                $targetsByKey[eventKey($event)] = $event;
+            }
+        }
+
+        $copied = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($sourceEdges as $edge) {
+            $sourceEvent = $edge['node'] ?? null;
+            if (!is_array($sourceEvent)) {
+                continue;
+            }
+
+            $targetDate = targetDateTime((string) ($sourceEvent['dateTime'] ?? ''), $targetUrlname);
+            $targetKey = eventKey([
+                'title' => $sourceEvent['title'] ?? '',
+                'dateTime' => $targetDate,
+            ]);
+            $targetEvent = $targetsByKey[$targetKey] ?? null;
+            $sourcePhotoUrl = (string) ($sourceEvent['featuredEventPhoto']['standardUrl'] ?? '');
+
+            if (!is_array($targetEvent)) {
+                $skipped[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'reason' => 'target event not found',
+                ];
+                continue;
+            }
+
+            if (!empty($targetEvent['featuredEventPhoto']['id'])) {
+                $skipped[] = [
+                    'target_id' => $targetEvent['id'] ?? null,
+                    'title' => $targetEvent['title'] ?? null,
+                    'reason' => 'target already has photo',
+                ];
+                continue;
+            }
+
+            if ($sourcePhotoUrl === '') {
+                $skipped[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'target_id' => $targetEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'reason' => 'source has no photo',
+                ];
+                continue;
+            }
+
+            $uploadResult = createAndUploadPhoto(
+                $tokenPath,
+                $targetGroupId,
+                $sourcePhotoUrl,
+                'EVENT_PHOTO',
+                true,
+                (string) ($targetEvent['id'] ?? '')
+            );
+
+            if (!$uploadResult['ok']) {
+                $errors[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'target_id' => $targetEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'result' => $uploadResult,
+                ];
+                continue;
+            }
+
+            $copied[] = [
+                'source_id' => $sourceEvent['id'] ?? null,
+                'target_id' => $targetEvent['id'] ?? null,
+                'title' => $sourceEvent['title'] ?? null,
+                'photo' => $uploadResult['placeholder']['photo'] ?? null,
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'source' => $sourceUrlname,
+            'target' => $targetUrlname,
+            'copied' => $copied,
+            'skipped' => $skipped,
+            'errors' => $errors,
+        ]);
+    }
+
 
     if ($action === 'attach-dallas-network') {
         $confirm = (string) ($_GET['confirm'] ?? '');
