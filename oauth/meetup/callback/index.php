@@ -162,7 +162,7 @@ function postJson(string $url, array $payload, string $accessToken): array {
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER => false,
             CURLOPT_HTTPHEADER => [
-                'Authorization: bearer ' . $accessToken,
+                'Authorization: Bearer ' . $accessToken,
                 'Content-Type: application/json',
             ],
             CURLOPT_TIMEOUT => 20,
@@ -179,7 +179,7 @@ function postJson(string $url, array $payload, string $accessToken): array {
     $context = stream_context_create([
         'http' => [
             'method' => 'POST',
-            'header' => "Authorization: bearer {$accessToken}\r\nContent-Type: application/json\r\n",
+            'header' => "Authorization: Bearer {$accessToken}\r\nContent-Type: application/json\r\n",
             'content' => $body,
             'timeout' => 20,
             'ignore_errors' => true,
