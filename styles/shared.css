@@ -1174,6 +1174,24 @@ p {
   padding: 0 44px 0 16px;
 }
 
+.aac-city-group-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(23, 32, 51, 0.08);
+}
+
+.aac-city-group-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .aac-row-card {
   display: grid;
   grid-template-columns: minmax(160px, 0.35fr) minmax(210px, 0.45fr) 1fr;
@@ -1184,6 +1202,10 @@ p {
 
 .aac-session-card {
   grid-template-columns: minmax(210px, 0.35fr) 1fr auto;
+}
+
+.aac-session-card[hidden] {
+  display: none;
 }
 
 .aac-session-card strong {
@@ -1517,6 +1539,15 @@ a[aria-disabled="true"] {
 
   .aac-row-card {
     grid-template-columns: 1fr;
+  }
+
+  .aac-city-group-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .aac-city-group-card .button {
+    width: 100%;
   }
 
   .category-bar {

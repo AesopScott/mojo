@@ -195,8 +195,12 @@ function hubPage(chapters) {
           <label for="aac-session-city">City</label>
           <select id="aac-session-city" data-city-select>
             ${chapters.map((chapter, index) => `
-            <option value="${escapeHtml(chapter.slug)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
+            <option value="${escapeHtml(chapter.slug)}" data-group-url="${escapeHtml(chapter.meetupUrl)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
           </select>
+        </div>
+        <div class="aac-city-group-card">
+          <p>Join the local Meetup group, then RSVP for an upcoming session.</p>
+          <a class="button dark" data-city-group-link href="${escapeHtml(chapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(chapters[0]?.city || "selected city")} group</a>
         </div>
         <div class="aac-event-list" data-city-events>
           ${chapters.map((chapter, index) => chapter.events.map((event) => `
@@ -209,9 +213,15 @@ function hubPage(chapters) {
         <script>
           (() => {
             const select = document.querySelector("[data-city-select]");
+            const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
             if (!select || !cards.length) return;
             const syncCity = () => {
+              const selected = select.selectedOptions[0];
+              if (groupLink && selected) {
+                groupLink.href = selected.dataset.groupUrl || groupLink.href;
+                groupLink.textContent = `Join the ${selected.textContent} group`;
+              }
               cards.forEach((card) => {
                 card.hidden = card.dataset.city !== select.value;
               });
