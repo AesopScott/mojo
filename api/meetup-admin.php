@@ -325,6 +325,7 @@ query ($urlname: String!) {
     id
     name
     description
+    customMemberLabel
     urlname
     timezone
     city
@@ -332,6 +333,8 @@ query ($urlname: String!) {
     country
     zip
     link
+    activeTopics { id name urlkey }
+    keyGroupPhoto { id baseUrl standardUrl thumbUrl }
     proNetwork { id urlname name }
   }
 }
@@ -339,6 +342,100 @@ GRAPHQL;
         respond(200, [
             'ok' => true,
             'result' => graphQL($query, ['urlname' => $urlname], $tokenPath),
+        ]);
+    }
+
+    if ($action === 'create-dallas-draft') {
+        $confirm = (string) ($_GET['confirm'] ?? '');
+        if ($confirm !== 'Advanced AI Concepts-Dallas') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation. Add confirm=Advanced%20AI%20Concepts-Dallas to create the draft.',
+            ]);
+        }
+
+        $sourceResult = graphQL(<<<'GRAPHQL'
+query {
+  groupByUrlname(urlname: "advanced-ai-concepts") {
+    id
+    name
+    description
+    customMemberLabel
+    activeTopics { id name urlkey }
+    keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+    proNetwork { id urlname name }
+  }
+}
+GRAPHQL, [], $tokenPath);
+
+        $source = $sourceResult['response']['data']['groupByUrlname'] ?? null;
+        if (!is_array($source)) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Unable to load source group.',
+                'source_result' => $sourceResult,
+            ]);
+        }
+
+        $topicIds = [];
+        foreach (($source['activeTopics'] ?? []) as $topic) {
+            if (!empty($topic['id'])) {
+                $topicIds[] = $topic['id'];
+            }
+        }
+
+        $input = [
+            'name' => 'Advanced AI Concepts-Dallas',
+            'description' => (string) ($source['description'] ?? ''),
+            'customMembersLabel' => (string) ($source['customMemberLabel'] ?? 'Members'),
+            'topics' => $topicIds,
+            'urlname' => 'advanced-ai-concepts-dallas',
+            'location' => [
+                'geoLocation' => [
+                    'country' => 'us',
+                    'zip' => '75201',
+                ],
+            ],
+        ];
+
+        $draftResult = graphQL(<<<'GRAPHQL'
+mutation ($input: CreateGroupDraftInput!) {
+  createGroupDraft(input: $input) {
+    token
+    group {
+      id
+      name
+      urlname
+      city
+      state
+      country
+      zip
+      link
+      activeTopics { id name urlkey }
+      keyGroupPhoto { id baseUrl standardUrl thumbUrl }
+      proNetwork { id urlname name }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+        respond(200, [
+            'ok' => true,
+            'source' => [
+                'id' => $source['id'] ?? null,
+                'name' => $source['name'] ?? null,
+                'topic_count' => count($topicIds),
+                'photo_id' => $source['keyGroupPhoto']['id'] ?? null,
+                'pro_network' => $source['proNetwork']['urlname'] ?? null,
+            ],
+            'input' => [
+                'name' => $input['name'],
+                'urlname' => $input['urlname'],
+                'zip' => $input['location']['geoLocation']['zip'],
+                'topic_count' => count($topicIds),
+            ],
+            'result' => $draftResult,
         ]);
     }
 
