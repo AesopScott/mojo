@@ -145,6 +145,34 @@ action=test-sms-store
 
 ---
 
+## `GET /api/meetup-admin?action=send-topic-followups`
+
+Admin/cron action that polls Meetup GraphQL for Advanced AI Concepts RSVPs, records first-seen state, and sends a one-week topic prompt email after an RSVP has been observed for `days_after` days.
+
+**Request shape:** query params
+```
+action=send-topic-followups
+network=advanced-ai-concepts   (optional)
+first=25                       (optional; 1-25)
+days_after=7                   (optional; 1-90)
+confirm=send-topic-followups   (required to send email; otherwise dry-run)
+dry_run_write=1&confirm=test-followup-store  (optional store probe; no Meetup call or email)
+```
+
+**Producers (serves the endpoint)**
+- `api/meetup-admin.php` - admin-gated Meetup automation helper
+
+**Consumers**
+- cPanel cron or manual admin call using `MEETUP_ADMIN_KEY`
+
+**External APIs**
+- Meetup GraphQL `proNetwork.eventsSearch(...).rsvps`
+- PHP `mail()` for the topic prompt email
+
+**Safety guard:** the follow-up store is write-checked before any Meetup work. Email sends only when `confirm=send-topic-followups`; sent state is idempotent in `MOJO_MEETUP_FOLLOWUP_STORE`.
+
+---
+
 ## `GET /api/meetup-admin?action=send-sms-reminders`
 
 Admin/cron action that sends due Twilio SMS reminders for registrants who explicitly opted in.
@@ -179,6 +207,7 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 | `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
 | `/api/meetup-admin?action=poll-sms-invites` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=test-sms-store` | GET | `api/meetup-admin.php` | manual admin | active |
+| `/api/meetup-admin?action=send-topic-followups` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=send-sms-reminders` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 
 ---

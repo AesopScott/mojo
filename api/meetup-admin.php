@@ -503,6 +503,111 @@ function smsStoreWriteCheck(): array {
     }
 }
 
+function topicFollowupStorePath(): string {
+    $configured = envValue('MOJO_MEETUP_FOLLOWUP_STORE');
+    if ($configured !== '') {
+        return $configured;
+    }
+
+    return dirname(__DIR__, 2) . '/mojo-meetup-followups.json';
+}
+
+function topicFollowupReadStore(): array {
+    $path = topicFollowupStorePath();
+    if (!is_readable($path)) {
+        return ['topicFollowups' => []];
+    }
+
+    $decoded = json_decode((string) file_get_contents($path), true);
+    if (!is_array($decoded)) {
+        return ['topicFollowups' => []];
+    }
+
+    return array_replace(['topicFollowups' => []], $decoded);
+}
+
+function topicFollowupWriteStore(array $store): void {
+    $path = topicFollowupStorePath();
+    $dir = dirname($path);
+    if (!is_dir($dir) && !mkdir($dir, 0750, true) && !is_dir($dir)) {
+        throw new RuntimeException('Unable to create Meetup follow-up store directory.');
+    }
+
+    $encoded = json_encode($store, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if ($encoded === false || file_put_contents($path, $encoded . PHP_EOL, LOCK_EX) === false) {
+        throw new RuntimeException('Unable to write Meetup follow-up store.');
+    }
+}
+
+function topicFollowupStoreWriteCheck(): array {
+    try {
+        $store = topicFollowupReadStore();
+        $store['topicFollowups']['__dry_run_probe__'] = [
+            'purpose' => 'advanced_ai_concepts_topic_followup_store_probe',
+            'dryRun' => true,
+            'updatedAt' => gmdate('c'),
+        ];
+        topicFollowupWriteStore($store);
+
+        return [
+            'ok' => true,
+            'path' => topicFollowupStorePath(),
+            'probe_key' => '__dry_run_probe__',
+        ];
+    } catch (Throwable $throwable) {
+        return [
+            'ok' => false,
+            'path' => topicFollowupStorePath(),
+            'probe_key' => '__dry_run_probe__',
+            'error' => $throwable->getMessage(),
+        ];
+    }
+}
+
+function topicFollowupKey(string $source, string $sourceId, string $email): string {
+    return hash('sha256', $source . '|' . $sourceId . '|' . strtolower(trim($email)));
+}
+
+function topicFollowupAdminEmail(): string {
+    $adminEmail = strtolower(envValue('MOJO_ADMIN_EMAIL', 'admin@mojoaistudio.com'));
+    return $adminEmail === '' ? 'admin@mojoaistudio.com' : $adminEmail;
+}
+
+function topicFollowupEmail(array $followup, string $recipientEmail, bool $dryRun): array {
+    $adminEmail = topicFollowupAdminEmail();
+    $memberName = trim((string) ($followup['memberName'] ?? ''));
+    $greeting = $memberName === '' ? 'Hey, glad you found Advanced AI Concepts.' : 'Hey ' . $memberName . ', glad you found Advanced AI Concepts.';
+
+    $subject = 'Anything you want us to dig into?';
+    $body = $greeting . "\n\n"
+        . "Quick question: is there any particular AI topic, build problem, architecture question, model/hardware/harness issue, or advanced concept you would like us to talk about in an upcoming session?\n\n"
+        . "Just reply to this message. It will go to admin@mojoaistudio.com.\n\n"
+        . "The best sessions come from real questions and live problems, so if there is something you are trying to understand, optimize, wire together, or push further, send it over.";
+
+    if ($dryRun) {
+        return ['ok' => true, 'dry_run' => true];
+    }
+
+    $headers = [
+        'From: Mojo AI Studio <' . $adminEmail . '>',
+        'Reply-To: ' . $adminEmail,
+        'Content-Type: text/plain; charset=UTF-8',
+    ];
+
+    return [
+        'ok' => mail($recipientEmail, $subject, $body, implode("\r\n", $headers)),
+        'dry_run' => false,
+    ];
+}
+
+function topicFollowupIsoAfterDays(string $isoDate, int $days): string {
+    try {
+        return (new DateTimeImmutable($isoDate))->modify('+' . $days . ' days')->format('c');
+    } catch (Exception $exception) {
+        return gmdate('c');
+    }
+}
+
 $projectRoot = dirname(__DIR__);
 $loadedEnv = loadFirstEnvFile([
     $projectRoot . '/.env',
@@ -667,6 +772,211 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
     if ($action === 'test-sms-store') {
         $check = smsStoreWriteCheck();
         respond($check['ok'] ? 200 : 500, $check);
+    }
+
+    if ($action === 'send-topic-followups') {
+        $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
+        $first = max(1, min(25, (int) ($_GET['first'] ?? 25)));
+        $daysAfter = max(1, min(90, (int) ($_GET['days_after'] ?? 7)));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'send-topic-followups';
+
+        if ((string) ($_GET['dry_run_write'] ?? '') === '1') {
+            if (trim((string) ($_GET['confirm'] ?? '')) !== 'test-followup-store') {
+                respond(400, [
+                    'ok' => false,
+                    'error' => 'Missing confirmation.',
+                    'expected_confirm' => 'test-followup-store',
+                ]);
+            }
+
+            $check = topicFollowupStoreWriteCheck();
+            respond($check['ok'] ? 200 : 500, $check);
+        }
+
+        $storeCheck = topicFollowupStoreWriteCheck();
+        if (!$storeCheck['ok']) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Meetup follow-up store is not writable.',
+                'store' => $storeCheck,
+            ]);
+        }
+
+        $rsvpResult = graphQL(<<<'GRAPHQL'
+query ($urlname: ID!, $first: Int!) {
+  proNetwork(urlname: $urlname) {
+    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          dateTime
+          group { id name urlname }
+          rsvps {
+            edges {
+              node {
+                id
+                member {
+                  name
+                  email
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
+
+        $events = $rsvpResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
+        if (!is_array($events)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load Meetup RSVPs.',
+                'result' => $rsvpResult,
+            ]);
+        }
+
+        $store = topicFollowupReadStore();
+        $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        $observed = [];
+        $eligible = [];
+        $sent = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($events as $edge) {
+            $event = $edge['node'] ?? null;
+            if (!is_array($event)) {
+                continue;
+            }
+
+            foreach (($event['rsvps']['edges'] ?? []) as $rsvpEdge) {
+                $rsvp = $rsvpEdge['node'] ?? null;
+                if (!is_array($rsvp)) {
+                    continue;
+                }
+
+                $eventId = (string) ($event['id'] ?? '');
+                $rsvpId = (string) ($rsvp['id'] ?? '');
+                $email = trim((string) ($rsvp['member']['email'] ?? ''));
+                if ($eventId === '' || $rsvpId === '' || $email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'missing event, RSVP, or valid email',
+                    ];
+                    continue;
+                }
+
+                $key = topicFollowupKey('rsvp', $rsvpId, $email);
+                $existing = $store['topicFollowups'][$key] ?? null;
+                if (is_array($existing) && !empty($existing['sentAt'])) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'follow-up already sent',
+                    ];
+                    continue;
+                }
+
+                $firstSeenAt = is_array($existing) ? (string) ($existing['firstSeenAt'] ?? gmdate('c')) : gmdate('c');
+                $eligibleAt = is_array($existing)
+                    ? (string) ($existing['eligibleAt'] ?? topicFollowupIsoAfterDays($firstSeenAt, $daysAfter))
+                    : topicFollowupIsoAfterDays($firstSeenAt, $daysAfter);
+
+                $followup = [
+                    'memberEmailHash' => hash('sha256', strtolower($email)),
+                    'memberName' => (string) ($rsvp['member']['name'] ?? ''),
+                    'groupName' => (string) ($event['group']['name'] ?? ''),
+                    'groupUrlname' => (string) ($event['group']['urlname'] ?? ''),
+                    'source' => 'rsvp',
+                    'sourceId' => $rsvpId,
+                    'eventId' => $eventId,
+                    'eventTitle' => (string) ($event['title'] ?? ''),
+                    'eventDateTime' => (string) ($event['dateTime'] ?? ''),
+                    'eventUrl' => (string) ($event['eventUrl'] ?? ''),
+                    'firstSeenAt' => $firstSeenAt,
+                    'eligibleAt' => $eligibleAt,
+                    'sentAt' => is_array($existing) ? ($existing['sentAt'] ?? null) : null,
+                    'purpose' => 'advanced_ai_concepts_one_week_topic_prompt',
+                ];
+
+                $store['topicFollowups'][$key] = $followup;
+                $observed[] = [
+                    'event_id' => $eventId,
+                    'rsvp_id' => $rsvpId,
+                    'member' => $followup['memberName'],
+                    'eligible_at' => $eligibleAt,
+                ];
+
+                try {
+                    $eligibleTime = new DateTimeImmutable($eligibleAt);
+                } catch (Exception $exception) {
+                    $eligibleTime = $now->modify('+' . $daysAfter . ' days');
+                }
+
+                if ($eligibleTime > $now) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'not eligible yet',
+                        'eligible_at' => $eligibleAt,
+                    ];
+                    continue;
+                }
+
+                $eligible[] = [
+                    'event_id' => $eventId,
+                    'rsvp_id' => $rsvpId,
+                    'member' => $followup['memberName'],
+                ];
+
+                $emailResult = topicFollowupEmail($followup, $email, $dryRun);
+                if (empty($emailResult['ok'])) {
+                    $errors[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'email failed',
+                    ];
+                    continue;
+                }
+
+                if (!$dryRun) {
+                    $store['topicFollowups'][$key]['sentAt'] = gmdate('c');
+                }
+
+                $sent[] = [
+                    'event_id' => $eventId,
+                    'rsvp_id' => $rsvpId,
+                    'dry_run' => $dryRun,
+                ];
+            }
+        }
+
+        topicFollowupWriteStore($store);
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'days_after' => $daysAfter,
+            'store' => $storeCheck,
+            'observed_count' => count($observed),
+            'eligible_count' => count($eligible),
+            'sent_count' => count($sent),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'observed' => $observed,
+            'eligible' => $eligible,
+            'errors' => $errors,
+        ]);
     }
 
     if ($action === 'poll-sms-invites') {

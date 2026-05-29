@@ -24,6 +24,22 @@ Default JSON store for Meetup RSVP SMS reminder invites and consented reminder s
 
 ---
 
+## `../mojo-meetup-followups.json`
+
+Default JSON store for Meetup topic follow-up state. The default is one directory above the project root; production can set `MOJO_MEETUP_FOLLOWUP_STORE` to a different absolute path outside public web paths.
+
+**Producers**
+- `api/meetup-admin.php` - `action=send-topic-followups` records first-seen RSVP state and sent markers
+
+**Consumers**
+- `api/meetup-admin.php` - skips already-sent follow-ups and waits until records are eligible
+
+**Expected format:** JSON object with a `topicFollowups` key. Records store hashed email addresses, source IDs, eligibility timestamps, and sent timestamps; raw email addresses are not persisted.
+
+**Status:** active
+
+---
+
 ## `products/data/products.json`
 
 Static JSON file containing all marketplace products.
@@ -249,6 +265,7 @@ GitHub Actions workflow for deploying to MochaHost.
 
 | File Path | Producers | Consumers | Status |
 |-----------|-----------|-----------|--------|
+| `../mojo-meetup-followups.json` | `meetup-admin.php` | `meetup-admin.php` | active |
 | `products/data/products.json` | Task 2.1 | Task 2.2, 2.3, 2.4 | ⚠ missing schema contract |
 | `products/data/products.schema.json` | Task 2.1 (optional) | docs, Task 2.2 (optional) | ✓ optional |
 | `products/pages/[product-id].html` | Task 2.3 | Task 2.3, user | ✓ |

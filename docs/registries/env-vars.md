@@ -150,6 +150,22 @@ Absolute filesystem path for the SMS reminder JSON store. Keep this outside publ
 
 ---
 
+## `MOJO_MEETUP_FOLLOWUP_STORE`
+
+Absolute filesystem path for the Meetup topic follow-up JSON store. Keep this outside public web paths in production.
+
+**Producers**
+- Stored in server `.env` file (optional)
+
+**Consumers**
+- `api/meetup-admin.php` - `action=send-topic-followups` reads/writes observed RSVP state and sent markers
+
+**Default:** `../mojo-meetup-followups.json` relative to the project root
+
+**Status:** active
+
+---
+
 ## `TWILIO_ACCOUNT_SID`
 
 Twilio account SID used to send SMS reminders.
@@ -208,6 +224,7 @@ Twilio sender phone number for event reminder SMS messages.
 | `MEETUP_TOKEN_STORE` | server `.env` (optional) | `meetup-admin.php:247`, `callback/index.php:307` | ✓ |
 | `MOJO_PUBLIC_BASE_URL` | server `.env` (optional) | `sms-reminder-lib.php` | active |
 | `MOJO_SMS_REMINDER_STORE` | server `.env` (optional) | `sms-reminder-lib.php`, `meetup-admin.php`, `sms-reminders.php` | active |
+| `MOJO_MEETUP_FOLLOWUP_STORE` | server `.env` (optional) | `meetup-admin.php` | active |
 | `TWILIO_ACCOUNT_SID` | server `.env` | `sms-reminder-lib.php` | active |
 | `TWILIO_AUTH_TOKEN` | server `.env` | `sms-reminder-lib.php` | active |
 | `TWILIO_FROM_NUMBER` | server `.env` | `sms-reminder-lib.php` | active |
