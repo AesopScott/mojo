@@ -2549,6 +2549,39 @@ GRAPHQL, [
         ]);
     }
 
+    if ($action === 'reservation-count') {
+        $networkResult = graphQL(<<<'GRAPHQL'
+query ($first: Int!) {
+  proNetwork(urlname: "advanced-ai-concepts") {
+    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+      edges {
+        node {
+          id
+          title
+          rsvps {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['first' => 50], $tokenPath);
+
+        $events = $networkResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
+        $total = 0;
+        foreach ($events as $edge) {
+            $total += (int) ($edge['node']['rsvps']['totalCount'] ?? 0);
+        }
+
+        respond(200, [
+            'ok' => true,
+            'count' => $total,
+            'source' => 'advanced-ai-concepts',
+            'updatedAt' => date('c'),
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
