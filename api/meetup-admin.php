@@ -2575,7 +2575,7 @@ GRAPHQL, ['first' => 50], $tokenPath);
         $breakdown = [];
         foreach ($events as $edge) {
             $node = $edge['node'] ?? [];
-            $rsvpCount = (int) ($node['rsvps']['totalCount'] ?? 0);
+            $rsvpCount = max(0, (int) ($node['rsvps']['totalCount'] ?? 0) - 1);
             $total += $rsvpCount;
             $breakdown[] = [
                 'id'    => $node['id'] ?? null,
