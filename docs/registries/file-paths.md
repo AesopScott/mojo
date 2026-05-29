@@ -261,6 +261,23 @@ GitHub Actions workflow for deploying to MochaHost.
 
 ---
 
+## `.github/workflows/meetup-topic-followups.yml`
+
+GitHub Actions scheduled workflow that calls the Mojo PHP admin endpoint to send eligible Advanced AI Concepts topic follow-up emails.
+
+**Producers**
+- Meetup topic follow-up automation task - creates workflow
+
+**Consumers**
+- GitHub Actions - runs daily and on manual dispatch
+- `api/meetup-admin.php` - receives the scheduled request and sends only eligible follow-ups
+
+**Expected behavior:** Runs daily at 15:17 UTC, passes `MEETUP_ADMIN_KEY` as an `X-Admin-Key` header from the GitHub repository secret, and calls `action=send-topic-followups&confirm=send-topic-followups`.
+
+**Status:** active
+
+---
+
 ## Summary
 
 | File Path | Producers | Consumers | Status |
@@ -278,6 +295,7 @@ GitHub Actions workflow for deploying to MochaHost.
 | `.env.example` | Task 1.4, 1.5 | developer | ⚠ conditional entries not documented |
 | `.env` | Task 1.4, 1.5 | runtime | ✓ |
 | `.github/workflows/deploy.yml` | Task 1.1 | GitHub Actions | ✓ |
+| `.github/workflows/meetup-topic-followups.yml` | topic follow-up automation | GitHub Actions, `meetup-admin.php` | active |
 
 ---
 

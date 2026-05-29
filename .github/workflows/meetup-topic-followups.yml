@@ -1,0 +1,19 @@
+name: Send Meetup topic follow-ups
+
+on:
+  schedule:
+    - cron: '17 15 * * *'
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Mojo follow-up endpoint
+        env:
+          MEETUP_ADMIN_KEY: ${{ secrets.MEETUP_ADMIN_KEY }}
+        run: |
+          test -n "$MEETUP_ADMIN_KEY"
+          curl --fail-with-body --silent --show-error \
+            --header "X-Admin-Key: $MEETUP_ADMIN_KEY" \
+            "https://mojoaistudio.com/api/meetup-admin?action=send-topic-followups&confirm=send-topic-followups"

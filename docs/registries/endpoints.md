@@ -164,6 +164,7 @@ dry_run_write=1&confirm=test-followup-store  (optional store probe; no Meetup ca
 
 **Consumers**
 - cPanel cron or manual admin call using `MEETUP_ADMIN_KEY`
+- `.github/workflows/meetup-topic-followups.yml` - daily scheduled GitHub Actions call using the `MEETUP_ADMIN_KEY` repository secret
 
 **External APIs**
 - Meetup GraphQL `proNetwork.eventsSearch(...).rsvps`
@@ -207,7 +208,7 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 | `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
 | `/api/meetup-admin?action=poll-sms-invites` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=test-sms-store` | GET | `api/meetup-admin.php` | manual admin | active |
-| `/api/meetup-admin?action=send-topic-followups` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
+| `/api/meetup-admin?action=send-topic-followups` | GET | `api/meetup-admin.php` | GitHub Actions cron/cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=send-sms-reminders` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 
 ---

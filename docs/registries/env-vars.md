@@ -77,9 +77,11 @@ Secret key that gates access to the `api/meetup-admin.php` endpoint. Must be pro
 
 **Producers**
 - Stored in server `.env` file
+- GitHub repository secret for scheduled follow-up workflow
 
 **Consumers**
 - `api/meetup-admin.php:444` — `envValue('MEETUP_ADMIN_KEY')` — compared via `hash_equals()` to the provided key
+- `.github/workflows/meetup-topic-followups.yml` - sends the key as an `X-Admin-Key` header to the deployed endpoint
 
 **Status:** ✓
 
@@ -219,7 +221,7 @@ Twilio sender phone number for event reminder SMS messages.
 | `POLAR_WEBHOOK_SECRET` | Firebase CLI secrets | `functions/index.js:36,50` | ✓ |
 | `MEETUP_CLIENT_ID` | server `.env` | `meetup-admin.php:282`, `callback/index.php:268` | ✓ |
 | `MEETUP_CLIENT_SECRET` | server `.env` | `meetup-admin.php:283`, `callback/index.php:269` | ✓ |
-| `MEETUP_ADMIN_KEY` | server `.env` | `meetup-admin.php:444` | ✓ |
+| `MEETUP_ADMIN_KEY` | server `.env`, GitHub secret | `meetup-admin.php:444`, `meetup-topic-followups.yml` | ✓ |
 | `MEETUP_REDIRECT_URI` | server `.env` (optional) | `callback/index.php:270` | ✓ |
 | `MEETUP_TOKEN_STORE` | server `.env` (optional) | `meetup-admin.php:247`, `callback/index.php:307` | ✓ |
 | `MOJO_PUBLIC_BASE_URL` | server `.env` (optional) | `sms-reminder-lib.php` | active |
