@@ -39,8 +39,8 @@ $oneDayAgo    = gmdate('Y-m-d\TH:i:s\Z', strtotime('-24 hours'));
 // POST to Cloudflare GraphQL via stream_context
 $cfUrl = 'https://api.cloudflare.com/client/v4/graphql';
 $query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {'
-    . ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { visits } }'
-    . ' day: httpRequests1hGroups(orderBy: [datetime_ASC] limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { visits } }'
+    . ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { pageViews } }'
+    . ' day: httpRequests1hGroups(orderBy: [datetime_ASC] limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { pageViews } }'
     . ' } } }';
 $body = json_encode(array('query' => $query));
 
@@ -77,10 +77,10 @@ if ($zones === null) {
 $weekVisits = 0;
 $dayVisits  = 0;
 foreach (isset($zones['week']) ? $zones['week'] : array() as $row) {
-    $weekVisits += isset($row['sum']['visits']) ? (int) $row['sum']['visits'] : 0;
+    $weekVisits += isset($row['sum']['pageViews']) ? (int) $row['sum']['pageViews'] : 0;
 }
 foreach (isset($zones['day']) ? $zones['day'] : array() as $row) {
-    $dayVisits += isset($row['sum']['visits']) ? (int) $row['sum']['visits'] : 0;
+    $dayVisits += isset($row['sum']['pageViews']) ? (int) $row['sum']['pageViews'] : 0;
 }
 
 $result = json_encode(array('ok' => true, 'week' => $weekVisits, 'day' => $dayVisits));
