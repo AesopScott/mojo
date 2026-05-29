@@ -777,7 +777,7 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
 
     if ($action === 'send-topic-followups') {
         $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
-        $first = max(1, min(25, (int) ($_GET['first'] ?? 25)));
+        $first = max(1, min(50, (int) ($_GET['first'] ?? 50)));
         $daysAfter = max(1, min(90, (int) ($_GET['days_after'] ?? 7)));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'send-topic-followups';
@@ -846,6 +846,18 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
         }
 
         $store = topicFollowupReadStore();
+
+        $selfResult = graphQL('query { self { id email } }', [], $tokenPath);
+        $organizerEmail = strtolower(trim((string) ($selfResult['response']['data']['self']['email'] ?? '')));
+
+        $emailsSent = [];
+        foreach ($store['topicFollowups'] as $storeEntry) {
+            if (is_array($storeEntry) && !empty($storeEntry['sentAt']) && !empty($storeEntry['memberEmailHash'])) {
+                $emailsSent[$storeEntry['memberEmailHash']] = true;
+            }
+        }
+        $emailsQueuedThisRun = [];
+
         $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $observed = [];
         $eligible = [];
@@ -873,6 +885,25 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
                         'event_id' => $eventId,
                         'rsvp_id' => $rsvpId,
                         'reason' => 'missing event, RSVP, or valid email',
+                    ];
+                    continue;
+                }
+
+                if ($organizerEmail !== '' && strtolower($email) === $organizerEmail) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'organizer excluded',
+                    ];
+                    continue;
+                }
+
+                $emailHash = hash('sha256', strtolower($email));
+                if (isset($emailsSent[$emailHash]) || isset($emailsQueuedThisRun[$emailHash])) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'follow-up already sent to this email',
                     ];
                     continue;
                 }
@@ -939,6 +970,8 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
                     'rsvp_id' => $rsvpId,
                     'member' => $followup['memberName'],
                 ];
+
+                $emailsQueuedThisRun[$emailHash] = true;
 
                 $emailResult = topicFollowupEmail($followup, $email, $dryRun);
                 if (empty($emailResult['ok'])) {
