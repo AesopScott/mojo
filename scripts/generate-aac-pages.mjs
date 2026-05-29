@@ -262,6 +262,7 @@ function hubPage(chapters) {
         <div class="aac-section-heading">
           <p class="kicker">Upcoming sessions</p>
           <h2>Same live sessions, shared across every city.</h2>
+          <p>Each event is limited to 100 people.</p>
         </div>
         <div class="aac-city-session-picker">
           <label for="aac-session-city">City</label>
@@ -271,7 +272,7 @@ function hubPage(chapters) {
           </select>
         </div>
         <div class="aac-city-group-card">
-          <p>Join the local Meetup group, then RSVP for an upcoming session.</p>
+          <p>Join the local Meetup group, then RSVP for an upcoming session. Each event is limited to 100 people.</p>
           <a class="button dark" data-city-group-link href="${escapeHtml(chapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(chapters[0]?.city || "selected city")} group</a>
         </div>
         <div class="aac-event-list" data-city-events>
@@ -364,6 +365,7 @@ function cityPage(chapter) {
         <div class="aac-section-heading">
           <p class="kicker">Upcoming events</p>
           <h2>RSVP through Meetup.</h2>
+          <p>Each event is limited to 100 people.</p>
         </div>
         <div class="aac-events-grid">
           ${eventsMarkup(chapter.events)}
