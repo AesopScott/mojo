@@ -50,26 +50,30 @@ $oneDayAgo    = gmdate('Y-m-d\TH:i:s\Z', strtotime('-24 hours'));
 
 // GraphQL query
 $cfUrl = 'https://api.cloudflare.com/client/v4/graphql';
-$query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {' .
-    ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { visits } }' .
-    ' day: httpRequests1hGroups(orderBy: [datetime_ASC] limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { visits } }' .
-    ' } } }';
+$query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {'
+    . ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { visits } }'
+    . ' day: httpRequests1hGroups(orderBy: [datetime_ASC] limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { visits } }'
+    . ' } } }';
 $body = json_encode(array('query' => $query));
 
-// POST to Cloudflare via curl
-$ch = curl_init($cfUrl);
-curl_setopt($ch, CURLOPT_POST,           true);
-curl_setopt($ch, CURLOPT_POSTFIELDS,     $body);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Bearer ' . $token, 'Content-Type: application/json'));
-curl_setopt($ch, CURLOPT_TIMEOUT,        10);
-$response = curl_exec($ch);
-$httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+try {
+    $ch = curl_init($cfUrl);
+    curl_setopt($ch, CURLOPT_POST,           true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,     $body);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Bearer ' . $token, 'Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_TIMEOUT,        10);
+    $response = curl_exec($ch);
+    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+} catch (\Throwable $e) {
+    echo json_encode(array('ok' => false, 'caught' => $e->getMessage(), 'type' => get_class($e)));
+    exit;
+}
 
 if ($response === false || $httpCode !== 200) {
     http_response_code(502);
-    echo json_encode(array('ok' => false));
+    echo json_encode(array('ok' => false, 'http' => $httpCode));
     exit;
 }
 
@@ -79,7 +83,7 @@ $zones = isset($data['data']['viewer']['zones'][0]) ? $data['data']['viewer']['z
 
 if ($zones === null) {
     http_response_code(502);
-    echo json_encode(array('ok' => false));
+    echo json_encode(array('ok' => false, 'raw' => substr((string)$response, 0, 300)));
     exit;
 }
 
