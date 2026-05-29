@@ -2599,6 +2599,135 @@ GRAPHQL, ['first' => 50], $tokenPath);
         respond(200, $payload);
     }
 
+    if ($action === 'update-event-rsvp-limits') {
+        $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
+        $first = max(1, min(100, (int) ($_GET['first'] ?? 50)));
+        $limit = max(1, min(500, (int) ($_GET['limit'] ?? 100)));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'update-event-rsvp-limits';
+
+        $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: ID!, $first: Int!) {
+  proNetwork(urlname: $urlname) {
+    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          dateTime
+          group { id name urlname }
+          rsvpSettings { rsvpLimit }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
+
+        $edges = $eventsResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
+        if (!is_array($edges)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load upcoming Meetup events.',
+                'result' => $eventsResult,
+            ]);
+        }
+
+        $updated = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($edges as $edge) {
+            $event = $edge['node'] ?? null;
+            if (!is_array($event)) {
+                continue;
+            }
+
+            $eventId = (string) ($event['id'] ?? '');
+            $currentLimit = $event['rsvpSettings']['rsvpLimit'] ?? null;
+            $summary = [
+                'event_id' => $eventId,
+                'title' => (string) ($event['title'] ?? ''),
+                'group' => (string) ($event['group']['urlname'] ?? ''),
+                'date' => (string) ($event['dateTime'] ?? ''),
+                'current_limit' => $currentLimit,
+                'target_limit' => $limit,
+                'event_url' => (string) ($event['eventUrl'] ?? ''),
+            ];
+
+            if ($eventId === '') {
+                $errors[] = $summary + ['reason' => 'missing event id'];
+                continue;
+            }
+
+            if ((int) $currentLimit === $limit) {
+                $skipped[] = $summary + ['reason' => 'already set'];
+                continue;
+            }
+
+            if ($dryRun) {
+                $updated[] = $summary + ['dry_run' => true];
+                continue;
+            }
+
+            $updateResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      dateTime
+      group { name urlname }
+      rsvpSettings { rsvpLimit }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'eventId' => $eventId,
+                    'rsvpSettings' => [
+                        'rsvpLimit' => $limit,
+                    ],
+                ],
+            ], $tokenPath);
+
+            $payload = $updateResult['response']['data']['editEvent'] ?? null;
+            $mutationErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+            if (!is_array($payload) || !empty($mutationErrors) || empty($payload['event'])) {
+                $errors[] = $summary + [
+                    'reason' => 'update failed',
+                    'result' => $updateResult,
+                ];
+                continue;
+            }
+
+            $updatedEvent = $payload['event'];
+            $updated[] = $summary + [
+                'dry_run' => false,
+                'updated_limit' => $updatedEvent['rsvpSettings']['rsvpLimit'] ?? null,
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'network' => $networkUrlname,
+            'target_limit' => $limit,
+            'total_loaded' => count($edges),
+            'updated_count' => count($updated),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'updated' => $updated,
+            'skipped' => $skipped,
+            'errors' => $errors,
+        ]);
+    }
+
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
 } catch (Throwable $exception) {
     respond(500, ['ok' => false, 'error' => $exception->getMessage()]);
