@@ -337,6 +337,7 @@ function eventKey(array $event): string {
 
 function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
     $timeZones = [
+        'advanced-ai-concepts-atlanta' => 'America/New_York',
         'advanced-ai-concepts-boston' => 'America/New_York',
         'advanced-ai-concepts-chicago' => 'America/Chicago',
         'advanced-ai-concepts-columbus' => 'America/New_York',
@@ -2233,6 +2234,151 @@ GRAPHQL;
             'source' => $sourceUrlname,
             'target' => $targetUrlname,
             'copied' => $copied,
+            'skipped' => $skipped,
+            'errors' => $errors,
+        ]);
+    }
+
+    if ($action === 'sync-event-local-times') {
+        $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
+        $targetUrlname = trim((string) ($_GET['target'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $limit = max(1, min(500, (int) ($_GET['limit'] ?? 100)));
+        $dryRun = $confirm !== $targetUrlname;
+
+        if ($targetUrlname === '') {
+            respond(400, ['ok' => false, 'error' => 'Missing target group urlname.']);
+        }
+
+        $eventsQuery = <<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 50) {
+      edges {
+        node {
+          id
+          title
+          status
+          eventUrl
+          dateTime
+          group { id name urlname }
+        }
+      }
+    }
+  }
+}
+GRAPHQL;
+
+        $sourceResult = graphQL($eventsQuery, ['urlname' => $sourceUrlname], $tokenPath);
+        $targetResult = graphQL($eventsQuery, ['urlname' => $targetUrlname], $tokenPath);
+        $sourceEdges = $sourceResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+        $targetEdges = $targetResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+
+        if (!is_array($sourceEdges) || !is_array($targetEdges)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load source or target events.',
+                'source' => $sourceResult,
+                'target' => $targetResult,
+            ]);
+        }
+
+        $targetsByTitle = [];
+        foreach ($targetEdges as $edge) {
+            $event = $edge['node'] ?? null;
+            if (is_array($event)) {
+                $targetsByTitle[strtolower(trim((string) ($event['title'] ?? '')))] = $event;
+            }
+        }
+
+        $updated = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($sourceEdges as $edge) {
+            $sourceEvent = $edge['node'] ?? null;
+            if (!is_array($sourceEvent) || ($sourceEvent['status'] ?? '') !== 'ACTIVE') {
+                continue;
+            }
+
+            $title = (string) ($sourceEvent['title'] ?? '');
+            $targetEvent = $targetsByTitle[strtolower(trim($title))] ?? null;
+            $targetDate = targetDateTime((string) ($sourceEvent['dateTime'] ?? ''), $targetUrlname);
+
+            if (!is_array($targetEvent)) {
+                $skipped[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'title' => $title,
+                    'reason' => 'target event not found by title',
+                ];
+                continue;
+            }
+
+            $summary = [
+                'event_id' => $targetEvent['id'] ?? null,
+                'title' => $title,
+                'old_date' => $targetEvent['dateTime'] ?? null,
+                'target_date' => $targetDate,
+                'target_limit' => $limit,
+                'event_url' => $targetEvent['eventUrl'] ?? null,
+            ];
+
+            if ($dryRun) {
+                $updated[] = $summary + ['dry_run' => true];
+                continue;
+            }
+
+            $editResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      dateTime
+      eventUrl
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'eventId' => (string) ($targetEvent['id'] ?? ''),
+                    'startDateTime' => $targetDate,
+                    'rsvpSettings' => [
+                        'rsvpLimit' => $limit,
+                    ],
+                ],
+            ], $tokenPath);
+
+            $payload = $editResult['response']['data']['editEvent'] ?? null;
+            $payloadErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+            if (!is_array($payload) || !empty($payloadErrors) || empty($payload['event'])) {
+                $errors[] = $summary + [
+                    'reason' => 'edit failed',
+                    'result' => $editResult,
+                ];
+                continue;
+            }
+
+            $updated[] = $summary + [
+                'dry_run' => false,
+                'new_date' => $payload['event']['dateTime'] ?? null,
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'source' => $sourceUrlname,
+            'target' => $targetUrlname,
+            'updated_count' => count($updated),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'updated' => $updated,
             'skipped' => $skipped,
             'errors' => $errors,
         ]);
