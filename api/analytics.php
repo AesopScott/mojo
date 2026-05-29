@@ -2,7 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 
-// Load credentials (same as working probe)
+// Load credentials (proven working)
 $token  = '';
 $zoneId = '';
 $envPath = dirname(dirname(__FILE__)) . '/.env';
@@ -17,31 +17,29 @@ if (is_readable($envPath)) {
 }
 if (!$token || !$zoneId) { echo json_encode(array('ok' => false, 'step' => 'no creds')); exit; }
 
-// Build a minimal test query
+// Minimal test query via stream_context only (no curl)
 $cfUrl = 'https://api.cloudflare.com/client/v4/graphql';
 $body  = json_encode(array('query' => '{ viewer { __typename } }'));
 
-// Test curl_init
-$ch = curl_init($cfUrl);
-if ($ch === false) {
-    echo json_encode(array('ok' => false, 'step' => 'curl_init failed'));
-    exit;
+$context = stream_context_create(array(
+    'http' => array(
+        'method'        => 'POST',
+        'header'        => 'Authorization: Bearer ' . $token . "\r\nContent-Type: application/json\r\n",
+        'content'       => $body,
+        'timeout'       => 10,
+        'ignore_errors' => true,
+    ),
+));
+
+$response = @file_get_contents($cfUrl, false, $context);
+$httpCode = 0;
+if (isset($http_response_header[0]) && preg_match('/HTTP\/\S+\s+(\d{3})/', $http_response_header[0], $m)) {
+    $httpCode = (int) $m[1];
 }
 
-curl_setopt($ch, CURLOPT_POST,           true);
-curl_setopt($ch, CURLOPT_POSTFIELDS,     $body);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Bearer ' . $token, 'Content-Type: application/json'));
-curl_setopt($ch, CURLOPT_TIMEOUT,        10);
-$response = curl_exec($ch);
-$httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-$curlErr  = curl_error($ch);
-curl_close($ch);
-
 echo json_encode(array(
-    'ok'       => ($httpCode === 200),
-    'step'     => 'curl done',
-    'http'     => $httpCode,
-    'curl_err' => $curlErr,
-    'raw'      => substr((string)$response, 0, 200),
+    'ok'   => ($httpCode === 200),
+    'step' => 'stream done',
+    'http' => $httpCode,
+    'raw'  => substr((string) $response, 0, 200),
 ));
