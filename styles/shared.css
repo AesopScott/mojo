@@ -1051,6 +1051,10 @@ p {
   gap: 6px;
 }
 
+.aac-stats[hidden] {
+  display: none;
+}
+
 .aac-stats span {
   display: inline-flex;
   align-items: baseline;
