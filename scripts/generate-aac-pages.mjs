@@ -21,6 +21,7 @@ const cities = [
   { city: "New York", state: "NY", slug: "new-york", urlname: "advanced-ai-concepts-new-york" },
   { city: "Boston", state: "MA", slug: "boston", urlname: "advanced-ai-concepts-boston" },
   { city: "Miami", state: "FL", slug: "miami", urlname: "advanced-ai-concepts-miami" },
+  { city: "Atlanta", state: "GA", slug: "atlanta", urlname: "advanced-ai-concepts-atlanta" },
   { city: "Seattle", state: "WA", slug: "seattle", urlname: "advanced-ai-concepts-seattle" },
   { city: "Phoenix", state: "AZ", slug: "phoenix", urlname: "advanced-ai-concepts-phoenix" },
   { city: "Houston", state: "TX", slug: "houston", urlname: "advanced-ai-concepts-houston" },
