@@ -640,7 +640,8 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
     if ($action === 'poll-sms-invites') {
         $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
         $first = max(1, min(25, (int) ($_GET['first'] ?? 10)));
-        $dryRun = (string) ($_GET['dry_run'] ?? '') === '1';
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'send-sms-invites';
 
         $rsvpResult = graphQL(<<<'GRAPHQL'
 query ($urlname: ID!, $first: Int!) {
@@ -784,7 +785,8 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
 
     if ($action === 'send-sms-reminders') {
         $leadHours = max(1, min(168, (int) ($_GET['lead_hours'] ?? 24)));
-        $dryRun = (string) ($_GET['dry_run'] ?? '') === '1';
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'send-sms-reminders';
         $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $store = smsReadStore();
         $sent = [];

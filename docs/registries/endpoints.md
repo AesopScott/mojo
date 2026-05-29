@@ -110,7 +110,7 @@ Admin/cron action that polls Meetup GraphQL for upcoming Advanced AI Concepts RS
 action=poll-sms-invites
 network=advanced-ai-concepts  (optional)
 first=10                       (optional; 1-25)
-dry_run=1                      (optional)
+confirm=send-sms-invites       (required to send email; otherwise dry-run)
 ```
 
 **Producers (serves the endpoint)**
@@ -133,7 +133,7 @@ Admin/cron action that sends due Twilio SMS reminders for registrants who explic
 ```
 action=send-sms-reminders
 lead_hours=24   (optional; 1-168)
-dry_run=1       (optional)
+confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 ```
 
 **Producers (serves the endpoint)**
