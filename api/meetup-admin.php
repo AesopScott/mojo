@@ -435,7 +435,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
     ];
 }
 
-function emailSmsInvite(array $invite, string $recipientEmail, bool $dryRun): array {
+function emailSmsInvite(array $invite, string $recipientEmail, bool $dryRun, bool $recovery): array {
     $adminEmail = envValue('MOJO_ADMIN_EMAIL', 'admin@MojoAiStudio.com');
     $eventTitle = (string) ($invite['eventTitle'] ?? 'Advanced AI Concepts event');
     $eventDate = '';
@@ -449,8 +449,12 @@ function emailSmsInvite(array $invite, string $recipientEmail, bool $dryRun): ar
     }
 
     $subject = 'SMS reminder for ' . $eventTitle;
-    $body = "Hi " . ((string) ($invite['memberName'] ?? 'there')) . ",\n\n"
-        . "You registered for " . $eventTitle . " on Meetup";
+    $body = "Hi " . ((string) ($invite['memberName'] ?? 'there')) . ",\n\n";
+    if ($recovery) {
+        $body .= "Quick apology: if you received an earlier SMS reminder link from us, it may not have worked. "
+            . "This updated link is the one to use.\n\n";
+    }
+    $body .= "You registered for " . $eventTitle . " on Meetup";
     if ($eventDate !== '') {
         $body .= " (" . $eventDate . ")";
     }
@@ -642,6 +646,7 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
         $first = max(1, min(25, (int) ($_GET['first'] ?? 10)));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'send-sms-invites';
+        $recovery = (string) ($_GET['recovery'] ?? '') === '1';
 
         $rsvpResult = graphQL(<<<'GRAPHQL'
 query ($urlname: ID!, $first: Int!) {
@@ -741,7 +746,7 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
                     'purpose' => 'invite_meetup_rsvp_to_sms_event_reminder',
                 ];
 
-                $emailResult = emailSmsInvite($invite, $email, $dryRun);
+                $emailResult = emailSmsInvite($invite, $email, $dryRun, $recovery);
                 if (empty($emailResult['ok'])) {
                     $errors[] = [
                         'event_id' => $eventId,
@@ -774,6 +779,7 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
         respond(200, [
             'ok' => empty($errors),
             'dry_run' => $dryRun,
+            'recovery' => $recovery,
             'created_count' => count($created),
             'sent_count' => count($sent),
             'skipped_count' => count($skipped),

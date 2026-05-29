@@ -110,6 +110,7 @@ Admin/cron action that polls Meetup GraphQL for upcoming Advanced AI Concepts RS
 action=poll-sms-invites
 network=advanced-ai-concepts  (optional)
 first=10                       (optional; 1-25)
+recovery=1                     (optional; adds apology/update copy)
 confirm=send-sms-invites       (required to send email; otherwise dry-run)
 ```
 
