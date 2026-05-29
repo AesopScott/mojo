@@ -335,11 +335,12 @@ function eventKey(array $event): string {
     return $title . '|' . substr($dateTime, 0, 19);
 }
 
-function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
-    $timeZones = [
+function groupTimeZones(): array {
+    return [
         'advanced-ai-concepts-atlanta' => 'America/New_York',
         'advanced-ai-concepts-boston' => 'America/New_York',
         'advanced-ai-concepts-chicago' => 'America/Chicago',
+        'advanced-ai-concepts' => 'America/Denver',
         'advanced-ai-concepts-columbus' => 'America/New_York',
         'advanced-ai-concepts-dallas' => 'America/Chicago',
         'advanced-ai-concepts-houston' => 'America/Chicago',
@@ -357,11 +358,19 @@ function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
         'advanced-ai-concepts-the-triangle' => 'America/New_York',
         'advanced-ai-concepts-washington-dc' => 'America/New_York',
     ];
+}
 
-    if (isset($timeZones[$targetUrlname])) {
+function groupTimeZone(string $urlname): ?string {
+    $timeZones = groupTimeZones();
+    return $timeZones[$urlname] ?? null;
+}
+
+function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
+    $timeZone = groupTimeZone($targetUrlname);
+    if ($timeZone !== null) {
         try {
             $localDateTime = substr($sourceDateTime, 0, 19);
-            $target = new DateTimeImmutable($localDateTime, new DateTimeZone($timeZones[$targetUrlname]));
+            $target = new DateTimeImmutable($localDateTime, new DateTimeZone($timeZone));
             return $target->format('Y-m-d\TH:i:sP');
         } catch (Exception $exception) {
             return $sourceDateTime;
@@ -369,6 +378,24 @@ function targetDateTime(string $sourceDateTime, string $targetUrlname): string {
     }
 
     return $sourceDateTime;
+}
+
+function localGroupDateTime(string $date, string $time, string $targetUrlname): string {
+    $timeZone = groupTimeZone($targetUrlname);
+    if ($timeZone !== null) {
+        try {
+            $target = new DateTimeImmutable($date . 'T' . $time . ':00', new DateTimeZone($timeZone));
+            return $target->format('Y-m-d\TH:i:sP');
+        } catch (Exception $exception) {
+            return $date . 'T' . $time . ':00';
+        }
+    }
+
+    return $date . 'T' . $time . ':00';
+}
+
+function editEventLocalDateTimeValue(string $dateTime): string {
+    return substr($dateTime, 0, 16);
 }
 
 function createAndUploadPhoto(string $tokenPath, string $groupId, string $sourceUrl, string $photoType, bool $setAsMain, ?string $eventId = null): array {
@@ -2380,7 +2407,7 @@ mutation ($input: EditEventInput!) {
 GRAPHQL, [
                 'input' => [
                     'eventId' => (string) ($targetEvent['id'] ?? ''),
-                    'startDateTime' => substr($targetDate, 0, 16),
+                    'startDateTime' => editEventLocalDateTimeValue($targetDate),
                     'rsvpSettings' => [
                         'rsvpLimit' => $limit,
                     ],
@@ -2894,6 +2921,154 @@ GRAPHQL, [
             'error_count' => count($errors),
             'updated' => $updated,
             'skipped' => $skipped,
+            'errors' => $errors,
+        ]);
+    }
+
+    if ($action === 'set-event-local-time') {
+        $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
+        $first = max(1, min(100, (int) ($_GET['first'] ?? 100)));
+        $titleFilter = trim((string) ($_GET['title'] ?? 'Building Agentic Pipelines I'));
+        $dateFilter = trim((string) ($_GET['date'] ?? '2026-06-19'));
+        $time = trim((string) ($_GET['time'] ?? '18:00'));
+        $limit = max(1, min(500, (int) ($_GET['limit'] ?? 100)));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'set-event-local-time';
+
+        if ($titleFilter === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateFilter) || !preg_match('/^\d{2}:\d{2}$/', $time)) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Provide title, date as YYYY-MM-DD, and time as HH:MM.',
+            ]);
+        }
+
+        $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: ID!, $first: Int!) {
+  proNetwork(urlname: $urlname) {
+    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          dateTime
+          group { id name urlname }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
+
+        $edges = $eventsResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
+        if (!is_array($edges)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load upcoming Meetup events.',
+                'result' => $eventsResult,
+            ]);
+        }
+
+        $updated = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($edges as $edge) {
+            $event = $edge['node'] ?? null;
+            if (!is_array($event)) {
+                continue;
+            }
+
+            $eventTitle = (string) ($event['title'] ?? '');
+            $eventDate = substr((string) ($event['dateTime'] ?? ''), 0, 10);
+            if ($eventTitle !== $titleFilter || $eventDate !== $dateFilter) {
+                $skipped[] = [
+                    'event_id' => $event['id'] ?? null,
+                    'title' => $eventTitle,
+                    'date' => (string) ($event['dateTime'] ?? ''),
+                    'reason' => 'not targeted',
+                ];
+                continue;
+            }
+
+            $groupUrlname = (string) ($event['group']['urlname'] ?? '');
+            $timeZone = groupTimeZone($groupUrlname);
+            $targetDate = localGroupDateTime($dateFilter, $time, $groupUrlname);
+            $summary = [
+                'event_id' => $event['id'] ?? null,
+                'title' => $eventTitle,
+                'group' => $groupUrlname,
+                'old_date' => (string) ($event['dateTime'] ?? ''),
+                'target_date' => $targetDate,
+                'timezone' => $timeZone,
+                'target_limit' => $limit,
+                'event_url' => (string) ($event['eventUrl'] ?? ''),
+            ];
+
+            if ($timeZone === null) {
+                $errors[] = $summary + ['reason' => 'missing group timezone'];
+                continue;
+            }
+
+            if ($dryRun) {
+                $updated[] = $summary + ['dry_run' => true];
+                continue;
+            }
+
+            $updateResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      dateTime
+      group { name urlname }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+                'input' => [
+                    'eventId' => (string) ($event['id'] ?? ''),
+                    'startDateTime' => editEventLocalDateTimeValue($targetDate),
+                    'rsvpSettings' => [
+                        'rsvpLimit' => $limit,
+                    ],
+                ],
+            ], $tokenPath);
+
+            $payload = $updateResult['response']['data']['editEvent'] ?? null;
+            $mutationErrors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+            if (!is_array($payload) || !empty($mutationErrors) || empty($payload['event'])) {
+                $errors[] = $summary + [
+                    'reason' => 'update failed',
+                    'result' => $updateResult,
+                ];
+                continue;
+            }
+
+            $updated[] = $summary + [
+                'dry_run' => false,
+                'new_date' => $payload['event']['dateTime'] ?? null,
+            ];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'network' => $networkUrlname,
+            'title' => $titleFilter,
+            'date' => $dateFilter,
+            'time' => $time,
+            'target_limit' => $limit,
+            'total_loaded' => count($edges),
+            'updated_count' => count($updated),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'updated' => $updated,
             'errors' => $errors,
         ]);
     }
