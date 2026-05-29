@@ -2347,7 +2347,7 @@ mutation ($input: EditEventInput!) {
 GRAPHQL, [
                 'input' => [
                     'eventId' => (string) ($targetEvent['id'] ?? ''),
-                    'startDateTime' => $targetDate,
+                    'startDateTime' => substr($targetDate, 0, 16),
                     'rsvpSettings' => [
                         'rsvpLimit' => $limit,
                     ],
