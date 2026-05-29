@@ -6,9 +6,11 @@ import sharp from "sharp";
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 const ENV_PATH = path.join(ROOT, ".env");
 const ENDPOINT = "https://mojoaistudio.com/api/meetup-admin";
-const SOURCE_IMAGE = "G:/My Drive/Aesop Academy/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
+const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Aesop Academy/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
 const OUT_DIR = path.join(ROOT, "watch");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
+const FALLBACK_HERO_IMAGE = path.join(ASSET_DIR, "hero.jpg");
+const FALLBACK_OG_IMAGE = path.join(ASSET_DIR, "og-hub.jpg");
 
 const cities = [
   { city: "Colorado Springs/Denver", state: "CO", slug: "colorado-springs", urlname: "advanced-ai-concepts" },
@@ -62,6 +64,66 @@ async function callAdmin(adminKey, params) {
     throw new Error(`Meetup admin request failed for ${params.urlname || params.action}`);
   }
   return payload;
+}
+
+async function pathExists(filePath) {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function eventPhotoUrl(chapters) {
+  return chapters
+    .flatMap((chapter) => chapter.events)
+    .map((event) => event.featuredEventPhoto?.standardUrl || event.featuredEventPhoto?.baseUrl || "")
+    .find(Boolean);
+}
+
+async function fetchImageBuffer(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Could not fetch image ${url}: ${response.status}`);
+  }
+  return Buffer.from(await response.arrayBuffer());
+}
+
+async function imageSourceFrom(value) {
+  if (!value) return null;
+  if (/^https?:\/\//i.test(value)) {
+    return fetchImageBuffer(value);
+  }
+  return path.resolve(ROOT, value);
+}
+
+async function resolveHeroImageSource(env, chapters) {
+  const candidates = [
+    env.AAC_HERO_IMAGE_URL,
+    env.AAC_SOURCE_IMAGE,
+    DEFAULT_SOURCE_IMAGE,
+    eventPhotoUrl(chapters),
+    FALLBACK_HERO_IMAGE,
+    FALLBACK_OG_IMAGE,
+  ].filter(Boolean);
+
+  for (const candidate of candidates) {
+    if (/^https?:\/\//i.test(candidate)) {
+      try {
+        return await imageSourceFrom(candidate);
+      } catch {
+        continue;
+      }
+    }
+
+    const sourcePath = path.resolve(ROOT, candidate);
+    if (await pathExists(sourcePath)) {
+      return sourcePath;
+    }
+  }
+
+  throw new Error("No usable hero image source found.");
 }
 
 function eventDateLabel(dateTime) {
@@ -150,6 +212,7 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
           <a href="/products">Products</a>
           <a href="/development">Development</a>
           <a href="/watch" class="${active}">Learn</a>
+          <a href="/sell">Sell</a>
         </div>
         <div class="nav-actions">
           <a class="button ghost" href="/watch/#events">Sessions</a>
@@ -185,7 +248,13 @@ function hubPage(chapters) {
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
         </div>
-        <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
+        <div class="aac-hero-media">
+          <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
+          <div class="aac-stats" id="aac-stats" hidden>
+            <span><b data-stat-week></b> visitors this week</span>
+            <span><b data-stat-day></b> today</span>
+          </div>
+        </div>
       </section>
     </header>
     <main>
@@ -258,7 +327,20 @@ function hubPage(chapters) {
     image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.png",
     active: "active",
     body,
-  });
+  }).replace("</body>", `    <script>
+      fetch('/api/analytics')
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          if (!data || !data.ok) return;
+          var el = document.getElementById('aac-stats');
+          if (!el) return;
+          el.querySelector('[data-stat-week]').textContent = data.week.toLocaleString();
+          el.querySelector('[data-stat-day]').textContent = data.day.toLocaleString();
+          el.hidden = false;
+        })
+        .catch(function() {});
+    </script>
+  </body>`);
 }
 
 function cityPage(chapter) {
@@ -349,9 +431,9 @@ function ogSvg({ city, state, events }) {
 </svg>`;
 }
 
-async function generateOgImage(chapter, filename) {
+async function generateOgImage(sourceImage, chapter, filename) {
   const overlay = Buffer.from(ogSvg(chapter));
-  await sharp(SOURCE_IMAGE)
+  await sharp(sourceImage)
     .resize(1200, 630, { fit: "cover", position: "center" })
     .composite([{ input: overlay, top: 0, left: 0 }])
     .jpeg({ quality: 86, mozjpeg: true })
@@ -364,10 +446,6 @@ async function main() {
 
   await fs.mkdir(ASSET_DIR, { recursive: true });
   await fs.mkdir(OUT_DIR, { recursive: true });
-  await sharp(SOURCE_IMAGE)
-    .resize(1600, 880, { fit: "cover", position: "center" })
-    .jpeg({ quality: 84, mozjpeg: true })
-    .toFile(path.join(ASSET_DIR, "hero.jpg"));
 
   const chapters = [];
   for (const city of cities) {
@@ -384,14 +462,20 @@ async function main() {
     });
   }
 
-  await generateOgImage({
+  const heroSource = await resolveHeroImageSource(env, chapters);
+  await sharp(heroSource)
+    .resize(1600, 880, { fit: "cover", position: "center" })
+    .jpeg({ quality: 84, mozjpeg: true })
+    .toFile(path.join(ASSET_DIR, "hero.jpg"));
+
+  await generateOgImage(heroSource, {
     city: "Advanced AI Concepts",
-    state: "8 city chapters",
+    state: `${chapters.length} city chapters`,
     events: chapters[0].events,
   }, "og-hub.jpg");
 
   for (const chapter of chapters) {
-    await generateOgImage(chapter, `og-${chapter.slug}.jpg`);
+    await generateOgImage(heroSource, chapter, `og-${chapter.slug}.jpg`);
     const cityDir = path.join(OUT_DIR, chapter.slug);
     await fs.mkdir(cityDir, { recursive: true });
     await fs.writeFile(path.join(cityDir, "index.html"), cityPage(chapter));
