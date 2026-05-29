@@ -124,6 +124,25 @@ confirm=send-sms-invites       (required to send email; otherwise dry-run)
 - Meetup GraphQL `proNetwork.eventsSearch(...).rsvps`
 - PHP `mail()` for the opt-in invitation
 
+**Safety guard:** production sends preflight the SMS reminder store before sending email, so a bad `MOJO_SMS_REMINDER_STORE` path fails before notifying registrants.
+
+---
+
+## `GET /api/meetup-admin?action=test-sms-store`
+
+Admin-only storage preflight for SMS reminders. Reads the configured SMS reminder store, appends a small write-check marker, and writes it back. Does not call Meetup, email, or Twilio.
+
+**Request shape:** query params
+```
+action=test-sms-store
+```
+
+**Producers (serves the endpoint)**
+- `api/meetup-admin.php` - admin-gated SMS store preflight
+
+**Consumers**
+- Manual admin test using `MEETUP_ADMIN_KEY`
+
 ---
 
 ## `GET /api/meetup-admin?action=send-sms-reminders`
@@ -156,6 +175,7 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 | `polarWebhook` (Cloud Function) | POST | `functions/index.js:40` | Polar.sh (external) | ✓ |
 | `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
 | `/api/meetup-admin?action=poll-sms-invites` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
+| `/api/meetup-admin?action=test-sms-store` | GET | `api/meetup-admin.php` | manual admin | active |
 | `/api/meetup-admin?action=send-sms-reminders` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 
 ---

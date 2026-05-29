@@ -480,6 +480,29 @@ function emailSmsInvite(array $invite, string $recipientEmail, bool $dryRun, boo
     ];
 }
 
+function smsStoreWriteCheck(): array {
+    try {
+        $store = smsReadStore();
+        $store['_writeChecks'][] = [
+            'checkedAt' => gmdate('c'),
+            'purpose' => 'admin_write_preflight',
+        ];
+        $store['_writeChecks'] = array_slice($store['_writeChecks'], -5);
+        smsWriteStore($store);
+
+        return [
+            'ok' => true,
+            'path' => smsStorePath(),
+        ];
+    } catch (Throwable $throwable) {
+        return [
+            'ok' => false,
+            'path' => smsStorePath(),
+            'error' => $throwable->getMessage(),
+        ];
+    }
+}
+
 $projectRoot = dirname(__DIR__);
 $loadedEnv = loadFirstEnvFile([
     $projectRoot . '/.env',
@@ -641,12 +664,27 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
         ]);
     }
 
+    if ($action === 'test-sms-store') {
+        $check = smsStoreWriteCheck();
+        respond($check['ok'] ? 200 : 500, $check);
+    }
+
     if ($action === 'poll-sms-invites') {
         $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
         $first = max(1, min(25, (int) ($_GET['first'] ?? 10)));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'send-sms-invites';
         $recovery = (string) ($_GET['recovery'] ?? '') === '1';
+        $storeCheck = smsStoreWriteCheck();
+        if (!$storeCheck['ok']) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'recovery' => $recovery,
+                'error' => 'SMS reminder store is not writable.',
+                'store' => $storeCheck,
+            ]);
+        }
 
         $rsvpResult = graphQL(<<<'GRAPHQL'
 query ($urlname: ID!, $first: Int!) {
@@ -780,6 +818,7 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
             'ok' => empty($errors),
             'dry_run' => $dryRun,
             'recovery' => $recovery,
+            'store' => $storeCheck,
             'created_count' => count($created),
             'sent_count' => count($sent),
             'skipped_count' => count($skipped),
