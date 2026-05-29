@@ -2618,7 +2618,6 @@ query ($urlname: ID!, $first: Int!) {
           eventUrl
           dateTime
           group { id name urlname }
-          rsvpSettings { rsvpLimit }
         }
       }
     }
@@ -2647,24 +2646,17 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
             }
 
             $eventId = (string) ($event['id'] ?? '');
-            $currentLimit = $event['rsvpSettings']['rsvpLimit'] ?? null;
             $summary = [
                 'event_id' => $eventId,
                 'title' => (string) ($event['title'] ?? ''),
                 'group' => (string) ($event['group']['urlname'] ?? ''),
                 'date' => (string) ($event['dateTime'] ?? ''),
-                'current_limit' => $currentLimit,
                 'target_limit' => $limit,
                 'event_url' => (string) ($event['eventUrl'] ?? ''),
             ];
 
             if ($eventId === '') {
                 $errors[] = $summary + ['reason' => 'missing event id'];
-                continue;
-            }
-
-            if ((int) $currentLimit === $limit) {
-                $skipped[] = $summary + ['reason' => 'already set'];
                 continue;
             }
 
@@ -2682,7 +2674,6 @@ mutation ($input: EditEventInput!) {
       eventUrl
       dateTime
       group { name urlname }
-      rsvpSettings { rsvpLimit }
     }
     errors { message field code }
   }
@@ -2709,7 +2700,7 @@ GRAPHQL, [
             $updatedEvent = $payload['event'];
             $updated[] = $summary + [
                 'dry_run' => false,
-                'updated_limit' => $updatedEvent['rsvpSettings']['rsvpLimit'] ?? null,
+                'updated_event_id' => $updatedEvent['id'] ?? null,
             ];
         }
 
