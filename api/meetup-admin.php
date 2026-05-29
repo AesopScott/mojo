@@ -829,10 +829,19 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
     }
 
     if ($action === 'send-sms-reminders') {
-        $leadHours = max(1, min(168, (int) ($_GET['lead_hours'] ?? 24)));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'send-sms-reminders';
         $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        $storeCheck = smsStoreWriteCheck();
+        if (!$storeCheck['ok']) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'SMS reminder store is not writable.',
+                'store' => $storeCheck,
+            ]);
+        }
+
         $store = smsReadStore();
         $sent = [];
         $skipped = [];
@@ -862,19 +871,51 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
                 continue;
             }
 
-            $sendAfter = $eventAt->setTimezone(new DateTimeZone('UTC'))->modify('-' . $leadHours . ' hours');
-            if ($now < $sendAfter || $now > $eventAt) {
-                $skipped[] = ['token' => (string) $token, 'reason' => 'outside reminder window'];
+            $eventLocal = $eventAt;
+            $eventDate = $eventLocal->format('Y-m-d');
+            $dayBeforeDate = $eventLocal->modify('-1 day')->format('Y-m-d');
+            $eventDayStart = new DateTimeImmutable($eventDate . ' 00:00:00', $eventLocal->getTimezone());
+            $slots = [
+                'evening_before' => [
+                    'start' => new DateTimeImmutable($dayBeforeDate . ' 18:00:00', $eventLocal->getTimezone()),
+                    'end' => $eventDayStart,
+                ],
+                'day_of' => [
+                    'start' => new DateTimeImmutable($eventDate . ' 16:00:00', $eventLocal->getTimezone()),
+                    'end' => $eventLocal,
+                ],
+            ];
+
+            $dueSlot = '';
+            $dueAt = null;
+            foreach ($slots as $slotName => $slotWindow) {
+                $sentAt = $subscription['reminders'][$slotName]['sentAt'] ?? null;
+                if (!empty($sentAt)) {
+                    continue;
+                }
+
+                $slotUtc = $slotWindow['start']->setTimezone(new DateTimeZone('UTC'));
+                $slotEndUtc = $slotWindow['end']->setTimezone(new DateTimeZone('UTC'));
+                if ($now >= $slotUtc && $now < $slotEndUtc) {
+                    $dueSlot = $slotName;
+                    $dueAt = $slotUtc;
+                    break;
+                }
+            }
+
+            if ($dueSlot === '' || $dueAt === null) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'no scheduled reminder due'];
                 continue;
             }
 
             $result = $dryRun
                 ? ['ok' => true, 'dry_run' => true]
-                : smsSendTwilio((string) $subscription['phone'], smsReminderBody($subscription));
+                : smsSendTwilio((string) $subscription['phone'], smsReminderBody($subscription, $dueSlot));
 
             if (empty($result['ok'])) {
                 $errors[] = [
                     'token' => (string) $token,
+                    'slot' => $dueSlot,
                     'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
                     'error' => (string) ($result['error'] ?? 'SMS send failed'),
                 ];
@@ -882,13 +923,18 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
             }
 
             if (!$dryRun) {
-                $store['subscriptions'][$token]['reminderSentAt'] = gmdate('c');
-                $store['subscriptions'][$token]['twilioMessageSid'] = $result['twilio_sid'] ?? null;
+                $store['subscriptions'][$token]['reminders'][$dueSlot] = [
+                    'scheduledFor' => $dueAt->format('c'),
+                    'sentAt' => gmdate('c'),
+                    'twilioMessageSid' => $result['twilio_sid'] ?? null,
+                ];
             }
 
             $sent[] = [
                 'token' => (string) $token,
                 'event_id' => (string) ($subscription['eventId'] ?? ''),
+                'slot' => $dueSlot,
+                'scheduled_for' => $dueAt->format('c'),
                 'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
                 'dry_run' => $dryRun,
             ];
@@ -901,7 +947,11 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
         respond(200, [
             'ok' => empty($errors),
             'dry_run' => $dryRun,
-            'lead_hours' => $leadHours,
+            'store' => $storeCheck,
+            'schedule' => [
+                'evening_before' => '18:00 event-local time the day before',
+                'day_of' => '16:00 event-local time the day of',
+            ],
             'sent_count' => count($sent),
             'skipped_count' => count($skipped),
             'error_count' => count($errors),

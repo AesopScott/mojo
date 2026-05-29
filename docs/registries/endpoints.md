@@ -152,7 +152,6 @@ Admin/cron action that sends due Twilio SMS reminders for registrants who explic
 **Request shape:** query params
 ```
 action=send-sms-reminders
-lead_hours=24   (optional; 1-168)
 confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 ```
 
@@ -164,6 +163,10 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 
 **External APIs**
 - Twilio Messages REST API
+
+**Schedule**
+- Evening-before reminder: 6:00 PM event-local time the day before
+- Day-of reminder: 4:00 PM event-local time the day of
 
 ---
 

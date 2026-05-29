@@ -222,12 +222,19 @@ function smsSendTwilio(string $to, string $body): array {
     ];
 }
 
-function smsReminderBody(array $subscription): string {
+function smsReminderBody(array $subscription, string $reminderType = ''): string {
     $title = (string) ($subscription['eventTitle'] ?? 'your Advanced AI Concepts event');
     $eventUrl = (string) ($subscription['eventUrl'] ?? '');
     $dateText = (string) ($subscription['eventDateText'] ?? '');
 
-    $message = 'Reminder: ' . $title;
+    $prefix = 'Reminder';
+    if ($reminderType === 'evening_before') {
+        $prefix = 'Tomorrow';
+    } elseif ($reminderType === 'day_of') {
+        $prefix = 'Today';
+    }
+
+    $message = $prefix . ': ' . $title;
     if ($dateText !== '') {
         $message .= ' starts ' . $dateText . '.';
     } else {
