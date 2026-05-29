@@ -116,6 +116,85 @@ Absolute filesystem path where Meetup OAuth tokens are persisted after exchange.
 
 ---
 
+## `MOJO_PUBLIC_BASE_URL`
+
+Public origin used to build SMS opt-in links for Meetup registrants.
+
+**Producers**
+- Stored in server `.env` file (optional)
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsBaseUrl()` builds `/watch/sms/?token=...` invite URLs
+
+**Default:** `https://mojoaistudio.com`
+
+**Status:** active
+
+---
+
+## `MOJO_SMS_REMINDER_STORE`
+
+Absolute filesystem path for the SMS reminder JSON store. Keep this outside public web paths in production.
+
+**Producers**
+- Stored in server `.env` file (optional)
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsStorePath()` reads/writes invite and opt-in state
+- `api/meetup-admin.php` - admin cron actions create invites and mark reminders sent
+- `api/sms-reminders.php` - public opt-in endpoint saves consented phone numbers
+
+**Default:** `../mojo-sms-reminders.json` relative to the project root
+
+**Status:** active
+
+---
+
+## `TWILIO_ACCOUNT_SID`
+
+Twilio account SID used to send SMS reminders.
+
+**Producers**
+- Twilio Console - Account Info / API credentials
+- Stored in server `.env` file
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsSendTwilio()` authenticates Twilio REST API calls
+
+**Status:** active
+
+---
+
+## `TWILIO_AUTH_TOKEN`
+
+Twilio auth token used with `TWILIO_ACCOUNT_SID`.
+
+**Producers**
+- Twilio Console - Account Info / API credentials
+- Stored in server `.env` file
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsSendTwilio()` authenticates Twilio REST API calls
+
+**Status:** active
+
+---
+
+## `TWILIO_FROM_NUMBER`
+
+Twilio sender phone number for event reminder SMS messages.
+
+**Producers**
+- Twilio Console - verified sender/phone number
+- Stored in server `.env` file
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsSendTwilio()` sets the SMS `From` number
+
+**Status:** active
+
+---
+
 ## Summary
 
 | Variable | Set In | Used In | Status |
@@ -127,6 +206,11 @@ Absolute filesystem path where Meetup OAuth tokens are persisted after exchange.
 | `MEETUP_ADMIN_KEY` | server `.env` | `meetup-admin.php:444` | ✓ |
 | `MEETUP_REDIRECT_URI` | server `.env` (optional) | `callback/index.php:270` | ✓ |
 | `MEETUP_TOKEN_STORE` | server `.env` (optional) | `meetup-admin.php:247`, `callback/index.php:307` | ✓ |
+| `MOJO_PUBLIC_BASE_URL` | server `.env` (optional) | `sms-reminder-lib.php` | active |
+| `MOJO_SMS_REMINDER_STORE` | server `.env` (optional) | `sms-reminder-lib.php`, `meetup-admin.php`, `sms-reminders.php` | active |
+| `TWILIO_ACCOUNT_SID` | server `.env` | `sms-reminder-lib.php` | active |
+| `TWILIO_AUTH_TOKEN` | server `.env` | `sms-reminder-lib.php` | active |
+| `TWILIO_FROM_NUMBER` | server `.env` | `sms-reminder-lib.php` | active |
 
 ---
 

@@ -68,12 +68,94 @@ Receives Polar.sh subscription/order events and writes purchase records to Fires
 
 ---
 
+## `POST /api/sms-reminders`
+
+Receives a Meetup registrant's SMS reminder opt-in from `/watch/sms/?token=...`, validates the invite token, records consent, and stores the phone number only for event reminder use.
+
+**Request shape:** JSON body
+```
+{
+  token:   string  (required; invite token created by Meetup polling)
+  phone:   string  (required; US or E.164-style phone number)
+  consent: boolean (required; must be true)
+}
+```
+
+**Response shape:**
+```
+200  { "ok": true, "message": "SMS reminder saved.", "phoneLast4": "1234" }
+404  { "ok": false, "message": "That reminder invite was not found." }
+422  { "ok": false, "message": "Enter a valid phone number..." }
+405  { "ok": false, "message": "Method not allowed." }
+500  { "ok": false, "message": "Unable to save SMS reminder." }
+```
+
+**Producers (serves the endpoint)**
+- `api/sms-reminders.php` - public opt-in handler
+- `.htaccess` - rewrites `/api/sms-reminders` to `api/sms-reminders.php`
+
+**Consumers (calls the endpoint)**
+- `watch/sms/index.html` - SMS reminder opt-in form
+
+**Adjacent constraint:** The phone number is stored with `purpose: "event_sms_reminder_only"` and the explicit consent text in `api/sms-reminder-lib.php`.
+
+---
+
+## `GET /api/meetup-admin?action=poll-sms-invites`
+
+Admin/cron action that polls Meetup GraphQL for upcoming Advanced AI Concepts RSVPs, creates one invite token per new RSVP, and emails the registrant a Mojo SMS opt-in link.
+
+**Request shape:** query params
+```
+action=poll-sms-invites
+network=advanced-ai-concepts  (optional)
+first=10                       (optional; 1-25)
+dry_run=1                      (optional)
+```
+
+**Producers (serves the endpoint)**
+- `api/meetup-admin.php` - admin-gated Meetup automation helper
+
+**Consumers**
+- cPanel cron or manual admin call using `MEETUP_ADMIN_KEY`
+
+**External APIs**
+- Meetup GraphQL `proNetwork.eventsSearch(...).rsvps`
+- PHP `mail()` for the opt-in invitation
+
+---
+
+## `GET /api/meetup-admin?action=send-sms-reminders`
+
+Admin/cron action that sends due Twilio SMS reminders for registrants who explicitly opted in.
+
+**Request shape:** query params
+```
+action=send-sms-reminders
+lead_hours=24   (optional; 1-168)
+dry_run=1       (optional)
+```
+
+**Producers (serves the endpoint)**
+- `api/meetup-admin.php` - admin-gated Twilio reminder sender
+
+**Consumers**
+- cPanel cron or manual admin call using `MEETUP_ADMIN_KEY`
+
+**External APIs**
+- Twilio Messages REST API
+
+---
+
 ## Summary
 
 | Endpoint | Method | Serves | Calls | Status |
 |----------|--------|--------|-------|--------|
 | `/api/submit-brief` | POST | `api/submit-brief.php` | `brief-form.js:34` | ✓ |
 | `polarWebhook` (Cloud Function) | POST | `functions/index.js:40` | Polar.sh (external) | ✓ |
+| `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
+| `/api/meetup-admin?action=poll-sms-invites` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
+| `/api/meetup-admin?action=send-sms-reminders` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 
 ---
 

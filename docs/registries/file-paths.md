@@ -4,6 +4,26 @@ Every internal file path and data structure location referenced across multiple 
 
 ---
 
+## `../mojo-sms-reminders.json`
+
+Default JSON store for Meetup RSVP SMS reminder invites and consented reminder subscriptions. The default is one directory above the project root; production can set `MOJO_SMS_REMINDER_STORE` to a different absolute path outside public web paths.
+
+**Producers**
+- `api/meetup-admin.php` - `action=poll-sms-invites` creates invite tokens for new Meetup RSVPs
+- `api/sms-reminders.php` - saves phone number, consent text, and event reminder subscription after opt-in
+- `api/meetup-admin.php` - `action=send-sms-reminders` marks reminders sent
+
+**Consumers**
+- `api/sms-reminder-lib.php` - `smsReadStore()` and `smsWriteStore()`
+- `api/meetup-admin.php` - reads invites/subscriptions for cron actions
+- `api/sms-reminders.php` - validates invite tokens before saving phone numbers
+
+**Expected format:** JSON object with `invites`, `subscriptions`, and `messages` keys. Phone numbers are stored only on opted-in `subscriptions` with `purpose: "event_sms_reminder_only"`.
+
+**Status:** active
+
+---
+
 ## `products/data/products.json`
 
 Static JSON file containing all marketplace products.

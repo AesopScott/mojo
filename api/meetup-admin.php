@@ -9,6 +9,8 @@
 
 declare(strict_types=1);
 
+require_once __DIR__ . '/sms-reminder-lib.php';
+
 const MEETUP_TOKEN_ENDPOINT = 'https://secure.meetup.com/oauth2/access';
 const MEETUP_GRAPHQL_ENDPOINT = 'https://api.meetup.com/gql-ext';
 
@@ -433,6 +435,47 @@ GRAPHQL, ['input' => $input], $tokenPath);
     ];
 }
 
+function emailSmsInvite(array $invite, string $recipientEmail, bool $dryRun): array {
+    $adminEmail = envValue('MOJO_ADMIN_EMAIL', 'admin@MojoAiStudio.com');
+    $eventTitle = (string) ($invite['eventTitle'] ?? 'Advanced AI Concepts event');
+    $eventDate = '';
+    if (!empty($invite['eventDateTime'])) {
+        try {
+            $date = new DateTimeImmutable((string) $invite['eventDateTime']);
+            $eventDate = $date->format('M j, Y g:i A T');
+        } catch (Exception $exception) {
+            $eventDate = '';
+        }
+    }
+
+    $subject = 'SMS reminder for ' . $eventTitle;
+    $body = "Hi " . ((string) ($invite['memberName'] ?? 'there')) . ",\n\n"
+        . "You registered for " . $eventTitle . " on Meetup";
+    if ($eventDate !== '') {
+        $body .= " (" . $eventDate . ")";
+    }
+    $body .= ". If you'd like a text reminder before the event, add your phone number here:\n\n"
+        . (string) ($invite['optInUrl'] ?? '') . "\n\n"
+        . "Mojo AI Studio will use your phone number only for event reminders and SMS service messages. "
+        . "We won't use it for marketing or any other purpose.\n\n"
+        . "Thanks,\nMojo AI Studio";
+
+    if ($dryRun) {
+        return ['ok' => true, 'dry_run' => true];
+    }
+
+    $headers = [
+        'From: Mojo AI Studio <' . $adminEmail . '>',
+        'Reply-To: ' . $adminEmail,
+        'Content-Type: text/plain; charset=UTF-8',
+    ];
+
+    return [
+        'ok' => mail($recipientEmail, $subject, $body, implode("\r\n", $headers)),
+        'dry_run' => false,
+    ];
+}
+
 $projectRoot = dirname(__DIR__);
 $loadedEnv = loadFirstEnvFile([
     $projectRoot . '/.env',
@@ -591,6 +634,232 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
         respond(200, [
             'ok' => true,
             'result' => $eventsResult,
+        ]);
+    }
+
+    if ($action === 'poll-sms-invites') {
+        $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
+        $first = max(1, min(25, (int) ($_GET['first'] ?? 10)));
+        $dryRun = (string) ($_GET['dry_run'] ?? '') === '1';
+
+        $rsvpResult = graphQL(<<<'GRAPHQL'
+query ($urlname: ID!, $first: Int!) {
+  proNetwork(urlname: $urlname) {
+    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          dateTime
+          group { id name urlname }
+          rsvps {
+            edges {
+              node {
+                id
+                member {
+                  name
+                  email
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
+
+        $events = $rsvpResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
+        if (!is_array($events)) {
+            respond(500, [
+                'ok' => false,
+                'error' => 'Unable to load Meetup RSVPs.',
+                'result' => $rsvpResult,
+            ]);
+        }
+
+        $store = smsReadStore();
+        $created = [];
+        $sent = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach ($events as $edge) {
+            $event = $edge['node'] ?? null;
+            if (!is_array($event)) {
+                continue;
+            }
+
+            foreach (($event['rsvps']['edges'] ?? []) as $rsvpEdge) {
+                $rsvp = $rsvpEdge['node'] ?? null;
+                if (!is_array($rsvp)) {
+                    continue;
+                }
+
+                $eventId = (string) ($event['id'] ?? '');
+                $rsvpId = (string) ($rsvp['id'] ?? '');
+                $email = trim((string) ($rsvp['member']['email'] ?? ''));
+                if ($eventId === '' || $rsvpId === '' || $email === '') {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'missing event, RSVP, or email',
+                    ];
+                    continue;
+                }
+
+                $key = smsInviteKey($eventId, $rsvpId);
+                if (isset($store['invites'][$key])) {
+                    $skipped[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'invite already exists',
+                    ];
+                    continue;
+                }
+
+                $token = bin2hex(random_bytes(18));
+                $invite = [
+                    'token' => $token,
+                    'eventId' => $eventId,
+                    'eventTitle' => (string) ($event['title'] ?? ''),
+                    'eventDateTime' => (string) ($event['dateTime'] ?? ''),
+                    'eventUrl' => (string) ($event['eventUrl'] ?? ''),
+                    'groupName' => (string) ($event['group']['name'] ?? ''),
+                    'groupUrlname' => (string) ($event['group']['urlname'] ?? ''),
+                    'rsvpId' => $rsvpId,
+                    'memberName' => (string) ($rsvp['member']['name'] ?? ''),
+                    'memberEmailHash' => hash('sha256', strtolower($email)),
+                    'optInUrl' => smsOptInUrl($token),
+                    'status' => 'invited',
+                    'createdAt' => gmdate('c'),
+                    'inviteSentAt' => null,
+                    'purpose' => 'invite_meetup_rsvp_to_sms_event_reminder',
+                ];
+
+                $emailResult = emailSmsInvite($invite, $email, $dryRun);
+                if (empty($emailResult['ok'])) {
+                    $errors[] = [
+                        'event_id' => $eventId,
+                        'rsvp_id' => $rsvpId,
+                        'reason' => 'email failed',
+                    ];
+                    continue;
+                }
+
+                $invite['inviteSentAt'] = gmdate('c');
+                $store['invites'][$key] = $invite;
+                $created[] = [
+                    'event_id' => $eventId,
+                    'rsvp_id' => $rsvpId,
+                    'member' => $invite['memberName'],
+                    'opt_in_url' => $invite['optInUrl'],
+                ];
+                $sent[] = [
+                    'event_id' => $eventId,
+                    'rsvp_id' => $rsvpId,
+                    'dry_run' => $dryRun,
+                ];
+            }
+        }
+
+        if (!$dryRun) {
+            smsWriteStore($store);
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'created_count' => count($created),
+            'sent_count' => count($sent),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'created' => $created,
+            'errors' => $errors,
+        ]);
+    }
+
+    if ($action === 'send-sms-reminders') {
+        $leadHours = max(1, min(168, (int) ($_GET['lead_hours'] ?? 24)));
+        $dryRun = (string) ($_GET['dry_run'] ?? '') === '1';
+        $now = new DateTimeImmutable('now', new DateTimeZone('UTC'));
+        $store = smsReadStore();
+        $sent = [];
+        $skipped = [];
+        $errors = [];
+
+        foreach (($store['subscriptions'] ?? []) as $token => $subscription) {
+            if (!is_array($subscription)) {
+                continue;
+            }
+            if (!empty($subscription['reminderSentAt'])) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'already sent'];
+                continue;
+            }
+            if (!empty($subscription['unsubscribedAt'])) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'unsubscribed'];
+                continue;
+            }
+            if (empty($subscription['eventDateTime']) || empty($subscription['phone'])) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'missing event time or phone'];
+                continue;
+            }
+
+            try {
+                $eventAt = new DateTimeImmutable((string) $subscription['eventDateTime']);
+            } catch (Exception $exception) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'invalid event time'];
+                continue;
+            }
+
+            $sendAfter = $eventAt->setTimezone(new DateTimeZone('UTC'))->modify('-' . $leadHours . ' hours');
+            if ($now < $sendAfter || $now > $eventAt) {
+                $skipped[] = ['token' => (string) $token, 'reason' => 'outside reminder window'];
+                continue;
+            }
+
+            $result = $dryRun
+                ? ['ok' => true, 'dry_run' => true]
+                : smsSendTwilio((string) $subscription['phone'], smsReminderBody($subscription));
+
+            if (empty($result['ok'])) {
+                $errors[] = [
+                    'token' => (string) $token,
+                    'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
+                    'error' => (string) ($result['error'] ?? 'SMS send failed'),
+                ];
+                continue;
+            }
+
+            if (!$dryRun) {
+                $store['subscriptions'][$token]['reminderSentAt'] = gmdate('c');
+                $store['subscriptions'][$token]['twilioMessageSid'] = $result['twilio_sid'] ?? null;
+            }
+
+            $sent[] = [
+                'token' => (string) $token,
+                'event_id' => (string) ($subscription['eventId'] ?? ''),
+                'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
+                'dry_run' => $dryRun,
+            ];
+        }
+
+        if (!$dryRun) {
+            smsWriteStore($store);
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'lead_hours' => $leadHours,
+            'sent_count' => count($sent),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'sent' => $sent,
+            'errors' => $errors,
         ]);
     }
 
