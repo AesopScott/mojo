@@ -39,8 +39,8 @@ $oneDayAgo    = gmdate('Y-m-d\TH:i:s\Z', strtotime('-24 hours'));
 // POST to Cloudflare GraphQL via stream_context
 $cfUrl = 'https://api.cloudflare.com/client/v4/graphql';
 $query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {'
-    . ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { pageViews } }'
-    . ' day: httpRequests1hGroups(orderBy: [datetime_ASC] limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { pageViews } }'
+    . ' week: httpRequests1dGroups(limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { pageViews } }'
+    . ' day: httpRequests1hGroups(limit: 24 filter: { datetime_geq: "' . $oneDayAgo . '" }) { sum { pageViews } }'
     . ' } } }';
 $body = json_encode(array('query' => $query));
 
