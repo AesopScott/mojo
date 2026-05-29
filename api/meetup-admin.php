@@ -2558,6 +2558,8 @@ query ($first: Int!) {
         node {
           id
           title
+          dateTime
+          group { urlname }
           rsvps {
             totalCount
           }
@@ -2570,16 +2572,31 @@ GRAPHQL, ['first' => 50], $tokenPath);
 
         $events = $networkResult['response']['data']['proNetwork']['eventsSearch']['edges'] ?? [];
         $total = 0;
+        $breakdown = [];
         foreach ($events as $edge) {
-            $total += (int) ($edge['node']['rsvps']['totalCount'] ?? 0);
+            $node = $edge['node'] ?? [];
+            $rsvpCount = (int) ($node['rsvps']['totalCount'] ?? 0);
+            $total += $rsvpCount;
+            $breakdown[] = [
+                'id'    => $node['id'] ?? null,
+                'title' => $node['title'] ?? null,
+                'group' => $node['group']['urlname'] ?? null,
+                'date'  => $node['dateTime'] ?? null,
+                'rsvps' => $rsvpCount,
+            ];
         }
 
-        respond(200, [
-            'ok' => true,
-            'count' => $total,
-            'source' => 'advanced-ai-concepts',
+        $debug = isset($_GET['debug']) && $_GET['debug'] !== 'false';
+        $payload = [
+            'ok'        => true,
+            'count'     => $total,
+            'source'    => 'advanced-ai-concepts',
             'updatedAt' => date('c'),
-        ]);
+        ];
+        if ($debug) {
+            $payload['breakdown'] = $breakdown;
+        }
+        respond(200, $payload);
     }
 
     respond(400, ['ok' => false, 'error' => 'Unknown action.']);
