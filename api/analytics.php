@@ -1,18 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-header('X-Content-Type-Options: nosniff');
-
-$origin  = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
-$allowed = array('https://mojoaistudio.com', 'https://www.mojoaistudio.com');
-if ($origin === '' || in_array($origin, $allowed, true)) {
-    header('Access-Control-Allow-Origin: ' . ($origin ? $origin : '*'));
-}
-
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header('Access-Control-Allow-Methods: GET, OPTIONS');
-    http_response_code(204);
-    exit;
-}
+header('Access-Control-Allow-Origin: *');
 
 // Load credentials
 $token  = '';
@@ -29,7 +17,7 @@ if (is_readable($envPath)) {
 }
 if (!$token || !$zoneId) {
     http_response_code(503);
-    echo json_encode(array('ok' => false, 'message' => 'Analytics not configured.'));
+    echo json_encode(array('ok' => false));
     exit;
 }
 
@@ -48,7 +36,7 @@ if (@file_exists($cacheFile) && (time() - @filemtime($cacheFile)) < 3600) {
 $sevenDaysAgo = gmdate('Y-m-d', strtotime('-7 days'));
 $oneDayAgo    = gmdate('Y-m-d\TH:i:s\Z', strtotime('-24 hours'));
 
-// GraphQL query
+// POST to Cloudflare GraphQL via stream_context
 $cfUrl = 'https://api.cloudflare.com/client/v4/graphql';
 $query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {'
     . ' week: httpRequests1dGroups(orderBy: [date_ASC] limit: 7 filter: { date_geq: "' . $sevenDaysAgo . '" }) { sum { visits } }'
@@ -56,19 +44,19 @@ $query = '{ viewer { zones(filter: { zoneTag: "' . $zoneId . '" }) {'
     . ' } } }';
 $body = json_encode(array('query' => $query));
 
-try {
-    $ch = curl_init($cfUrl);
-    curl_setopt($ch, CURLOPT_POST,           true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS,     $body);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Authorization: Bearer ' . $token, 'Content-Type: application/json'));
-    curl_setopt($ch, CURLOPT_TIMEOUT,        10);
-    $response = curl_exec($ch);
-    $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-} catch (\Throwable $e) {
-    echo json_encode(array('ok' => false, 'caught' => $e->getMessage(), 'type' => get_class($e)));
-    exit;
+$context = stream_context_create(array(
+    'http' => array(
+        'method'        => 'POST',
+        'header'        => 'Authorization: Bearer ' . $token . "\r\nContent-Type: application/json\r\n",
+        'content'       => $body,
+        'timeout'       => 10,
+        'ignore_errors' => true,
+    ),
+));
+$response = @file_get_contents($cfUrl, false, $context);
+$httpCode = 0;
+if (isset($http_response_header[0]) && preg_match('/HTTP\/\S+\s+(\d{3})/', $http_response_header[0], $m)) {
+    $httpCode = (int) $m[1];
 }
 
 if ($response === false || $httpCode !== 200) {
@@ -77,7 +65,6 @@ if ($response === false || $httpCode !== 200) {
     exit;
 }
 
-// Parse response
 $data  = json_decode($response, true);
 $zones = isset($data['data']['viewer']['zones'][0]) ? $data['data']['viewer']['zones'][0] : null;
 
