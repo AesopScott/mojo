@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -33,10 +33,13 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Sell Your AI Product on Mojo AI Studio","url":"https://mojoaistudio.com/sell/","description":"List practical AI products on the Mojo AI Studio marketplace and reach buyers looking for useful AI software.","isPartOf":{"@context":"https://schema.org","@type":"WebSite","name":"Mojo AI Studio","url":"https://mojoaistudio.com/"},"mainEntity":{"@type":"Offer","name":"Mojo AI Studio marketplace listing","price":100,"priceCurrency":"USD","description":"Annual listing for AI products with 10% revenue share per sale."}}</script>
     <link rel="stylesheet" href="../styles/shared.css?v=__CACHE_BUST__" />
     <style>
-      /* ── Hero ────────────────────────────────────────────────── */
+      /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .sell-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+        gap: 42px;
+        align-items: center;
         padding: 80px 0 72px;
-        max-width: 760px;
       }
 
       .sell-hero h1 {
@@ -50,6 +53,22 @@
         line-height: 1.65;
         max-width: 620px;
         margin-bottom: 32px;
+      }
+
+      .sell-hero-portrait {
+        min-height: 360px;
+        display: grid;
+        place-items: end center;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: linear-gradient(180deg, #eef8f7 0%, #fff 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .sell-hero-portrait img {
+        width: min(320px, 100%);
+        margin-bottom: -4px;
       }
 
       .hero-pricing {
@@ -83,7 +102,7 @@
         line-height: 1.4;
       }
 
-      /* ── Value props ─────────────────────────────────────────── */
+      /* â”€â”€ Value props â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .value-section {
         border-top: 1px solid var(--line);
         padding-top: 72px;
@@ -128,7 +147,7 @@
         line-height: 1.55;
       }
 
-      /* ── How it works ────────────────────────────────────────── */
+      /* â”€â”€ How it works â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .how-section {
         border-top: 1px solid var(--line);
         padding-top: 72px;
@@ -168,7 +187,7 @@
         line-height: 1.55;
       }
 
-      /* ── Criteria ────────────────────────────────────────────── */
+      /* â”€â”€ Criteria â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .criteria-section {
         border-top: 1px solid var(--line);
         padding-top: 72px;
@@ -206,7 +225,7 @@
       }
 
       .criteria-list li::before {
-        content: "✓";
+        content: "âœ“";
         flex-shrink: 0;
         width: 22px;
         height: 22px;
@@ -221,7 +240,7 @@
         margin-top: 1px;
       }
 
-      /* ── CTA ─────────────────────────────────────────────────── */
+      /* â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .sell-cta-section {
         border-top: 1px solid var(--line);
         padding-top: 72px;
@@ -248,7 +267,7 @@
         flex-wrap: wrap;
       }
 
-      /* ── Responsive ──────────────────────────────────────────── */
+      /* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       @media (max-width: 780px) {
         .value-grid,
         .how-grid {
@@ -259,6 +278,10 @@
         .criteria-section {
           grid-template-columns: 1fr;
           gap: 36px;
+        }
+
+        .sell-hero {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -284,24 +307,29 @@
       </nav>
 
       <section class="section sell-hero">
-        <p class="kicker">Sell on Mojo</p>
-        <h1>Reach AI-ready buyers. Keep 90% of every sale.</h1>
-        <p>MojoAIStudio.com is a curated marketplace for practical AI-built software. If you've built a tool that solves real workflow problems, list it here and put it in front of buyers who are actively looking.</p>
-        <div class="hero-pricing">
-          <div class="hero-pricing-item">
-            <b>10%</b>
-            <span>of each sale — no upfront revenue risk</span>
+        <div class="sell-hero-copy">
+          <p class="kicker">Sell on Mojo</p>
+          <h1>Reach AI-ready buyers. Keep 90% of every sale.</h1>
+          <p>MojoAIStudio.com is a curated marketplace for practical AI-built software. If you've built a tool that solves real workflow problems, list it here and put it in front of buyers who are actively looking.</p>
+          <div class="hero-pricing">
+            <div class="hero-pricing-item">
+              <b>10%</b>
+              <span>of each sale - no upfront revenue risk</span>
+            </div>
+            <div class="hero-pricing-item">
+              <b>$100 / yr</b>
+              <span>per product listed on the marketplace</span>
+            </div>
+            <div class="hero-pricing-item">
+              <b>5 days</b>
+              <span>average review turnaround</span>
+            </div>
           </div>
-          <div class="hero-pricing-item">
-            <b>$100 / yr</b>
-            <span>per product listed on the marketplace</span>
-          </div>
-          <div class="hero-pricing-item">
-            <b>5 days</b>
-            <span>average review turnaround</span>
-          </div>
+          <a class="button dark" href="/products/pages/submit.html">Submit your product</a>
         </div>
-        <a class="button dark" href="/products/pages/submit.html">Submit your product →</a>
+        <div class="sell-hero-portrait" aria-label="Mojo AI Studio seller guide portrait">
+          <img class="scott-avatar" src="/assets/scott-avatars/over-shoulder.png" alt="Mojo AI Studio guide looking over his shoulder" />
+        </div>
       </section>
     </header>
 
@@ -311,14 +339,14 @@
         <h2>Built for AI products, not generic software.</h2>
         <div class="value-grid">
           <div class="value-card">
-            <div class="value-icon" aria-hidden="true">↗</div>
+            <div class="value-icon" aria-hidden="true">â†—</div>
             <h3>Buyers who are already sold on AI</h3>
-            <p>Everyone who finds our marketplace is already looking to adopt AI tools — you're not convincing them that AI matters, you're showing them yours is the right one.</p>
+            <p>Everyone who finds our marketplace is already looking to adopt AI tools â€” you're not convincing them that AI matters, you're showing them yours is the right one.</p>
           </div>
           <div class="value-card">
-            <div class="value-icon" aria-hidden="true">★</div>
+            <div class="value-icon" aria-hidden="true">â˜…</div>
             <h3>Curated quality, not a landfill</h3>
-            <p>We review every product before it goes live. A curated marketplace means fewer listings competing for the same buyer — and every listing carries more weight.</p>
+            <p>We review every product before it goes live. A curated marketplace means fewer listings competing for the same buyer â€” and every listing carries more weight.</p>
           </div>
           <div class="value-card">
             <div class="value-icon" aria-hidden="true">$</div>
@@ -340,7 +368,7 @@
           <div class="how-step">
             <span class="how-num">02</span>
             <h3>We review it</h3>
-            <p>Our team evaluates the product for marketplace fit, quality, and category placement. We respond within five business days — usually faster.</p>
+            <p>Our team evaluates the product for marketplace fit, quality, and category placement. We respond within five business days â€” usually faster.</p>
           </div>
           <div class="how-step">
             <span class="how-num">03</span>
@@ -354,13 +382,13 @@
         <div class="criteria-copy">
           <p class="kicker">What we look for</p>
           <h2>We're selective because buyers expect quality.</h2>
-          <p>The marketplace stays useful to buyers by staying curated. Every product we list has been evaluated for fit and quality — which means yours will stand out when it's there.</p>
+          <p>The marketplace stays useful to buyers by staying curated. Every product we list has been evaluated for fit and quality â€” which means yours will stand out when it's there.</p>
         </div>
         <ul class="criteria-list">
           <li>A working product with a live demo or accessible URL</li>
           <li>Solves a real, specific workflow problem</li>
           <li>Clear, documented pricing</li>
-          <li>Defined target user — not "everyone"</li>
+          <li>Defined target user â€” not "everyone"</li>
           <li>AI is core to how the product works, not just a buzzword</li>
           <li>Maintained and supported by the creator</li>
         </ul>
@@ -371,7 +399,7 @@
         <h2>Submit your product in five minutes.</h2>
         <p>Tell us what you've built and we'll take it from there. If it's a fit, you'll hear from us within five business days.</p>
         <div class="cta-actions">
-          <a class="button dark" href="/products/pages/submit.html">Submit your product →</a>
+          <a class="button dark" href="/products/pages/submit.html">Submit your product â†’</a>
           <a class="button ghost" href="/products">Browse the marketplace</a>
         </div>
       </section>
