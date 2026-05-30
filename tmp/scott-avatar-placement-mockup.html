@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Scott Avatar Placement Mockup | Mojo AI Studio</title>
+    <link rel="stylesheet" href="../styles/shared.css?v=mockup" />
+    <style>
+      body {
+        background: linear-gradient(180deg, #fbfcfe 0%, #eef5f8 46%, #f8fafc 100%);
+      }
+
+      .mockup-note {
+        width: min(1220px, calc(100% - 32px));
+        margin: 24px auto 0;
+        padding: 16px 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--muted);
+      }
+
+      .mockup-section {
+        width: min(1220px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 56px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .mockup-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      .mockup-heading h2 {
+        max-width: 700px;
+        margin-bottom: 0;
+        font-size: clamp(2rem, 4vw, 4rem);
+      }
+
+      .mockup-heading p {
+        max-width: 430px;
+        margin: 0;
+      }
+
+      .portrait {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 24px 38px rgba(23, 32, 51, 0.16));
+      }
+
+      .decision-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .decision-card {
+        min-height: 300px;
+        display: grid;
+        grid-template-rows: 150px auto;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .decision-card figure {
+        display: grid;
+        place-items: end center;
+        margin: 0;
+        overflow: hidden;
+        background: linear-gradient(135deg, #e8f0fe, #e6f9f2);
+      }
+
+      .decision-card img {
+        width: min(180px, 82%);
+        margin-bottom: -8px;
+      }
+
+      .decision-copy {
+        padding: 18px;
+      }
+
+      .decision-copy h3,
+      .mock-panel h3 {
+        margin: 0 0 8px;
+      }
+
+      .decision-copy p,
+      .mock-panel p,
+      .mini-card p {
+        margin: 0;
+      }
+
+      .home-concept {
+        display: grid;
+        grid-template-columns: minmax(0, 0.96fr) minmax(360px, 0.74fr);
+        gap: 38px;
+        align-items: center;
+        padding: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .home-concept h1 {
+        font-size: clamp(2.8rem, 6vw, 6rem);
+      }
+
+      .guide-stack {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        min-height: 520px;
+        overflow: hidden;
+        border-radius: 8px;
+        background: linear-gradient(180deg, #e8f0fe 0%, #f8fafc 100%);
+      }
+
+      .guide-stack img {
+        align-self: end;
+        width: min(430px, 100%);
+        margin-inline: auto;
+        margin-bottom: -4px;
+      }
+
+      .guide-caption {
+        display: grid;
+        gap: 4px;
+        padding: 18px;
+        border-top: 1px solid rgba(23, 32, 51, 0.08);
+        background: rgba(255, 255, 255, 0.82);
+      }
+
+      .concept-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+
+      .mock-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 180px;
+        gap: 24px;
+        align-items: end;
+        min-height: 340px;
+        overflow: hidden;
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .mock-panel img {
+        align-self: end;
+      }
+
+      .mock-panel--accent {
+        background: linear-gradient(135deg, #fff 0%, #eef8f7 100%);
+      }
+
+      .mock-panel--warm {
+        background: linear-gradient(135deg, #fff 0%, #fff6e4 100%);
+      }
+
+      .mini-card-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .mini-card {
+        min-height: 230px;
+        overflow: hidden;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .mini-card img {
+        width: 140px;
+        float: right;
+        margin: 12px -12px -24px 10px;
+      }
+
+      .avatar-strip {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 8px;
+      }
+
+      .avatar-strip figure {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .avatar-strip img {
+        width: 100%;
+        aspect-ratio: 1 / 1.08;
+        object-fit: cover;
+        object-position: top;
+      }
+
+      .avatar-strip figcaption {
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+        line-height: 1.25;
+        text-align: center;
+      }
+
+      @media (max-width: 980px) {
+        .decision-grid,
+        .concept-grid,
+        .home-concept {
+          grid-template-columns: 1fr;
+        }
+
+        .avatar-strip {
+          grid-template-columns: repeat(5, 1fr);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .mockup-heading,
+        .mock-panel {
+          display: block;
+        }
+
+        .decision-grid,
+        .mini-card-row {
+          grid-template-columns: 1fr;
+        }
+
+        .avatar-strip {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .mock-panel img {
+          width: min(180px, 78%);
+          margin: 18px auto -26px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Mockup navigation">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="#map">Placement map</a>
+          <a href="#home">Home</a>
+          <a href="#pages">Pages</a>
+          <a href="#expressions">Expressions</a>
+        </div>
+      </nav>
+
+      <section class="landing-hero">
+        <p class="kicker">Picture placement mockup</p>
+        <h1>Make Scott the guide, not the wallpaper.</h1>
+        <p>
+          These options use the portraits where a human cue helps: trust, explanation,
+          delight, and a little personality at decision points.
+        </p>
+      </section>
+    </header>
+
+    <p class="mockup-note">
+      Recommendation: use one primary portrait on the homepage and one smaller contextual
+      portrait per major path. Keep product cards focused on the software itself.
+    </p>
+
+    <main>
+      <section class="mockup-section" id="map">
+        <div class="mockup-heading">
+          <div>
+            <p class="kicker">Placement map</p>
+            <h2>Best places to use each expression.</h2>
+          </div>
+          <p>Choose the tone you want first. The page placement follows from that.</p>
+        </div>
+        <div class="decision-grid">
+          <article class="decision-card">
+            <figure><img class="portrait" src="scott-avatars/confident.png" alt="Confident Scott portrait" /></figure>
+            <div class="decision-copy">
+              <h3>Homepage hero</h3>
+              <p>Default guide: capable, friendly, and not gimmicky. Best all-purpose choice.</p>
+            </div>
+          </article>
+          <article class="decision-card">
+            <figure><img class="portrait" src="scott-avatars/thinking-up.png" alt="Thinking Scott portrait" /></figure>
+            <div class="decision-copy">
+              <h3>Development</h3>
+              <p>Use near project scoping or brief CTA. It says, “let’s think this through.”</p>
+            </div>
+          </article>
+          <article class="decision-card">
+            <figure><img class="portrait" src="scott-avatars/laughing.png" alt="Laughing Scott portrait" /></figure>
+            <div class="decision-copy">
+              <h3>Learn / Watch</h3>
+              <p>Use where the tone can be more energetic: live sessions, lessons, community.</p>
+            </div>
+          </article>
+          <article class="decision-card">
+            <figure><img class="portrait" src="scott-avatars/thumbs-up.png" alt="Thumbs up Scott portrait" /></figure>
+            <div class="decision-copy">
+              <h3>Confirmation</h3>
+              <p>Use after submissions, purchases, or successful signups. Clear positive feedback.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="mockup-section" id="home">
+        <div class="mockup-heading">
+          <div>
+            <p class="kicker">Option A</p>
+            <h2>Homepage: Scott as the studio guide.</h2>
+          </div>
+          <p>This is the one place I would go big. It humanizes Mojo without stealing attention from the offer.</p>
+        </div>
+        <div class="home-concept">
+          <div>
+            <p class="kicker">Mojo AI Studio</p>
+            <h1>AI software built for real work.</h1>
+            <p>
+              Buy focused AI apps, commission custom AI development, or learn how the tools
+              are built from someone who actually ships them.
+            </p>
+            <div class="hero-proof">
+              <span><b>Products</b> ready to deploy</span>
+              <span><b>Custom builds</b> scoped clearly</span>
+              <span><b>Live learning</b> for builders</span>
+            </div>
+          </div>
+          <aside class="guide-stack" aria-label="Homepage portrait concept">
+            <img class="portrait" src="scott-avatars/confident.png" alt="Confident Scott portrait" />
+            <div class="guide-caption">
+              <b>Recommended hero portrait</b>
+              <span>Confident is warm without becoming cartoonishly salesy.</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="mockup-section" id="pages">
+        <div class="mockup-heading">
+          <div>
+            <p class="kicker">Option B</p>
+            <h2>Page-level placements.</h2>
+          </div>
+          <p>Use smaller portraits where they reinforce the page’s next action.</p>
+        </div>
+        <div class="concept-grid">
+          <article class="mock-panel mock-panel--accent">
+            <div>
+              <p class="kicker">Custom AI Development</p>
+              <h3>Project brief CTA</h3>
+              <p>
+                Use confident beside “Submit a project brief” or the hero CTA. It makes
+                the consulting side feel steady, capable, and personal.
+              </p>
+            </div>
+            <img class="portrait" src="scott-avatars/confident.png" alt="Confident Scott portrait" />
+          </article>
+
+          <article class="mock-panel mock-panel--warm">
+            <div>
+              <p class="kicker">Advanced AI Concepts</p>
+              <h3>Learning page host cue</h3>
+              <p>
+                Use thinking-up near the events section. It keeps the community page
+                curious and thoughtful while still making it feel human-led.
+              </p>
+            </div>
+            <img class="portrait" src="scott-avatars/thinking-up.png" alt="Thinking Scott portrait" />
+          </article>
+        </div>
+
+        <div class="mini-card-row">
+          <article class="mini-card">
+            <p class="kicker">Products</p>
+            <h3>Support cue</h3>
+            <img class="portrait" src="scott-avatars/thumbs-up.png" alt="Thumbs up Scott portrait" />
+            <p>Use thumbs-up in “built and supported by Mojo,” not inside every product card.</p>
+          </article>
+          <article class="mini-card">
+            <p class="kicker">Sell</p>
+            <h3>Seller onboarding</h3>
+            <img class="portrait" src="scott-avatars/over-shoulder.png" alt="Over the shoulder Scott portrait" />
+            <p>Use over-the-shoulder near the listing CTA so it feels like an invitation.</p>
+          </article>
+          <article class="mini-card">
+            <p class="kicker">Success states</p>
+            <h3>Give feedback</h3>
+            <img class="portrait" src="scott-avatars/sunglasses.png" alt="Sunglasses Scott portrait" />
+            <p>Use sunglasses after a brief, listing, signup, or checkout lands successfully.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mockup-section" id="expressions">
+        <div class="mockup-heading">
+          <div>
+            <p class="kicker">Expression palette</p>
+            <h2>The full set, with my labels.</h2>
+          </div>
+          <p>Pick favorites. I can then wire the chosen placements into the real pages.</p>
+        </div>
+        <div class="avatar-strip">
+          <figure><img src="scott-avatars/soft-smile.png" alt="Soft smile" /><figcaption>Soft smile</figcaption></figure>
+          <figure><img src="scott-avatars/wink.png" alt="Wink" /><figcaption>Wink</figcaption></figure>
+          <figure><img src="scott-avatars/confident.png" alt="Confident" /><figcaption>Confident</figcaption></figure>
+          <figure><img src="scott-avatars/thumbs-up.png" alt="Thumbs up" /><figcaption>Thumbs up</figcaption></figure>
+          <figure><img src="scott-avatars/thinking-up.png" alt="Thinking up" /><figcaption>Thinking up</figcaption></figure>
+          <figure><img src="scott-avatars/laughing.png" alt="Laughing" /><figcaption>Laughing</figcaption></figure>
+          <figure><img src="scott-avatars/surprised.png" alt="Surprised" /><figcaption>Surprised</figcaption></figure>
+          <figure><img src="scott-avatars/over-shoulder.png" alt="Over shoulder" /><figcaption>Over shoulder</figcaption></figure>
+          <figure><img src="scott-avatars/concerned.png" alt="Concerned" /><figcaption>Concerned</figcaption></figure>
+          <figure><img src="scott-avatars/sunglasses.png" alt="Sunglasses" /><figcaption>Sunglasses</figcaption></figure>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
