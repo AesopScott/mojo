@@ -628,6 +628,25 @@ function topicFollowupEmail(array $followup, string $recipientEmail, bool $dryRu
     ];
 }
 
+function sendPlainAnnouncementEmail(string $recipientEmail, string $subject, string $body, bool $dryRun): array {
+    $adminEmail = topicFollowupAdminEmail();
+
+    if ($dryRun) {
+        return ['ok' => true, 'dry_run' => true];
+    }
+
+    $headers = [
+        'From: Mojo AI Studio <' . $adminEmail . '>',
+        'Reply-To: ' . $adminEmail,
+        'Content-Type: text/plain; charset=UTF-8',
+    ];
+
+    return [
+        'ok' => mail($recipientEmail, $subject, $body, implode("\r\n", $headers)),
+        'dry_run' => false,
+    ];
+}
+
 function topicFollowupIsoAfterDays(string $isoDate, int $days): string {
     try {
         return (new DateTimeImmutable($isoDate))->modify('+' . $days . ' days')->format('c');
@@ -1662,6 +1681,140 @@ GRAPHQL, [
             'attempted' => count($edges),
             'updated' => count($updates),
             'groups' => $updates,
+            'errors' => $errors,
+        ]);
+    }
+
+    if ($action === 'send-group-announcements') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            respond(405, [
+                'ok' => false,
+                'error' => 'Use POST for group announcements.',
+            ]);
+        }
+
+        $input = json_decode((string) file_get_contents('php://input'), true);
+        if (!is_array($input)) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Expected JSON body.',
+            ]);
+        }
+
+        $networkUrlname = trim((string) ($input['network'] ?? 'advanced-ai-concepts'));
+        $targetUrlname = trim((string) ($input['target'] ?? ''));
+        $subject = trim((string) ($input['subject'] ?? ''));
+        $body = trim((string) ($input['body'] ?? ''));
+        $confirm = trim((string) ($input['confirm'] ?? ''));
+        $dryRun = $confirm !== 'send-group-announcements';
+
+        if ($subject === '' || $body === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing subject or body.',
+            ]);
+        }
+
+        $groupsResult = graphQL(<<<'GRAPHQL'
+query ($input: ProNetworkGroupsSearchInput!) {
+  proNetwork(urlname: "advanced-ai-concepts") {
+    id
+    name
+    urlname
+    groupsSearch(input: $input) {
+      totalCount
+      edges {
+        node {
+          id
+          name
+          urlname
+          city
+          state
+          link
+          emailAnnounceAddress
+        }
+      }
+    }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'first' => 100,
+                'sort' => 'createdDate',
+                'desc' => true,
+            ],
+        ], $tokenPath);
+
+        $edges = $groupsResult['response']['data']['proNetwork']['groupsSearch']['edges'] ?? [];
+        if (!is_array($edges)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load Pro network groups.',
+                'result' => $groupsResult,
+            ]);
+        }
+
+        $sent = [];
+        $skipped = [];
+        $errors = [];
+        $seen = [];
+
+        foreach ($edges as $edge) {
+            $group = $edge['node'] ?? null;
+            if (!is_array($group)) {
+                continue;
+            }
+
+            $urlname = (string) ($group['urlname'] ?? '');
+            $email = trim((string) ($group['emailAnnounceAddress'] ?? ''));
+            $summary = [
+                'group_id' => (string) ($group['id'] ?? ''),
+                'name' => (string) ($group['name'] ?? ''),
+                'urlname' => $urlname,
+                'city' => (string) ($group['city'] ?? ''),
+                'state' => (string) ($group['state'] ?? ''),
+                'link' => (string) ($group['link'] ?? ''),
+                'recipient' => $email,
+            ];
+
+            if ($targetUrlname !== '' && $urlname !== $targetUrlname) {
+                $skipped[] = $summary + ['reason' => 'not targeted'];
+                continue;
+            }
+
+            if ($email === '' || filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                $errors[] = $summary + ['reason' => 'missing or invalid announce email'];
+                continue;
+            }
+
+            if (isset($seen[strtolower($email)])) {
+                $skipped[] = $summary + ['reason' => 'duplicate recipient'];
+                continue;
+            }
+            $seen[strtolower($email)] = true;
+
+            $result = sendPlainAnnouncementEmail($email, $subject, $body, $dryRun);
+            if (empty($result['ok'])) {
+                $errors[] = $summary + ['reason' => 'mail failed'];
+                continue;
+            }
+
+            $sent[] = $summary + ['dry_run' => $dryRun];
+        }
+
+        respond(200, [
+            'ok' => empty($errors),
+            'dry_run' => $dryRun,
+            'network' => $networkUrlname,
+            'target' => $targetUrlname,
+            'subject' => $subject,
+            'body_length' => strlen($body),
+            'total_loaded' => count($edges),
+            'sent_count' => count($sent),
+            'skipped_count' => count($skipped),
+            'error_count' => count($errors),
+            'sent' => $sent,
             'errors' => $errors,
         ]);
     }
