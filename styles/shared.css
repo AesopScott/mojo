@@ -1183,6 +1183,7 @@ p {
 
 .aac-group-leaders div span {
   display: grid;
+  grid-template-rows: minmax(2.3em, auto) auto;
   gap: 3px;
   min-width: 0;
   padding: 8px 9px;
@@ -1193,8 +1194,9 @@ p {
 
 .aac-group-leaders b {
   color: var(--ink);
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 850;
+  line-height: 1.15;
   overflow-wrap: anywhere;
 }
 
@@ -1202,6 +1204,8 @@ p {
   color: #64748b;
   font-size: 0.72rem;
   font-weight: 700;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .aac-stats {
