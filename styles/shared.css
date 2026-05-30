@@ -1072,6 +1072,72 @@ p {
   font-weight: 850;
 }
 
+.aac-zoom-status {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--soft-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 12px 34px rgba(31, 45, 67, 0.08);
+}
+
+.aac-zoom-status[hidden] {
+  display: none;
+}
+
+.aac-zoom-status-head,
+.aac-zoom-metrics,
+.aac-zoom-feed {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aac-zoom-status-head {
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.aac-zoom-status-head span {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 850;
+}
+
+.aac-zoom-status-head b {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.aac-zoom-metrics span,
+.aac-zoom-feed span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--soft-line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #4b596d;
+  font-size: 0.8rem;
+}
+
+.aac-zoom-metrics b {
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.aac-zoom-feed {
+  padding-top: 2px;
+}
+
+.aac-zoom-feed span {
+  color: #64748b;
+}
+
 .aac-section {
   padding: 34px 0 54px;
 }

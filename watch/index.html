@@ -66,6 +66,18 @@
             <span><b data-stat-week></b> visitors this week</span>
             <span><b data-stat-day></b> today</span>
           </div>
+          <div class="aac-zoom-status" id="aac-zoom-status" hidden>
+            <div class="aac-zoom-status-head">
+              <span>Zoom activity</span>
+              <b data-zoom-state>Waiting for events</b>
+            </div>
+            <div class="aac-zoom-metrics">
+              <span><b data-zoom-created>0</b> meetings created</span>
+              <span><b data-zoom-attendees>0</b> attendee count</span>
+              <span><b data-zoom-updated>0</b> meetings updated</span>
+            </div>
+            <div class="aac-zoom-feed" data-zoom-feed></div>
+          </div>
         </div>
       </section>
     </header>
@@ -443,6 +455,68 @@
           el.hidden = false;
         })
         .catch(function() {});
+
+      (function() {
+        var panel = document.getElementById('aac-zoom-status');
+        if (!panel) return;
+
+        var state = panel.querySelector('[data-zoom-state]');
+        var created = panel.querySelector('[data-zoom-created]');
+        var attendees = panel.querySelector('[data-zoom-attendees]');
+        var updated = panel.querySelector('[data-zoom-updated]');
+        var feed = panel.querySelector('[data-zoom-feed]');
+
+        function setText(el, value) {
+          if (el) el.textContent = value;
+        }
+
+        function relativeTime(value) {
+          var date = value ? new Date(value) : null;
+          if (!date || Number.isNaN(date.getTime())) return '';
+          var seconds = Math.max(0, Math.round((Date.now() - date.getTime()) / 1000));
+          if (seconds < 60) return 'just now';
+          var minutes = Math.round(seconds / 60);
+          if (minutes < 60) return minutes + 'm ago';
+          var hours = Math.round(minutes / 60);
+          if (hours < 24) return hours + 'h ago';
+          return Math.round(hours / 24) + 'd ago';
+        }
+
+        function renderLatest(items) {
+          if (!feed) return;
+          feed.textContent = '';
+          if (!items || !items.length) {
+            var empty = document.createElement('span');
+            empty.textContent = 'No Zoom events received yet.';
+            feed.appendChild(empty);
+            return;
+          }
+          items.slice(0, 3).forEach(function(item) {
+            var row = document.createElement('span');
+            var age = relativeTime(item.receivedAt);
+            row.textContent = item.label + (age ? ' - ' + age : '');
+            feed.appendChild(row);
+          });
+        }
+
+        function loadZoomStatus() {
+          fetch('/api/zoom-status')
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(data) {
+              if (!data || !data.ok || !data.counts) return;
+              setText(created, Number(data.counts.meeting_created || 0).toLocaleString());
+              setText(attendees, Number(data.counts.participant_joined || 0).toLocaleString());
+              setText(updated, Number(data.counts.meeting_updated || 0).toLocaleString());
+              setText(state, data.latest && data.latest.length ? 'Live webhook feed' : 'Waiting for Zoom events');
+              renderLatest(data.latest || []);
+              panel.hidden = false;
+            })
+            .catch(function() {});
+        }
+
+        loadZoomStatus();
+        window.setInterval(loadZoomStatus, 60000);
+      })();
     </script>
   </body>
 </html>
