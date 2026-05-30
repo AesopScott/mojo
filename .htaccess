@@ -16,6 +16,14 @@ Options -Indexes
     # Keep the old learning page URL working after renaming /WatchAI to /watch.
     RewriteRule ^WatchAI/?$ /watch/ [R=301,L,NC]
 
+    # Friendly top-level navigation aliases.
+    RewriteRule ^buy/?$ /products/ [L,NC]
+    RewriteRule ^buy/(.*)$ /products/$1 [L,NC]
+    RewriteRule ^request/?$ /development/ [L,NC]
+    RewriteRule ^request/(.*)$ /development/$1 [L,NC]
+    RewriteRule ^learn/?$ /watch/ [L,NC]
+    RewriteRule ^learn/(.*)$ /watch/$1 [L,NC]
+
     # API: strip .php extension from explicit requests
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.php -f
