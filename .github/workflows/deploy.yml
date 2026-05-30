@@ -23,6 +23,7 @@ jobs:
         env:
           POLAR_ORG:        ${{ vars.POLAR_ORG }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          ZOOM_SECRET_TOKEN: ${{ secrets.ZOOM_SECRET_TOKEN }}
         run: |
           BUST="${GITHUB_SHA:0:7}"
           ORG="${POLAR_ORG:-}"
@@ -33,6 +34,9 @@ jobs:
           fi
           if [ -n "$FIREBASE_API_KEY" ]; then
             find . -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
+          fi
+          if [ -n "$ZOOM_SECRET_TOKEN" ]; then
+            printf '\nZOOM_SECRET_TOKEN=%s\n' "$ZOOM_SECRET_TOKEN" >> .env
           fi
 
       - name: Deploy via FTP
