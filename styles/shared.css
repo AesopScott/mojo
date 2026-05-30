@@ -1101,25 +1101,35 @@ p {
 }
 
 .aac-host-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 128px;
-  gap: 16px;
-  align-items: end;
-  overflow: hidden;
-  padding: 16px 16px 0;
+  display: inline-flex;
+  width: fit-content;
+  max-width: min(100%, 560px);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
-  box-shadow: 0 14px 34px rgba(23, 32, 51, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 24px rgba(23, 32, 51, 0.08);
 }
 
 .aac-host-card p {
-  margin-bottom: 16px;
-  font-size: 0.95rem;
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
 .aac-host-card .scott-avatar {
-  width: 128px;
+  flex: 0 0 auto;
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  object-position: top center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 8px 18px rgba(23, 32, 51, 0.1);
+  filter: none;
 }
 
 .aac-hero img,
@@ -1765,12 +1775,12 @@ a[aria-disabled="true"] {
   }
 
   .aac-host-card {
-    grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .aac-host-card .scott-avatar {
-    width: min(150px, 72%);
-    margin-inline: auto;
+    width: 54px;
+    height: 54px;
   }
 
   .category-bar {
