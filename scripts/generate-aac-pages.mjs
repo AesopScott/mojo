@@ -473,7 +473,7 @@ function hubPage(chapters) {
                 var item = document.createElement('span');
                 var city = document.createElement('b');
                 var count = document.createElement('small');
-                city.textContent = String(group.city || 'Meetup').replace('Washington, DC', 'Washington,\u00a0DC');
+                city.textContent = String(group.city || 'Meetup').replace('Washington, DC', 'Washington,' + String.fromCharCode(160) + 'DC');
                 count.textContent = Number(group.members || 0).toLocaleString() + ' members';
                 item.appendChild(city);
                 item.appendChild(count);
