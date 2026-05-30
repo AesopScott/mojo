@@ -45,6 +45,7 @@ Options -Indexes
     AddType application/javascript .js
     AddType text/css .css
     AddType application/json .json
+    AddType application/xml .xml
 </IfModule>
 
 # ── Compression ───────────────────────────────────────────────────────────────

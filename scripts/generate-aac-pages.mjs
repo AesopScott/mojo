@@ -171,8 +171,13 @@ function eventMonthDay(dateTime) {
   }).format(new Date(dateTime));
 }
 
-function pageShell({ title, description, canonical, image, body, active = "" }) {
+function jsonLdScript(data) {
+  return `    <script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>\n`;
+}
+
+function pageShell({ title, description, canonical, image, body, active = "", schema = [] }) {
   const imageType = image.endsWith(".png") ? "image/png" : "image/jpeg";
+  const schemaMarkup = schema.map(jsonLdScript).join("");
   return `<!doctype html>
 <html lang="en">
   <head>
@@ -185,6 +190,7 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="${escapeHtml(canonical)}" />
     <meta name="theme-color" content="#0f0f1a" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mojo AI Studio" />
@@ -200,6 +206,7 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
     <meta name="twitter:title" content="${escapeHtml(title)}" />
     <meta name="twitter:description" content="${escapeHtml(description)}" />
     <meta name="twitter:image" content="${escapeHtml(image)}" />
+${schemaMarkup}
     <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
   </head>
   <body>
@@ -225,6 +232,43 @@ function pageShell({ title, description, canonical, image, body, active = "" }) 
   </body>
 </html>
 `;
+}
+
+function eventSchema(chapter, event) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: event.title,
+    startDate: event.dateTime,
+    eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    url: event.eventUrl,
+    location: {
+      "@type": "VirtualLocation",
+      url: event.eventUrl,
+    },
+    image: event.featuredEventPhoto?.standardUrl ? [event.featuredEventPhoto.standardUrl] : undefined,
+    description: `${event.title} is an Advanced AI Concepts live online session for builders in ${chapter.city}. Each event is limited to 100 people.`,
+    maximumAttendeeCapacity: 100,
+    organizer: {
+      "@type": "Organization",
+      name: "Mojo AI Studio",
+      url: "https://mojoaistudio.com/",
+    },
+  };
+}
+
+function breadcrumbSchema(items) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
+  };
 }
 
 function eventsMarkup(events) {
@@ -329,6 +373,24 @@ function hubPage(chapters) {
     image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.png",
     active: "active",
     body,
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Advanced AI Concepts",
+        url: "https://mojoaistudio.com/watch/",
+        description: "Advanced AI Concepts meetup chapters and upcoming live sessions for builders exploring agents, memory, command centers, and AI systems.",
+        isPartOf: {
+          "@type": "WebSite",
+          name: "Mojo AI Studio",
+          url: "https://mojoaistudio.com/",
+        },
+      },
+      breadcrumbSchema([
+        { name: "Mojo AI Studio", url: "https://mojoaistudio.com/" },
+        { name: "Advanced AI Concepts", url: "https://mojoaistudio.com/watch/" },
+      ]),
+    ],
   }).replace("</body>", `    <script>
       fetch('/api/analytics')
         .then(function(r) { return r.ok ? r.json() : null; })
@@ -346,13 +408,13 @@ function hubPage(chapters) {
 }
 
 function cityPage(chapter) {
-  const description = `Join Advanced AI Concepts in ${chapter.city}. Upcoming live sessions for builders exploring agents, memory, command centers, and advanced AI systems.`;
+  const description = `Join Advanced AI Concepts in ${chapter.city}. Live online sessions for builders exploring agents, memory, command centers, and advanced AI systems.`;
   const body = `
       <section class="aac-city-hero">
         <div>
           <p class="kicker">Advanced AI Concepts</p>
           <h1>${escapeHtml(chapter.city)}</h1>
-          <p>${escapeHtml(description)}</p>
+          <p>${escapeHtml(description)} Events are capped at 100 people and shared through the local Meetup group.</p>
           <div class="aac-actions">
             <a class="button dark" href="${escapeHtml(chapter.meetupUrl)}" target="_blank" rel="noopener">Join the ${escapeHtml(chapter.city)} group</a>
           <a class="button ghost" href="#events">See events</a>
@@ -400,6 +462,26 @@ function cityPage(chapter) {
     image: `https://mojoaistudio.com/assets/advanced-ai-concepts/og-${chapter.slug}.jpg`,
     active: "active",
     body,
+    schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: `Advanced AI Concepts ${chapter.city}`,
+        url: `https://mojoaistudio.com/watch/${chapter.slug}/`,
+        description,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "Mojo AI Studio",
+          url: "https://mojoaistudio.com/",
+        },
+      },
+      breadcrumbSchema([
+        { name: "Mojo AI Studio", url: "https://mojoaistudio.com/" },
+        { name: "Advanced AI Concepts", url: "https://mojoaistudio.com/watch/" },
+        { name: chapter.city, url: `https://mojoaistudio.com/watch/${chapter.slug}/` },
+      ]),
+      ...chapter.events.map((event) => eventSchema(chapter, event)),
+    ],
   });
 }
 
