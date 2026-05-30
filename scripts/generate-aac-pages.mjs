@@ -224,7 +224,7 @@ ${schemaMarkup}
         </div>
         <div class="nav-actions">
           <a class="button ghost" href="/watch/#events">Sessions</a>
-          <a class="button dark" href="https://www.meetup.com/advanced-ai-concepts/" target="_blank" rel="noopener">Join on Meetup</a>
+          <a class="button dark" href="/watch/#events">Join on Meetup</a>
         </div>
       </nav>
       ${body}
