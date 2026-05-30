@@ -330,6 +330,11 @@ function hubPage(chapters) {
         </div>
       </section>
     </header>
+    <div class="aac-session-separator" aria-hidden="true">
+      <span></span>
+      <i></i>
+      <span></span>
+    </div>
     <main>
       <section class="section aac-section" id="events">
         <div class="aac-section-heading">
