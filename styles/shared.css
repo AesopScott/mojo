@@ -1194,8 +1194,7 @@ p {
 }
 
 .aac-zoom-status-head,
-.aac-zoom-metrics,
-.aac-zoom-feed {
+.aac-zoom-metrics {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -1219,8 +1218,7 @@ p {
   text-transform: uppercase;
 }
 
-.aac-zoom-metrics span,
-.aac-zoom-feed span {
+.aac-zoom-metrics span {
   display: inline-flex;
   align-items: baseline;
   gap: 5px;
@@ -1238,11 +1236,41 @@ p {
 }
 
 .aac-zoom-feed {
-  padding-top: 2px;
+  display: grid;
+  gap: 8px;
 }
 
-.aac-zoom-feed span {
+.aac-zoom-event {
+  display: grid;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--soft-line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #4b596d;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.aac-zoom-event:hover {
+  border-color: rgba(63, 95, 191, 0.35);
+}
+
+.aac-zoom-event span {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: baseline;
+}
+
+.aac-zoom-event b {
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.aac-zoom-event small {
   color: #64748b;
+  overflow-wrap: anywhere;
 }
 
 .aac-section {
