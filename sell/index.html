@@ -35,11 +35,8 @@
     <style>
       /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
       .sell-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
-        gap: 42px;
-        align-items: center;
         padding: 80px 0 72px;
+        max-width: 760px;
       }
 
       .sell-hero h1 {
@@ -53,22 +50,6 @@
         line-height: 1.65;
         max-width: 620px;
         margin-bottom: 32px;
-      }
-
-      .sell-hero-portrait {
-        min-height: 360px;
-        display: grid;
-        place-items: end center;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: linear-gradient(180deg, #eef8f7 0%, #fff 100%);
-        box-shadow: var(--shadow);
-      }
-
-      .sell-hero-portrait img {
-        width: min(320px, 100%);
-        margin-bottom: -4px;
       }
 
       .hero-pricing {
@@ -280,9 +261,6 @@
           gap: 36px;
         }
 
-        .sell-hero {
-          grid-template-columns: 1fr;
-        }
       }
     </style>
   </head>
@@ -307,28 +285,26 @@
       </nav>
 
       <section class="section sell-hero">
-        <div class="sell-hero-copy">
-          <p class="kicker">Sell on Mojo</p>
-          <h1>Reach AI-ready buyers. Keep 90% of every sale.</h1>
-          <p>MojoAIStudio.com is a curated marketplace for practical AI-built software. If you've built a tool that solves real workflow problems, list it here and put it in front of buyers who are actively looking.</p>
-          <div class="hero-pricing">
-            <div class="hero-pricing-item">
-              <b>10%</b>
-              <span>of each sale - no upfront revenue risk</span>
-            </div>
-            <div class="hero-pricing-item">
-              <b>$100 / yr</b>
-              <span>per product listed on the marketplace</span>
-            </div>
-            <div class="hero-pricing-item">
-              <b>5 days</b>
-              <span>average review turnaround</span>
-            </div>
+        <p class="kicker">Sell on Mojo</p>
+        <h1>Reach AI-ready buyers. Keep 90% of every sale.</h1>
+        <p>MojoAIStudio.com is a curated marketplace for practical AI-built software. If you've built a tool that solves real workflow problems, list it here and put it in front of buyers who are actively looking.</p>
+        <div class="hero-pricing">
+          <div class="hero-pricing-item">
+            <b>10%</b>
+            <span>of each sale - no upfront revenue risk</span>
           </div>
-          <a class="button dark" href="/products/pages/submit.html">Submit your product</a>
+          <div class="hero-pricing-item">
+            <b>$100 / yr</b>
+            <span>per product listed on the marketplace</span>
+          </div>
+          <div class="hero-pricing-item">
+            <b>5 days</b>
+            <span>average review turnaround</span>
+          </div>
         </div>
-        <div class="sell-hero-portrait" aria-label="Mojo AI Studio seller guide portrait">
-          <img class="scott-avatar" src="/assets/scott-avatars/over-shoulder.png" alt="Mojo AI Studio guide looking over his shoulder" />
+        <div class="subtle-avatar-row">
+          <a class="button dark" href="/products/pages/submit.html">Submit your product</a>
+          <img class="subtle-avatar" src="/assets/scott-avatars/over-shoulder.png" alt="Mojo AI Studio guide looking over his shoulder" />
         </div>
       </section>
     </header>
