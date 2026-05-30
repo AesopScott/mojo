@@ -59,6 +59,10 @@
             <a class="button dark" href="#events">Find your city</a>
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
+          <div class="aac-group-leaders" data-group-leaders hidden>
+            <span>Top member cities</span>
+            <div data-group-leader-list></div>
+          </div>
         </div>
         <div class="aac-hero-media">
           <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
@@ -72,7 +76,7 @@
           </div>
           <div class="aac-zoom-status" id="aac-zoom-status">
             <div class="aac-zoom-status-head">
-              <span>Home activity</span>
+              <span>Registration activity</span>
               <b>Upcoming sessions</b>
             </div>
             <div class="aac-zoom-metrics">
@@ -479,9 +483,10 @@
 
       (function() {
         var panel = document.getElementById('aac-zoom-status');
-        if (!panel) return;
+        var leaders = document.querySelector('[data-group-leaders]');
+        var leaderList = document.querySelector('[data-group-leader-list]');
 
-        var rsvps = panel.querySelector('[data-meetup-rsvps]');
+        var rsvps = panel ? panel.querySelector('[data-meetup-rsvps]') : null;
 
         function setText(el, value) {
           if (el) el.textContent = value;
@@ -498,8 +503,31 @@
             .catch(function() {});
         }
 
+        function loadGroupLeaders() {
+          if (!leaders || !leaderList) return;
+          fetch('/api/meetup-group-leaders?limit=5')
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(data) {
+              if (!data || !data.ok || !Array.isArray(data.groups)) return;
+              leaderList.innerHTML = data.groups.map(function(group) {
+                var item = document.createElement('span');
+                var city = document.createElement('b');
+                var count = document.createElement('small');
+                city.textContent = group.city || 'Meetup';
+                count.textContent = Number(group.members || 0).toLocaleString() + ' members';
+                item.appendChild(city);
+                item.appendChild(count);
+                return item.outerHTML;
+              }).join('');
+              leaders.hidden = data.groups.length === 0;
+            })
+            .catch(function() {});
+        }
+
         loadRsvpCount();
+        loadGroupLeaders();
         window.setInterval(loadRsvpCount, 300000);
+        window.setInterval(loadGroupLeaders, 3600000);
       })();
     </script>
   </body>

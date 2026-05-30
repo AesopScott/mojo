@@ -1152,6 +1152,58 @@ p {
   margin-top: 28px;
 }
 
+.aac-group-leaders {
+  display: grid;
+  gap: 10px;
+  max-width: 620px;
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px solid rgba(63, 95, 191, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 14px 34px rgba(31, 45, 67, 0.08);
+}
+
+.aac-group-leaders[hidden] {
+  display: none;
+}
+
+.aac-group-leaders > span {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.aac-group-leaders div {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.aac-group-leaders div span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid var(--soft-line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.aac-group-leaders b {
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
+.aac-group-leaders small {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
 .aac-stats {
   display: flex;
   flex-wrap: wrap;
@@ -1883,6 +1935,10 @@ a[aria-disabled="true"] {
 
   .aac-city-group-card .button {
     width: 100%;
+  }
+
+  .aac-group-leaders div {
+    grid-template-columns: 1fr;
   }
 
   .aac-host-card {
