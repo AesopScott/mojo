@@ -1534,6 +1534,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
         $eventId = trim((string) ($_GET['event_id'] ?? ''));
         $networkTimezone = trim((string) ($_GET['timezone'] ?? 'America/Denver'));
         $fromEventId = trim((string) ($_GET['from_event_id'] ?? ''));
+        $networkOnly = (string) ($_GET['network_only'] ?? 'false') === 'true';
         $publishStatus = strtoupper(trim((string) ($_GET['publish_status'] ?? 'DRAFT')));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'create-network-event-from-existing';
@@ -1609,7 +1610,6 @@ GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
         }
 
         $input = [
-            'groupUrlname' => $sourceUrlname,
             'title' => (string) ($sourceEvent['title'] ?? ''),
             'description' => (string) ($sourceEvent['description'] ?? ''),
             'startDateTime' => (string) ($sourceEvent['dateTime'] ?? ''),
@@ -1620,6 +1620,10 @@ GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
                 'timezone' => $networkTimezone,
             ],
         ];
+
+        if (!$networkOnly) {
+            $input['groupUrlname'] = $sourceUrlname;
+        }
 
         if ($fromEventId !== '') {
             $input['proNetworkEvents']['fromEventId'] = $fromEventId;
