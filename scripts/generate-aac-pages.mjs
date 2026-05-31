@@ -406,7 +406,7 @@ function hubPage(chapters) {
     title: "Advanced AI Concepts | Mojo AI Studio",
     description: "Advanced AI Concepts meetup chapters and upcoming live sessions for builders exploring agents, memory, command centers, and AI systems.",
     canonical: "https://mojoaistudio.com/watch/",
-    image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.png",
+    image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.jpg",
     active: "active",
     body,
     schema: [
