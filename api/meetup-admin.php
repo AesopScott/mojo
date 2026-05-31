@@ -1371,7 +1371,17 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
     if ($action === 'copy-events') {
         $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
         $targetUrlname = trim((string) ($_GET['target'] ?? ''));
+        $titleFilter = trim((string) ($_GET['titles'] ?? ''));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $allowedTitles = [];
+        if ($titleFilter !== '') {
+            foreach (explode('|', $titleFilter) as $title) {
+                $normalizedTitle = strtolower(trim($title));
+                if ($normalizedTitle !== '') {
+                    $allowedTitles[$normalizedTitle] = true;
+                }
+            }
+        }
 
         if ($targetUrlname === '') {
             respond(400, ['ok' => false, 'error' => 'Missing target group urlname.']);
@@ -1453,9 +1463,20 @@ GRAPHQL;
                 continue;
             }
 
+            $sourceTitle = (string) ($sourceEvent['title'] ?? '');
+            if (!empty($allowedTitles) && !isset($allowedTitles[strtolower(trim($sourceTitle))])) {
+                $skipped[] = [
+                    'source_id' => $sourceEvent['id'] ?? null,
+                    'title' => $sourceTitle,
+                    'dateTime' => $sourceEvent['dateTime'] ?? null,
+                    'reason' => 'title filtered',
+                ];
+                continue;
+            }
+
             $copyDateTime = targetDateTime((string) ($sourceEvent['dateTime'] ?? ''), $targetUrlname);
             $candidate = [
-                'title' => (string) ($sourceEvent['title'] ?? ''),
+                'title' => $sourceTitle,
                 'dateTime' => $copyDateTime,
             ];
             $key = eventKey($candidate);
@@ -1530,6 +1551,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
             'ok' => empty($errors),
             'source' => $sourceUrlname,
             'target' => $targetUrlname,
+            'title_filter' => array_keys($allowedTitles),
             'created' => $created,
             'skipped' => $skipped,
             'errors' => $errors,
@@ -1784,6 +1806,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
 
     if ($action === 'network-groups') {
         $query = trim((string) ($_GET['query'] ?? ''));
+        $networkEventFilterId = trim((string) ($_GET['network_event_filter_id'] ?? ''));
 
         $filter = [];
         if ($query !== '') {
@@ -1795,6 +1818,9 @@ GRAPHQL, ['input' => $input], $tokenPath);
             'sort' => 'createdDate',
             'desc' => true,
         ];
+        if ($networkEventFilterId !== '') {
+            $input['networkEventFilterId'] = $networkEventFilterId;
+        }
         if (!empty($filter)) {
             $input['filter'] = $filter;
         }
