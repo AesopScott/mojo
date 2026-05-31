@@ -575,6 +575,7 @@ function ogSvg({ city, state, events }) {
     const y = 428 + index * 52;
     return `<text x="82" y="${y}" fill="#ffffff" font-size="30" font-weight="700">${escapeHtml(eventMonthDay(event.dateTime))} - ${escapeHtml(event.title)}</text>`;
   }).join("");
+  const chapterLine = /chapters/i.test(state) ? state : `${state} chapter`;
 
   return `<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -594,7 +595,7 @@ function ogSvg({ city, state, events }) {
   <rect x="72" y="76" width="186" height="12" rx="6" fill="url(#rule)"/>
   <text x="72" y="148" fill="#d8fbff" font-family="Inter, Arial, sans-serif" font-size="35" font-weight="800" letter-spacing="2">ADVANCED AI CONCEPTS</text>
   <text x="72" y="262" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="92" font-weight="900">${escapeHtml(city)}</text>
-  <text x="76" y="322" fill="#dbeafe" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="800">${escapeHtml(state)} chapter</text>
+  <text x="76" y="322" fill="#dbeafe" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="800">${escapeHtml(chapterLine)}</text>
   <text x="76" y="384" fill="#b8c7df" font-family="Inter, Arial, sans-serif" font-size="29" font-weight="600">Upcoming live online sessions</text>
   ${eventLines}
   <text x="76" y="570" fill="#e0f2fe" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="800">mojoaistudio.com/watch/${escapeHtml(city.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""))}</text>
@@ -640,7 +641,7 @@ async function main() {
 
   await generateOgImage(heroSource, {
     city: "Advanced AI Concepts",
-    state: `${chapters.length} city chapters`,
+    state: "Over 20 city chapters",
     events: chapters[0].events,
   }, "og-hub.jpg");
 
