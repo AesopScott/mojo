@@ -2643,14 +2643,31 @@ GRAPHQL, [], $tokenPath);
         $city = trim((string) ($_GET['city'] ?? ''));
         $state = strtoupper(trim((string) ($_GET['state'] ?? '')));
         $zip = trim((string) ($_GET['zip'] ?? ''));
+        $country = strtolower(trim((string) ($_GET['country'] ?? 'us')));
+        $latitude = trim((string) ($_GET['latitude'] ?? ''));
+        $longitude = trim((string) ($_GET['longitude'] ?? ''));
         $urlname = strtolower(trim((string) ($_GET['urlname'] ?? '')));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $hasPointLocation = $latitude !== '' && $longitude !== '';
 
-        if ($name === '' || $city === '' || $state === '' || $zip === '' || $urlname === '') {
+        if ($name === '' || $city === '' || $urlname === '' || (!$hasPointLocation && ($state === '' || $zip === ''))) {
             respond(400, [
                 'ok' => false,
                 'error' => 'Missing required city copy fields.',
-                'required' => ['name', 'city', 'state', 'zip', 'urlname', 'confirm'],
+                'required' => [
+                    'name',
+                    'city',
+                    'urlname',
+                    'confirm',
+                    'either state+zip for US geoLocation or latitude+longitude for pointLocation',
+                ],
+            ]);
+        }
+
+        if ($hasPointLocation && (!is_numeric($latitude) || !is_numeric($longitude))) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'latitude and longitude must be numeric.',
             ]);
         }
 
@@ -2718,18 +2735,27 @@ GRAPHQL, [], $tokenPath);
             }
         }
 
+        $location = $hasPointLocation
+            ? [
+                'pointLocation' => [
+                    'latitude' => (float) $latitude,
+                    'longitude' => (float) $longitude,
+                ],
+            ]
+            : [
+                'geoLocation' => [
+                    'country' => $country === '' ? 'us' : $country,
+                    'zip' => $zip,
+                ],
+            ];
+
         $draftInput = [
             'name' => $name,
             'description' => (string) ($source['description'] ?? ''),
             'customMembersLabel' => (string) ($source['customMemberLabel'] ?? 'Members'),
             'topics' => $topicIds,
             'urlname' => $urlname,
-            'location' => [
-                'geoLocation' => [
-                    'country' => 'us',
-                    'zip' => $zip,
-                ],
-            ],
+            'location' => $location,
         ];
 
         $draftResult = graphQL(<<<'GRAPHQL'
