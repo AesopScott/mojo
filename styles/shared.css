@@ -905,6 +905,35 @@ p {
   font-size: clamp(2.8rem, 5vw, 5rem);
 }
 
+.teaching-studio {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.92fr) minmax(320px, 1.08fr);
+  gap: 28px 44px;
+  align-items: start;
+  padding: 26px 0 42px;
+  border-top: 1px solid var(--soft-line);
+}
+
+.teaching-studio h2 {
+  max-width: 640px;
+  margin: 0;
+  font-size: clamp(2rem, 3.8vw, 3.8rem);
+  line-height: 0.98;
+}
+
+.teaching-studio-copy {
+  display: grid;
+  gap: 14px;
+  max-width: 740px;
+}
+
+.teaching-studio-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.72;
+}
+
 .process-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1892,6 +1921,7 @@ a[aria-disabled="true"] {
   .hero,
   .aac-city-hero,
   .aac-build-difference,
+  .teaching-studio,
   .catalog-layout,
   .spotlight,
   .compare-section,
