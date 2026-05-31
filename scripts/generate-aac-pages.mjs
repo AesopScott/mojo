@@ -281,7 +281,7 @@ function eventsMarkup(events) {
 }
 
 function zoomEventLinksMarkup(events) {
-  return events.slice(0, 3).map((event) => {
+  return events.slice(0, 4).map((event) => {
     const zoomUrl = event.howToFindUs || event.eventUrl;
     return `
               <a class="aac-zoom-event" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
