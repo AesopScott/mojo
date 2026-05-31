@@ -1416,6 +1416,59 @@ p {
   padding: 34px 0 54px;
 }
 
+.aac-build-difference {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 26px 42px;
+  align-items: start;
+  padding: 44px 0 26px;
+}
+
+.aac-build-difference h2 {
+  max-width: 620px;
+  margin: 0;
+  font-size: clamp(2.1rem, 4vw, 4.2rem);
+  line-height: 0.96;
+}
+
+.aac-build-copy {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+}
+
+.aac-build-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.aac-build-points {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.aac-build-points span {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--soft-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #4b596d;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  box-shadow: 0 14px 34px rgba(31, 45, 67, 0.07);
+}
+
+.aac-build-points b {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
 .aac-section-heading {
   display: grid;
   gap: 8px;
@@ -1838,6 +1891,7 @@ a[aria-disabled="true"] {
   .pathway-grid,
   .hero,
   .aac-city-hero,
+  .aac-build-difference,
   .catalog-layout,
   .spotlight,
   .compare-section,
@@ -1922,6 +1976,7 @@ a[aria-disabled="true"] {
   .bundle-grid,
   .aac-city-grid,
   .aac-events-grid,
+  .aac-build-points,
   .support-section,
   .detail-grid,
   .site-footer {
