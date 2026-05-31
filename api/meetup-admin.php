@@ -346,16 +346,26 @@ function groupTimeZones(): array {
         'advanced-ai-concepts-houston' => 'America/Chicago',
         'advanced-ai-concepts-kansas-city' => 'America/Chicago',
         'advanced-ai-concepts-los-angeles' => 'America/Los_Angeles',
+        'advanced-ai-concepts-buenos-aires' => 'America/Argentina/Buenos_Aires',
+        'advanced-ai-concepts-mexico-city' => 'America/Mexico_City',
         'advanced-ai-concepts-miami' => 'America/New_York',
+        'advanced-ai-concepts-montreal' => 'America/Toronto',
         'advanced-ai-concepts-new-york' => 'America/New_York',
         'advanced-ai-concepts-okc' => 'America/Chicago',
         'advanced-ai-concepts-philadelphia' => 'America/New_York',
         'advanced-ai-concepts-phoenix' => 'America/Phoenix',
         'advanced-ai-concepts-san-francisco' => 'America/Los_Angeles',
         'advanced-ai-concepts-san-antonio' => 'America/Chicago',
+        'advanced-ai-concepts-santiago' => 'America/Santiago',
         'advanced-ai-concepts-seattle' => 'America/Los_Angeles',
+        'advanced-ai-concepts-singapore-guild' => 'Asia/Singapore',
+        'advanced-ai-concepts-sao-paulo' => 'America/Sao_Paulo',
+        'advanced-ai-concepts-sydney-guild' => 'Australia/Sydney',
         'advanced-ai-concepts-tampa' => 'America/New_York',
         'advanced-ai-concepts-the-triangle' => 'America/New_York',
+        'advanced-ai-concepts-tokyo-guild' => 'Asia/Tokyo',
+        'advanced-ai-concepts-toronto' => 'America/Toronto',
+        'advanced-ai-concepts-vancouver' => 'America/Vancouver',
         'advanced-ai-concepts-washington-dc' => 'America/New_York',
     ];
 }
@@ -1516,6 +1526,151 @@ GRAPHQL, ['input' => $input], $tokenPath);
             'created' => $created,
             'skipped' => $skipped,
             'errors' => $errors,
+        ]);
+    }
+
+    if ($action === 'create-network-event-from-existing') {
+        $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
+        $eventId = trim((string) ($_GET['event_id'] ?? ''));
+        $networkTimezone = trim((string) ($_GET['timezone'] ?? 'America/Denver'));
+        $publishStatus = strtoupper(trim((string) ($_GET['publish_status'] ?? 'DRAFT')));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== 'create-network-event-from-existing';
+
+        if ($eventId === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing event_id.',
+            ]);
+        }
+
+        if ($publishStatus !== 'DRAFT' && $publishStatus !== 'PUBLISHED') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'publish_status must be DRAFT or PUBLISHED.',
+            ]);
+        }
+
+        $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 50) {
+      edges {
+        node {
+          id
+          title
+          description
+          eventUrl
+          status
+          dateTime
+          duration
+          networkEvent { id title eventTime groupCount status timezone }
+          howToFindUs
+          venue { id name }
+          venues { id name }
+          featuredEventPhoto { id baseUrl standardUrl thumbUrl }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
+
+        $sourceEdges = $eventsResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+        if (!is_array($sourceEdges)) {
+            respond(500, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Unable to load source events.',
+                'result' => $eventsResult,
+            ]);
+        }
+
+        $sourceEvent = null;
+        foreach ($sourceEdges as $edge) {
+            $candidate = $edge['node'] ?? null;
+            if (is_array($candidate) && (string) ($candidate['id'] ?? '') === $eventId) {
+                $sourceEvent = $candidate;
+                break;
+            }
+        }
+
+        if (!is_array($sourceEvent)) {
+            respond(404, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Source event not found.',
+                'event_id' => $eventId,
+            ]);
+        }
+
+        $input = [
+            'groupUrlname' => $sourceUrlname,
+            'title' => (string) ($sourceEvent['title'] ?? ''),
+            'description' => (string) ($sourceEvent['description'] ?? ''),
+            'startDateTime' => (string) ($sourceEvent['dateTime'] ?? ''),
+            'duration' => (string) ($sourceEvent['duration'] ?? 'PT2H'),
+            'publishStatus' => $publishStatus,
+            'isCopy' => true,
+            'proNetworkEvents' => [
+                'timezone' => $networkTimezone,
+            ],
+        ];
+
+        if (!empty($sourceEvent['howToFindUs'])) {
+            $input['howToFindUs'] = (string) $sourceEvent['howToFindUs'];
+        }
+
+        $venues = $sourceEvent['venues'] ?? [];
+        if (is_array($venues) && !empty($venues[0]['id'])) {
+            $input['venueId'] = (string) $venues[0]['id'];
+        } elseif (!empty($sourceEvent['venue']['id'])) {
+            $input['venueId'] = (string) $sourceEvent['venue']['id'];
+        }
+
+        if ($dryRun) {
+            respond(200, [
+                'ok' => true,
+                'dry_run' => true,
+                'source_event' => [
+                    'id' => $sourceEvent['id'] ?? null,
+                    'title' => $sourceEvent['title'] ?? null,
+                    'dateTime' => $sourceEvent['dateTime'] ?? null,
+                    'network_event_id' => $sourceEvent['networkEvent']['id'] ?? null,
+                ],
+                'input' => $input,
+            ]);
+        }
+
+        $createResult = graphQL(<<<'GRAPHQL'
+mutation ($input: CreateEventInput!) {
+  createEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      status
+      dateTime
+      duration
+      networkEvent { id title eventTime groupCount status timezone }
+      group { id name urlname }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+        $payload = $createResult['response']['data']['createEvent'] ?? null;
+        $errors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+
+        respond(empty($errors) && !empty($payload['event']) ? 200 : 500, [
+            'ok' => empty($errors) && !empty($payload['event']),
+            'dry_run' => false,
+            'source_event_id' => $eventId,
+            'result' => $createResult,
         ]);
     }
 
