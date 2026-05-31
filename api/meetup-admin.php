@@ -1561,8 +1561,10 @@ GRAPHQL, ['input' => $input], $tokenPath);
     if ($action === 'create-network-event-from-existing') {
         $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
         $eventId = trim((string) ($_GET['event_id'] ?? ''));
+        $startDateTime = trim((string) ($_GET['start_datetime'] ?? ''));
         $networkTimezone = trim((string) ($_GET['timezone'] ?? 'America/Denver'));
         $fromEventId = trim((string) ($_GET['from_event_id'] ?? ''));
+        $filterId = trim((string) ($_GET['filter_id'] ?? ''));
         $networkOnly = (string) ($_GET['network_only'] ?? 'false') === 'true';
         $publishStatus = strtoupper(trim((string) ($_GET['publish_status'] ?? 'DRAFT')));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
@@ -1641,7 +1643,7 @@ GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
         $input = [
             'title' => (string) ($sourceEvent['title'] ?? ''),
             'description' => (string) ($sourceEvent['description'] ?? ''),
-            'startDateTime' => (string) ($sourceEvent['dateTime'] ?? ''),
+            'startDateTime' => $startDateTime !== '' ? $startDateTime : (string) ($sourceEvent['dateTime'] ?? ''),
             'duration' => (string) ($sourceEvent['duration'] ?? 'PT2H'),
             'publishStatus' => $publishStatus,
             'isCopy' => true,
@@ -1656,6 +1658,10 @@ GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
 
         if ($fromEventId !== '') {
             $input['proNetworkEvents']['fromEventId'] = $fromEventId;
+        }
+
+        if ($filterId !== '') {
+            $input['proNetworkEvents']['filterId'] = $filterId;
         }
 
         if (!empty($sourceEvent['howToFindUs'])) {
