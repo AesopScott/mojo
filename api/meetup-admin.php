@@ -1533,6 +1533,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
         $sourceUrlname = trim((string) ($_GET['source'] ?? 'advanced-ai-concepts'));
         $eventId = trim((string) ($_GET['event_id'] ?? ''));
         $networkTimezone = trim((string) ($_GET['timezone'] ?? 'America/Denver'));
+        $fromEventId = trim((string) ($_GET['from_event_id'] ?? ''));
         $publishStatus = strtoupper(trim((string) ($_GET['publish_status'] ?? 'DRAFT')));
         $confirm = trim((string) ($_GET['confirm'] ?? ''));
         $dryRun = $confirm !== 'create-network-event-from-existing';
@@ -1620,6 +1621,10 @@ GRAPHQL, ['urlname' => $sourceUrlname], $tokenPath);
             ],
         ];
 
+        if ($fromEventId !== '') {
+            $input['proNetworkEvents']['fromEventId'] = $fromEventId;
+        }
+
         if (!empty($sourceEvent['howToFindUs'])) {
             $input['howToFindUs'] = (string) $sourceEvent['howToFindUs'];
         }
@@ -1671,6 +1676,40 @@ GRAPHQL, ['input' => $input], $tokenPath);
             'dry_run' => false,
             'source_event_id' => $eventId,
             'result' => $createResult,
+        ]);
+    }
+
+    if ($action === 'delete-event') {
+        $eventId = trim((string) ($_GET['event_id'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $removeFromCalendar = (string) ($_GET['remove_from_calendar'] ?? 'true') !== 'false';
+
+        if ($eventId === '' || $confirm !== $eventId) {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Missing confirmation. Set confirm to the event_id.',
+                'expected_confirm' => $eventId,
+            ]);
+        }
+
+        $deleteResult = graphQL(<<<'GRAPHQL'
+mutation ($input: DeleteEventInput!) {
+  deleteEvent(input: $input) {
+    errors { message field code }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'eventId' => $eventId,
+                'removeFromCalendar' => $removeFromCalendar,
+            ],
+        ], $tokenPath);
+
+        $errors = $deleteResult['response']['data']['deleteEvent']['errors'] ?? [];
+        respond(empty($errors) ? 200 : 500, [
+            'ok' => empty($errors),
+            'event_id' => $eventId,
+            'result' => $deleteResult,
         ]);
     }
 
