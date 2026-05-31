@@ -713,13 +713,20 @@ query ($name: String!) {
   __type(name: $name) {
     name
     kind
+    description
     fields {
       name
+      description
       args { name type { kind name ofType { kind name ofType { kind name } } } }
       type { kind name ofType { kind name ofType { kind name } } }
     }
+    enumValues {
+      name
+      description
+    }
     inputFields {
       name
+      description
       type { kind name ofType { kind name ofType { kind name } } }
     }
   }
