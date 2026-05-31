@@ -1384,6 +1384,7 @@ query ($urlname: String!) {
           status
           dateTime
           duration
+          networkEvent { id title eventTime groupCount status timezone }
           howToFindUs
           venue {
             id
