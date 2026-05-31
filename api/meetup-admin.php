@@ -1717,6 +1717,63 @@ GRAPHQL, [
         ]);
     }
 
+    if ($action === 'attach-event-to-network-event') {
+        $eventId = trim((string) ($_GET['event_id'] ?? ''));
+        $fromEventId = trim((string) ($_GET['from_event_id'] ?? ''));
+        $timezone = trim((string) ($_GET['timezone'] ?? 'America/Denver'));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== $eventId;
+
+        if ($eventId === '' || $fromEventId === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Provide event_id and from_event_id.',
+            ]);
+        }
+
+        $input = [
+            'eventId' => $eventId,
+            'proNetworkEvents' => [
+                'fromEventId' => $fromEventId,
+                'timezone' => $timezone,
+            ],
+        ];
+
+        if ($dryRun) {
+            respond(200, [
+                'ok' => true,
+                'dry_run' => true,
+                'input' => $input,
+            ]);
+        }
+
+        $editResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      status
+      dateTime
+      networkEvent { id title eventTime groupCount status timezone }
+      group { id name urlname }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+        $payload = $editResult['response']['data']['editEvent'] ?? null;
+        $errors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+
+        respond(empty($errors) && !empty($payload['event']) ? 200 : 500, [
+            'ok' => empty($errors) && !empty($payload['event']),
+            'dry_run' => false,
+            'result' => $editResult,
+        ]);
+    }
+
 
     if ($action === 'network-groups') {
         $query = trim((string) ($_GET['query'] ?? ''));
