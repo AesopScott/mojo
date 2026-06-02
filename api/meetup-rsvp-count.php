@@ -231,10 +231,21 @@ function rsvpFreshCache(string $path): ?array {
 }
 
 function rsvpCountPayload(string $tokenPath): array {
-    $payload = rsvpGraphQL(<<<'GRAPHQL'
-query ($first: Int!) {
+    $events = [];
+    $after = null;
+    $pages = 0;
+    $reportedTotal = 0;
+
+    do {
+        $payload = rsvpGraphQL(<<<'GRAPHQL'
+query ($input: ProNetworkEventsSearchInput!) {
   proNetwork(urlname: "advanced-ai-concepts") {
-    eventsSearch(input: { first: $first, filter: { status: "UPCOMING" } }) {
+    eventsSearch(input: $input) {
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       edges {
         node {
           id
@@ -247,18 +258,32 @@ query ($first: Int!) {
     }
   }
 }
-GRAPHQL, ['first' => 100], $tokenPath);
+GRAPHQL, [
+            'input' => [
+                'first' => 100,
+                'after' => $after,
+                'filter' => ['status' => 'UPCOMING'],
+            ],
+        ], $tokenPath);
 
-    $events = $payload['data']['proNetwork']['eventsSearch']['edges'] ?? [];
-    $total = 0;
-    $breakdown = [];
-    foreach ($events as $edge) {
-        $node = is_array($edge) ? ($edge['node'] ?? []) : [];
-        if (!is_array($node)) {
-            continue;
+        $search = $payload['data']['proNetwork']['eventsSearch'] ?? [];
+        $reportedTotal = max($reportedTotal, (int) ($search['totalCount'] ?? 0));
+        foreach (($search['edges'] ?? []) as $edge) {
+            $node = is_array($edge) ? ($edge['node'] ?? []) : [];
+            if (is_array($node) && !empty($node['id'])) {
+                $events[(string) $node['id']] = $node;
+            }
         }
 
-        $rsvps = max(0, (int) ($node['rsvps']['totalCount'] ?? 0) - 1);
+        $pageInfo = $search['pageInfo'] ?? [];
+        $after = !empty($pageInfo['hasNextPage']) ? (string) ($pageInfo['endCursor'] ?? '') : null;
+        $pages++;
+    } while ($after !== null && $after !== '' && $pages < 20);
+
+    $total = 0;
+    $breakdown = [];
+    foreach ($events as $node) {
+        $rsvps = max(0, (int) ($node['rsvps']['totalCount'] ?? 0));
         $total += $rsvps;
         $breakdown[] = [
             'id' => $node['id'] ?? null,
@@ -273,6 +298,8 @@ GRAPHQL, ['first' => 100], $tokenPath);
         'ok' => true,
         'count' => $total,
         'event_count' => count($breakdown),
+        'reported_event_count' => $reportedTotal,
+        'pages' => $pages,
         'source' => 'advanced-ai-concepts',
         'updatedAt' => gmdate('c'),
         'breakdown' => $breakdown,
@@ -286,9 +313,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 $loadedEnv = rsvpLoadProjectEnv();
 $cachePath = rsvpCachePath();
 $debug = isset($_GET['debug']) && $_GET['debug'] !== 'false';
+$refresh = isset($_GET['refresh']) && $_GET['refresh'] !== 'false';
 
 try {
-    $payload = rsvpFreshCache($cachePath);
+    $payload = $refresh ? null : rsvpFreshCache($cachePath);
     if ($payload === null) {
         $payload = rsvpCountPayload(rsvpTokenStorePath($loadedEnv));
         $payload['cachedAt'] = gmdate('c');
