@@ -172,6 +172,28 @@ function eventMonthDay(dateTime) {
   }).format(new Date(dateTime));
 }
 
+function activityDateFromSource(dateTime, daysToAdd = 0) {
+  const match = String(dateTime).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
+  const [, year, month, day] = match;
+  const date = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 12));
+  date.setUTCDate(date.getUTCDate() + daysToAdd);
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+function activityDateLabel(event, pairedEvent) {
+  const isGlobal = /^Global\s*-\s*/i.test(event.title || "");
+  const sourceEvent = isGlobal && pairedEvent ? pairedEvent : event;
+  const dayLabel = activityDateFromSource(sourceEvent.dateTime, isGlobal ? 2 : 0);
+  if (!dayLabel) return eventDateLabel(event.dateTime).replace("local time", "Mountain time");
+  return `${dayLabel}, ${isGlobal ? "8:00 AM" : "6:00 PM"} Mountain`;
+}
+
 function jsonLdScript(data) {
   return `    <script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>\n`;
 }
@@ -299,18 +321,18 @@ function zoomEventLinksMarkup(events, globalEvents = []) {
 
   const activityEvents = [];
   for (const event of events.slice(0, 4)) {
-    activityEvents.push(event);
+    activityEvents.push({ event });
     const globalEvent = globalByTopic.get(activityTopicKey(event.title));
     if (globalEvent) {
-      activityEvents.push(globalEvent);
+      activityEvents.push({ event: globalEvent, pairedEvent: event });
     }
   }
 
-  return activityEvents.map((event) => {
+  return activityEvents.map(({ event, pairedEvent }) => {
     const zoomUrl = event.howToFindUs || event.eventUrl;
     return `
               <a class="aac-zoom-event" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
-                <span><b>${escapeHtml(event.title)}</b> ${escapeHtml(eventDateLabel(event.dateTime))}</span>
+                <span><b>${escapeHtml(event.title)}</b> ${escapeHtml(activityDateLabel(event, pairedEvent))}</span>
                 <small>${escapeHtml(zoomUrl)}</small>
               </a>`;
   }).join("");
