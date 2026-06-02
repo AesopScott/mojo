@@ -1752,6 +1752,59 @@ GRAPHQL, [
         ]);
     }
 
+    if ($action === 'set-event-start-time') {
+        $eventId = trim((string) ($_GET['event_id'] ?? ''));
+        $startDateTime = trim((string) ($_GET['start_datetime'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== $eventId;
+
+        if ($eventId === '' || $startDateTime === '') {
+            respond(400, [
+                'ok' => false,
+                'error' => 'Provide event_id and start_datetime.',
+            ]);
+        }
+
+        $input = [
+            'eventId' => $eventId,
+            'startDateTime' => editEventLocalDateTimeValue($startDateTime),
+        ];
+
+        if ($dryRun) {
+            respond(200, [
+                'ok' => true,
+                'dry_run' => true,
+                'input' => $input,
+            ]);
+        }
+
+        $editResult = graphQL(<<<'GRAPHQL'
+mutation ($input: EditEventInput!) {
+  editEvent(input: $input) {
+    event {
+      id
+      title
+      eventUrl
+      status
+      dateTime
+      group { id name urlname }
+      networkEvent { id title eventTime groupCount status timezone }
+    }
+    errors { message field code }
+  }
+}
+GRAPHQL, ['input' => $input], $tokenPath);
+
+        $payload = $editResult['response']['data']['editEvent'] ?? null;
+        $errors = is_array($payload) ? ($payload['errors'] ?? []) : [];
+
+        respond(empty($errors) && !empty($payload['event']) ? 200 : 500, [
+            'ok' => empty($errors) && !empty($payload['event']),
+            'dry_run' => false,
+            'result' => $editResult,
+        ]);
+    }
+
     if ($action === 'attach-event-to-network-event') {
         $eventId = trim((string) ($_GET['event_id'] ?? ''));
         $fromEventId = trim((string) ($_GET['from_event_id'] ?? ''));
