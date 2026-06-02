@@ -251,6 +251,8 @@ query ($input: ProNetworkEventsSearchInput!) {
           id
           title
           dateTime
+          description
+          eventUrl
           group { urlname }
           rsvps { totalCount }
         }
@@ -286,11 +288,13 @@ GRAPHQL, [
         $rsvps = max(0, (int) ($node['rsvps']['totalCount'] ?? 0));
         $total += $rsvps;
         $breakdown[] = [
-            'id' => $node['id'] ?? null,
-            'title' => $node['title'] ?? null,
-            'group' => $node['group']['urlname'] ?? null,
-            'date' => $node['dateTime'] ?? null,
-            'rsvps' => $rsvps,
+            'id'          => $node['id'] ?? null,
+            'title'       => $node['title'] ?? null,
+            'group'       => $node['group']['urlname'] ?? null,
+            'date'        => $node['dateTime'] ?? null,
+            'rsvps'       => $rsvps,
+            'description' => $node['description'] ?? null,
+            'eventUrl'    => $node['eventUrl'] ?? null,
         ];
     }
 
