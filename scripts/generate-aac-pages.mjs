@@ -11,6 +11,7 @@ const OUT_DIR = path.join(ROOT, "watch");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
 const FALLBACK_HERO_IMAGE = path.join(ASSET_DIR, "hero.jpg");
 const FALLBACK_OG_IMAGE = path.join(ASSET_DIR, "og-hub.jpg");
+const GLOBAL_ACTIVITY_GROUP = "advanced-ai-concepts-global-london";
 
 const cities = [
   { city: "Colorado Springs/Denver", state: "CO", slug: "colorado-springs", urlname: "advanced-ai-concepts" },
@@ -280,8 +281,32 @@ function eventsMarkup(events) {
           </a>`).join("");
 }
 
-function zoomEventLinksMarkup(events) {
-  return events.slice(0, 4).map((event) => {
+function activityTopicKey(title) {
+  return String(title || "")
+    .replace(/^Global\s*-\s*/i, "")
+    .trim()
+    .toLowerCase();
+}
+
+function zoomEventLinksMarkup(events, globalEvents = []) {
+  const globalByTopic = new Map();
+  for (const event of globalEvents) {
+    const key = activityTopicKey(event.title);
+    if (key && !globalByTopic.has(key)) {
+      globalByTopic.set(key, event);
+    }
+  }
+
+  const activityEvents = [];
+  for (const event of events.slice(0, 4)) {
+    activityEvents.push(event);
+    const globalEvent = globalByTopic.get(activityTopicKey(event.title));
+    if (globalEvent) {
+      activityEvents.push(globalEvent);
+    }
+  }
+
+  return activityEvents.map((event) => {
     const zoomUrl = event.howToFindUs || event.eventUrl;
     return `
               <a class="aac-zoom-event" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
@@ -291,7 +316,7 @@ function zoomEventLinksMarkup(events) {
   }).join("");
 }
 
-function hubPage(chapters) {
+function hubPage(chapters, globalEvents) {
   const homeEvents = chapters[0]?.events || [];
   const body = `
       <section class="aac-hero">
@@ -327,7 +352,7 @@ function hubPage(chapters) {
               <span><b data-meetup-rsvps>0</b> RSVP count</span>
             </div>
             <div class="aac-zoom-feed">
-              ${zoomEventLinksMarkup(homeEvents)}
+              ${zoomEventLinksMarkup(homeEvents, globalEvents)}
             </div>
           </div>
         </div>
@@ -648,6 +673,13 @@ async function main() {
     });
   }
 
+  const globalPayload = await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname: GLOBAL_ACTIVITY_GROUP });
+  const globalGroup = globalPayload.result.response.data.groupByUrlname;
+  const globalEvents = globalGroup.events.edges
+    .map((edge) => edge.node)
+    .filter((event) => event.status === "ACTIVE" && /^Global\s*-\s*/i.test(event.title))
+    .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+
   const heroSource = await resolveHeroImageSource(env, chapters);
   await sharp(heroSource)
     .resize(1600, 880, { fit: "cover", position: "center" })
@@ -667,11 +699,12 @@ async function main() {
     await fs.writeFile(path.join(cityDir, "index.html"), cityPage(chapter));
   }
 
-  await fs.writeFile(path.join(OUT_DIR, "index.html"), hubPage(chapters));
+  await fs.writeFile(path.join(OUT_DIR, "index.html"), hubPage(chapters, globalEvents));
   console.log(JSON.stringify({
     ok: true,
     city_count: chapters.length,
     event_count: chapters.reduce((sum, chapter) => sum + chapter.events.length, 0),
+    global_activity_count: globalEvents.length,
   }));
 }
 
