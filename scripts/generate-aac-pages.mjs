@@ -186,12 +186,63 @@ function activityDateFromSource(dateTime, daysToAdd = 0) {
   }).format(date);
 }
 
+function timeZoneOffsetMs(date, timeZone) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const localAsUtc = Date.UTC(
+    Number(values.year),
+    Number(values.month) - 1,
+    Number(values.day),
+    Number(values.hour),
+    Number(values.minute),
+    Number(values.second),
+  );
+  return localAsUtc - date.getTime();
+}
+
+function mountainTimeToUtc(dateTime, daysToAdd, hour) {
+  const match = String(dateTime).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!match) return null;
+  const [, year, month, day] = match;
+  const localDate = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day) + daysToAdd, hour, 0, 0));
+  const timeZone = "America/Denver";
+  let utcDate = new Date(localDate.getTime() - timeZoneOffsetMs(localDate, timeZone));
+  utcDate = new Date(localDate.getTime() - timeZoneOffsetMs(utcDate, timeZone));
+  return utcDate;
+}
+
+function gmtActivityTimeLabel(dateTime, daysToAdd, hour) {
+  const utcDate = mountainTimeToUtc(dateTime, daysToAdd, hour);
+  if (!utcDate) return "";
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  }).format(utcDate).replace(/\s([AP]M)$/, " $1 GMT");
+}
+
 function activityDateLabel(event, pairedEvent) {
   const isGlobal = /^Global\s*-\s*/i.test(event.title || "");
   const sourceEvent = isGlobal && pairedEvent ? pairedEvent : event;
-  const dayLabel = activityDateFromSource(sourceEvent.dateTime, isGlobal ? 2 : 0);
+  const daysToAdd = isGlobal ? 2 : 0;
+  const hour = isGlobal ? 8 : 18;
+  const dayLabel = activityDateFromSource(sourceEvent.dateTime, daysToAdd);
   if (!dayLabel) return eventDateLabel(event.dateTime).replace("local time", "Mountain time");
-  return `${dayLabel}, ${isGlobal ? "8:00 AM" : "6:00 PM"} Mountain`;
+  const gmtLabel = gmtActivityTimeLabel(sourceEvent.dateTime, daysToAdd, hour);
+  return `${dayLabel}, ${isGlobal ? "8:00 AM" : "6:00 PM"} Mountain${gmtLabel ? ` / ${gmtLabel}` : ""}`;
 }
 
 function jsonLdScript(data) {
