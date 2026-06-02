@@ -535,7 +535,7 @@ function hubPage(chapters, globalEvents) {
       </div>
       <div>
         <b>Studio</b>
-        <a href="/watch">Learn to build AI</a>
+        <a href="/learn/">Learn to build AI</a>
         <a href="/development">Custom development</a>
       </div>
     </footer>`;
@@ -543,7 +543,7 @@ function hubPage(chapters, globalEvents) {
   return pageShell({
     title: "Advanced AI Concepts | Mojo AI Studio",
     description: "Advanced AI Concepts meetup chapters and upcoming live sessions for builders exploring agents, memory, command centers, and AI systems.",
-    canonical: "https://mojoaistudio.com/watch/",
+    canonical: "https://mojoaistudio.com/learn/",
     image: "https://mojoaistudio.com/assets/advanced-ai-concepts/og-hub.jpg",
     active: "active",
     body,
@@ -552,7 +552,7 @@ function hubPage(chapters, globalEvents) {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         name: "Advanced AI Concepts",
-        url: "https://mojoaistudio.com/watch/",
+        url: "https://mojoaistudio.com/learn/",
         description: "Advanced AI Concepts meetup chapters and upcoming live sessions for builders exploring agents, memory, command centers, and AI systems.",
         isPartOf: {
           "@type": "WebSite",
@@ -562,7 +562,7 @@ function hubPage(chapters, globalEvents) {
       },
       breadcrumbSchema([
         { name: "Mojo AI Studio", url: "https://mojoaistudio.com/" },
-        { name: "Advanced AI Concepts", url: "https://mojoaistudio.com/watch/" },
+        { name: "Advanced AI Concepts", url: "https://mojoaistudio.com/learn/" },
       ]),
     ],
   }).replace("</body>", `    <script>
