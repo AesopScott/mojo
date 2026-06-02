@@ -212,7 +212,7 @@ function groupsGraphQL(string $query, array $variables, string $tokenPath): arra
     return $payload;
 }
 
-function groupsFreshCache(string $path): ?array {
+function groupsFreshCache(string $path, int $minimumGroups = 1): ?array {
     if (!is_readable($path)) {
         return null;
     }
@@ -224,6 +224,10 @@ function groupsFreshCache(string $path): ?array {
 
     $cachedAt = strtotime((string) $payload['cachedAt']);
     if ($cachedAt === false || time() - $cachedAt > MEETUP_GROUPS_CACHE_TTL) {
+        return null;
+    }
+
+    if (count($payload['groups'] ?? []) < $minimumGroups) {
         return null;
     }
 
@@ -306,12 +310,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 $loadedEnv = groupsLoadProjectEnv();
 $cachePath = groupsCachePath();
-$limit = max(1, min(10, (int) ($_GET['limit'] ?? 5)));
+$limit = max(1, min(20, (int) ($_GET['limit'] ?? 20)));
 
 try {
-    $payload = groupsFreshCache($cachePath);
+    $payload = groupsFreshCache($cachePath, $limit);
     if ($payload === null) {
-        $payload = groupsPayload(groupsTokenStorePath($loadedEnv), 10);
+        $payload = groupsPayload(groupsTokenStorePath($loadedEnv), 20);
         $payload['cachedAt'] = gmdate('c');
         groupsWriteJson($cachePath, $payload);
     }

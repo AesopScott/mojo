@@ -577,7 +577,7 @@ function hubPage(chapters, globalEvents) {
 
         function loadGroupLeaders() {
           if (!leaders || !leaderList) return;
-          fetch('/api/meetup-group-leaders?limit=5')
+          fetch('/api/meetup-group-leaders?limit=20')
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(data) {
               if (!data || !data.ok || !Array.isArray(data.groups)) return;
