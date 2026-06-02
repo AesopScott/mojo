@@ -1767,7 +1767,7 @@ GRAPHQL, [
 
         $input = [
             'eventId' => $eventId,
-            'startDateTime' => editEventLocalDateTimeValue($startDateTime),
+            'startDateTime' => $startDateTime,
         ];
 
         if ($dryRun) {
