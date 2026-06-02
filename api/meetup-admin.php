@@ -1866,6 +1866,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
     if ($action === 'network-groups') {
         $query = trim((string) ($_GET['query'] ?? ''));
         $networkEventFilterId = trim((string) ($_GET['network_event_filter_id'] ?? ''));
+        $first = max(1, min(100, (int) ($_GET['first'] ?? 100)));
 
         $filter = [];
         if ($query !== '') {
@@ -1873,7 +1874,7 @@ GRAPHQL, ['input' => $input], $tokenPath);
         }
 
         $input = [
-            'first' => 25,
+            'first' => $first,
             'sort' => 'createdDate',
             'desc' => true,
         ];

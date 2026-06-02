@@ -310,12 +310,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 
 $loadedEnv = groupsLoadProjectEnv();
 $cachePath = groupsCachePath();
-$limit = max(1, min(20, (int) ($_GET['limit'] ?? 20)));
+$limit = max(1, min(100, (int) ($_GET['limit'] ?? 20)));
 
 try {
     $payload = groupsFreshCache($cachePath, $limit);
     if ($payload === null) {
-        $payload = groupsPayload(groupsTokenStorePath($loadedEnv), 20);
+        $payload = groupsPayload(groupsTokenStorePath($loadedEnv), 100);
         $payload['cachedAt'] = gmdate('c');
         groupsWriteJson($cachePath, $payload);
     }

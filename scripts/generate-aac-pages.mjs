@@ -5,7 +5,7 @@ import sharp from "sharp";
 
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 const ENV_PATH = path.join(ROOT, ".env");
-const ENDPOINT = "https://mojoaistudio.com/api/meetup-admin";
+const ENDPOINT = process.env.MOJO_MEETUP_ADMIN_ENDPOINT || "https://mojoaistudio.com/api/meetup-admin";
 const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Aesop Academy/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
 const OUT_DIR = path.join(ROOT, "watch");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
@@ -462,7 +462,7 @@ function hubPage(chapters, globalEvents) {
           <label for="aac-session-city">City</label>
           <select id="aac-session-city" data-city-select>
             ${chapters.map((chapter, index) => `
-            <option value="${escapeHtml(chapter.slug)}" data-group-url="${escapeHtml(chapter.meetupUrl)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
+            <option value="${escapeHtml(chapter.slug)}" data-urlname="${escapeHtml(chapter.urlname)}" data-group-url="${escapeHtml(chapter.meetupUrl)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
           </select>
         </div>
         <div class="aac-city-group-card">
@@ -482,6 +482,7 @@ function hubPage(chapters, globalEvents) {
             const select = document.querySelector("[data-city-select]");
             const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
+            const chapterSlugs = ${JSON.stringify(Object.fromEntries(chapters.map((chapter) => [chapter.urlname, chapter.slug])))};
             if (!select || !cards.length) return;
             const syncCity = () => {
               const selected = select.selectedOptions[0];
@@ -493,6 +494,30 @@ function hubPage(chapters, globalEvents) {
                 card.hidden = card.dataset.city !== select.value;
               });
             };
+            const renderCityOptions = (groups) => {
+              if (!Array.isArray(groups) || !groups.length) return;
+              const currentUrlname = select.selectedOptions[0]?.dataset.urlname || "";
+              select.innerHTML = groups.map((group) => {
+                const urlname = String(group.urlname || "");
+                const value = chapterSlugs[urlname] || urlname;
+                const label = String(group.city || "Meetup").replace("Washington, DC", "Washington,\\u00a0DC");
+                const link = String(group.link || (urlname ? "https://www.meetup.com/" + urlname + "/" : ""));
+                const option = document.createElement("option");
+                option.value = value;
+                option.dataset.urlname = urlname;
+                option.dataset.groupUrl = link;
+                option.textContent = label;
+                if (urlname === currentUrlname) option.selected = true;
+                return option.outerHTML;
+              }).join("");
+              syncCity();
+            };
+            fetch('/api/meetup-group-leaders?limit=100')
+              .then((response) => response.ok ? response.json() : null)
+              .then((data) => {
+                if (data && data.ok) renderCityOptions(data.groups);
+              })
+              .catch(() => {});
             select.addEventListener("change", syncCity);
             syncCity();
           })();
