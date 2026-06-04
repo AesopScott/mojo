@@ -12,5 +12,37 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
       allow write: if false; // webhook endpoint writes via Admin SDK
     }
+
+    // Sellers: identified by email (no auth required for initial submission)
+    // Admin SDK writes seller records, sellers view their own status
+    match /sellers/{sellerId} {
+      allow read: if request.auth != null && request.auth.email == resource.data.email;
+      allow write: if false; // backend only (via Admin SDK)
+    }
+
+    // Contracts: public read (anyone can view terms), admin writes only
+    match /contracts/{version} {
+      allow read: if true;
+      allow write: if false; // backend only
+    }
+
+    // Sales: backend writes only (triggered by Polar webhook)
+    match /sales/{saleId} {
+      allow read: if false; // internal only
+      allow write: if false; // backend only
+    }
+
+    // Payout requests: seller submits, admin processes
+    match /payout_requests/{requestId} {
+      allow read: if request.auth != null && request.auth.email == resource.data.sellerEmail;
+      allow create: if request.auth != null && request.auth.email == request.resource.data.sellerEmail;
+      allow update: if false; // admin backend only
+    }
+
+    // Products: public read (anyone can view), backend writes only
+    match /products/{productId} {
+      allow read: if true; // public product listings
+      allow write: if false; // backend only (via Admin SDK)
+    }
   }
 }

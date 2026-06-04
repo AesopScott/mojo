@@ -213,6 +213,23 @@ Twilio sender phone number for event reminder SMS messages.
 
 ---
 
+## `SELLER_ENCRYPTION_KEY`
+
+Base64-encoded 32-byte AES-256 encryption key for encrypting/decrypting seller bank details at rest in Firestore.
+
+**Producers**
+- Firebase CLI: `firebase functions:secrets:set SELLER_ENCRYPTION_KEY`
+- Generate via: `node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"`
+
+**Consumers**
+- `functions/encryption.js` - `encryptBankDetails()` and `decryptBankDetails()` use this key
+- `api/sellers/submit-bank-info.php` - decrypts before displaying in admin dashboard
+- `api/sellers/request-payout.php` - decrypts bank details snapshot when seller requests payout
+
+**Status:** new (Phase 1)
+
+---
+
 ## Summary
 
 | Variable | Set In | Used In | Status |
@@ -230,6 +247,7 @@ Twilio sender phone number for event reminder SMS messages.
 | `TWILIO_ACCOUNT_SID` | server `.env` | `sms-reminder-lib.php` | active |
 | `TWILIO_AUTH_TOKEN` | server `.env` | `sms-reminder-lib.php` | active |
 | `TWILIO_FROM_NUMBER` | server `.env` | `sms-reminder-lib.php` | active |
+| `SELLER_ENCRYPTION_KEY` | Firebase CLI secrets | `functions/encryption.js`, `api/sellers/*` | new |
 
 ---
 

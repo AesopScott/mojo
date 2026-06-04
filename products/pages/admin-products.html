@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Products — Mojo AI Studio</title>
+  <link rel="stylesheet" href="../../styles/shared.css">
+  <style>
+    body {
+      background: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+    }
+
+    .admin-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .admin-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -1px;
+    }
+
+    .tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--blue);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .product-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .product-info h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .product-seller {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-live {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .product-description {
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .product-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .meta-item {
+      font-size: 13px;
+    }
+
+    .meta-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-approve {
+      padding: 10px 16px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn-approve:hover {
+      background: #2563eb;
+    }
+
+    .btn-archive {
+      padding: 10px 16px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn-archive:hover {
+      background: #dc2626;
+    }
+
+    .btn-save {
+      padding: 10px 16px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .btn-cancel {
+      padding: 10px 16px;
+      background: #f1f5f9;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .login-form input {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .login-form button {
+      padding: 12px;
+      background: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .message {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      color: #15803d;
+      font-weight: 600;
+    }
+
+    .message.error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Login View -->
+    <div id="login-view" class="login-container" style="display: none;">
+      <h1>Admin Products</h1>
+      <form id="login-form" class="login-form">
+        <input type="password" id="admin-key" placeholder="Admin key" required>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard-view" style="display: none;">
+      <div class="admin-header">
+        <h1>Product Management</h1>
+        <button class="logout-btn" id="logout-btn">Sign Out</button>
+      </div>
+
+      <div id="message" class="message"></div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="pending">Pending Review</button>
+        <button class="tab" data-tab="live">Published</button>
+      </div>
+
+      <!-- Pending Products Tab -->
+      <div id="tab-pending" class="tab-content active">
+        <div id="pending-products"></div>
+      </div>
+
+      <!-- Published Products Tab -->
+      <div id="tab-live" class="tab-content">
+        <div id="live-products"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/firebase-config.js"></script>
+  <script src="../../scripts/admin-products.js"></script>
+</body>
+</html>
