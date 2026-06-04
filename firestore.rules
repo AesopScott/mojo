@@ -13,9 +13,10 @@ service cloud.firestore {
       allow write: if false; // webhook endpoint writes via Admin SDK
     }
 
-    // Product submissions: service account (PHP) writes, admin reads
+    // Product submissions: service account (PHP) writes via OAuth2-authenticated REST API
+    // Rule set to 'if false' because OAuth2-authenticated REST API bypasses Firestore security rules
     match /product_submissions/{submissionId} {
-      allow create, write: if false; // PHP service account writes via Admin SDK
+      allow create, write: if false; // OAuth2-authenticated service account writes bypass this rule
       allow read: if false;           // admin read via portal (future)
     }
   }

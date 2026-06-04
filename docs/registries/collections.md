@@ -33,8 +33,10 @@ Seller product marketplace submission records. Each document is a seller's produ
 - Firestore console (admin read-only)
 - Future: `/admin/` portal for admin review and status updates
 
-**Rule:** present ✓ — deny client writes (`if false`); PHP service account uses REST API with OAuth2 token
+**Rule:** present ✓ — rule denies all writes (`if false`); PHP uses OAuth2-authenticated REST API which bypasses security rules
 **Index:** none (not needed yet; submissions are write-only from form)
+
+**Trust Model:** The `if false` rule is safe despite appearing to block writes because the PHP backend uses the Firestore REST API with OAuth2 service account credentials, which authenticates directly with Google's OAuth2 servers and bypasses Firestore security rules entirely. The rule exists to prevent accidental client-side writes via the standard Firestore SDK.
 
 **Status:** ✓
 

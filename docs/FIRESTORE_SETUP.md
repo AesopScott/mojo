@@ -17,36 +17,26 @@ This document guides the setup of Firestore for product submission logging.
 5. Choose region: `us-central1` (or your preferred region)
 6. Click "Create"
 
-## Step 2: Create Security Rules
+## Step 2: Security Rules (Included in firestore.rules)
 
-1. In Firestore Console, go to **Rules** tab
-2. Replace the default rules with:
+The Firestore security rules for `product_submissions` are already defined in `firestore.rules`:
 
 ```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Product submissions: authenticated service account write, admin read
-    match /product_submissions/{document=**} {
-      allow create, write: if request.auth.uid != null || isServiceAccount();
-      allow read: if isAdmin();
-    }
-    
-    // Helper functions
-    function isServiceAccount() {
-      return request.auth.uid == null && 
-             request.headers['authorization'] != null;
-    }
-    
-    function isAdmin() {
-      return request.auth.uid == 'admin-uid' || 
-             isServiceAccount();
-    }
-  }
+match /product_submissions/{submissionId} {
+  allow create, write: if false; // PHP uses OAuth2-authenticated REST API
+  allow read: if false;           // Admin access TBD (future)
 }
 ```
 
-3. Click "Publish" to deploy the rules
+**Why `if false`?**
+
+The PHP backend uses the Firestore REST API with OAuth2 service account credentials, which **bypasses Firestore security rules entirely**. The rule is set to `if false` to prevent accidental client writes via the normal Firestore SDK while the PHP service account writes directly via the REST API.
+
+**Verification in Firebase Console:**
+
+1. Go to Firebase Console → Your project → Firestore Database → Rules tab
+2. Confirm the rules contain the `match /product_submissions/{...}` rule shown above
+3. Rules should have been deployed automatically — no manual changes needed for this step
 
 ## Step 3: Create Service Account
 
