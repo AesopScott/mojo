@@ -34,28 +34,27 @@
 
 ---
 
-## ⏳ Next Steps (Blocking Configuration)
+## ✅ Completed Configuration
 
 ### 1. Polar Webhook Configuration
-**Status:** Awaiting Polar.sh dashboard setup
+**Status:** ✅ Configured via Polar API (2026-06-04)
 
-**URL to configure:** `https://polarwebhook-ybz2g7wg4a-uc.a.run.app`
+**Webhook Details:**
+- **ID:** `ff0554aa-6f87-4f03-bce1-2bbb542a439d`
+- **URL:** `https://polarwebhook-ybz2g7wg4a-uc.a.run.app`
+- **Events:** `order.created`, `subscription.updated`
+- **Secret:** Configured in Firebase Secret Manager (version 3)
+- **Status:** ✅ Active and deployed
 
-**Steps:**
-1. Log in to Polar.sh dashboard
-2. Navigate to Settings → Webhooks
-3. Create new webhook with:
-   - Endpoint: `https://polarwebhook-ybz2g7wg4a-uc.a.run.app`
-   - Events: `order.created`, `subscription.updated`
-4. Copy the webhook secret from Polar
-5. Configure Firebase secret:
-   ```bash
-   firebase functions:secrets:set POLAR_WEBHOOK_SECRET --non-interactive
-   # Paste secret when prompted
-   firebase deploy --only functions
-   ```
+**How it works:**
+1. Customer purchases product via Polar checkout
+2. Polar fires webhook to Cloud Function
+3. Function validates signature with POLAR_WEBHOOK_SECRET
+4. Creates sales record in Firestore
+5. Credits seller 90% of order amount to availableBalance
+6. Seller can see updated balance in dashboard
 
-**Why critical:** Without this, product sales won't be tracked and sellers won't receive commission credits.
+**✅ Now live and processing orders**
 
 ### 2. Admin Payout Key Deployment
 **Status:** ✅ Configured in Firebase
@@ -151,7 +150,7 @@ All sensitive collections are write-protected:
 | Cloud Functions | ✅ Deployed | 2026-06-04 | 7 endpoints live |
 | SELLER_ENCRYPTION_KEY | ✅ Set | 2026-06-04 | Firebase Secret Manager |
 | ADMIN_PAYOUT_KEY | ✅ Set | 2026-06-04 | Firebase Secret Manager |
-| POLAR_WEBHOOK_SECRET | ⏳ Pending | — | Awaiting Polar.sh setup |
+| POLAR_WEBHOOK_SECRET | ✅ Set | 2026-06-04 | Configured via Polar API |
 | Initial contract | ✅ Created | 2026-06-04 | contracts/1.0 in Firestore |
 | Seller onboarding form | ✅ Live | 2026-06-04 | /products/pages/seller-onboarding.html |
 | Seller dashboard | ✅ Live | 2026-06-04 | /products/pages/seller-dashboard.html |
