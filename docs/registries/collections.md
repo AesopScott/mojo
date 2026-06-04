@@ -4,6 +4,42 @@ Every Firestore collection used in this project. For each: producers, consumers,
 
 ---
 
+## `product_submissions`
+
+Seller product marketplace submission records. Each document is a seller's product submission via the /products/pages/submit.html form.
+
+**Schema:**
+```
+{
+  productName:        string
+  contactName:        string
+  contactEmail:       string
+  category:           string          — "governance" | "sales" | "operations" | "content" | "legal" | "research" | "other"
+  pricingModel:       string          — "free" | "freemium" | "subscription" | "one-time" | "enterprise"
+  productUrl:         string | ""
+  targetUser:         string | ""
+  productDescription: string
+  anythingElse:       string | ""
+  status:             string          — "pending" (initial value; updated by admin review)
+  submittedAt:        Timestamp
+  source:             string          — "product-submission-form" (for future multi-source support)
+}
+```
+
+**Producers**
+- `api/submit-product.php:154` — `firestoreAddDocument('product_submissions', [...])` — writes on form submission (non-fatal, errors logged)
+
+**Consumers**
+- Firestore console (admin read-only)
+- Future: `/admin/` portal for admin review and status updates
+
+**Rule:** Authenticated write (app service account), admin read
+**Index:** none yet (add if filtering/sorting by submittedAt or status in future admin portal)
+
+**Status:** ✓
+
+---
+
 ## `purchases`
 
 Subscription and order records written by the Polar.sh webhook function. Each document is keyed by the Polar order ID or subscription ID.
@@ -65,6 +101,7 @@ User profile documents. Rules are present but **no code in this project writes t
 
 | Collection | Producers | Consumers | Rule | Index | Status |
 |------------|-----------|-----------|------|-------|--------|
+| `product_submissions` | `api/submit-product.php` (service account) | admin console (read-only) | ✓ | — | ✓ |
 | `purchases` | `functions/index.js` (Admin SDK) | `firestore.rules`, `firestore.indexes.json` | ✓ | ✓ | ✓ |
 | `users` | none in repo | `firestore.rules` | ✓ | — | ⚠ orphan consumer |
 

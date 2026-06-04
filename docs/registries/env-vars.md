@@ -6,6 +6,39 @@ Every environment variable used in this project. For each: where it's set, where
 
 ---
 
+## `FIREBASE_PROJECT_ID`
+
+Google Cloud project ID where Firestore database is hosted.
+
+**Producers**
+- Firebase Console → Project Settings → General tab → Project ID (e.g. "mojo-ai-studio")
+- Stored in server `.env` file
+
+**Consumers**
+- `api/firestore-lib.php:27` — `getenv('FIREBASE_PROJECT_ID')` — used in REST API endpoint URL for Firestore writes
+- `api/submit-product.php:154` → `firestoreAddDocument()` — indirect consumer
+
+**Status:** ✓ (required for Firestore logging)
+
+---
+
+## `FIREBASE_SERVICE_ACCOUNT_JSON`
+
+Full contents of the Firebase service account JSON key file, used for server-side authentication to Firestore REST API.
+
+**Producers**
+- Firebase Console → Project Settings → Service Accounts → Generate new private key
+- Copy entire JSON file contents and set as env var value in server `.env` file
+- Service account must have "Cloud Datastore User" IAM role (or custom role with `datastore.documents.create`)
+
+**Consumers**
+- `api/firestore-lib.php:28` — `getenv('FIREBASE_SERVICE_ACCOUNT_JSON')` — parsed for client email and private key
+- Used by `firestoreGetAccessToken()` to generate OAuth2 bearer tokens for Firestore REST API calls
+
+**Status:** ✓ (required for Firestore logging)
+
+---
+
 ## `MOJO_ADMIN_EMAIL`
 
 Override the admin email address that receives development brief submissions. Defaults to `admin@MojoAiStudio.com` if not set.
@@ -217,6 +250,8 @@ Twilio sender phone number for event reminder SMS messages.
 
 | Variable | Set In | Used In | Status |
 |----------|--------|---------|--------|
+| `FIREBASE_PROJECT_ID` | server `.env` | `firestore-lib.php:27`, `submit-product.php:154` | ✓ |
+| `FIREBASE_SERVICE_ACCOUNT_JSON` | server `.env` | `firestore-lib.php:28`, `submit-product.php:154` | ✓ |
 | `MOJO_ADMIN_EMAIL` | cPanel env (optional) | `api/submit-brief.php:93` | ✓ |
 | `POLAR_WEBHOOK_SECRET` | Firebase CLI secrets | `functions/index.js:36,50` | ✓ |
 | `MEETUP_CLIENT_ID` | server `.env` | `meetup-admin.php:282`, `callback/index.php:268` | ✓ |

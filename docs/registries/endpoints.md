@@ -6,6 +6,49 @@ Every HTTP endpoint served by this project. For each: who serves it, who calls i
 
 ---
 
+## `POST /api/submit-product`
+
+Receives the seller product marketplace submission form, validates fields, sends admin notification email, logs submission to Firestore, and sends auto-reply to submitter. Non-fatal Firestore write failure — email delivery is the success criterion.
+
+**Request shape:** JSON body
+```
+{
+  productName:        string  (required)
+  contactName:        string  (required)
+  contactEmail:       string  (required, validated as email)
+  productDescription: string  (required)
+  productUrl:         string  (optional, validated as URL if provided)
+  category:           string  (optional — "governance" | "sales" | "operations" | "content" | "legal" | "research" | "other")
+  pricingModel:       string  (optional — "free" | "freemium" | "subscription" | "one-time" | "enterprise")
+  targetUser:         string  (optional)
+  anythingElse:       string  (optional)
+}
+```
+
+**Response shape:**
+```
+200  { "ok": true }
+422  { "ok": false, "message": "Missing required fields: ..." }
+422  { "ok": false, "message": "Invalid email address." }
+422  { "ok": false, "message": "Invalid product URL." }
+405  { "ok": false, "message": "Method not allowed." }
+500  { "ok": false, "message": "Email could not be sent..." }
+```
+
+**Producers (serves the endpoint)**
+- `api/submit-product.php:1` — PHP handler; validates, sanitizes, calls `mail()`, logs to Firestore via `firestore-lib.php`
+- `.htaccess:22` — rewrites `/api/[name]` → `api/[name].php` (strips `.php` extension)
+
+**Consumers (calls the endpoint)**
+- `products/pages/submit.html:168` — `action="/api/submit-product"` — form submission target
+
+**Adjacent constraints:**
+- Admin email target: defaults to `admin@MojoAiStudio.com`; override with `MOJO_ADMIN_EMAIL` env var (see [[env-vars]])
+- Firestore logging: requires `FIREBASE_PROJECT_ID` and `FIREBASE_SERVICE_ACCOUNT_JSON` env vars (see [[env-vars]]), logs to `product_submissions` collection (see [[collections]])
+- Firestore write failure is logged but non-fatal; email success is the request success criterion
+
+---
+
 ## `POST /api/submit-brief`
 
 Receives the development brief form submission, validates fields, sends admin email and submitter auto-reply, returns JSON.
@@ -203,6 +246,7 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 
 | Endpoint | Method | Serves | Calls | Status |
 |----------|--------|--------|-------|--------|
+| `/api/submit-product` | POST | `api/submit-product.php` | `submit.html:168` | ✓ |
 | `/api/submit-brief` | POST | `api/submit-brief.php` | `brief-form.js:34` | ✓ |
 | `polarWebhook` (Cloud Function) | POST | `functions/index.js:40` | Polar.sh (external) | ✓ |
 | `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
