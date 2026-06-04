@@ -34,6 +34,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 const POLAR_WEBHOOK_SECRET = defineSecret('POLAR_WEBHOOK_SECRET');
+const ADMIN_PAYOUT_KEY = defineSecret('ADMIN_PAYOUT_KEY');
 
 /* ── Polar.sh webhook endpoint ── */
 
@@ -704,6 +705,7 @@ exports.requestPayout = onRequest(
  * Body: { payoutId, adminNotes }
  */
 exports.completePayout = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
   async (req, res) => {
     res.set('Content-Type', 'application/json');
 
@@ -714,7 +716,7 @@ exports.completePayout = onRequest(
 
     // Simple admin key verification (in production, use Firebase Auth or stronger auth)
     const adminKey = req.headers['x-admin-key'] || req.query?.admin_key || '';
-    const expectedKey = process.env.ADMIN_PAYOUT_KEY || '';
+    const expectedKey = ADMIN_PAYOUT_KEY.value();
 
     if (!expectedKey || adminKey !== expectedKey) {
       res.status(401).json({ ok: false, message: 'Unauthorized' });
