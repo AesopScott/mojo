@@ -33,8 +33,8 @@ Seller product marketplace submission records. Each document is a seller's produ
 - Firestore console (admin read-only)
 - Future: `/admin/` portal for admin review and status updates
 
-**Rule:** Authenticated write (app service account), admin read
-**Index:** none yet (add if filtering/sorting by submittedAt or status in future admin portal)
+**Rule:** present ✓ — deny client writes (`if false`); PHP service account uses REST API with OAuth2 token
+**Index:** none (not needed yet; submissions are write-only from form)
 
 **Status:** ✓
 
