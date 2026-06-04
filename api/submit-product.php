@@ -148,6 +148,24 @@ if (!$sent) {
     exit;
 }
 
+// ── Log submission to Firestore (non-fatal) ──────────────────────────────────
+require_once __DIR__ . '/firestore-lib.php';
+
+firestoreAddDocument('product_submissions', [
+    'productName'        => $productName,
+    'contactName'        => $contactName,
+    'contactEmail'       => $contactEmail,
+    'category'           => $category,
+    'pricingModel'       => $pricingModel,
+    'productUrl'         => $productUrl,
+    'targetUser'         => $targetUser,
+    'productDescription' => $productDescription,
+    'anythingElse'       => $anythingElse,
+    'status'             => 'pending',
+    'submittedAt'        => new DateTime('now', new DateTimeZone('UTC')),
+    'source'             => 'product-submission-form',
+]);
+
 // ── Send auto-reply to submitter ─────────────────────────────────────────────
 $replySubject = 'We received your product submission — Mojo AI Studio';
 $replyBody    = "Hi {$contactName},\n\n";

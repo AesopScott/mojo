@@ -12,5 +12,11 @@ service cloud.firestore {
       allow read: if request.auth != null && resource.data.userId == request.auth.uid;
       allow write: if false; // webhook endpoint writes via Admin SDK
     }
+
+    // Product submissions: service account (PHP) writes, admin reads
+    match /product_submissions/{submissionId} {
+      allow create, write: if false; // PHP service account writes via Admin SDK
+      allow read: if false;           // admin read via portal (future)
+    }
   }
 }
