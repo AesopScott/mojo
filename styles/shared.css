@@ -1237,6 +1237,52 @@ p {
   white-space: nowrap;
 }
 
+.aac-recordings {
+  display: grid;
+  gap: 10px;
+  max-width: 620px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(31, 45, 67, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 14px 34px rgba(31, 45, 67, 0.08);
+}
+
+.aac-recordings > span {
+  color: #64748b;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.aac-recordings a {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid var(--soft-line);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.aac-recordings a:hover {
+  border-color: rgba(63, 95, 191, 0.28);
+  box-shadow: 0 10px 24px rgba(31, 45, 67, 0.1);
+}
+
+.aac-recordings b {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.aac-recordings small {
+  color: #64748b;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
 .aac-stats {
   display: flex;
   flex-wrap: wrap;
@@ -1356,6 +1402,38 @@ p {
 .aac-zoom-event small {
   color: #64748b;
   overflow-wrap: anywhere;
+}
+
+.aac-event-complete {
+  border-color: rgba(220, 38, 38, 0.42);
+  background: #fef2f2;
+}
+
+.aac-event-complete span,
+.aac-event-complete strong,
+.aac-event-complete b {
+  color: #b91c1c;
+}
+
+.aac-event-complete p,
+.aac-event-complete small {
+  color: #7f1d1d;
+}
+
+.aac-event-today {
+  border-color: rgba(34, 160, 107, 0.46);
+  background: #ecfdf3;
+}
+
+.aac-event-today span,
+.aac-event-today strong,
+.aac-event-today b {
+  color: #047857;
+}
+
+.aac-event-today p,
+.aac-event-today small {
+  color: #14532d;
 }
 
 .aac-session-separator {

@@ -361,6 +361,18 @@ function activityTopicKey(title) {
     .toLowerCase();
 }
 
+function eventStateClass(event) {
+  const date = String(event?.dateTime || "").slice(0, 10);
+  const topic = activityTopicKey(event?.title);
+  if (topic === "building your own ai command center" && date === "2026-06-05") {
+    return " aac-event-complete";
+  }
+  if (date === "2026-06-07") {
+    return " aac-event-today";
+  }
+  return "";
+}
+
 function zoomEventLinksMarkup(events, globalEvents = []) {
   const globalByTopic = new Map();
   for (const event of globalEvents) {
@@ -382,11 +394,22 @@ function zoomEventLinksMarkup(events, globalEvents = []) {
   return activityEvents.map(({ event, pairedEvent }) => {
     const zoomUrl = event.howToFindUs || event.eventUrl;
     return `
-              <a class="aac-zoom-event" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
+              <a class="aac-zoom-event${eventStateClass(event)}" href="${escapeHtml(zoomUrl)}" target="_blank" rel="noopener">
                 <span><b>${escapeHtml(event.title)}</b> ${escapeHtml(activityDateLabel(event, pairedEvent))}</span>
                 <small>${escapeHtml(zoomUrl)}</small>
               </a>`;
   }).join("");
+}
+
+function recordingsMarkup() {
+  return `
+          <div class="aac-recordings">
+            <span>Session recordings</span>
+            <a href="https://us06web.zoom.us/rec/share/Be-tkkt7nadoAoMrBl5WBIFOdfuHRY8fI7c7Hni1KGhpri8VPLDsLjAc4pexCH4.y3bftOMF4mx-Hs20" target="_blank" rel="noopener">
+              <b>Building Your Own AI Command Center</b>
+              <small>Passcode: N!9a$xer</small>
+            </a>
+          </div>`;
 }
 
 function hubPage(chapters, globalEvents) {
@@ -405,6 +428,7 @@ function hubPage(chapters, globalEvents) {
             <span>Top member cities</span>
             <div data-group-leader-list></div>
           </div>
+          ${recordingsMarkup()}
         </div>
         <div class="aac-hero-media">
           <img src="/assets/advanced-ai-concepts/hero.jpg" alt="People watching an advanced AI visualization in a workshop" />
@@ -471,7 +495,7 @@ function hubPage(chapters, globalEvents) {
         </div>
         <div class="aac-event-list" data-city-events>
           ${chapters.map((chapter, index) => chapter.events.map((event) => `
-          <a class="aac-row-card aac-session-card" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
+          <a class="aac-row-card aac-session-card${eventStateClass(event)}" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
             <span>${escapeHtml(eventDateLabel(event.dateTime))}</span>
             <p>${escapeHtml(event.title)}</p>
             <strong>RSVP</strong>
