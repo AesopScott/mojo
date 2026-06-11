@@ -1917,6 +1917,288 @@ GRAPHQL, ['input' => $input], $tokenPath);
         ]);
     }
 
+    if ($action === 'question-report') {
+        $days = max(1, min(30, (int) ($_GET['days'] ?? 7)));
+        $since = (new DateTimeImmutable('now', new DateTimeZone('UTC')))
+            ->sub(new DateInterval('P' . $days . 'D'));
+
+        $extraUrlnames = [
+            'advanced-ai-concepts-kinshasa',
+            'advanced-ai-concepts-istanbul',
+            'advanced-ai-concepts-ho-chi-minh-city',
+            'advanced-ai-concepts-lahore',
+            'advanced-ai-concepts-karachi',
+            'advanced-ai-concepts-moscow',
+            'advanced-ai-concepts-dhaka',
+            'advanced-ai-concepts-seoul',
+            'advanced-ai-concepts-cairo',
+            'advanced-ai-concepts-jakarta',
+            'advanced-ai-concepts-hanoi',
+            'advanced-ai-concepts-taipei',
+            'advanced-ai-concepts-lima',
+            'advanced-ai-concepts-bogota',
+            'advanced-ai-concepts-hong-kong',
+            'advanced-ai-concepts-rio-de-janeiro',
+            'advanced-ai-concepts-ahmedabad',
+            'advanced-ai-concepts-abidjan',
+        ];
+
+        $groupsResult = graphQL(<<<'GRAPHQL'
+query ($input: ProNetworkGroupsSearchInput!) {
+  proNetwork(urlname: "advanced-ai-concepts") {
+    groupsSearch(input: $input) {
+      edges {
+        node {
+          id
+          name
+          urlname
+          city
+          state
+          country
+          link
+        }
+      }
+    }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'first' => 100,
+                'sort' => 'createdDate',
+                'desc' => true,
+            ],
+        ], $tokenPath);
+
+        $groupEdges = $groupsResult['response']['data']['proNetwork']['groupsSearch']['edges'] ?? [];
+        $groups = [];
+        foreach ($groupEdges as $edge) {
+            $group = $edge['node'] ?? null;
+            if (is_array($group) && !empty($group['urlname'])) {
+                $groups[(string) $group['urlname']] = $group;
+            }
+        }
+
+        foreach ($extraUrlnames as $urlname) {
+            if (isset($groups[$urlname])) {
+                continue;
+            }
+            $groupResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    city
+    state
+    country
+    link
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+            $group = $groupResult['response']['data']['groupByUrlname'] ?? null;
+            if (is_array($group) && !empty($group['urlname'])) {
+                $groups[(string) $group['urlname']] = $group;
+            }
+        }
+
+        $groupQuestions = [];
+        $eventComments = [];
+        $groupErrors = [];
+        foreach ($groups as $urlname => $groupSummary) {
+            $detailResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    link
+    needsQuestions
+    questions {
+      id
+      question
+      sort
+    }
+    events(first: 20) {
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          status
+          dateTime
+          comments(first: 20, sortOrder: DESC) {
+            totalCount
+            edges {
+              node {
+                id
+                created
+                text
+                link
+                member {
+                  id
+                  name
+                  memberUrl
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $urlname], $tokenPath);
+
+            $loadedGroup = $detailResult['response']['data']['groupByUrlname'] ?? null;
+            if (!is_array($loadedGroup)) {
+                $groupErrors[] = [
+                    'urlname' => $urlname,
+                    'result' => $detailResult,
+                ];
+                continue;
+            }
+
+            foreach (($loadedGroup['questions'] ?? []) as $question) {
+                $groupQuestions[] = [
+                    'group' => $loadedGroup['name'] ?? '',
+                    'urlname' => $urlname,
+                    'link' => $loadedGroup['link'] ?? '',
+                    'question_id' => $question['id'] ?? '',
+                    'question' => $question['question'] ?? '',
+                    'sort' => $question['sort'] ?? null,
+                ];
+            }
+
+            foreach (($loadedGroup['events']['edges'] ?? []) as $eventEdge) {
+                $event = $eventEdge['node'] ?? null;
+                if (!is_array($event)) {
+                    continue;
+                }
+                foreach (($event['comments']['edges'] ?? []) as $commentEdge) {
+                    $comment = $commentEdge['node'] ?? null;
+                    if (!is_array($comment)) {
+                        continue;
+                    }
+                    $createdRaw = (string) ($comment['created'] ?? '');
+                    try {
+                        $created = new DateTimeImmutable($createdRaw);
+                    } catch (Throwable $ignored) {
+                        $created = null;
+                    }
+                    if ($created !== null && $created < $since) {
+                        continue;
+                    }
+                    $eventComments[] = [
+                        'group' => $loadedGroup['name'] ?? '',
+                        'urlname' => $urlname,
+                        'event_id' => $event['id'] ?? '',
+                        'event_title' => $event['title'] ?? '',
+                        'event_status' => $event['status'] ?? '',
+                        'event_time' => $event['dateTime'] ?? '',
+                        'event_url' => $event['eventUrl'] ?? '',
+                        'comment_id' => $comment['id'] ?? '',
+                        'created' => $createdRaw,
+                        'text' => $comment['text'] ?? '',
+                        'link' => $comment['link'] ?? '',
+                        'member' => $comment['member']['name'] ?? '',
+                        'member_url' => $comment['member']['memberUrl'] ?? '',
+                    ];
+                }
+            }
+        }
+
+        $registrationResult = graphQL(<<<'GRAPHQL'
+query ($input: ProEventRegistrationAnswersInput!) {
+  proNetwork(urlname: "advanced-ai-concepts") {
+    eventRegistrationAnswers(input: $input) {
+      totalCount
+      edges {
+        node {
+          updatedAt
+          member {
+            id
+            name
+            memberUrl
+          }
+          event {
+            id
+            title
+            eventUrl
+            dateTime
+            status
+            group {
+              id
+              name
+              urlname
+            }
+          }
+          answers {
+            question
+            answer
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, [
+            'input' => [
+                'first' => 100,
+            ],
+        ], $tokenPath);
+
+        $registrationAnswers = [];
+        foreach (($registrationResult['response']['data']['proNetwork']['eventRegistrationAnswers']['edges'] ?? []) as $edge) {
+            $registration = $edge['node'] ?? null;
+            if (!is_array($registration)) {
+                continue;
+            }
+            $updatedRaw = (string) ($registration['updatedAt'] ?? '');
+            try {
+                $updated = new DateTimeImmutable($updatedRaw);
+            } catch (Throwable $ignored) {
+                $updated = null;
+            }
+            if ($updated !== null && $updated < $since) {
+                continue;
+            }
+            foreach (($registration['answers'] ?? []) as $answer) {
+                $registrationAnswers[] = [
+                    'updated_at' => $updatedRaw,
+                    'member' => $registration['member']['name'] ?? '',
+                    'member_url' => $registration['member']['memberUrl'] ?? '',
+                    'event_id' => $registration['event']['id'] ?? '',
+                    'event_title' => $registration['event']['title'] ?? '',
+                    'event_url' => $registration['event']['eventUrl'] ?? '',
+                    'event_time' => $registration['event']['dateTime'] ?? '',
+                    'group' => $registration['event']['group']['name'] ?? '',
+                    'urlname' => $registration['event']['group']['urlname'] ?? '',
+                    'question' => $answer['question'] ?? '',
+                    'answer' => $answer['answer'] ?? '',
+                ];
+            }
+        }
+
+        respond(200, [
+            'ok' => true,
+            'days' => $days,
+            'since' => $since->format(DateTimeInterface::ATOM),
+            'group_count' => count($groups),
+            'group_question_count' => count($groupQuestions),
+            'event_comment_count' => count($eventComments),
+            'registration_answer_count' => count($registrationAnswers),
+            'group_questions' => $groupQuestions,
+            'event_comments' => $eventComments,
+            'registration_answers' => $registrationAnswers,
+            'group_errors' => $groupErrors,
+            'registration_result_status' => [
+                'http_status' => $registrationResult['http_status'] ?? null,
+                'transport_error' => $registrationResult['transport_error'] ?? '',
+                'errors' => $registrationResult['response']['errors'] ?? [],
+            ],
+        ]);
+    }
+
     if ($action === 'update-group-descriptions') {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             respond(405, [
