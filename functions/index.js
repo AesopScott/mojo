@@ -701,8 +701,8 @@ exports.completePayout = onRequest(
     }
 
     // Simple admin key verification (in production, use Firebase Auth or stronger auth)
-    const adminKey = req.headers['x-admin-key'] || req.query?.admin_key || '';
-    const expectedKey = ADMIN_PAYOUT_KEY.value();
+    const adminKey = String(req.headers['x-admin-key'] || req.query?.admin_key || '').trim();
+    const expectedKey = String(ADMIN_PAYOUT_KEY.value() || '').trim();
 
     if (!expectedKey || adminKey !== expectedKey) {
       res.status(401).json({ ok: false, message: 'Unauthorized' });
@@ -763,8 +763,8 @@ function setAdminCors(req, res) {
 }
 
 function isAuthorizedAdmin(req) {
-  const adminKey = req.headers['x-admin-key'] || req.query?.admin_key || '';
-  const expectedKey = ADMIN_PAYOUT_KEY.value();
+  const adminKey = String(req.headers['x-admin-key'] || req.query?.admin_key || '').trim();
+  const expectedKey = String(ADMIN_PAYOUT_KEY.value() || '').trim();
   return Boolean(expectedKey && adminKey === expectedKey);
 }
 
@@ -811,12 +811,15 @@ exports.adminListProducts = onRequest(
       const snapshot = await db
         .collection('products')
         .where('status', '==', status)
-        .orderBy('createdAt', 'desc')
         .get();
+
+      const products = snapshot.docs
+        .map(productPayload)
+        .sort((a, b) => (b.createdAtMillis || 0) - (a.createdAtMillis || 0));
 
       res.status(200).json({
         ok: true,
-        products: snapshot.docs.map(productPayload),
+        products,
       });
     } catch (err) {
       console.error('[adminListProducts] error:', err);
