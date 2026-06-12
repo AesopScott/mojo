@@ -23,10 +23,14 @@
   const tabs = document.querySelectorAll('.tab');
   const message = document.getElementById('message');
 
-  // Check if logged in
+  const urlKey = new URLSearchParams(window.location.search).get('key');
   const savedKey = sessionStorage.getItem('adminKey');
-  if (savedKey) {
-    adminKey = savedKey;
+  if (urlKey || savedKey) {
+    adminKey = urlKey || savedKey;
+    sessionStorage.setItem('adminKey', adminKey);
+    if (urlKey) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
     showDashboard();
   } else {
     showLogin();
@@ -100,7 +104,7 @@
       });
     } catch (err) {
       console.error('[admin-products] loadPendingProducts error:', err);
-      showMessage(err.message || 'Error loading products', 'error');
+      handleAdminError(err, 'Error loading products');
     }
   }
 
@@ -123,7 +127,7 @@
       });
     } catch (err) {
       console.error('[admin-products] loadLiveProducts error:', err);
-      showMessage(err.message || 'Error loading products', 'error');
+      handleAdminError(err, 'Error loading products');
     }
   }
 
@@ -333,6 +337,19 @@
     }
 
     return data.products || data;
+  }
+
+  function handleAdminError(err, fallback) {
+    const message = err.message || fallback;
+    if (/unauthorized/i.test(message)) {
+      adminKey = null;
+      sessionStorage.removeItem('adminKey');
+      showLogin();
+      alert('Admin key rejected. Please sign in again with the current admin key.');
+      return;
+    }
+
+    showMessage(message, 'error');
   }
 
   function formatDate(value) {
