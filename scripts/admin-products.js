@@ -100,7 +100,7 @@
       });
     } catch (err) {
       console.error('[admin-products] loadPendingProducts error:', err);
-      showMessage('Error loading products', 'error');
+      showMessage(err.message || 'Error loading products', 'error');
     }
   }
 
@@ -123,7 +123,7 @@
       });
     } catch (err) {
       console.error('[admin-products] loadLiveProducts error:', err);
-      showMessage('Error loading products', 'error');
+      showMessage(err.message || 'Error loading products', 'error');
     }
   }
 
