@@ -84,11 +84,7 @@ $onboardingUrl = 'https://mojoaistudio.com/products/pages/seller-onboarding.html
 
 // Build email
 $subject = 'Complete Your Seller Setup — Mojo AI Studio';
-$fromEmail = filter_var(getenv('MOJO_FROM_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
-
-if ($fromEmail === false) {
-    $fromEmail = 'admin@mojoaistudio.com';
-}
+$fromEmail = 'noreply@mojoaistudio.com';
 
 $body  = "Hi {$contactName},\n\n";
 $body .= "Thanks for submitting \"{$productName}\" to the Mojo AI Studio marketplace!\n\n";

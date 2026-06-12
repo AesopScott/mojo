@@ -91,14 +91,10 @@ if ($contactEmail === false) {
 
 // ── Build the email ──────────────────────────────────────────────────────────
 $adminEmail = filter_var(getenv('MOJO_ADMIN_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
-$fromEmail  = filter_var(getenv('MOJO_FROM_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
+$fromEmail  = 'noreply@mojoaistudio.com';
 
 if ($adminEmail === false) {
     $adminEmail = 'admin@mojoaistudio.com';
-}
-
-if ($fromEmail === false) {
-    $fromEmail = 'admin@mojoaistudio.com';
 }
 
 $subject    = '[Mojo Brief] ' . $projectName . ' — ' . $contactName;

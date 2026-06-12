@@ -97,14 +97,10 @@ if ($productUrl !== '' && filter_var($productUrl, FILTER_VALIDATE_URL) === false
 
 // ── Build the admin email ────────────────────────────────────────────────────
 $adminEmail = filter_var(getenv('MOJO_ADMIN_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
-$fromEmail  = filter_var(getenv('MOJO_FROM_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
+$fromEmail  = 'noreply@mojoaistudio.com';
 
 if ($adminEmail === false) {
     $adminEmail = 'admin@mojoaistudio.com';
-}
-
-if ($fromEmail === false) {
-    $fromEmail = 'admin@mojoaistudio.com';
 }
 
 $subject    = '[Mojo Product] ' . $productName . ' — ' . $contactName;
