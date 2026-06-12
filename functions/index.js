@@ -762,6 +762,200 @@ exports.completePayout = onRequest(
   }
 );
 
+function setAdminCors(req, res) {
+  res.set('Content-Type', 'application/json');
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Key');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return true;
+  }
+
+  return false;
+}
+
+function isAuthorizedAdmin(req) {
+  const adminKey = req.headers['x-admin-key'] || req.query?.admin_key || '';
+  const expectedKey = ADMIN_PAYOUT_KEY.value();
+  return Boolean(expectedKey && adminKey === expectedKey);
+}
+
+function timestampMillis(value) {
+  return value && typeof value.toMillis === 'function' ? value.toMillis() : null;
+}
+
+function productPayload(doc) {
+  const product = doc.data();
+  return {
+    id: doc.id,
+    ...product,
+    createdAtMillis: timestampMillis(product.createdAt),
+    updatedAtMillis: timestampMillis(product.updatedAt),
+    createdAt: undefined,
+    updatedAt: undefined,
+  };
+}
+
+/**
+ * GET /adminListProducts?status=pending_review|live
+ * Lists products for the admin product dashboard.
+ */
+exports.adminListProducts = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'GET') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const status = String(req.query.status || 'pending_review');
+    if (!['pending_review', 'live'].includes(status)) {
+      res.status(400).json({ ok: false, message: 'Invalid status' });
+      return;
+    }
+
+    try {
+      const snapshot = await db
+        .collection('products')
+        .where('status', '==', status)
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      res.status(200).json({
+        ok: true,
+        products: snapshot.docs.map(productPayload),
+      });
+    } catch (err) {
+      console.error('[adminListProducts] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminApproveProduct
+ * Publishes a pending product with pricing and Polar checkout metadata.
+ */
+exports.adminApproveProduct = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId, price, polarPriceId, featured } = req.body || {};
+    const priceCents = Number(price);
+    if (!productId || !Number.isFinite(priceCents) || priceCents <= 0 || !polarPriceId) {
+      res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+
+    try {
+      const productRef = db.collection('products').doc(String(productId));
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      await productRef.update({
+        status: 'live',
+        price: Math.round(priceCents),
+        polarPriceId: String(polarPriceId),
+        featured: Boolean(featured),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({ ok: true, message: 'Product published' });
+    } catch (err) {
+      console.error('[adminApproveProduct] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminRejectProduct
+ * Deletes a pending product submission.
+ */
+exports.adminRejectProduct = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      await db.collection('products').doc(String(productId)).delete();
+      res.status(200).json({ ok: true, message: 'Product rejected' });
+    } catch (err) {
+      console.error('[adminRejectProduct] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminArchiveProduct
+ * Archives a live product without deleting history.
+ */
+exports.adminArchiveProduct = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      await db.collection('products').doc(String(productId)).update({
+        status: 'archived',
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      res.status(200).json({ ok: true, message: 'Product archived' });
+    } catch (err) {
+      console.error('[adminArchiveProduct] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
 /**
  * POST /products/create-from-submission
  * Creates a product listing in Firestore from seller submission

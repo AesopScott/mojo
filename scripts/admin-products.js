@@ -10,7 +10,9 @@
  */
 
 (function () {
-  let db = null;
+  const CLOUD_FUNCTION_REGION = 'us-central1';
+  const CLOUD_FUNCTION_PROJECT = 'mojo-f86de';
+
   let adminKey = null;
 
   const loginView = document.getElementById('login-view');
@@ -20,12 +22,6 @@
   const logoutBtn = document.getElementById('logout-btn');
   const tabs = document.querySelectorAll('.tab');
   const message = document.getElementById('message');
-
-  try {
-    db = firebase.firestore();
-  } catch (err) {
-    console.error('[admin-products] Firebase not initialized:', err);
-  }
 
   // Check if logged in
   const savedKey = sessionStorage.getItem('adminKey');
@@ -90,21 +86,16 @@
       const container = document.getElementById('pending-products');
       container.innerHTML = '<p style="text-align: center; color: var(--muted);">Loading...</p>';
 
-      const snapshot = await db
-        .collection('products')
-        .where('status', '==', 'pending_review')
-        .orderBy('createdAt', 'desc')
-        .get();
+      const products = await adminRequest('adminListProducts?status=pending_review');
 
-      if (snapshot.empty) {
+      if (!products.length) {
         container.innerHTML = '<div class="empty-state"><p>No pending products</p></div>';
         return;
       }
 
       container.innerHTML = '';
-      snapshot.forEach(doc => {
-        const product = doc.data();
-        const card = createPendingCard(doc.id, product);
+      products.forEach(product => {
+        const card = createPendingCard(product.id, product);
         container.appendChild(card);
       });
     } catch (err) {
@@ -118,21 +109,16 @@
       const container = document.getElementById('live-products');
       container.innerHTML = '<p style="text-align: center; color: var(--muted);">Loading...</p>';
 
-      const snapshot = await db
-        .collection('products')
-        .where('status', '==', 'live')
-        .orderBy('createdAt', 'desc')
-        .get();
+      const products = await adminRequest('adminListProducts?status=live');
 
-      if (snapshot.empty) {
+      if (!products.length) {
         container.innerHTML = '<div class="empty-state"><p>No published products</p></div>';
         return;
       }
 
       container.innerHTML = '';
-      snapshot.forEach(doc => {
-        const product = doc.data();
-        const card = createLiveCard(doc.id, product);
+      products.forEach(product => {
+        const card = createLiveCard(product.id, product);
         container.appendChild(card);
       });
     } catch (err) {
@@ -170,7 +156,7 @@
         </div>
         <div class="meta-item">
           <div class="meta-label">Submitted</div>
-          <div class="meta-value">${new Date(product.createdAt?.toDate()).toLocaleDateString()}</div>
+          <div class="meta-value">${formatDate(product.createdAtMillis)}</div>
         </div>
       </div>
 
@@ -218,12 +204,14 @@
         approveBtn.disabled = true;
         approveBtn.textContent = 'Publishing...';
 
-        await db.collection('products').doc(productId).update({
-          status: 'live',
-          price: Math.round(price * 100), // Store as cents
-          polarPriceId: polarId,
-          featured,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        await adminRequest('adminApproveProduct', {
+          method: 'POST',
+          body: {
+            productId,
+            price: Math.round(price * 100),
+            polarPriceId: polarId,
+            featured,
+          },
         });
 
         showMessage(`Published ${product.name}`, 'success');
@@ -241,7 +229,10 @@
 
       try {
         rejectBtn.disabled = true;
-        await db.collection('products').doc(productId).delete();
+        await adminRequest('adminRejectProduct', {
+          method: 'POST',
+          body: { productId },
+        });
         showMessage(`Rejected ${product.name}`, 'success');
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
@@ -298,9 +289,9 @@
 
       try {
         archiveBtn.disabled = true;
-        await db.collection('products').doc(productId).update({
-          status: 'archived',
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        await adminRequest('adminArchiveProduct', {
+          method: 'POST',
+          body: { productId },
         });
 
         showMessage(`Archived ${product.name}`, 'success');
@@ -321,5 +312,31 @@
     setTimeout(() => {
       message.classList.remove('show');
     }, 4000);
+  }
+
+  async function adminRequest(endpoint, options = {}) {
+    const response = await fetch(
+      `https://${CLOUD_FUNCTION_REGION}-${CLOUD_FUNCTION_PROJECT}.cloudfunctions.net/${endpoint}`,
+      {
+        method: options.method || 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Key': adminKey,
+        },
+        body: options.body ? JSON.stringify(options.body) : undefined,
+      }
+    );
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) {
+      throw new Error(data.message || 'Admin request failed');
+    }
+
+    return data.products || data;
+  }
+
+  function formatDate(value) {
+    if (!value) return 'unknown';
+    return new Date(value).toLocaleDateString();
   }
 }());
