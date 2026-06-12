@@ -84,6 +84,11 @@ $onboardingUrl = 'https://mojoaistudio.com/products/pages/seller-onboarding.html
 
 // Build email
 $subject = 'Complete Your Seller Setup — Mojo AI Studio';
+$fromEmail = filter_var(getenv('MOJO_FROM_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
+
+if ($fromEmail === false) {
+    $fromEmail = 'admin@mojoaistudio.com';
+}
 
 $body  = "Hi {$contactName},\n\n";
 $body .= "Thanks for submitting \"{$productName}\" to the Mojo AI Studio marketplace!\n\n";
@@ -98,13 +103,13 @@ $body .= "If you have any questions, reply to this email or contact us at admin@
 $body .= "— Mojo AI Studio Team\n";
 $body .= "https://MojoAiStudio.com\n";
 
-$headers  = 'From: Mojo AI Studio <admin@mojoaistudio.com>' . "\r\n";
+$headers  = 'From: Mojo AI Studio <' . $fromEmail . '>' . "\r\n";
 $headers .= 'Reply-To: admin@mojoaistudio.com' . "\r\n";
 $headers .= 'MIME-Version: 1.0' . "\r\n";
 $headers .= 'Content-Type: text/plain; charset=utf-8' . "\r\n";
 
 // Send email
-$sent = mail($email, $subject, $body, $headers);
+$sent = mail($email, $subject, $body, $headers, '-f' . $fromEmail);
 
 if (!$sent) {
     error_log('[SellerOnboarding] mail() returned false for ' . $email);

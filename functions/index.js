@@ -36,6 +36,20 @@ const db = admin.firestore();
 const POLAR_WEBHOOK_SECRET = defineSecret('POLAR_WEBHOOK_SECRET');
 const ADMIN_PAYOUT_KEY = defineSecret('ADMIN_PAYOUT_KEY');
 
+function setPublicCors(req, res) {
+  res.set('Content-Type', 'application/json');
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return true;
+  }
+
+  return false;
+}
+
 /* ── Polar.sh webhook endpoint ── */
 
 exports.polarWebhook = onRequest(
@@ -302,14 +316,7 @@ const SELLER_ENCRYPTION_KEY = defineSecret('SELLER_ENCRYPTION_KEY');
 exports.signContract = onRequest(
   { secrets: [SELLER_ENCRYPTION_KEY] },
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
-    if (req.method === 'OPTIONS') {
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.status(204).send('');
-      return;
-    }
+    if (setPublicCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });
@@ -373,14 +380,7 @@ exports.signContract = onRequest(
 exports.submitBankInfo = onRequest(
   { secrets: [SELLER_ENCRYPTION_KEY] },
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
-    if (req.method === 'OPTIONS') {
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.status(204).send('');
-      return;
-    }
+    if (setPublicCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });
@@ -456,14 +456,7 @@ exports.submitBankInfo = onRequest(
  */
 exports.createSellerFromProductSubmission = onRequest(
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
-    if (req.method === 'OPTIONS') {
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.status(204).send('');
-      return;
-    }
+    if (setPublicCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });
@@ -585,14 +578,7 @@ https://MojoAiStudio.com`;
 exports.requestPayout = onRequest(
   { secrets: [SELLER_ENCRYPTION_KEY] },
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
-    if (req.method === 'OPTIONS') {
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.status(204).send('');
-      return;
-    }
+    if (setPublicCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });
@@ -707,7 +693,7 @@ exports.requestPayout = onRequest(
 exports.completePayout = onRequest(
   { secrets: [ADMIN_PAYOUT_KEY] },
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
+    if (setAdminCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });
@@ -965,14 +951,7 @@ exports.adminArchiveProduct = onRequest(
  */
 exports.createProductFromSubmission = onRequest(
   async (req, res) => {
-    res.set('Content-Type', 'application/json');
-    if (req.method === 'OPTIONS') {
-      res.set('Access-Control-Allow-Origin', '*');
-      res.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.status(204).send('');
-      return;
-    }
+    if (setPublicCors(req, res)) return;
 
     if (req.method !== 'POST') {
       res.status(405).json({ ok: false, message: 'Method not allowed' });

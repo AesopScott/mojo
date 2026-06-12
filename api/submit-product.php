@@ -3,7 +3,7 @@
  * submit-product.php — Product marketplace submission intake endpoint.
  *
  * Accepts:  POST /api/submit-product   Content-Type: application/json
- * Sends:    Email to ADMIN_EMAIL (default: admin@MojoAiStudio.com)
+ * Sends:    Email to ADMIN_EMAIL (default: admin@mojoaistudio.com)
  * Returns:  JSON { "ok": true }  |  { "ok": false, "message": "..." }
  *
  * Override the admin address by setting the MOJO_ADMIN_EMAIL environment
@@ -96,7 +96,17 @@ if ($productUrl !== '' && filter_var($productUrl, FILTER_VALIDATE_URL) === false
 }
 
 // ── Build the admin email ────────────────────────────────────────────────────
-$adminEmail = getenv('MOJO_ADMIN_EMAIL') ?: 'admin@MojoAiStudio.com';
+$adminEmail = filter_var(getenv('MOJO_ADMIN_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
+$fromEmail  = filter_var(getenv('MOJO_FROM_EMAIL') ?: 'admin@mojoaistudio.com', FILTER_VALIDATE_EMAIL);
+
+if ($adminEmail === false) {
+    $adminEmail = 'admin@mojoaistudio.com';
+}
+
+if ($fromEmail === false) {
+    $fromEmail = 'admin@mojoaistudio.com';
+}
+
 $subject    = '[Mojo Product] ' . $productName . ' — ' . $contactName;
 
 $body  = "New product submission via MojoAiStudio.com\n";
@@ -129,21 +139,21 @@ if ($anythingElse !== '') {
 $body .= str_repeat('─', 56) . "\n";
 $body .= "Reply to: {$contactEmail}\n";
 
-$headers  = 'From: noreply@mojoaistudio.com' . "\r\n";
+$headers  = 'From: Mojo AI Studio <' . $fromEmail . '>' . "\r\n";
 $headers .= 'Reply-To: ' . $contactName . ' <' . $contactEmail . '>' . "\r\n";
 $headers .= 'X-Mailer: MojoAiStudio-ProductForm/1.0' . "\r\n";
 $headers .= 'MIME-Version: 1.0' . "\r\n";
 $headers .= 'Content-Type: text/plain; charset=utf-8' . "\r\n";
 
 // ── Send ─────────────────────────────────────────────────────────────────────
-$sent = mail($adminEmail, $subject, $body, $headers);
+$sent = mail($adminEmail, $subject, $body, $headers, '-f' . $fromEmail);
 
 if (!$sent) {
     error_log('[MojoProduct] mail() returned false for submission from ' . $contactEmail);
     http_response_code(500);
     echo json_encode([
         'ok'      => false,
-        'message' => 'Email could not be sent. Please email admin@MojoAiStudio.com directly.',
+        'message' => 'Email could not be sent. Please email admin@mojoaistudio.com directly.',
     ]);
     exit;
 }
@@ -158,12 +168,15 @@ $replyBody   .= "If you have anything to add in the meantime, just reply to this
 $replyBody   .= "— Mojo AI Studio\n";
 $replyBody   .= "https://MojoAiStudio.com\n";
 
-$replyHeaders  = 'From: Mojo AI Studio <admin@MojoAiStudio.com>' . "\r\n";
-$replyHeaders .= 'Reply-To: admin@MojoAiStudio.com' . "\r\n";
+$replyHeaders  = 'From: Mojo AI Studio <' . $fromEmail . '>' . "\r\n";
+$replyHeaders .= 'Reply-To: ' . $adminEmail . "\r\n";
 $replyHeaders .= 'MIME-Version: 1.0' . "\r\n";
 $replyHeaders .= 'Content-Type: text/plain; charset=utf-8' . "\r\n";
 
-@mail($contactEmail, $replySubject, $replyBody, $replyHeaders);
+$replySent = mail($contactEmail, $replySubject, $replyBody, $replyHeaders, '-f' . $fromEmail);
+if (!$replySent) {
+    error_log('[MojoProduct] auto-reply mail() returned false for ' . $contactEmail);
+}
 
 // ── Success ───────────────────────────────────────────────────────────────────
 http_response_code(200);

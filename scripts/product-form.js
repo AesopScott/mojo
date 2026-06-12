@@ -82,7 +82,7 @@
         }).then(function (result) {
           // If seller creation succeeded, send onboarding email
           if (result.status === 200 && result.data.sellerToken) {
-            return fetch('/api/send-seller-onboarding-email', {
+            return fetch('/api/send-seller-onboarding-email.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -91,14 +91,19 @@
                 productName: data.productName,
                 sellerToken: result.data.sellerToken,
               }),
-            }).catch(function (err) {
-              // Log but don't fail - email might be sent via other means
-              console.warn('[product-form] onboarding email failed:', err);
+            }).then(function (res) {
+              if (!res.ok) {
+                return res.json().then(function (body) {
+                  throw new Error(body.message || 'Onboarding email could not be sent');
+                });
+              }
+              return res.json();
             });
           }
+          throw new Error(result.data && result.data.message ? result.data.message : 'Seller setup could not be created');
         }).catch(function (err) {
-          // Log but don't fail
           console.warn('[product-form] seller creation failed:', err);
+          throw err;
         });
       })
       .then(function () {
