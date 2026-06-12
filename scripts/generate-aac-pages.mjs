@@ -407,7 +407,6 @@ function recordingsMarkup() {
             <span>Session recordings</span>
             <a href="https://us06web.zoom.us/rec/share/Be-tkkt7nadoAoMrBl5WBIFOdfuHRY8fI7c7Hni1KGhpri8VPLDsLjAc4pexCH4.y3bftOMF4mx-Hs20" target="_blank" rel="noopener">
               <b>Building Your Own AI Command Center</b>
-              <small>Passcode: N!9a$xer</small>
             </a>
           </div>`;
 }
