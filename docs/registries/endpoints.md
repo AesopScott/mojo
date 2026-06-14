@@ -298,6 +298,31 @@ action=test-sms-store
 
 ---
 
+## `GET /api/meetup-admin?action=send-admin-sms`
+
+Admin-only Twilio sender that sends one immediate SMS to a provided phone number. If `body` is omitted, it sends the default Mojo test SMS. If `body` is provided, it sends that custom one-off message. Defaults to dry-run unless explicitly confirmed.
+
+**Request shape:** query params
+```
+action=send-admin-sms
+phone=+15555551234
+body=optional custom message  (optional; max 1000 chars)
+confirm=send-admin-sms        (required to call Twilio; otherwise dry-run)
+```
+
+**Producers (serves the endpoint)**
+- `api/meetup-admin.php` - admin-gated Twilio test and one-off sender
+
+**Consumers**
+- Manual admin test using `MEETUP_ADMIN_KEY`
+
+**External APIs**
+- Twilio Messages REST API
+
+**Safety guard:** Without `confirm=send-admin-sms`, validates the phone/body and returns dry-run metadata without sending SMS. The older `action=send-test-sms&confirm=send-test-sms` alias is also accepted for default test-message sends.
+
+---
+
 ## `GET /api/meetup-admin?action=send-topic-followups`
 
 Admin/cron action that polls Meetup GraphQL for Advanced AI Concepts RSVPs, records first-seen state, and sends a one-week topic prompt email after an RSVP has been observed for `days_after` days.
@@ -469,6 +494,7 @@ Creates or updates seller record when product is submitted. Generates seller tok
 | `/api/sms-reminders` | POST | `api/sms-reminders.php` | `watch/sms/index.html` | active |
 | `/api/meetup-admin?action=poll-sms-invites` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=test-sms-store` | GET | `api/meetup-admin.php` | manual admin | active |
+| `/api/meetup-admin?action=send-admin-sms` | GET | `api/meetup-admin.php` | manual admin | active |
 | `/api/meetup-admin?action=send-topic-followups` | GET | `api/meetup-admin.php` | GitHub Actions cron/cPanel cron/manual admin | active |
 | `/api/meetup-admin?action=send-sms-reminders` | GET | `api/meetup-admin.php` | cPanel cron/manual admin | active |
 | `/sellers/sign-contract` (Cloud Function) | POST | `functions/index.js:234` | `seller-onboarding.html` | new |

@@ -878,6 +878,48 @@ GRAPHQL, ['urlname' => $urlname], $tokenPath);
         respond($check['ok'] ? 200 : 500, $check);
     }
 
+    if ($action === 'send-admin-sms' || $action === 'send-test-sms') {
+        $phone = smsNormalizePhone((string) ($_GET['phone'] ?? ''));
+        $confirm = trim((string) ($_GET['confirm'] ?? ''));
+        $dryRun = $confirm !== $action;
+        $body = trim((string) ($_GET['body'] ?? ''));
+        $mode = $body === '' ? 'test' : 'one_off';
+        if ($body === '') {
+            $body = 'Mojo AI Studio test SMS. Your Advanced AI Concepts reminders are connected. Reply STOP to opt out.';
+        }
+
+        if ($phone === '') {
+            respond(422, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'error' => 'Provide a valid phone number in E.164 or US format.',
+            ]);
+        }
+
+        if (strlen($body) > 1000) {
+            respond(422, [
+                'ok' => false,
+                'dry_run' => $dryRun,
+                'mode' => $mode,
+                'error' => 'SMS body must be 1000 characters or fewer.',
+            ]);
+        }
+
+        $result = $dryRun
+            ? ['ok' => true, 'dry_run' => true]
+            : smsSendTwilio($phone, $body);
+
+        respond(empty($result['ok']) ? 500 : 200, [
+            'ok' => !empty($result['ok']),
+            'dry_run' => $dryRun,
+            'mode' => $mode,
+            'phoneLast4' => smsPhoneLast4($phone),
+            'bodyLength' => strlen($body),
+            'twilioMessageSid' => $result['twilio_sid'] ?? null,
+            'error' => $result['error'] ?? null,
+        ]);
+    }
+
     if ($action === 'send-topic-followups') {
         $networkUrlname = trim((string) ($_GET['network'] ?? 'advanced-ai-concepts'));
         $first = max(1, min(50, (int) ($_GET['first'] ?? 50)));
