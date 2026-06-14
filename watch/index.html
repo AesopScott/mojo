@@ -653,17 +653,6 @@
                 card.hidden = card.dataset.city !== select.value;
               });
             };
-            const syncSmsCityOptions = () => {
-              if (!smsCity) return;
-              smsCity.innerHTML = [...select.options].map((option) => {
-                const smsOption = document.createElement("option");
-                smsOption.value = option.dataset.urlname || "advanced-ai-concepts";
-                smsOption.dataset.groupName = option.textContent || "Advanced AI Concepts";
-                smsOption.textContent = option.textContent || "Advanced AI Concepts";
-                if (option.selected) smsOption.selected = true;
-                return smsOption.outerHTML;
-              }).join("");
-            };
             const renderCityOptions = (groups) => {
               if (!Array.isArray(groups) || !groups.length) return;
               const currentUrlname = select.selectedOptions[0]?.dataset.urlname || "";
@@ -681,7 +670,6 @@
                 return option.outerHTML;
               }).join("");
               syncCity();
-              syncSmsCityOptions();
             };
             if (smsForm && smsStatus) {
               smsForm.addEventListener("submit", async (event) => {
@@ -725,7 +713,6 @@
               .catch(() => {});
             select.addEventListener("change", syncCity);
             syncCity();
-            syncSmsCityOptions();
           })();
         </script>
       </section>
