@@ -34,6 +34,7 @@ jobs:
             --exclude 'README.md' \
             --exclude 'SELLER_PAYOUT_SYSTEM.md' \
             --exclude 'api/' \
+            --exclude 'cloudflare/' \
             --exclude 'docs/' \
             --exclude 'functions/' \
             --exclude 'node_modules/' \
@@ -58,6 +59,35 @@ jobs:
           if [ -n "$FIREBASE_API_KEY" ]; then
             find _site -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
           fi
+          cp cloudflare/pages-worker.js _site/_worker.js
+
+      - name: Sync Pages runtime secrets
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          MEETUP_ADMIN_KEY:      ${{ secrets.MEETUP_ADMIN_KEY }}
+          TWILIO_ACCOUNT_SID:    ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN:     ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER:    ${{ secrets.TWILIO_FROM_NUMBER }}
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const required = [
+            'MEETUP_ADMIN_KEY',
+            'TWILIO_ACCOUNT_SID',
+            'TWILIO_AUTH_TOKEN',
+            'TWILIO_FROM_NUMBER',
+          ];
+          const secrets = {};
+          for (const name of required) {
+            const value = process.env[name] || '';
+            if (!value) throw new Error(`Missing required secret: ${name}`);
+            secrets[name] = value;
+          }
+          fs.writeFileSync('pages-secrets.json', JSON.stringify(secrets));
+          NODE
+          npx wrangler pages secret bulk pages-secrets.json --project-name mojoaistudio-com
+          rm -f pages-secrets.json
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
