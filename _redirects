@@ -1,6 +1,9 @@
 /WatchAI /learn/ 301
 /WatchAI/* /learn/:splat 301
 /watch /learn/ 301
+/api/* /404.html 404
+/oauth/* /404.html 404
+/sellers/* /404.html 404
 /buy /products/ 200
 /buy/* /products/:splat 200
 /request /development/ 200
