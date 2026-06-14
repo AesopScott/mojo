@@ -1746,6 +1746,17 @@ p {
   margin-bottom: 0;
 }
 
+.aac-sms-hero {
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 640px;
+  margin-top: 22px;
+}
+
+.aac-sms-hero h3 {
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+}
+
 .aac-sms-form {
   display: grid;
   gap: 12px;
@@ -1758,7 +1769,8 @@ p {
   font-weight: 850;
 }
 
-.aac-sms-form input[type="tel"] {
+.aac-sms-form input[type="tel"],
+.aac-sms-form select {
   width: 100%;
   min-height: 48px;
   border: 1px solid var(--line);
@@ -1766,6 +1778,11 @@ p {
   padding: 0 14px;
   color: var(--ink);
   background: #fff;
+}
+
+.aac-sms-form select {
+  font: inherit;
+  font-weight: 800;
 }
 
 .aac-sms-consent {

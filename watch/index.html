@@ -58,6 +58,55 @@
             <a class="button dark" href="#events">Find your city</a>
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
+          <div class="aac-sms-signup aac-sms-hero" id="sms-reminders">
+            <div>
+              <p class="kicker">SMS reminders</p>
+              <h3>Get a text before upcoming sessions.</h3>
+              <p>Choose your city, add your phone number, and Mojo AI Studio will send reminders for Advanced AI Concepts Meetup events in that chapter.</p>
+            </div>
+            <form class="aac-sms-form" data-public-sms-form>
+              <label>
+                City
+                <select name="groupUrlname" data-public-sms-city required>
+                  <option value="advanced-ai-concepts" data-group-name="Colorado Springs/Denver" selected>Colorado Springs/Denver</option>
+                  <option value="advanced-ai-concepts-dallas" data-group-name="Dallas-Fort Worth">Dallas-Fort Worth</option>
+                  <option value="advanced-ai-concepts-san-francisco" data-group-name="San Francisco">San Francisco</option>
+                  <option value="advanced-ai-concepts-chicago" data-group-name="Chicago">Chicago</option>
+                  <option value="advanced-ai-concepts-los-angeles" data-group-name="Los Angeles">Los Angeles</option>
+                  <option value="advanced-ai-concepts-new-york" data-group-name="New York">New York</option>
+                  <option value="advanced-ai-concepts-boston" data-group-name="Boston">Boston</option>
+                  <option value="advanced-ai-concepts-miami" data-group-name="Miami">Miami</option>
+                  <option value="advanced-ai-concepts-atlanta" data-group-name="Atlanta">Atlanta</option>
+                  <option value="advanced-ai-concepts-seattle" data-group-name="Seattle">Seattle</option>
+                  <option value="advanced-ai-concepts-phoenix" data-group-name="Phoenix">Phoenix</option>
+                  <option value="advanced-ai-concepts-houston" data-group-name="Houston">Houston</option>
+                  <option value="advanced-ai-concepts-san-antonio" data-group-name="San Antonio">San Antonio</option>
+                  <option value="advanced-ai-concepts-the-triangle" data-group-name="The Triangle">The Triangle</option>
+                  <option value="advanced-ai-concepts-kansas-city" data-group-name="Kansas City">Kansas City</option>
+                  <option value="advanced-ai-concepts-columbus" data-group-name="Columbus">Columbus</option>
+                  <option value="advanced-ai-concepts-philadelphia" data-group-name="Philadelphia">Philadelphia</option>
+                  <option value="advanced-ai-concepts-washington-dc" data-group-name="Washington, DC">Washington, DC</option>
+                  <option value="advanced-ai-concepts-okc" data-group-name="OKC">OKC</option>
+                </select>
+              </label>
+              <label>
+                Phone number
+                <input
+                  name="phone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  placeholder="(555) 555-5555"
+                  required />
+              </label>
+              <label class="aac-sms-consent">
+                <input name="consent" type="checkbox" required />
+                <span>I agree to receive recurring SMS reminders for upcoming Advanced AI Concepts Meetup events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.</span>
+              </label>
+              <button class="button dark" type="submit">Save SMS reminders</button>
+              <p class="aac-sms-status" data-public-sms-status role="status" aria-live="polite"></p>
+            </form>
+          </div>
           <div class="aac-group-leaders" data-group-leaders hidden>
             <span>Top member cities</span>
             <div data-group-leader-list></div>
@@ -185,31 +234,7 @@
           <p>Join the local Meetup group, then RSVP for an upcoming session. Each event is limited to 100 people.</p>
           <a class="button dark" data-city-group-link href="https://www.meetup.com/advanced-ai-concepts/" target="_blank" rel="noopener">Join the Colorado Springs/Denver group</a>
         </div>
-        <div class="aac-sms-signup" id="sms-reminders">
-          <div>
-            <p class="kicker">SMS reminders</p>
-            <h3>Get a text before upcoming sessions.</h3>
-            <p>Choose your city above, add your phone number, and Mojo AI Studio will send reminders for Advanced AI Concepts Meetup events in that chapter.</p>
-          </div>
-          <form class="aac-sms-form" data-public-sms-form>
-            <label>
-              Phone number
-              <input
-                name="phone"
-                type="tel"
-                inputmode="tel"
-                autocomplete="tel"
-                placeholder="(555) 555-5555"
-                required />
-            </label>
-            <label class="aac-sms-consent">
-              <input name="consent" type="checkbox" required />
-              <span>I agree to receive recurring SMS reminders for upcoming Advanced AI Concepts Meetup events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.</span>
-            </label>
-            <button class="button dark" type="submit">Save SMS reminders</button>
-            <p class="aac-sms-status" data-public-sms-status role="status" aria-live="polite"></p>
-          </form>
-        </div>
+
         <div class="aac-event-list" data-city-events>
           
           <a class="aac-row-card aac-session-card" data-city="colorado-springs" href="https://www.meetup.com/advanced-ai-concepts/events/315079834/" target="_blank" rel="noopener">
@@ -615,6 +640,7 @@
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
             const smsForm = document.querySelector("[data-public-sms-form]");
             const smsStatus = document.querySelector("[data-public-sms-status]");
+            const smsCity = document.querySelector("[data-public-sms-city]");
             const chapterSlugs = {"advanced-ai-concepts":"colorado-springs","advanced-ai-concepts-dallas":"dallas","advanced-ai-concepts-san-francisco":"san-francisco","advanced-ai-concepts-chicago":"chicago","advanced-ai-concepts-los-angeles":"los-angeles","advanced-ai-concepts-new-york":"new-york","advanced-ai-concepts-boston":"boston","advanced-ai-concepts-miami":"miami","advanced-ai-concepts-atlanta":"atlanta","advanced-ai-concepts-seattle":"seattle","advanced-ai-concepts-phoenix":"phoenix","advanced-ai-concepts-houston":"houston","advanced-ai-concepts-san-antonio":"san-antonio","advanced-ai-concepts-the-triangle":"the-triangle","advanced-ai-concepts-kansas-city":"kansas-city","advanced-ai-concepts-columbus":"columbus","advanced-ai-concepts-philadelphia":"philadelphia","advanced-ai-concepts-washington-dc":"washington-dc","advanced-ai-concepts-okc":"okc"};
             if (!select || !cards.length) return;
             const syncCity = () => {
@@ -626,6 +652,17 @@
               cards.forEach((card) => {
                 card.hidden = card.dataset.city !== select.value;
               });
+            };
+            const syncSmsCityOptions = () => {
+              if (!smsCity) return;
+              smsCity.innerHTML = [...select.options].map((option) => {
+                const smsOption = document.createElement("option");
+                smsOption.value = option.dataset.urlname || "advanced-ai-concepts";
+                smsOption.dataset.groupName = option.textContent || "Advanced AI Concepts";
+                smsOption.textContent = option.textContent || "Advanced AI Concepts";
+                if (option.selected) smsOption.selected = true;
+                return smsOption.outerHTML;
+              }).join("");
             };
             const renderCityOptions = (groups) => {
               if (!Array.isArray(groups) || !groups.length) return;
@@ -644,11 +681,12 @@
                 return option.outerHTML;
               }).join("");
               syncCity();
+              syncSmsCityOptions();
             };
             if (smsForm && smsStatus) {
               smsForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
-                const selected = select.selectedOptions[0];
+                const selected = smsCity?.selectedOptions[0] || select.selectedOptions[0];
                 smsStatus.textContent = "Saving...";
                 smsStatus.classList.remove("error");
                 smsForm.querySelector("button").disabled = true;
@@ -661,8 +699,8 @@
                       source: "learn_public",
                       phone: smsForm.elements.phone.value,
                       consent: smsForm.elements.consent.checked,
-                      groupUrlname: selected?.dataset.urlname || "advanced-ai-concepts",
-                      groupName: selected?.textContent || "Advanced AI Concepts",
+                      groupUrlname: selected?.value || selected?.dataset.urlname || "advanced-ai-concepts",
+                      groupName: selected?.dataset.groupName || selected?.textContent || "Advanced AI Concepts",
                     }),
                   });
                   const result = await response.json();
@@ -687,6 +725,7 @@
               .catch(() => {});
             select.addEventListener("change", syncCity);
             syncCity();
+            syncSmsCityOptions();
           })();
         </script>
       </section>
