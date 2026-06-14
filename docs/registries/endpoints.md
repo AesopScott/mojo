@@ -300,14 +300,14 @@ action=test-sms-store
 
 ## `GET /api/meetup-admin?action=send-admin-sms`
 
-Admin-only Twilio sender with two modes. With `phone`, it sends one immediate test/custom SMS to that number. With `body` plus `groupUrlname` and no `phone`, it sends that custom one-off message to opted-in public `/learn/` SMS subscribers for the selected Meetup chapter. Defaults to dry-run unless explicitly confirmed.
+Admin-only Twilio sender with two modes. With `phone`, it sends one immediate test/custom SMS to that number. With `body` and no `phone`, it sends that custom one-off message to all stored opted-in public `/learn/` SMS subscribers. Add `groupUrlname` only to filter the one-off message to one Meetup chapter. Defaults to dry-run unless explicitly confirmed.
 
 **Request shape:** query params
 ```
 action=send-admin-sms
 phone=+15555551234              (single-recipient test/send mode)
 body=optional custom message  (optional; max 1000 chars)
-groupUrlname=advanced-ai-concepts-dallas  (subscriber one-off mode; required when phone is omitted)
+groupUrlname=advanced-ai-concepts-dallas  (optional subscriber filter; omit to send to all stored public subscribers)
 confirm=send-admin-sms        (required to call Twilio; otherwise dry-run)
 ```
 

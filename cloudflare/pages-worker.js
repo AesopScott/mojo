@@ -76,8 +76,8 @@ async function handleMeetupAdmin(request, env, url) {
     if (mode === "test") {
       return json({
         ok: false,
-        error: "Provide a phone number for the default test SMS, or provide body and groupUrlname for a one-off subscriber message.",
-        required: ["phone or body+groupUrlname"],
+        error: "Provide a phone number for the default test SMS, or provide body for a one-off subscriber message.",
+        required: ["phone or body"],
       }, 422);
     }
 
@@ -85,11 +85,10 @@ async function handleMeetupAdmin(request, env, url) {
       return json({ ok: false, error: "SMS body must be 1000 characters or less." }, 422);
     }
 
-    if (!/^[a-z0-9-]{3,80}$/.test(groupUrlname)) {
+    if (groupUrlname && !/^[a-z0-9-]{3,80}$/.test(groupUrlname)) {
       return json({
         ok: false,
-        error: "Provide a valid groupUrlname for the one-off subscriber message.",
-        required: ["groupUrlname"],
+        error: "Provide a valid groupUrlname, or omit it to message all stored subscribers.",
       }, 422);
     }
 
@@ -97,13 +96,14 @@ async function handleMeetupAdmin(request, env, url) {
       return json({ ok: false, error: "SMS reminder storage is not configured." }, 503);
     }
 
-    const recipients = await listPublicSubscribers(env, groupUrlname);
+    const recipients = await listPublicSubscribers(env, groupUrlname || null);
     if (dryRun) {
       return json({
         ok: true,
         dry_run: true,
         mode,
-        groupUrlname,
+        scope: groupUrlname ? "group" : "all_public_subscribers",
+        groupUrlname: groupUrlname || null,
         recipientCount: recipients.length,
         recipientLast4: recipients.map((recipient) => recipient.phoneLast4),
         bodyLength: body.length,
@@ -127,7 +127,8 @@ async function handleMeetupAdmin(request, env, url) {
       ok: failed.length === 0,
       dry_run: false,
       mode,
-      groupUrlname,
+      scope: groupUrlname ? "group" : "all_public_subscribers",
+      groupUrlname: groupUrlname || null,
       recipientCount: recipients.length,
       sentCount: sends.length - failed.length,
       failedCount: failed.length,
@@ -284,7 +285,11 @@ async function listPublicSubscribers(env, groupUrlname) {
 
     for (const key of page.keys || []) {
       const record = await env.SMS_REMINDERS.get(key.name, "json");
-      if (!record || record.unsubscribedAt || record.groupUrlname !== groupUrlname) {
+      if (!record || record.unsubscribedAt) {
+        continue;
+      }
+
+      if (groupUrlname && record.groupUrlname !== groupUrlname) {
         continue;
       }
 
