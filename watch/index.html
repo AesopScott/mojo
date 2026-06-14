@@ -185,6 +185,31 @@
           <p>Join the local Meetup group, then RSVP for an upcoming session. Each event is limited to 100 people.</p>
           <a class="button dark" data-city-group-link href="https://www.meetup.com/advanced-ai-concepts/" target="_blank" rel="noopener">Join the Colorado Springs/Denver group</a>
         </div>
+        <div class="aac-sms-signup" id="sms-reminders">
+          <div>
+            <p class="kicker">SMS reminders</p>
+            <h3>Get a text before upcoming sessions.</h3>
+            <p>Choose your city above, add your phone number, and Mojo AI Studio will send reminders for Advanced AI Concepts Meetup events in that chapter.</p>
+          </div>
+          <form class="aac-sms-form" data-public-sms-form>
+            <label>
+              Phone number
+              <input
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="(555) 555-5555"
+                required />
+            </label>
+            <label class="aac-sms-consent">
+              <input name="consent" type="checkbox" required />
+              <span>I agree to receive recurring SMS reminders for upcoming Advanced AI Concepts Meetup events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.</span>
+            </label>
+            <button class="button dark" type="submit">Save SMS reminders</button>
+            <p class="aac-sms-status" data-public-sms-status role="status" aria-live="polite"></p>
+          </form>
+        </div>
         <div class="aac-event-list" data-city-events>
           
           <a class="aac-row-card aac-session-card" data-city="colorado-springs" href="https://www.meetup.com/advanced-ai-concepts/events/315079834/" target="_blank" rel="noopener">
@@ -588,6 +613,8 @@
             const select = document.querySelector("[data-city-select]");
             const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
+            const smsForm = document.querySelector("[data-public-sms-form]");
+            const smsStatus = document.querySelector("[data-public-sms-status]");
             const chapterSlugs = {"advanced-ai-concepts":"colorado-springs","advanced-ai-concepts-dallas":"dallas","advanced-ai-concepts-san-francisco":"san-francisco","advanced-ai-concepts-chicago":"chicago","advanced-ai-concepts-los-angeles":"los-angeles","advanced-ai-concepts-new-york":"new-york","advanced-ai-concepts-boston":"boston","advanced-ai-concepts-miami":"miami","advanced-ai-concepts-atlanta":"atlanta","advanced-ai-concepts-seattle":"seattle","advanced-ai-concepts-phoenix":"phoenix","advanced-ai-concepts-houston":"houston","advanced-ai-concepts-san-antonio":"san-antonio","advanced-ai-concepts-the-triangle":"the-triangle","advanced-ai-concepts-kansas-city":"kansas-city","advanced-ai-concepts-columbus":"columbus","advanced-ai-concepts-philadelphia":"philadelphia","advanced-ai-concepts-washington-dc":"washington-dc","advanced-ai-concepts-okc":"okc"};
             if (!select || !cards.length) return;
             const syncCity = () => {
@@ -618,6 +645,40 @@
               }).join("");
               syncCity();
             };
+            if (smsForm && smsStatus) {
+              smsForm.addEventListener("submit", async (event) => {
+                event.preventDefault();
+                const selected = select.selectedOptions[0];
+                smsStatus.textContent = "Saving...";
+                smsStatus.classList.remove("error");
+                smsForm.querySelector("button").disabled = true;
+
+                try {
+                  const response = await fetch("/api/sms-reminders", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      source: "learn_public",
+                      phone: smsForm.elements.phone.value,
+                      consent: smsForm.elements.consent.checked,
+                      groupUrlname: selected?.dataset.urlname || "advanced-ai-concepts",
+                      groupName: selected?.textContent || "Advanced AI Concepts",
+                    }),
+                  });
+                  const result = await response.json();
+                  if (!response.ok || !result.ok) {
+                    throw new Error(result.message || "Unable to save SMS reminders.");
+                  }
+                  smsStatus.textContent = "Saved. We'll text reminders before upcoming sessions.";
+                  smsForm.reset();
+                } catch (error) {
+                  smsStatus.textContent = error.message || "Unable to save SMS reminders.";
+                  smsStatus.classList.add("error");
+                } finally {
+                  smsForm.querySelector("button").disabled = false;
+                }
+              });
+            }
             fetch('/api/meetup-group-leaders?limit=100')
               .then((response) => response.ok ? response.json() : null)
               .then((data) => {

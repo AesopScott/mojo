@@ -25,10 +25,13 @@ if (!is_array($input)) {
 }
 
 $token = trim((string) ($input['token'] ?? ''));
+$source = trim((string) ($input['source'] ?? ''));
 $phone = smsNormalizePhone((string) ($input['phone'] ?? ''));
 $consent = (bool) ($input['consent'] ?? false);
+$groupUrlname = strtolower(trim((string) ($input['groupUrlname'] ?? 'advanced-ai-concepts')));
+$groupName = trim((string) ($input['groupName'] ?? 'Advanced AI Concepts'));
 
-if ($token === '' || $phone === '' || !$consent) {
+if ($phone === '' || !$consent) {
     smsRespond(422, [
         'ok' => false,
         'message' => 'Enter a valid phone number and consent to SMS event reminders.',
@@ -37,12 +40,55 @@ if ($token === '' || $phone === '' || !$consent) {
 
 try {
     $store = smsReadStore();
+    $now = gmdate('c');
+
+    if ($source === 'learn_public') {
+        if (!preg_match('/^[a-z0-9-]{3,80}$/', $groupUrlname)) {
+            smsRespond(422, ['ok' => false, 'message' => 'Choose a valid Meetup city.']);
+        }
+
+        $key = smsPublicSubscriptionKey($phone, $groupUrlname);
+        $existing = $store['publicSubscriptions'][$key] ?? [];
+        if (!is_array($existing)) {
+            $existing = [];
+        }
+
+        $store['publicSubscriptions'][$key] = [
+            'id' => $key,
+            'phone' => $phone,
+            'phoneLast4' => smsPhoneLast4($phone),
+            'groupName' => $groupName !== '' ? $groupName : 'Advanced AI Concepts',
+            'groupUrlname' => $groupUrlname,
+            'source' => 'learn_public',
+            'purpose' => 'recurring_upcoming_event_sms_reminders',
+            'consentText' => MOJO_SMS_PUBLIC_CONSENT_TEXT,
+            'consentedAt' => (string) ($existing['consentedAt'] ?? $now),
+            'updatedAt' => $now,
+            'eventReminders' => is_array($existing['eventReminders'] ?? null) ? $existing['eventReminders'] : [],
+            'unsubscribedAt' => null,
+        ];
+
+        smsWriteStore($store);
+
+        smsRespond(200, [
+            'ok' => true,
+            'message' => 'SMS reminders saved.',
+            'phoneLast4' => smsPhoneLast4($phone),
+        ]);
+    }
+
+    if ($token === '') {
+        smsRespond(422, [
+            'ok' => false,
+            'message' => 'This reminder link is missing its invite token.',
+        ]);
+    }
+
     $invite = smsFindInviteByToken($store, $token);
     if ($invite === null) {
         smsRespond(404, ['ok' => false, 'message' => 'That reminder invite was not found.']);
     }
 
-    $now = gmdate('c');
     $key = (string) $invite['_key'];
     $store['invites'][$key]['status'] = 'opted_in';
     $store['invites'][$key]['optedInAt'] = $now;

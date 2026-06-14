@@ -211,7 +211,7 @@ Receives Polar.sh subscription/order events and writes purchase records to Fires
 
 ## `POST /api/sms-reminders`
 
-Receives a Meetup registrant's SMS reminder opt-in from `/watch/sms/?token=...`, validates the invite token, records consent, and stores the phone number only for event reminder use.
+Receives SMS reminder opt-ins. The private RSVP flow comes from `/watch/sms/?token=...`, validates the invite token, records consent, and stores the phone number only for that event reminder. The public `/learn/` flow stores a recurring city/group subscription for upcoming Advanced AI Concepts Meetup event reminders.
 
 **Request shape:** JSON body
 ```
@@ -219,6 +219,17 @@ Receives a Meetup registrant's SMS reminder opt-in from `/watch/sms/?token=...`,
   token:   string  (required; invite token created by Meetup polling)
   phone:   string  (required; US or E.164-style phone number)
   consent: boolean (required; must be true)
+}
+```
+
+Public `/learn/` shape:
+```
+{
+  source:       "learn_public"
+  phone:        string  (required; US or E.164-style phone number)
+  consent:      boolean (required; must be true)
+  groupUrlname: string  (optional; defaults to "advanced-ai-concepts")
+  groupName:    string  (optional)
 }
 ```
 
@@ -237,8 +248,9 @@ Receives a Meetup registrant's SMS reminder opt-in from `/watch/sms/?token=...`,
 
 **Consumers (calls the endpoint)**
 - `watch/sms/index.html` - SMS reminder opt-in form
+- `watch/index.html` - public `/learn/` recurring SMS reminder opt-in form
 
-**Adjacent constraint:** The phone number is stored with `purpose: "event_sms_reminder_only"` and the explicit consent text in `api/sms-reminder-lib.php`.
+**Adjacent constraint:** Private token opt-ins are stored with `purpose: "event_sms_reminder_only"`. Public `/learn/` opt-ins are stored under `publicSubscriptions` with `purpose: "recurring_upcoming_event_sms_reminders"`. Both persist explicit consent text from `api/sms-reminder-lib.php`.
 
 ---
 
@@ -317,7 +329,7 @@ dry_run_write=1&confirm=test-followup-store  (optional store probe; no Meetup ca
 
 ## `GET /api/meetup-admin?action=send-sms-reminders`
 
-Admin/cron action that sends due Twilio SMS reminders for registrants who explicitly opted in.
+Admin/cron action that sends due Twilio SMS reminders for registrants who explicitly opted in. It sends private token-based event reminders and recurring public `/learn/` reminders for upcoming events in each subscriber's selected Meetup chapter.
 
 **Request shape:** query params
 ```
@@ -337,6 +349,10 @@ confirm=send-sms-reminders  (required to send SMS; otherwise dry-run)
 **Schedule**
 - Evening-before reminder: 6:00 PM event-local time the day before
 - Day-of reminder: 4:00 PM event-local time the day of
+
+**Idempotency**
+- Private reminders are tracked by invite/subscription token and reminder slot.
+- Public `/learn/` reminders are tracked by public subscription ID, Meetup event ID, and reminder slot.
 
 ---
 

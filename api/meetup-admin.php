@@ -541,6 +541,45 @@ function smsStoreWriteCheck(): array {
     }
 }
 
+function upcomingGroupEvents(string $groupUrlname, string $tokenPath): array {
+    $eventsResult = graphQL(<<<'GRAPHQL'
+query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    events(first: 20) {
+      edges {
+        node {
+          id
+          title
+          eventUrl
+          status
+          dateTime
+          group { id name urlname }
+        }
+      }
+    }
+  }
+}
+GRAPHQL, ['urlname' => $groupUrlname], $tokenPath);
+
+    $edges = $eventsResult['response']['data']['groupByUrlname']['events']['edges'] ?? [];
+    if (!is_array($edges)) {
+        return [];
+    }
+
+    $events = [];
+    foreach ($edges as $edge) {
+        $event = $edge['node'] ?? null;
+        if (is_array($event) && (string) ($event['id'] ?? '') !== '' && (string) ($event['dateTime'] ?? '') !== '') {
+            $events[] = $event;
+        }
+    }
+
+    return $events;
+}
+
 function topicFollowupStorePath(): string {
     $configured = envValue('MOJO_MEETUP_FOLLOWUP_STORE');
     if ($configured !== '') {
@@ -1348,6 +1387,131 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
             ];
         }
 
+        $publicSent = [];
+        $publicSkipped = [];
+        $eventsByGroup = [];
+
+        foreach (($store['publicSubscriptions'] ?? []) as $subscriptionId => $subscription) {
+            if (!is_array($subscription)) {
+                continue;
+            }
+            if (!empty($subscription['unsubscribedAt'])) {
+                $publicSkipped[] = ['subscription_id' => (string) $subscriptionId, 'reason' => 'unsubscribed'];
+                continue;
+            }
+            if (empty($subscription['phone'])) {
+                $publicSkipped[] = ['subscription_id' => (string) $subscriptionId, 'reason' => 'missing phone'];
+                continue;
+            }
+
+            $groupUrlname = (string) ($subscription['groupUrlname'] ?? 'advanced-ai-concepts');
+            if ($groupUrlname === '') {
+                $groupUrlname = 'advanced-ai-concepts';
+            }
+
+            if (!array_key_exists($groupUrlname, $eventsByGroup)) {
+                $eventsByGroup[$groupUrlname] = upcomingGroupEvents($groupUrlname, $tokenPath);
+            }
+
+            if (empty($eventsByGroup[$groupUrlname])) {
+                $publicSkipped[] = [
+                    'subscription_id' => (string) $subscriptionId,
+                    'groupUrlname' => $groupUrlname,
+                    'reason' => 'no upcoming events loaded',
+                ];
+                continue;
+            }
+
+            foreach ($eventsByGroup[$groupUrlname] as $event) {
+                try {
+                    $eventAt = new DateTimeImmutable((string) $event['dateTime']);
+                } catch (Exception $exception) {
+                    $publicSkipped[] = [
+                        'subscription_id' => (string) $subscriptionId,
+                        'event_id' => (string) ($event['id'] ?? ''),
+                        'reason' => 'invalid event time',
+                    ];
+                    continue;
+                }
+
+                $eventId = (string) ($event['id'] ?? '');
+                $eventLocal = $eventAt;
+                $eventDate = $eventLocal->format('Y-m-d');
+                $dayBeforeDate = $eventLocal->modify('-1 day')->format('Y-m-d');
+                $eventDayStart = new DateTimeImmutable($eventDate . ' 00:00:00', $eventLocal->getTimezone());
+                $slots = [
+                    'evening_before' => [
+                        'start' => new DateTimeImmutable($dayBeforeDate . ' 18:00:00', $eventLocal->getTimezone()),
+                        'end' => $eventDayStart,
+                    ],
+                    'day_of' => [
+                        'start' => new DateTimeImmutable($eventDate . ' 16:00:00', $eventLocal->getTimezone()),
+                        'end' => $eventLocal,
+                    ],
+                ];
+
+                $dueSlot = '';
+                $dueAt = null;
+                foreach ($slots as $slotName => $slotWindow) {
+                    $sentAt = $subscription['eventReminders'][$eventId][$slotName]['sentAt'] ?? null;
+                    if (!empty($sentAt)) {
+                        continue;
+                    }
+
+                    $slotUtc = $slotWindow['start']->setTimezone(new DateTimeZone('UTC'));
+                    $slotEndUtc = $slotWindow['end']->setTimezone(new DateTimeZone('UTC'));
+                    if ($now >= $slotUtc && $now < $slotEndUtc) {
+                        $dueSlot = $slotName;
+                        $dueAt = $slotUtc;
+                        break;
+                    }
+                }
+
+                if ($dueSlot === '' || $dueAt === null) {
+                    $publicSkipped[] = [
+                        'subscription_id' => (string) $subscriptionId,
+                        'event_id' => $eventId,
+                        'reason' => 'no scheduled reminder due',
+                    ];
+                    continue;
+                }
+
+                $result = $dryRun
+                    ? ['ok' => true, 'dry_run' => true]
+                    : smsSendTwilio((string) $subscription['phone'], smsUpcomingReminderBody($subscription, $event, $dueSlot));
+
+                if (empty($result['ok'])) {
+                    $errors[] = [
+                        'subscription_id' => (string) $subscriptionId,
+                        'event_id' => $eventId,
+                        'slot' => $dueSlot,
+                        'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
+                        'error' => (string) ($result['error'] ?? 'SMS send failed'),
+                    ];
+                    continue;
+                }
+
+                if (!$dryRun) {
+                    $store['publicSubscriptions'][$subscriptionId]['eventReminders'][$eventId][$dueSlot] = [
+                        'scheduledFor' => $dueAt->format('c'),
+                        'sentAt' => gmdate('c'),
+                        'twilioMessageSid' => $result['twilio_sid'] ?? null,
+                    ];
+                    $store['publicSubscriptions'][$subscriptionId]['updatedAt'] = gmdate('c');
+                }
+
+                $publicSent[] = [
+                    'subscription_id' => (string) $subscriptionId,
+                    'groupUrlname' => $groupUrlname,
+                    'event_id' => $eventId,
+                    'slot' => $dueSlot,
+                    'scheduled_for' => $dueAt->format('c'),
+                    'phoneLast4' => (string) ($subscription['phoneLast4'] ?? ''),
+                    'dry_run' => $dryRun,
+                ];
+            }
+        }
+
         if (!$dryRun) {
             smsWriteStore($store);
         }
@@ -1362,8 +1526,12 @@ GRAPHQL, ['urlname' => $networkUrlname, 'first' => $first], $tokenPath);
             ],
             'sent_count' => count($sent),
             'skipped_count' => count($skipped),
+            'public_sent_count' => count($publicSent),
+            'public_skipped_count' => count($publicSkipped),
             'error_count' => count($errors),
             'sent' => $sent,
+            'public_sent' => $publicSent,
+            'public_skipped' => $publicSkipped,
             'errors' => $errors,
         ]);
     }

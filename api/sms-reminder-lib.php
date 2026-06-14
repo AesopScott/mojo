@@ -14,6 +14,7 @@ if (isset($_SERVER['SCRIPT_FILENAME']) && realpath((string) $_SERVER['SCRIPT_FIL
 }
 
 const MOJO_SMS_CONSENT_TEXT = 'I agree to receive SMS reminders for Advanced AI Concepts events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.';
+const MOJO_SMS_PUBLIC_CONSENT_TEXT = 'I agree to receive recurring SMS reminders for upcoming Advanced AI Concepts Meetup events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.';
 
 function smsRespond(int $status, array $payload): void {
     http_response_code($status);
@@ -160,6 +161,10 @@ function smsPhoneLast4(string $phone): string {
     return substr($digits, -4);
 }
 
+function smsPublicSubscriptionKey(string $phone, string $groupUrlname): string {
+    return hash('sha256', strtolower($groupUrlname) . '|' . $phone);
+}
+
 function smsOptInUrl(string $token): string {
     return smsBaseUrl() . '/watch/sms/?token=' . rawurlencode($token);
 }
@@ -242,6 +247,41 @@ function smsReminderBody(array $subscription, string $reminderType = ''): string
     }
     if ($eventUrl !== '') {
         $message .= ' Details: ' . $eventUrl;
+    }
+    $message .= ' Reply STOP to opt out.';
+
+    return $message;
+}
+
+function smsUpcomingReminderBody(array $subscription, array $event, string $reminderType = ''): string {
+    $title = (string) ($event['title'] ?? 'your Advanced AI Concepts event');
+    $eventUrl = (string) ($event['eventUrl'] ?? '');
+    $dateText = '';
+
+    if (!empty($event['dateTime'])) {
+        try {
+            $date = new DateTimeImmutable((string) $event['dateTime']);
+            $dateText = $date->format('M j, Y g:i A T');
+        } catch (Exception $exception) {
+            $dateText = '';
+        }
+    }
+
+    $prefix = 'Reminder';
+    if ($reminderType === 'evening_before') {
+        $prefix = 'Tomorrow';
+    } elseif ($reminderType === 'day_of') {
+        $prefix = 'Today';
+    }
+
+    $message = $prefix . ': ' . $title;
+    if ($dateText !== '') {
+        $message .= ' starts ' . $dateText . '.';
+    } else {
+        $message .= ' is coming up.';
+    }
+    if ($eventUrl !== '') {
+        $message .= ' RSVP/details: ' . $eventUrl;
     }
     $message .= ' Reply STOP to opt out.';
 
