@@ -145,6 +145,64 @@ jobs:
           }
           NODE
 
+      - name: Point apex DNS at Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const token = process.env.CLOUDFLARE_API_TOKEN;
+          const zoneName = 'mojoaistudio.com';
+          const domain = 'mojoaistudio.com';
+          const target = 'mojoaistudio-com.pages.dev';
+          const api = 'https://api.cloudflare.com/client/v4';
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          };
+
+          async function cf(url, init = {}) {
+            const response = await fetch(url, { ...init, headers });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok || payload.success === false) {
+              const errors = JSON.stringify(payload.errors || payload, null, 2);
+              throw new Error(`Cloudflare DNS request failed (${response.status}): ${errors}`);
+            }
+            return payload;
+          }
+
+          const zones = await cf(`${api}/zones?name=${encodeURIComponent(zoneName)}&per_page=1`);
+          const zone = zones.result?.[0];
+          if (!zone?.id) {
+            throw new Error(`Cloudflare zone not found for ${zoneName}`);
+          }
+
+          const recordsPayload = await cf(`${api}/zones/${zone.id}/dns_records?name=${encodeURIComponent(domain)}&per_page=100`);
+          const managedTypes = new Set(['A', 'AAAA', 'CNAME']);
+          const managedRecords = (recordsPayload.result || []).filter((record) => managedTypes.has(record.type));
+          const existingPagesRecord = managedRecords.find((record) => record.type === 'CNAME' && record.content === target);
+
+          if (existingPagesRecord && managedRecords.length === 1 && existingPagesRecord.proxied === true) {
+            console.log(`${domain} already points to ${target}`);
+          } else {
+            for (const record of managedRecords) {
+              await cf(`${api}/zones/${zone.id}/dns_records/${record.id}`, { method: 'DELETE' });
+              console.log(`deleted ${record.type} ${record.name} -> ${record.content}`);
+            }
+
+            const created = await cf(`${api}/zones/${zone.id}/dns_records`, {
+              method: 'POST',
+              body: JSON.stringify({
+                type: 'CNAME',
+                name: domain,
+                content: target,
+                ttl: 1,
+                proxied: true,
+              }),
+            });
+            console.log(`created ${created.result?.type || 'CNAME'} ${domain} -> ${target}`);
+          }
+          NODE
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
