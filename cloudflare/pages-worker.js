@@ -42,20 +42,42 @@ async function handleMeetupAdmin(request, env, url) {
 
   if (action === "send-admin-sms" || action === "send-test-sms") {
     const phone = normalizePhone(url.searchParams.get("phone") || "");
+    const groupUrlname = String(url.searchParams.get("groupUrlname") || "").trim().toLowerCase();
     const confirm = url.searchParams.get("confirm") || "";
     const dryRun = confirm !== action;
     let body = (url.searchParams.get("body") || "").trim();
-    const mode = body === "" ? "test" : "one_off";
+    const mode = body === "" ? "test" : (phone ? "one_off_phone" : "one_off_subscribers");
 
     if (body === "") {
       body = "Mojo AI Studio test SMS. Your Advanced AI Concepts reminders are connected. Reply STOP to opt out.";
     }
 
-    if (!phone) {
+    if (phone) {
+      if (body.length > 1000) {
+        return json({ ok: false, error: "SMS body must be 1000 characters or less." }, 422);
+      }
+
+      const result = dryRun
+        ? { ok: true, dry_run: true }
+        : await sendTwilio(env, phone, body);
+
+      return json({
+        ok: Boolean(result.ok),
+        dry_run: dryRun,
+        mode,
+        recipientCount: 1,
+        phoneLast4: phoneLast4(phone),
+        bodyLength: body.length,
+        twilioMessageSid: result.twilio_sid || null,
+        error: result.error || null,
+      }, result.ok ? 200 : 500);
+    }
+
+    if (mode === "test") {
       return json({
         ok: false,
-        error: "Provide a valid phone number.",
-        required: ["phone"],
+        error: "Provide a phone number for the default test SMS, or provide body and groupUrlname for a one-off subscriber message.",
+        required: ["phone or body+groupUrlname"],
       }, 422);
     }
 
@@ -63,19 +85,55 @@ async function handleMeetupAdmin(request, env, url) {
       return json({ ok: false, error: "SMS body must be 1000 characters or less." }, 422);
     }
 
-    const result = dryRun
-      ? { ok: true, dry_run: true }
-      : await sendTwilio(env, phone, body);
+    if (!/^[a-z0-9-]{3,80}$/.test(groupUrlname)) {
+      return json({
+        ok: false,
+        error: "Provide a valid groupUrlname for the one-off subscriber message.",
+        required: ["groupUrlname"],
+      }, 422);
+    }
+
+    if (!env.SMS_REMINDERS) {
+      return json({ ok: false, error: "SMS reminder storage is not configured." }, 503);
+    }
+
+    const recipients = await listPublicSubscribers(env, groupUrlname);
+    if (dryRun) {
+      return json({
+        ok: true,
+        dry_run: true,
+        mode,
+        groupUrlname,
+        recipientCount: recipients.length,
+        recipientLast4: recipients.map((recipient) => recipient.phoneLast4),
+        bodyLength: body.length,
+      });
+    }
+
+    const sends = [];
+    for (const recipient of recipients) {
+      const result = await sendTwilio(env, recipient.phone, body);
+      sends.push({
+        ok: Boolean(result.ok),
+        phoneLast4: recipient.phoneLast4,
+        twilioMessageSid: result.twilio_sid || null,
+        error: result.error || null,
+      });
+    }
+
+    const failed = sends.filter((send) => !send.ok);
 
     return json({
-      ok: Boolean(result.ok),
-      dry_run: dryRun,
+      ok: failed.length === 0,
+      dry_run: false,
       mode,
-      phoneLast4: phoneLast4(phone),
+      groupUrlname,
+      recipientCount: recipients.length,
+      sentCount: sends.length - failed.length,
+      failedCount: failed.length,
       bodyLength: body.length,
-      twilioMessageSid: result.twilio_sid || null,
-      error: result.error || null,
-    }, result.ok ? 200 : 500);
+      sends,
+    }, failed.length === 0 ? 200 : 207);
   }
 
   return json({ ok: false, error: "Unknown action." }, 404);
@@ -212,6 +270,40 @@ async function sendTwilio(env, to, body) {
     twilio_sid: payload.sid || null,
     error: payload.message || "",
   };
+}
+
+async function listPublicSubscribers(env, groupUrlname) {
+  const recipients = [];
+  let cursor;
+
+  do {
+    const page = await env.SMS_REMINDERS.list({
+      prefix: "public:",
+      cursor,
+    });
+
+    for (const key of page.keys || []) {
+      const record = await env.SMS_REMINDERS.get(key.name, "json");
+      if (!record || record.unsubscribedAt || record.groupUrlname !== groupUrlname) {
+        continue;
+      }
+
+      const phone = normalizePhone(record.phone || "");
+      if (!phone) {
+        continue;
+      }
+
+      recipients.push({
+        phone,
+        phoneLast4: record.phoneLast4 || phoneLast4(phone),
+        groupUrlname: record.groupUrlname,
+      });
+    }
+
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+
+  return recipients;
 }
 
 async function sha256(value) {

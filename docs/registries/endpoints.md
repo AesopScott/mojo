@@ -300,18 +300,20 @@ action=test-sms-store
 
 ## `GET /api/meetup-admin?action=send-admin-sms`
 
-Admin-only Twilio sender that sends one immediate SMS to a provided phone number. If `body` is omitted, it sends the default Mojo test SMS. If `body` is provided, it sends that custom one-off message. Defaults to dry-run unless explicitly confirmed.
+Admin-only Twilio sender with two modes. With `phone`, it sends one immediate test/custom SMS to that number. With `body` plus `groupUrlname` and no `phone`, it sends that custom one-off message to opted-in public `/learn/` SMS subscribers for the selected Meetup chapter. Defaults to dry-run unless explicitly confirmed.
 
 **Request shape:** query params
 ```
 action=send-admin-sms
-phone=+15555551234
+phone=+15555551234              (single-recipient test/send mode)
 body=optional custom message  (optional; max 1000 chars)
+groupUrlname=advanced-ai-concepts-dallas  (subscriber one-off mode; required when phone is omitted)
 confirm=send-admin-sms        (required to call Twilio; otherwise dry-run)
 ```
 
 **Producers (serves the endpoint)**
-- `api/meetup-admin.php` - admin-gated Twilio test and one-off sender
+- `api/meetup-admin.php` - legacy PHP admin-gated Twilio test and one-off sender
+- `cloudflare/pages-worker.js` - Cloudflare Pages admin-gated Twilio test and one-off subscriber sender
 
 **Consumers**
 - Manual admin test using `MEETUP_ADMIN_KEY`
@@ -319,7 +321,7 @@ confirm=send-admin-sms        (required to call Twilio; otherwise dry-run)
 **External APIs**
 - Twilio Messages REST API
 
-**Safety guard:** Without `confirm=send-admin-sms`, validates the phone/body and returns dry-run metadata without sending SMS. The older `action=send-test-sms&confirm=send-test-sms` alias is also accepted for default test-message sends.
+**Safety guard:** Without `confirm=send-admin-sms`, validates the target/body and returns dry-run metadata without sending SMS. In subscriber mode, dry-run returns recipient count and phone last-4s. The older `action=send-test-sms&confirm=send-test-sms` alias is also accepted for default single-number test-message sends.
 
 ---
 
