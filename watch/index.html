@@ -671,6 +671,33 @@
               }).join("");
               syncCity();
             };
+            const renderSmsCityOptions = (groups) => {
+              if (!smsCity || !Array.isArray(groups) || !groups.length) return;
+              const currentValue = smsCity.value || "advanced-ai-concepts";
+              const seen = new Set();
+              const options = groups
+                .filter((group) => group && group.urlname)
+                .map((group) => {
+                  const urlname = String(group.urlname || "");
+                  if (seen.has(urlname)) return "";
+                  seen.add(urlname);
+                  const label = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
+                  const option = document.createElement("option");
+                  option.value = urlname;
+                  option.dataset.groupName = label;
+                  option.textContent = label;
+                  if (urlname === currentValue) option.selected = true;
+                  return option.outerHTML;
+                })
+                .filter(Boolean);
+
+              if (!seen.has("advanced-ai-concepts")) {
+                options.unshift('<option value="advanced-ai-concepts" data-group-name="Colorado Springs/Denver">Colorado Springs/Denver</option>');
+              }
+
+              smsCity.innerHTML = options.join("");
+              smsCity.value = seen.has(currentValue) ? currentValue : "advanced-ai-concepts";
+            };
             if (smsForm && smsStatus) {
               smsForm.addEventListener("submit", async (event) => {
                 event.preventDefault();
@@ -708,7 +735,10 @@
             fetch('/api/meetup-group-leaders?limit=100')
               .then((response) => response.ok ? response.json() : null)
               .then((data) => {
-                if (data && data.ok) renderCityOptions(data.groups);
+                if (data && data.ok) {
+                  renderCityOptions(data.groups);
+                  renderSmsCityOptions(data.groups);
+                }
               })
               .catch(() => {});
             select.addEventListener("change", syncCity);
