@@ -1,0 +1,9 @@
+/WatchAI /learn/ 301
+/WatchAI/* /learn/:splat 301
+/watch /learn/ 301
+/buy /products/ 200
+/buy/* /products/:splat 200
+/request /development/ 200
+/request/* /development/:splat 200
+/learn /watch/ 200
+/learn/* /watch/:splat 200

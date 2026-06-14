@@ -1,4 +1,4 @@
-name: Deploy to Mocahost (Mojo AI Studio)
+name: Deploy to Cloudflare Pages
 
 on:
   push:
@@ -7,10 +7,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-mocahost-mojo
-  # Keep queued deploys running in order so an in-flight FTP upload is not
-  # cancelled halfway through and left partially deployed.
-  cancel-in-progress: false
+  group: deploy-cloudflare-pages-mojo
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -19,42 +17,51 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inject cache-bust token and config tokens
+      - name: Prepare static deploy folder
         env:
           POLAR_ORG:        ${{ vars.POLAR_ORG }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          ZOOM_SECRET_TOKEN: ${{ secrets.ZOOM_SECRET_TOKEN }}
         run: |
+          mkdir -p _site
+          rsync -av ./ _site/ \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude '.htaccess' \
+            --exclude '.env' \
+            --exclude '.env.*' \
+            --exclude 'AGENTS.md' \
+            --exclude 'CLAUDE.md' \
+            --exclude 'README.md' \
+            --exclude 'SELLER_PAYOUT_SYSTEM.md' \
+            --exclude 'api/' \
+            --exclude 'docs/' \
+            --exclude 'functions/' \
+            --exclude 'node_modules/' \
+            --exclude 'oauth/' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude 'firebase.json' \
+            --exclude 'firestore.rules' \
+            --exclude 'firestore.indexes.json' \
+            --exclude 'scripts/*.php' \
+            --exclude 'scripts/*.mjs' \
+            --exclude '_site/'
+          cp _redirects _site/_redirects
+          cp _headers _site/_headers
           BUST="${GITHUB_SHA:0:7}"
           ORG="${POLAR_ORG:-}"
-          find . -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
-          find . -name "*.js"   -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
+          find _site -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
+          find _site -name "*.js"   -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
           if [ -n "$ORG" ]; then
-            find . -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
+            find _site -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
           fi
           if [ -n "$FIREBASE_API_KEY" ]; then
-            find . -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
-          fi
-          if [ -n "$ZOOM_SECRET_TOKEN" ]; then
-            printf '\nZOOM_SECRET_TOKEN=%s\n' "$ZOOM_SECRET_TOKEN" >> .env
+            find _site -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
           fi
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
-          server: 65.181.111.131
-          username: hivetec1
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          protocol: ftps
-          local-dir: ./
-          server-dir: /public_html/mojo/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/.github/**
-            **/.DS_Store
-            **/README.md
-            **/AGENTS.md
-            cgi-bin/**
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy _site --project-name mojoaistudio-com --branch main
