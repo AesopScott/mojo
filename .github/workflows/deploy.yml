@@ -96,6 +96,7 @@ jobs:
             kv_namespaces: [{ binding: 'SMS_REMINDERS', id: '$KV_ID' }],
           }, null, 2));
           NODE
+          cat wrangler.jsonc
 
       - name: Sync Pages runtime secrets
         env:
@@ -130,4 +131,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: --config wrangler.jsonc pages deploy _site --project-name mojoaistudio-com --branch main
+          command: pages deploy _site --project-name mojoaistudio-com --branch main
