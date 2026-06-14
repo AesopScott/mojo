@@ -40,6 +40,46 @@ async function handleMeetupAdmin(request, env, url) {
     });
   }
 
+  if (action === "list-sms-subscribers") {
+    if (!env.SMS_REMINDERS) {
+      return json({ ok: false, error: "SMS reminder storage is not configured." }, 503);
+    }
+
+    const subscribers = await listPublicSubscribers(env, null);
+    return json({
+      ok: true,
+      recipientCount: subscribers.length,
+      recipients: subscribers.map((subscriber) => ({
+        phoneLast4: subscriber.phoneLast4,
+        groupUrlname: subscriber.groupUrlname || null,
+        groupName: subscriber.groupName || null,
+        consentedAt: subscriber.consentedAt || null,
+        updatedAt: subscriber.updatedAt || null,
+      })),
+    });
+  }
+
+  if (action === "delete-sms-subscriber") {
+    if (!env.SMS_REMINDERS) {
+      return json({ ok: false, error: "SMS reminder storage is not configured." }, 503);
+    }
+
+    const phone = normalizePhone(url.searchParams.get("phone") || "");
+    if (!phone) {
+      return json({ ok: false, error: "Provide a valid phone number to delete." }, 422);
+    }
+
+    const deleted = await deletePublicSubscribersByPhone(env, phone);
+    return json({
+      ok: true,
+      deletedCount: deleted.length,
+      deleted: deleted.map((record) => ({
+        phoneLast4: record.phoneLast4,
+        groupUrlname: record.groupUrlname || null,
+      })),
+    });
+  }
+
   if (action === "send-admin-sms" || action === "send-test-sms") {
     const phone = normalizePhone(url.searchParams.get("phone") || "");
     const groupUrlname = String(url.searchParams.get("groupUrlname") || "").trim().toLowerCase();
@@ -302,6 +342,9 @@ async function listPublicSubscribers(env, groupUrlname) {
         phone,
         phoneLast4: record.phoneLast4 || phoneLast4(phone),
         groupUrlname: record.groupUrlname,
+        groupName: record.groupName,
+        consentedAt: record.consentedAt,
+        updatedAt: record.updatedAt,
       });
     }
 
@@ -309,6 +352,35 @@ async function listPublicSubscribers(env, groupUrlname) {
   } while (cursor);
 
   return recipients;
+}
+
+async function deletePublicSubscribersByPhone(env, phone) {
+  const deleted = [];
+  let cursor;
+
+  do {
+    const page = await env.SMS_REMINDERS.list({
+      prefix: "public:",
+      cursor,
+    });
+
+    for (const key of page.keys || []) {
+      const record = await env.SMS_REMINDERS.get(key.name, "json");
+      if (!record || normalizePhone(record.phone || "") !== phone) {
+        continue;
+      }
+
+      await env.SMS_REMINDERS.delete(key.name);
+      deleted.push({
+        phoneLast4: record.phoneLast4 || phoneLast4(phone),
+        groupUrlname: record.groupUrlname,
+      });
+    }
+
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+
+  return deleted;
 }
 
 async function sha256(value) {
