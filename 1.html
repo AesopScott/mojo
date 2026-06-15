@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 1: Define | Mojo AI Studio</title>
+    <meta name="description" content="Phase 1 of MAPS defines the agent job, user, boundaries, success criteria, failure criteria, escalation points, risks, and assumptions.">
+    <link rel="canonical" href="https://mojoaistudio.com/1.html">
+    <link rel="stylesheet" href="maps.css">
+    <script src="maps-data.js" defer></script>
+    <script src="maps-page.js" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="1">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-links">
+            <a href="maps.html">Overview</a>
+            <a href="0.html">Phase 0</a>
+            <a href="1.html">Phase 1</a>
+            <a href="#brief">Brief</a>
+            <a href="#resources">Resources</a>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 1</p>
+          <h1>Define</h1>
+          <p>
+            Define turns an agent idea into a usable brief. The brief identifies the
+            agent job, user or operator, desired outcome, boundaries, success criteria,
+            failure criteria, escalation points, risks, and assumptions.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#brief">Build the brief</a>
+            <a class="maps-button" href="0.html">Back to Phase 0</a>
+          </div>
+        </div>
+
+        <aside class="maps-card">
+          <h2>Build navigation</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="1"></div>
+        </aside>
+      </section>
+
+      <main class="maps-main">
+        <section id="brief" class="maps-section">
+          <div class="maps-section-header">
+            <h2>The agent brief is the contract.</h2>
+            <p>
+              A strong brief makes later design and evaluation possible because it states exactly what the agent owns.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Inputs</h3>
+              <p>An agent idea, workflow need, user request, or multi-agent role candidate.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Work</h3>
+              <p>Clarify scope, non-goals, observable success, failure criteria, and human escalation points.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Output</h3>
+              <p>A filled `agent-brief.md` ready to move into the Design phase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Agent brief fields</h2>
+            <p>
+              These are the minimum fields the next phase needs.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel"><h3>Name</h3><p>Short identifier for the agent or role.</p></article>
+            <article class="maps-panel"><h3>User or operator</h3><p>The person or system that uses, reviews, or supervises the agent.</p></article>
+            <article class="maps-panel"><h3>Job to be done</h3><p>The specific outcome the agent is responsible for.</p></article>
+            <article class="maps-panel"><h3>Boundaries</h3><p>In scope, out of scope, and unclear territory.</p></article>
+            <article class="maps-panel"><h3>Success and failure</h3><p>Observable criteria for done and explicit conditions that count as failure.</p></article>
+            <article class="maps-panel"><h3>Risks and assumptions</h3><p>What must be controlled, escalated, or proven later.</p></article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Full phase navigation</h2>
+            <p>
+              Phase 1 is active now. The remaining pages stay visible so the sequence remains stable.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="1"></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 1 resources</h2>
+            <p>
+              Define uses the `define-agent` skill and the agent brief template.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Catalogs</h3>
+              <ul data-maps-catalogs></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

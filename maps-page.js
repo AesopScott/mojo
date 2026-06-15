@@ -45,10 +45,15 @@
   }
 
   function renderResources() {
-    renderResourceGroup("[data-maps-skills]", site.resources.skills);
-    renderResourceGroup("[data-maps-repos]", site.resources.repos);
-    renderResourceGroup("[data-maps-tools]", site.resources.tools);
-    renderResourceGroup("[data-maps-catalogs]", site.resources.catalogs);
+    const current = document.body.getAttribute("data-maps-phase");
+    const phaseResources = current ? site.phaseResources?.[current] : null;
+    const byName = (items, names) => (names || []).map((name) => items.find((item) => item.name === name)).filter(Boolean);
+
+    renderResourceGroup("[data-maps-skills]", phaseResources ? byName(site.resources.skills, phaseResources.skills) : site.resources.skills);
+    renderResourceGroup("[data-maps-repos]", phaseResources ? byName(site.resources.repos, phaseResources.repos) : site.resources.repos);
+    renderResourceGroup("[data-maps-tools]", phaseResources ? byName(site.resources.tools, phaseResources.tools) : site.resources.tools);
+    renderResourceGroup("[data-maps-templates]", phaseResources ? byName(site.resources.templates, phaseResources.templates) : site.resources.templates);
+    renderResourceGroup("[data-maps-catalogs]", phaseResources ? byName(site.resources.catalogs, phaseResources.catalogs) : site.resources.catalogs);
   }
 
   renderPhaseNav();

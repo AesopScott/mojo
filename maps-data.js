@@ -14,7 +14,7 @@ window.MAPS_SITE = {
       label: "Phase 1",
       title: "Define",
       output: "Agent brief",
-      status: "planned"
+      status: "available"
     },
     {
       number: "2",
@@ -82,6 +82,10 @@ window.MAPS_SITE = {
       {
         name: "phase-alignment",
         note: "Captures lifecycle names, boundaries, scaffolding decisions, and open questions."
+      },
+      {
+        name: "define-agent",
+        note: "Creates the agent brief: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       }
     ],
     repos: [
@@ -128,6 +132,32 @@ window.MAPS_SITE = {
         name: "catalogs/tools.md",
         note: "Records tools and services by MAPS phase."
       }
+    ],
+    templates: [
+      {
+        name: "templates/phase-alignment-brief.md",
+        note: "Captures Phase 0 structure decisions."
+      },
+      {
+        name: "templates/agent-brief.md",
+        note: "Captures the Phase 1 Define artifact."
+      }
     ]
+  },
+  phaseResources: {
+    "0": {
+      skills: ["/scaffold", "phase-alignment"],
+      repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      tools: ["Python", "GitHub CLI", "Git"],
+      templates: ["templates/phase-alignment-brief.md"],
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+    },
+    "1": {
+      skills: ["define-agent"],
+      repos: ["AesopScott/maps"],
+      tools: ["Git", "Agent Skills"],
+      templates: ["templates/agent-brief.md"],
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+    }
   }
 };
