@@ -85,7 +85,7 @@ window.MAPS_SITE = {
       },
       {
         name: "/define-agent",
-        note: "Creates the agent brief: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
+        note: "Creates agents/{agent-handle}/01-define.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       }
     ],
     repos: [
