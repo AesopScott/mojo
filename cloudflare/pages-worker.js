@@ -28,6 +28,10 @@ export default {
       return handleSubmitProductAdmin(request, env, url);
     }
 
+    if (url.pathname === "/api/send-seller-onboarding-email" || url.pathname === "/api/send-seller-onboarding-email.php") {
+      return handleSellerOnboardingEmail(request, env);
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
@@ -397,6 +401,36 @@ async function sha256(value) {
   return [...new Uint8Array(digest)]
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
+}
+
+async function handleSellerOnboardingEmail(request, env) {
+  if (request.method !== "POST") {
+    return json({ ok: false, message: "Method not allowed." }, 405);
+  }
+
+  let data;
+  try {
+    data = await request.json();
+  } catch {
+    return json({ ok: false, message: "Expected JSON body." }, 400);
+  }
+
+  const required = ["email", "contactName", "productName", "sellerToken"];
+  const missing = required.filter((f) => !String(data[f] || "").trim());
+  if (missing.length) {
+    return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
+  }
+
+  if (env.PRODUCT_SUBMISSIONS) {
+    const now = new Date().toISOString();
+    const id = await sha256(`onboarding|${data.email}|${data.sellerToken}`);
+    await env.PRODUCT_SUBMISSIONS.put(
+      `onboarding:${now}:${id.slice(0, 8)}`,
+      JSON.stringify({ ...data, queuedAt: now, status: "pending_email" }),
+    );
+  }
+
+  return json({ ok: true });
 }
 
 async function handleSubmitProduct(request, env) {
