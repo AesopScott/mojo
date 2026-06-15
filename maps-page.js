@@ -35,6 +35,8 @@
       const label = item.url ? document.createElement("a") : document.createElement("strong");
       if (item.url) {
         label.href = item.url;
+        label.target = "_blank";
+        label.rel = "noopener noreferrer";
       }
       label.textContent = item.name;
       li.appendChild(label);
