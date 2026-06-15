@@ -22,7 +22,7 @@ window.MAPS_SITE = {
       label: "Phase 2",
       title: "Design",
       output: "System design",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "3",
@@ -30,7 +30,7 @@ window.MAPS_SITE = {
       label: "Phase 3",
       title: "Build",
       output: "Working agent",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "4",
@@ -38,7 +38,7 @@ window.MAPS_SITE = {
       label: "Phase 4",
       title: "Equip",
       output: "Capability map",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "5",
@@ -46,7 +46,7 @@ window.MAPS_SITE = {
       label: "Phase 5",
       title: "Evaluate",
       output: "Eval suite",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "6",
@@ -54,7 +54,7 @@ window.MAPS_SITE = {
       label: "Phase 6",
       title: "Deploy",
       output: "Release plan",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "7",
@@ -62,7 +62,7 @@ window.MAPS_SITE = {
       label: "Phase 7",
       title: "Observe",
       output: "Observation plan",
-      status: "planned"
+      status: "under-construction"
     },
     {
       number: "8",
@@ -70,7 +70,7 @@ window.MAPS_SITE = {
       label: "Phase 8",
       title: "Improve",
       output: "Improvement backlog",
-      status: "planned"
+      status: "under-construction"
     }
   ],
   resources: {

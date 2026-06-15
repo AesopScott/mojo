@@ -189,9 +189,23 @@ body.maps-page {
   background: #fff8e8;
 }
 
-.maps-phase-link.planned {
+.maps-phase-link.under-construction {
   color: var(--maps-muted);
   background: #f7f8f6;
+}
+
+.maps-phase-link em {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 4px;
+  padding: 3px 7px;
+  border: 1px solid rgba(184, 135, 47, 0.35);
+  border-radius: 7px;
+  color: #7b5a1c;
+  background: #fff8e8;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 760;
 }
 
 .maps-main {

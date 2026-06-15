@@ -13,11 +13,12 @@
       site.phases.forEach((phase) => {
         const isCurrent = phase.number === current;
         const el = document.createElement(phase.status === "available" ? "a" : "span");
-        el.className = `maps-phase-link${isCurrent ? " current" : ""}${phase.status !== "available" ? " planned" : ""}`;
+        el.className = `maps-phase-link${isCurrent ? " current" : ""}${phase.status !== "available" ? " under-construction" : ""}`;
         if (phase.status === "available") {
           el.href = phase.file;
         }
-        el.innerHTML = `<strong>${phase.label}: ${phase.title}</strong><span>${phase.output}</span>`;
+        const statusLabel = phase.status === "available" ? "" : `<em>Under construction</em>`;
+        el.innerHTML = `<strong>${phase.label}: ${phase.title}</strong><span>${phase.output}</span>${statusLabel}`;
         nav.appendChild(el);
       });
     });
