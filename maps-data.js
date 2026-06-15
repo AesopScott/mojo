@@ -84,7 +84,7 @@ window.MAPS_SITE = {
         note: "Captures lifecycle names, boundaries, scaffolding decisions, and open questions."
       },
       {
-        name: "define-agent",
+        name: "/define-agent",
         note: "Creates the agent brief: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       }
     ],
@@ -153,7 +153,7 @@ window.MAPS_SITE = {
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     },
     "1": {
-      skills: ["define-agent"],
+      skills: ["/define-agent"],
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills"],
       templates: ["templates/agent-brief.md"],
