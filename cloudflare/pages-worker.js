@@ -20,6 +20,14 @@ export default {
       return handleSmsReminders(request, env);
     }
 
+    if (url.pathname === "/api/submit-product" || url.pathname === "/api/submit-product.php") {
+      return handleSubmitProduct(request, env);
+    }
+
+    if (url.pathname === "/api/submit-product-admin") {
+      return handleSubmitProductAdmin(request, env, url);
+    }
+
     return env.ASSETS.fetch(request);
   },
 };
@@ -389,6 +397,80 @@ async function sha256(value) {
   return [...new Uint8Array(digest)]
     .map((byte) => byte.toString(16).padStart(2, "0"))
     .join("");
+}
+
+async function handleSubmitProduct(request, env) {
+  if (request.method !== "POST") {
+    return json({ ok: false, message: "Method not allowed." }, 405);
+  }
+
+  let data;
+  try {
+    data = await request.json();
+  } catch {
+    return json({ ok: false, message: "Expected JSON body." }, 400);
+  }
+
+  const required = ["productName", "contactName", "contactEmail", "productDescription"];
+  const missing = required.filter((f) => !String(data[f] || "").trim());
+  if (missing.length) {
+    return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
+  }
+
+  const email = String(data.contactEmail || "").trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json({ ok: false, message: "Invalid email address." }, 422);
+  }
+
+  if (!env.PRODUCT_SUBMISSIONS) {
+    return json({ ok: false, message: "Submission storage not configured." }, 503);
+  }
+
+  const now = new Date().toISOString();
+  const id = await sha256(`${now}|${email}|${data.productName}`);
+  const record = {
+    id,
+    submittedAt: now,
+    productName: String(data.productName || "").trim(),
+    contactName: String(data.contactName || "").trim(),
+    contactEmail: email,
+    productDescription: String(data.productDescription || "").trim(),
+    productUrl: String(data.productUrl || "").trim(),
+    category: String(data.category || "").trim(),
+    pricingModel: String(data.pricingModel || "").trim(),
+    targetUser: String(data.targetUser || "").trim(),
+    anythingElse: String(data.anythingElse || "").trim(),
+  };
+
+  await env.PRODUCT_SUBMISSIONS.put(`submission:${now}:${id.slice(0, 8)}`, JSON.stringify(record));
+
+  return json({ ok: true });
+}
+
+async function handleSubmitProductAdmin(request, env, url) {
+  if (!isAuthorized(request, env, url)) {
+    return json({ ok: false, error: "Unauthorized." }, 401);
+  }
+
+  if (!env.PRODUCT_SUBMISSIONS) {
+    return json({ ok: false, error: "Submission storage not configured." }, 503);
+  }
+
+  const submissions = [];
+  let cursor;
+
+  do {
+    const page = await env.PRODUCT_SUBMISSIONS.list({ prefix: "submission:", cursor });
+    for (const key of page.keys || []) {
+      const record = await env.PRODUCT_SUBMISSIONS.get(key.name, "json");
+      if (record) submissions.push(record);
+    }
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+
+  submissions.sort((a, b) => b.submittedAt.localeCompare(a.submittedAt));
+
+  return json({ ok: true, count: submissions.length, submissions });
 }
 
 function json(payload, status = 200) {
