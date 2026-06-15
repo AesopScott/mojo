@@ -85,7 +85,7 @@ window.MAPS_SITE = {
       },
       {
         name: "/define-agent",
-        note: "Creates agents/{agent-handle}/01-define.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
+        note: "Creates agents/{agent-handle}/agent-brief.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       }
     ],
     repos: [
@@ -139,7 +139,7 @@ window.MAPS_SITE = {
         note: "Captures Phase 0 structure decisions."
       },
       {
-        name: "templates/agent-brief.md",
+        name: "templates/agent-definition-template.md",
         note: "Captures the Phase 1 Define artifact."
       }
     ]
@@ -156,7 +156,7 @@ window.MAPS_SITE = {
       skills: ["/define-agent"],
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills"],
-      templates: ["templates/agent-brief.md"],
+      templates: ["templates/agent-definition-template.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     }
   }
