@@ -1,6 +1,6 @@
 {
   "name": "mojo-email-worker",
-  "main": "./cloudflare/email-worker.js",
+  "main": "./email-worker.js",
   "compatibility_date": "2026-06-15",
   "send_email": [
     { "name": "EMAIL" }
