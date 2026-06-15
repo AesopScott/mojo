@@ -166,7 +166,7 @@
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
         <div class="form-group">
-          <label>Polar Price ID</label>
+          <label>Polar Price ID <span style="font-weight:400;color:#6b7280">(optional — add after seller sets up on Polar)</span></label>
           <input type="text" class="polar-id-input" placeholder="POLAR_PRODUCT_PRICE_ID">
         </div>
 
@@ -192,10 +192,6 @@
       const polarId = div.querySelector('.polar-id-input').value.trim();
       const featured = div.querySelector('.featured-select').value === 'true';
 
-      if (!polarId) {
-        showMessage('Please enter the Polar Price ID', 'error');
-        return;
-      }
 
       try {
         approveBtn.disabled = true;

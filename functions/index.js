@@ -26,6 +26,7 @@
 'use strict';
 
 const { onRequest } = require('firebase-functions/v2/https');
+const { onSchedule } = require('firebase-functions/v2/scheduler');
 const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const crypto = require('crypto');
@@ -35,6 +36,7 @@ const db = admin.firestore();
 
 const POLAR_WEBHOOK_SECRET = defineSecret('POLAR_WEBHOOK_SECRET');
 const ADMIN_PAYOUT_KEY = defineSecret('ADMIN_PAYOUT_KEY');
+const RESEND_API_KEY = defineSecret('RESEND_API_KEY');
 
 function setPublicCors(req, res) {
   res.set('Content-Type', 'application/json');
@@ -53,7 +55,7 @@ function setPublicCors(req, res) {
 /* ── Polar.sh webhook endpoint ── */
 
 exports.polarWebhook = onRequest(
-  { secrets: [POLAR_WEBHOOK_SECRET] },
+  { secrets: [POLAR_WEBHOOK_SECRET, RESEND_API_KEY] },
   async (req, res) => {
     if (req.method !== 'POST') {
       res.status(405).send('Method Not Allowed');
@@ -178,11 +180,33 @@ async function trackSaleIfApplicable(order) {
 
     // Update seller's available balance
     const sellerRef = db.collection('sellers').doc(sellerId);
+    const sellerSnap = await sellerRef.get();
     await sellerRef.update({
       availableBalance: admin.firestore.FieldValue.increment(commission),
       totalEarnings: admin.firestore.FieldValue.increment(commission),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
+
+    // Notify seller of sale via email
+    const sellerEmail = sellerSnap.exists ? sellerSnap.data().email : null;
+    const sellerName = sellerSnap.exists ? (sellerSnap.data().contactName || 'there') : 'there';
+    if (sellerEmail && RESEND_API_KEY.value()) {
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${RESEND_API_KEY.value()}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'Mojo AI Studio <noreply@mojoaistudio.com>',
+          to: [sellerEmail],
+          subject: `You made a sale — ${product.name}`,
+          html: `<p>Hi ${sellerName},</p>
+<p>Great news — someone just purchased <strong>${product.name}</strong>!</p>
+<p><strong>Sale amount:</strong> $${(amount / 100).toFixed(2)}<br>
+<strong>Your earnings (90%):</strong> $${(commission / 100).toFixed(2)}</p>
+<p>Your earnings accumulate and you can request a payout at any time by contacting <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
+<p>— Mojo AI Studio</p>`,
+        }),
+      }).catch((err) => console.error('[trackSaleIfApplicable] sale notification email failed:', err));
+    }
 
     console.log(
       '[trackSaleIfApplicable] created sales record and credited',
@@ -323,10 +347,10 @@ exports.signContract = onRequest(
       return;
     }
 
-    const { email, contactName, sellerToken, contractVersion } = req.body;
+    const { email, sellerToken, contractVersion } = req.body;
 
     // Validate required fields
-    if (!email || !contactName || !sellerToken || !contractVersion) {
+    if (!email || !sellerToken || !contractVersion) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
       return;
     }
@@ -845,9 +869,8 @@ exports.adminApproveProduct = onRequest(
       return;
     }
 
-    const { productId, price, polarPriceId, featured } = req.body || {};
-    const priceCents = Number(price);
-    if (!productId || !Number.isFinite(priceCents) || priceCents <= 0 || !polarPriceId) {
+    const { productId, polarPriceId, featured } = req.body || {};
+    if (!productId) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
       return;
     }
@@ -860,15 +883,38 @@ exports.adminApproveProduct = onRequest(
         return;
       }
 
+      const product = productSnap.data();
+
       await productRef.update({
         status: 'live',
-        price: Math.round(priceCents),
         polarPriceId: String(polarPriceId),
         featured: Boolean(featured),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      res.status(200).json({ ok: true, message: 'Product published' });
+      // Look up seller record to return token for onboarding email
+      let sellerToken = null;
+      let contactName = null;
+      if (product.submittedByEmail) {
+        const sellerSnap = await db.collection('sellers')
+          .where('email', '==', product.submittedByEmail)
+          .limit(1)
+          .get();
+        if (!sellerSnap.empty) {
+          const seller = sellerSnap.docs[0].data();
+          sellerToken = seller.sellerToken || null;
+          contactName = seller.contactName || null;
+        }
+      }
+
+      res.status(200).json({
+        ok: true,
+        message: 'Product published',
+        email: product.submittedByEmail || null,
+        contactName,
+        productName: product.name || null,
+        sellerToken,
+      });
     } catch (err) {
       console.error('[adminApproveProduct] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
@@ -1022,5 +1068,96 @@ exports.createProductFromSubmission = onRequest(
       console.error('[createProductFromSubmission] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
     }
+  }
+);
+
+/**
+ * Monthly sales report — runs 1st of each month at 8am ET
+ * Emails each seller their prior month's sales + emails admin a full summary
+ */
+exports.monthlySalesReport = onSchedule(
+  { schedule: '0 13 1 * *', timeZone: 'America/New_York', secrets: [RESEND_API_KEY] },
+  async () => {
+    const now = new Date();
+    const firstOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const firstOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    const monthLabel = firstOfLastMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+    const salesSnap = await db.collection('sales')
+      .where('createdAt', '>=', admin.firestore.Timestamp.fromDate(firstOfLastMonth))
+      .where('createdAt', '<', admin.firestore.Timestamp.fromDate(firstOfThisMonth))
+      .get();
+
+    // Group by seller
+    const bySeller = {};
+    let totalRevenue = 0;
+    let totalCommissions = 0;
+
+    for (const doc of salesSnap.docs) {
+      const sale = doc.data();
+      const sid = sale.sellerId;
+      if (!bySeller[sid]) bySeller[sid] = { sales: [], totalAmount: 0, totalCommission: 0 };
+      bySeller[sid].sales.push(sale);
+      bySeller[sid].totalAmount += sale.amount || 0;
+      bySeller[sid].totalCommission += sale.commission || 0;
+      totalRevenue += sale.amount || 0;
+      totalCommissions += sale.commission || 0;
+    }
+
+    const resendKey = RESEND_API_KEY.value();
+    const sendEmail = async (to, subject, html) => {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${resendKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from: 'Mojo AI Studio <noreply@mojoaistudio.com>', to: [to], subject, html }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error('[monthlySalesReport] email failed to', to, err);
+      }
+    };
+
+    // Email each seller
+    for (const [sellerId, data] of Object.entries(bySeller)) {
+      const sellerSnap = await db.collection('sellers').doc(sellerId).get();
+      if (!sellerSnap.exists) continue;
+      const seller = sellerSnap.data();
+      const email = seller.email;
+      const name = seller.contactName || 'Seller';
+
+      const rows = data.sales.map(s =>
+        `<tr><td>${s.productName}</td><td>$${(s.amount / 100).toFixed(2)}</td><td>$${(s.commission / 100).toFixed(2)}</td></tr>`
+      ).join('');
+
+      await sendEmail(email, `Your Mojo Sales Report — ${monthLabel}`, `
+        <p>Hi ${name},</p>
+        <p>Here's your sales summary for <strong>${monthLabel}</strong>:</p>
+        <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
+          <thead><tr><th>Product</th><th>Sale Price</th><th>Your 90%</th></tr></thead>
+          <tbody>${rows}</tbody>
+          <tfoot><tr><td><strong>Total</strong></td><td><strong>$${(data.totalAmount / 100).toFixed(2)}</strong></td><td><strong>$${(data.totalCommission / 100).toFixed(2)}</strong></td></tr></tfoot>
+        </table>
+        <p>Payouts are processed manually. Contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a> to request your payout.</p>
+        <p>— Mojo AI Studio</p>
+      `);
+    }
+
+    // Email admin full summary
+    const sellerCount = Object.keys(bySeller).length;
+    const allRows = salesSnap.docs.map(doc => {
+      const s = doc.data();
+      return `<tr><td>${s.productName}</td><td>${s.sellerId}</td><td>$${(s.amount / 100).toFixed(2)}</td><td>$${(s.commission / 100).toFixed(2)}</td></tr>`;
+    }).join('');
+
+    await sendEmail('admin@MojoAiStudio.com', `Mojo Monthly Sales Report — ${monthLabel}`, `
+      <p><strong>${monthLabel} Summary</strong></p>
+      <p>Total sales: ${salesSnap.size} | Sellers with sales: ${sellerCount} | Gross revenue: $${(totalRevenue / 100).toFixed(2)} | Total commissions owed: $${(totalCommissions / 100).toFixed(2)} | Mojo cut: $${((totalRevenue - totalCommissions) / 100).toFixed(2)}</p>
+      <table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
+        <thead><tr><th>Product</th><th>Seller</th><th>Sale</th><th>Commission</th></tr></thead>
+        <tbody>${allRows}</tbody>
+      </table>
+    `);
+
+    console.log('[monthlySalesReport] sent reports for', monthLabel, '— sales:', salesSnap.size, 'sellers:', sellerCount);
   }
 );
