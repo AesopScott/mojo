@@ -93,6 +93,9 @@ jobs:
               kv_namespaces: [
                 { binding: 'SMS_REMINDERS',       id: process.env.SMS_KV_ID },
                 { binding: 'PRODUCT_SUBMISSIONS', id: process.env.SUBMISSIONS_KV_ID },
+              ],
+              send_email: [
+                { name: 'EMAIL' }
               ]
             }, null, 2));
           "
