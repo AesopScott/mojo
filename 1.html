@@ -6,9 +6,9 @@
     <title>MAPS Phase 1: Define | Mojo AI Studio</title>
     <meta name="description" content="Phase 1 of MAPS defines the agent job, user, authorization level, boundaries, success criteria, failure criteria, escalation points, risks, and assumptions.">
     <link rel="canonical" href="https://mojoaistudio.com/1.html">
-    <link rel="stylesheet" href="maps.css?v=phase1-auth">
-    <script src="maps-data.js?v=phase1-auth" defer></script>
-    <script src="maps-page.js?v=phase1-auth" defer></script>
+    <link rel="stylesheet" href="maps.css?v=phase1-references">
+    <script src="maps-data.js?v=phase1-references" defer></script>
+    <script src="maps-page.js?v=phase1-references" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="1">
     <div class="maps-shell">
@@ -26,6 +26,7 @@
             <a href="#brief">Brief</a>
             <a href="#authority">Authorization</a>
             <a href="#walkthrough">Walkthrough</a>
+            <a href="#alternatives">Alternatives</a>
             <a href="#resources">Resources</a>
           </div>
         </nav>
@@ -122,9 +123,12 @@
 
           <div class="maps-grid">
             <article class="maps-panel"><h3>Name</h3><p>Short identifier for the agent or role.</p></article>
+            <article class="maps-panel"><h3>Handle and mandate</h3><p>Stable agent handle plus the role or mandate it is expected to carry.</p></article>
             <article class="maps-panel"><h3>User or operator</h3><p>The person or system that uses, reviews, or supervises the agent.</p></article>
             <article class="maps-panel"><h3>Job to be done</h3><p>The specific outcome the agent is responsible for.</p></article>
+            <article class="maps-panel"><h3>Persona and tone</h3><p>Communication style for human-facing or agent-to-agent work.</p></article>
             <article class="maps-panel"><h3>Authorization level</h3><p>What the agent may do alone, what needs approval, and what it must never do.</p></article>
+            <article class="maps-panel"><h3>Tool access requested</h3><p>Candidate tools, MCP servers, or capabilities the agent may need later.</p></article>
             <article class="maps-panel"><h3>Boundaries</h3><p>In scope, out of scope, and unclear territory.</p></article>
             <article class="maps-panel"><h3>Success and failure</h3><p>Observable criteria for done and explicit conditions that count as failure.</p></article>
             <article class="maps-panel"><h3>Risks and assumptions</h3><p>What must be controlled, escalated, or proven later.</p></article>
@@ -164,6 +168,30 @@
               <span>!</span>
               <h3>Forbidden</h3>
               <p>Name the actions, data, systems, costs, and decisions the agent must never touch.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Always, ask first, never</h2>
+            <p>
+              Use this split when the authorization level is too vague.
+            </p>
+          </div>
+
+          <div class="maps-rule-grid">
+            <article class="maps-rule-card allow">
+              <h3>Always allowed</h3>
+              <p>Low-risk actions the agent can perform without asking, such as analysis, summarization, or local drafting.</p>
+            </article>
+            <article class="maps-rule-card ask">
+              <h3>Ask first</h3>
+              <p>Actions that change external state, affect people, spend money, touch production data, or publish output.</p>
+            </article>
+            <article class="maps-rule-card never">
+              <h3>Never allowed</h3>
+              <p>Actions, data, systems, costs, and decisions that stay outside the agent's lane under every condition.</p>
             </article>
           </div>
         </section>
@@ -222,6 +250,45 @@
             </p>
           </div>
           <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="1"></div>
+        </section>
+
+        <section id="alternatives" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Alternatives and references</h2>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Alternative skill library</p>
+              <h3><a href="https://github.com/TerminalSkills/skills">TerminalSkills/skills</a></h3>
+              <p>Large open catalog of standalone `SKILL.md` files with install paths and contribution checks.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Alternative skill library</p>
+              <h3><a href="https://github.com/tmchow/agent-skills">tmchow/agent-skills</a></h3>
+              <p>Cross-runtime skill examples with separate human README files, runtime lanes, and install discipline.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Skill authoring reference</p>
+              <h3><a href="https://github.com/zebbern/agent-skills-authoring">zebbern/agent-skills-authoring</a></h3>
+              <p>Agent-facing guidance for writing discoverable skills with frontmatter, triggers, examples, and validation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Deployable profile pattern</p>
+              <h3><a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/create-custom-agents">GitHub Copilot custom agents</a></h3>
+              <p>Custom `.agent.md` profiles connect name, description, prompt, tools, and MCP access.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Specification template</p>
+              <h3><a href="https://github.com/GSA-TTS/devCrew_s/blob/master/docs/templates/AI%20Agent%20Specification%20Template.md">GSA-TTS AI Agent Specification Template</a></h3>
+              <p>Useful source for handle, mandate, responsibilities, tool manifest, and resource permissions.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Spec-writing guidance</p>
+              <h3><a href="https://addyosmani.com/blog/good-spec/">How to write a good spec for AI agents</a></h3>
+              <p>Useful source for clear objectives, context, constraints, acceptance criteria, and boundaries.</p>
+            </article>
+          </div>
         </section>
 
         <section id="resources" class="maps-section">
