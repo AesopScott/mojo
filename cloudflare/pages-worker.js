@@ -508,6 +508,24 @@ async function handleSubmitProduct(request, env) {
 
   await env.PRODUCT_SUBMISSIONS.put(`submission:${now}:${id.slice(0, 8)}`, JSON.stringify(record));
 
+  const firestoreBody = JSON.stringify({
+    email,
+    contactName: record.contactName,
+    productName: record.productName,
+    productDescription: record.productDescription,
+    category: record.category,
+    pricingModel: record.pricingModel,
+    productUrl: record.productUrl,
+    targetUser: record.targetUser,
+  });
+
+  // Create product listing in Firestore (shows in admin pending queue)
+  fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: firestoreBody,
+  }).catch((err) => console.error("[submitProduct] product creation failed:", err));
+
   // Create seller record in Firestore (fire-and-forget — does not send email)
   fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
     method: "POST",
