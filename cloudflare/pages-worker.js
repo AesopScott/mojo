@@ -435,7 +435,7 @@ async function handleSellerOnboardingEmail(request, env) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Mojo AI Studio <onboarding@resend.dev>",
+      from: "Mojo AI Studio <noreply@mojoaistudio.com>",
       to: [email],
       subject: "Complete Your Seller Setup — Mojo AI Studio",
       html: `<p>Hi ${contactName},</p>
