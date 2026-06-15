@@ -165,15 +165,9 @@
       </div>
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Price (USD/month)</label>
-            <input type="number" class="price-input" value="49" min="0" step="0.01" placeholder="49.99">
-          </div>
-          <div class="form-group">
-            <label>Polar Price ID</label>
-            <input type="text" class="polar-id-input" placeholder="POLAR_PRODUCT_PRICE_ID">
-          </div>
+        <div class="form-group">
+          <label>Polar Price ID</label>
+          <input type="text" class="polar-id-input" placeholder="POLAR_PRODUCT_PRICE_ID">
         </div>
 
         <div class="form-group">
@@ -195,12 +189,11 @@
     const rejectBtn = div.querySelector('.btn-archive');
 
     approveBtn.addEventListener('click', async () => {
-      const price = parseFloat(div.querySelector('.price-input').value);
       const polarId = div.querySelector('.polar-id-input').value.trim();
       const featured = div.querySelector('.featured-select').value === 'true';
 
-      if (!price || !polarId) {
-        showMessage('Please fill in price and Polar ID', 'error');
+      if (!polarId) {
+        showMessage('Please enter the Polar Price ID', 'error');
         return;
       }
 
@@ -208,17 +201,30 @@
         approveBtn.disabled = true;
         approveBtn.textContent = 'Publishing...';
 
-        await adminRequest('adminApproveProduct', {
+        const result = await adminRequest('adminApproveProduct', {
           method: 'POST',
           body: {
             productId,
-            price: Math.round(price * 100),
             polarPriceId: polarId,
             featured,
           },
         });
 
-        showMessage(`Published ${product.name}`, 'success');
+        // Send seller onboarding email now that product is approved
+        if (result.sellerToken && result.email) {
+          await fetch('/api/send-seller-onboarding-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: result.email,
+              contactName: result.contactName || '',
+              productName: result.productName || product.name,
+              sellerToken: result.sellerToken,
+            }),
+          });
+        }
+
+        showMessage(`Published ${product.name} — onboarding email sent`, 'success');
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
         console.error('[admin-products] approve error:', err);

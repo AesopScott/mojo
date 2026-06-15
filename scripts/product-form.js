@@ -45,68 +45,6 @@
         return res.json();
       })
       .then(function () {
-        // Create product listing in Firestore
-        return fetch('https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: data.contactEmail,
-            contactName: data.contactName,
-            productName: data.productName,
-            productDescription: data.productDescription,
-            category: data.category,
-            pricingModel: data.pricingModel,
-            productUrl: data.productUrl,
-            targetUser: data.targetUser,
-          }),
-        }).then(function (res) {
-          return res.json();
-        }).catch(function (err) {
-          console.warn('[product-form] product creation failed:', err);
-        });
-      })
-      .then(function () {
-        // Create seller record after product submission succeeds
-        return fetch('https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: data.contactEmail,
-            contactName: data.contactName,
-            productName: data.productName,
-          }),
-        }).then(function (res) {
-          return res.json().then(function (json) {
-            return { status: res.status, data: json };
-          });
-        }).then(function (result) {
-          // If seller creation succeeded, send onboarding email
-          if (result.status === 200 && result.data.sellerToken) {
-            return fetch('/api/send-seller-onboarding-email.php', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                email: data.contactEmail,
-                contactName: data.contactName,
-                productName: data.productName,
-                sellerToken: result.data.sellerToken,
-              }),
-            }).then(function (res) {
-              if (!res.ok) {
-                return res.json().then(function (body) {
-                  throw new Error(body.message || 'Onboarding email could not be sent');
-                });
-              }
-              return res.json();
-            });
-          }
-          throw new Error(result.data && result.data.message ? result.data.message : 'Seller setup could not be created');
-        }).catch(function (err) {
-          console.warn('[product-form] seller creation failed:', err);
-          throw err;
-        });
-      })
-      .then(function () {
         window.location.href = '/products/pages/confirmation.html';
       })
       .catch(function (err) {
