@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS | Mojo AI Studio</title>
+    <meta name="description" content="MAPS is a builder framework for creating multi-agent systems through phase-aligned skills, tools, templates, and catalogs.">
+    <link rel="canonical" href="https://mojoaistudio.com/maps.html">
+    <link rel="stylesheet" href="maps.css">
+    <script src="maps-data.js" defer></script>
+    <script src="maps-page.js" defer></script>
+  </head>
+  <body class="maps-page">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-links">
+            <a href="maps.html">Overview</a>
+            <a href="0.html">Phase 0</a>
+            <a href="#sequence">Phases</a>
+            <a href="#resources">Resources</a>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Mojo AI Studio</p>
+          <h1>MAPS: Multi-Agent Pipeline Skills</h1>
+          <p>
+            MAPS is a builder framework for taking an agent system from structural alignment
+            through definition, design, implementation, capability wiring, evaluation, deployment,
+            observation, and improvement.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="0.html">Open Phase 0</a>
+            <a class="maps-button" href="#sequence">View the full sequence</a>
+          </div>
+        </div>
+
+        <aside class="maps-card">
+          <h2>Build sequence</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase=""></div>
+        </aside>
+      </section>
+
+      <main class="maps-main">
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>What MAPS gives builders</h2>
+            <p>
+              The framework keeps phase work, reusable skills, templates, catalogs, and repo structure connected.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Phase structure</h3>
+              <p>Every phase has a purpose, output, and place in the agent system lifecycle.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Reusable skills</h3>
+              <p>Each phase can be executed by compatible agent tooling through `SKILL.md` workflows.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Resource catalogs</h3>
+              <p>Repos, tools, templates, and skills are attached to the phase where they create leverage.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="sequence" class="maps-section">
+          <div class="maps-section-header">
+            <h2>All phase pages</h2>
+            <p>
+              Phase 0 is available now. The remaining pages are reserved so the navigation stays stable as the build progresses.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase=""></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Current resources</h2>
+            <p>
+              These are the skills, repos, tools, and catalogs currently attached to the MAPS scaffold.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Catalogs</h3>
+              <ul data-maps-catalogs></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

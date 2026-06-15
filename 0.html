@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 0: Phase Alignment | Mojo AI Studio</title>
+    <meta name="description" content="Phase 0 of MAPS establishes the scaffold, naming, phase sequence, resources, and repository structure for building multi-agent systems.">
+    <link rel="canonical" href="https://mojoaistudio.com/0.html">
+    <link rel="stylesheet" href="maps.css">
+    <script src="maps-data.js" defer></script>
+    <script src="maps-page.js" defer></script>
+  </head>
+  <body class="maps-page">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-links">
+            <a href="maps.html">Overview</a>
+            <a href="0.html">Phase 0</a>
+            <a href="#scaffold">Scaffold</a>
+            <a href="#resources">Resources</a>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 0</p>
+          <h1>Phase Alignment</h1>
+          <p>
+            Phase 0 is where the MAPS build becomes concrete. The lifecycle name,
+            phase order, artifact structure, navigation, skills, tools, repos, and catalogs
+            are made explicit before agent work begins.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#scaffold">Review the scaffold</a>
+            <a class="maps-button" href="maps.html">Back to MAPS overview</a>
+          </div>
+        </div>
+
+        <aside class="maps-card">
+          <h2>Build navigation</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="0"></div>
+        </aside>
+      </section>
+
+      <main class="maps-main">
+        <section id="scaffold" class="maps-section">
+          <div class="maps-section-header">
+            <h2>What Phase 0 builds</h2>
+            <p>
+              This phase creates the working surface that every later page and phase depends on.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Agreement</h3>
+              <p>Define the phase names, order, boundaries, outputs, and where future work belongs.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Repository shape</h3>
+              <p>Create pages, phase docs, skills, templates, and catalogs with meaningful names.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Reusable scaffold</h3>
+              <p>Use `/scaffold` so future MAPS projects can reproduce the same structure.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Full phase navigation</h2>
+            <p>
+              The full sequence is visible now so every page has a stable destination as it is added.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="0"></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 0 resources</h2>
+            <p>
+              Phase Alignment currently depends on these skills, repositories, tools, and catalogs.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Catalogs</h3>
+              <ul data-maps-catalogs></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
