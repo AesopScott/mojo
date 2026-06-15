@@ -508,6 +508,17 @@ async function handleSubmitProduct(request, env) {
 
   await env.PRODUCT_SUBMISSIONS.put(`submission:${now}:${id.slice(0, 8)}`, JSON.stringify(record));
 
+  // Create seller record in Firestore (fire-and-forget — does not send email)
+  fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email,
+      contactName: record.contactName,
+      productName: record.productName,
+    }),
+  }).catch((err) => console.error("[submitProduct] seller record creation failed:", err));
+
   return json({ ok: true });
 }
 
