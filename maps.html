@@ -6,7 +6,7 @@
     <title>MAPS | Mojo AI Studio</title>
     <meta name="description" content="MAPS is a builder framework for creating multi-agent systems through phase-aligned skills, tools, templates, and catalogs.">
     <link rel="canonical" href="https://mojoaistudio.com/maps.html">
-    <link rel="stylesheet" href="maps.css">
+    <link rel="stylesheet" href="maps.css?v=scope-color">
     <script src="maps-data.js?v=m-scaffold-date" defer></script>
     <script src="maps-page.js?v=m-scaffold-date" defer></script>
   </head>
@@ -38,11 +38,11 @@
             The M layer is visible now and out of scope this week.
           </p>
           <div class="maps-scope-strip" aria-label="MAPS training scope">
-            <div>
+            <div class="m-scope">
               <strong>M scaffold</strong>
               <span>Visible now, built next week</span>
             </div>
-            <div>
+            <div class="aps-scope">
               <strong>APS</strong>
               <span>This week's build sequence</span>
             </div>
@@ -56,15 +56,19 @@
         <aside class="maps-card">
           <h2>Training scope</h2>
           <div class="maps-mini-scope">
-            <article>
-              <span>M</span>
-              <strong>Multi-agent scaffold</strong>
+            <article class="m-scope">
+              <div class="maps-mini-scope-title">
+                <span>M</span>
+                <strong>Multi-agent scaffold</strong>
+              </div>
               <p>Outcome, roster, responsibilities, coordination, integration, and system proof.</p>
               <em>Out of scope this week</em>
             </article>
-            <article>
-              <span>APS</span>
-              <strong>Agent Pipeline Skills</strong>
+            <article class="aps-scope">
+              <div class="maps-mini-scope-title">
+                <span>APS</span>
+                <strong>Agent Pipeline Skills</strong>
+              </div>
               <p>Define, design, build, equip, evaluate, deploy, observe, and improve one agent.</p>
               <em>This week's focus</em>
             </article>
