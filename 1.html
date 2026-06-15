@@ -7,8 +7,8 @@
     <meta name="description" content="Phase 1 of MAPS defines the agent job, user, boundaries, success criteria, failure criteria, escalation points, risks, and assumptions.">
     <link rel="canonical" href="https://mojoaistudio.com/1.html">
     <link rel="stylesheet" href="maps.css">
-    <script src="maps-data.js?v=phase-status" defer></script>
-    <script src="maps-page.js?v=phase-status" defer></script>
+    <script src="maps-data.js?v=m-scaffold" defer></script>
+    <script src="maps-page.js?v=m-scaffold" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="1">
     <div class="maps-shell">
@@ -22,6 +22,7 @@
             <a href="maps.html">Overview</a>
             <a href="0.html">Phase 0</a>
             <a href="1.html">Phase 1</a>
+            <a href="#layers">Layers</a>
             <a href="#brief">Brief</a>
             <a href="#resources">Resources</a>
           </div>
@@ -35,7 +36,8 @@
           <p>
             Define turns an agent idea into a usable brief. The brief identifies the
             agent job, user or operator, desired outcome, boundaries, success criteria,
-            failure criteria, escalation points, risks, and assumptions.
+            failure criteria, escalation points, risks, and assumptions. This is APS work
+            inside the larger MAPS scaffold.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#brief">Build the brief</a>
@@ -50,6 +52,40 @@
       </section>
 
       <main class="maps-main">
+        <section id="layers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 1 is APS, not the M layer</h2>
+            <p>
+              The multi-agent project layer decides which agents are needed. Phase 1 defines one of those agents.
+            </p>
+          </div>
+
+          <div class="maps-layer-board">
+            <article class="maps-layer-card outer">
+              <div>
+                <p class="maps-layer-kicker">M layer</p>
+                <h3>Multi-agent project scaffold</h3>
+                <p>
+                  Overall outcome, agent list, role split, handoffs, shared state,
+                  integration, and system-level proof.
+                </p>
+              </div>
+              <span>Out of scope this week</span>
+            </article>
+            <article class="maps-layer-card active">
+              <div>
+                <p class="maps-layer-kicker">APS layer</p>
+                <h3>Agent Pipeline Skills</h3>
+                <p>
+                  The current Define phase creates a clear brief for one agent
+                  before it moves to design and build.
+                </p>
+              </div>
+              <span>This week's focus</span>
+            </article>
+          </div>
+        </section>
+
         <section id="brief" class="maps-section">
           <div class="maps-section-header">
             <h2>The agent brief is the contract.</h2>
@@ -96,7 +132,8 @@
           <div class="maps-section-header">
             <h2>Full phase navigation</h2>
             <p>
-              Phase 1 is active now. The remaining pages stay visible and marked under construction until delivered.
+              Phase 1 is active now. The remaining APS pages stay visible and marked under construction until delivered.
+              The M phases are scaffolded and out of scope for this week.
             </p>
           </div>
           <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="1"></div>

@@ -7,8 +7,8 @@
     <meta name="description" content="Phase 0 of MAPS establishes the scaffold, naming, phase sequence, resources, and repository structure for building multi-agent systems.">
     <link rel="canonical" href="https://mojoaistudio.com/0.html">
     <link rel="stylesheet" href="maps.css">
-    <script src="maps-data.js?v=phase-status" defer></script>
-    <script src="maps-page.js?v=phase-status" defer></script>
+    <script src="maps-data.js?v=m-scaffold" defer></script>
+    <script src="maps-page.js?v=m-scaffold" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="0">
     <div class="maps-shell">
@@ -21,6 +21,7 @@
           <div class="maps-links">
             <a href="maps.html">Overview</a>
             <a href="0.html">Phase 0</a>
+            <a href="#layers">Layers</a>
             <a href="#scaffold">Scaffold</a>
             <a href="#resources">Resources</a>
           </div>
@@ -34,7 +35,7 @@
           <p>
             Phase 0 is where the MAPS build becomes concrete. The lifecycle name,
             phase order, artifact structure, navigation, skills, tools, repos, and catalogs
-            are made explicit before agent work begins.
+            are made explicit. The scaffold includes M, but this week's build focuses on APS.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#scaffold">Review the scaffold</a>
@@ -49,6 +50,40 @@
       </section>
 
       <main class="maps-main">
+        <section id="layers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>MAPS scaffolds M and APS</h2>
+            <p>
+              Phase 0 creates room for both layers, while the current pages build the APS layer first.
+            </p>
+          </div>
+
+          <div class="maps-layer-board">
+            <article class="maps-layer-card outer">
+              <div>
+                <p class="maps-layer-kicker">M layer</p>
+                <h3>Multi-agent project scaffold</h3>
+                <p>
+                  Outcome, decomposition, agent roster, responsibility contracts,
+                  coordination, integration, and system-level evaluation.
+                </p>
+              </div>
+              <span>Out of scope this week</span>
+            </article>
+            <article class="maps-layer-card active">
+              <div>
+                <p class="maps-layer-kicker">APS layer</p>
+                <h3>Agent Pipeline Skills</h3>
+                <p>
+                  The active sequence for defining, designing, building, equipping,
+                  evaluating, deploying, observing, and improving an agent.
+                </p>
+              </div>
+              <span>This week's focus</span>
+            </article>
+          </div>
+        </section>
+
         <section id="scaffold" class="maps-section">
           <div class="maps-section-header">
             <h2>What Phase 0 builds</h2>
@@ -77,7 +112,8 @@
           <div class="maps-section-header">
             <h2>Full phase navigation</h2>
             <p>
-              The full sequence is visible now so every page has a stable destination as it is added.
+              The APS sequence is visible now so every page has a stable destination as it is added.
+              The M phases are scaffolded and out of scope for this week.
             </p>
           </div>
           <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="0"></div>
