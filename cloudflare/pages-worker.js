@@ -457,7 +457,7 @@ async function handleSellerOnboardingEmail(request, env) {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     console.error("[sellerOnboarding] Resend error:", err);
-    return json({ ok: false, message: "Failed to send email." }, 500);
+    return json({ ok: false, message: "Failed to send email: " + (err.message || err.name || JSON.stringify(err)) }, 500);
   }
 
   return json({ ok: true });
