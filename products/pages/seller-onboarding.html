@@ -272,7 +272,7 @@
 
     <!-- Step 1: Sign Contract -->
     <div id="step-contract" class="step active">
-      <div class="step-title">Step 1: Review & Sign Contract</div>
+      <div class="step-title">Review & Sign Contract</div>
 
       <div class="status-indicator complete">
         <div class="status-check">✓</div>
@@ -293,46 +293,6 @@
       </div>
     </div>
 
-    <!-- Step 2: Bank Details -->
-    <div id="step-bank" class="step">
-      <div class="step-title">Step 2: Bank Information</div>
-
-      <div class="status-indicator complete">
-        <div class="status-check">✓</div>
-        <span>Contract signed</span>
-      </div>
-
-      <form id="bank-form">
-        <div class="form-group">
-          <label for="account-holder">Account Holder Name</label>
-          <input type="text" id="account-holder" name="accountHolder" required>
-        </div>
-
-        <div class="form-group">
-          <label for="bank-name">Bank Name (optional)</label>
-          <input type="text" id="bank-name" name="bankName">
-        </div>
-
-        <div class="form-group">
-          <label for="routing-number">Routing Number</label>
-          <input type="text" id="routing-number" name="routingNumber" placeholder="9 digits" required>
-        </div>
-
-        <div class="form-group">
-          <label for="account-number">Account Number</label>
-          <input type="text" id="account-number" name="accountNumber" placeholder="Checking or savings" required>
-        </div>
-
-        <p style="font-size: 13px; color: var(--muted); margin-top: 16px; margin-bottom: 0;">
-          Your bank details are encrypted and secure. We'll send a small test deposit to verify your account.
-        </p>
-
-        <div class="form-actions">
-          <button type="button" class="button button-secondary" id="btn-back-to-contract">Back</button>
-          <button type="submit" class="button button-primary" id="btn-submit-bank">Continue</button>
-        </div>
-      </form>
-    </div>
 
     <!-- Step 3: Success -->
     <div id="step-success" class="step">

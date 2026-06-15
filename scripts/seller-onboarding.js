@@ -20,9 +20,6 @@
   const errorEl = document.getElementById('form-error');
   const contractAgreeCheckbox = document.getElementById('contract-agree');
   const signContractBtn = document.getElementById('btn-sign-contract');
-  const bankForm = document.getElementById('bank-form');
-  const backBtn = document.getElementById('btn-back-to-contract');
-  const submitBankBtn = document.getElementById('btn-submit-bank');
 
   // Initialize
   initialize();
@@ -50,7 +47,6 @@
       // Show contract step
       showStep('contract');
       setupContractHandlers();
-      setupBankFormHandlers();
     } catch (err) {
       showError(err.message);
       showStep('contract');
@@ -99,7 +95,6 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               email,
-              contactName: '', // Will be loaded from seller record
               sellerToken,
               contractVersion: '1.0',
             }),
@@ -112,71 +107,11 @@
           throw new Error(data.message || 'Failed to sign contract');
         }
 
-        showStep('bank');
-        setupBankFormHandlers();
+        showStep('success');
       } catch (err) {
         showError(err.message);
         signContractBtn.disabled = false;
         signContractBtn.textContent = 'Sign Contract';
-      }
-    });
-  }
-
-  function setupBankFormHandlers() {
-    backBtn.addEventListener('click', function () {
-      contractAgreeCheckbox.checked = false;
-      signContractBtn.disabled = true;
-      showStep('contract');
-    });
-
-    bankForm.addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      try {
-        showError('');
-
-        if (!bankForm.checkValidity()) {
-          bankForm.reportValidity();
-          return;
-        }
-
-        submitBankBtn.disabled = true;
-        submitBankBtn.textContent = 'Saving…';
-
-        const params = new URLSearchParams(window.location.search);
-        const email = params.get('email');
-        const sellerToken = params.get('token');
-
-        const formData = new FormData(bankForm);
-        const bankData = {
-          email,
-          sellerToken,
-          accountNumber: formData.get('accountNumber'),
-          routingNumber: formData.get('routingNumber'),
-          accountHolder: formData.get('accountHolder'),
-          bankName: formData.get('bankName'),
-        };
-
-        const response = await fetch(
-          `https://${CLOUD_FUNCTION_REGION}-${CLOUD_FUNCTION_PROJECT}.cloudfunctions.net/submitBankInfo`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(bankData),
-          }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to save bank details');
-        }
-
-        showStep('success');
-      } catch (err) {
-        showError(err.message);
-        submitBankBtn.disabled = false;
-        submitBankBtn.textContent = 'Continue';
       }
     });
   }
