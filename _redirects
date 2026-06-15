@@ -4,7 +4,6 @@
 /api/* /404.html 404
 /oauth/* /404.html 404
 /sellers/* /404.html 404
-/products/pages/submit /products/pages/submit.html 200
 /buy /products/ 200
 /buy/* /products/:splat 200
 /request /development/ 200
