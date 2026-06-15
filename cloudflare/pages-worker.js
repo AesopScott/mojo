@@ -519,6 +519,24 @@ async function handleSubmitProduct(request, env) {
     }),
   }).catch((err) => console.error("[submitProduct] seller record creation failed:", err));
 
+  // Send submission confirmation email
+  if (env.RESEND_API_KEY) {
+    fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: "Mojo AI Studio <noreply@mojoaistudio.com>",
+        to: [email],
+        subject: `We received your submission — ${record.productName}`,
+        html: `<p>Hi ${record.contactName},</p>
+<p>Thanks for submitting <strong>${record.productName}</strong> to Mojo AI Studio!</p>
+<p>We'll review your submission and reach out within a few business days. If approved, you'll receive an email with next steps to complete your seller setup.</p>
+<p>Questions? Contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
+<p>— Mojo AI Studio</p>`,
+      }),
+    }).catch((err) => console.error("[submitProduct] confirmation email failed:", err));
+  }
+
   return json({ ok: true });
 }
 
