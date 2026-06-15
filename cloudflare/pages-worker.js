@@ -408,27 +408,59 @@ async function handleSellerOnboardingEmail(request, env) {
     return json({ ok: false, message: "Method not allowed." }, 405);
   }
 
-  if (!env.EMAIL_WORKER) {
+  if (!env.RESEND_API_KEY) {
     return json({ ok: false, message: "Email service not configured." }, 503);
   }
 
-  let body;
+  let data;
   try {
-    body = await request.text();
+    data = await request.json();
   } catch {
-    return json({ ok: false, message: "Could not read request body." }, 400);
+    return json({ ok: false, message: "Expected JSON body." }, 400);
   }
 
-  const resp = await env.EMAIL_WORKER.fetch(
-    new Request("https://email-worker.internal/send-seller-onboarding", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body,
-    }),
-  );
+  const required = ["email", "contactName", "productName", "sellerToken"];
+  const missing = required.filter((f) => !String(data[f] || "").trim());
+  if (missing.length) {
+    return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
+  }
 
-  const result = await resp.json();
-  return json(result, resp.status);
+  const { email, contactName, productName, sellerToken } = data;
+  const onboardingUrl = `https://mojoaistudio.com/products/pages/seller-onboarding.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Mojo AI Studio <onboarding@resend.dev>",
+      to: [email],
+      subject: "Complete Your Seller Setup — Mojo AI Studio",
+      html: `<p>Hi ${contactName},</p>
+<p>Thanks for submitting <strong>${productName}</strong> to the Mojo AI Studio marketplace!</p>
+<p>To complete your seller setup, please sign the seller agreement and provide your bank information:</p>
+<p><a href="${onboardingUrl}">${onboardingUrl}</a></p>
+<p>What happens next:</p>
+<ol>
+<li>Review and sign the seller agreement</li>
+<li>Provide your bank details (encrypted and secure)</li>
+<li>We'll send a small test deposit to verify your account</li>
+<li>Once verified, you'll start earning 90% commission on product sales</li>
+</ol>
+<p>Questions? Reply to this email or contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
+<p>— Mojo AI Studio Team<br><a href="https://MojoAiStudio.com">MojoAiStudio.com</a></p>`,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    console.error("[sellerOnboarding] Resend error:", err);
+    return json({ ok: false, message: "Failed to send email." }, 500);
+  }
+
+  return json({ ok: true });
 }
 
 async function handleSubmitProduct(request, env) {
