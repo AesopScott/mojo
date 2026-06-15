@@ -9,7 +9,7 @@ const PUBLIC_CONSENT_TEXT =
   "I agree to receive recurring SMS reminders for upcoming Advanced AI Concepts Meetup events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.";
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/meetup-admin" || url.pathname === "/api/meetup-admin.php") {
@@ -21,7 +21,7 @@ export default {
     }
 
     if (url.pathname === "/api/submit-product" || url.pathname === "/api/submit-product.php") {
-      return handleSubmitProduct(request, env);
+      return handleSubmitProduct(request, env, ctx);
     }
 
     if (url.pathname === "/api/submit-product-admin") {
@@ -463,7 +463,7 @@ async function handleSellerOnboardingEmail(request, env) {
   return json({ ok: true });
 }
 
-async function handleSubmitProduct(request, env) {
+async function handleSubmitProduct(request, env, ctx) {
   if (request.method !== "POST") {
     return json({ ok: false, message: "Method not allowed." }, 405);
   }
@@ -519,27 +519,24 @@ async function handleSubmitProduct(request, env) {
     targetUser: record.targetUser,
   });
 
-  // Create product listing in Firestore (shows in admin pending queue)
-  fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: firestoreBody,
-  }).catch((err) => console.error("[submitProduct] product creation failed:", err));
+  ctx.waitUntil(Promise.all([
+    fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: firestoreBody,
+    }).catch((err) => console.error("[submitProduct] product creation failed:", err)),
 
-  // Create seller record in Firestore (fire-and-forget — does not send email)
-  fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email,
-      contactName: record.contactName,
-      productName: record.productName,
-    }),
-  }).catch((err) => console.error("[submitProduct] seller record creation failed:", err));
+    fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        contactName: record.contactName,
+        productName: record.productName,
+      }),
+    }).catch((err) => console.error("[submitProduct] seller record creation failed:", err)),
 
-  // Send submission confirmation email
-  if (env.RESEND_API_KEY) {
-    fetch("https://api.resend.com/emails", {
+    env.RESEND_API_KEY ? fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: { "Authorization": `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -552,8 +549,8 @@ async function handleSubmitProduct(request, env) {
 <p>Questions? Contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
 <p>— Mojo AI Studio</p>`,
       }),
-    }).catch((err) => console.error("[submitProduct] confirmation email failed:", err));
-  }
+    }).catch((err) => console.error("[submitProduct] confirmation email failed:", err)) : Promise.resolve(),
+  ]));
 
   return json({ ok: true });
 }
