@@ -24,6 +24,10 @@ export default {
       return handleSubmitProduct(request, env, ctx);
     }
 
+    if (url.pathname === "/api/submit-brief" || url.pathname === "/api/submit-brief.php") {
+      return handleSubmitBrief(request, env);
+    }
+
     if (url.pathname === "/api/submit-product-admin") {
       return handleSubmitProductAdmin(request, env, url);
     }
@@ -463,6 +467,116 @@ async function handleSellerOnboardingEmail(request, env) {
   return json({ ok: true });
 }
 
+async function handleSubmitBrief(request, env) {
+  if (request.method !== "POST") {
+    return json({ ok: false, message: "Method not allowed." }, 405);
+  }
+
+  if (!env.RESEND_API_KEY) {
+    return json({ ok: false, message: "Email service not configured." }, 503);
+  }
+
+  let data;
+  try {
+    data = await request.json();
+  } catch {
+    return json({ ok: false, message: "Expected JSON body." }, 400);
+  }
+
+  const required = ["projectName", "contactName", "contactEmail", "problemDescription"];
+  const missing = required.filter((f) => !String(data[f] || "").trim());
+  if (missing.length) {
+    return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
+  }
+
+  const email = String(data.contactEmail || "").trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return json({ ok: false, message: "Invalid email address." }, 422);
+  }
+
+  const record = {
+    projectName: String(data.projectName || "").trim(),
+    contactName: String(data.contactName || "").trim(),
+    contactEmail: email,
+    problemDescription: String(data.problemDescription || "").trim(),
+    currentTools: String(data.currentTools || "").trim(),
+    builderPriority: String(data.builderPriority || "").trim(),
+    interviewCount: String(data.interviewCount || "").trim(),
+    timeline: String(data.timeline || "").trim(),
+    budget: String(data.budget || "").trim(),
+    anythingElse: String(data.anythingElse || "").trim(),
+  };
+
+  const adminEmail = String(env.MOJO_ADMIN_EMAIL || "admin@mojoaistudio.com").trim();
+  const rows = [
+    ["Project name", record.projectName],
+    ["Contact name", record.contactName],
+    ["Contact email", record.contactEmail],
+    ["Timeline", record.timeline || "(not specified)"],
+    ["Budget", record.budget || "(not specified)"],
+    ["Builder priority", record.builderPriority || "(not specified)"],
+    ["Interview count", record.interviewCount || "(not specified)"],
+    ["Current tools", record.currentTools || "(not specified)"],
+  ];
+
+  const adminHtml = `<p>New AI builder intake submitted via MojoAiStudio.com.</p>
+<table cellpadding="6" cellspacing="0" style="border-collapse:collapse">${rows.map(([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join("")}</table>
+<h3>Product request</h3>
+<p>${escapeHtml(record.problemDescription).replace(/\n/g, "<br>")}</p>
+${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingElse).replace(/\n/g, "<br>")}</p>` : ""}
+<p>Reply to: <a href="mailto:${escapeHtml(record.contactEmail)}">${escapeHtml(record.contactEmail)}</a></p>`;
+
+  const submitterHtml = `<p>Hi ${escapeHtml(record.contactName)},</p>
+<p>Thanks for submitting an AI builder intake to Mojo AI Studio.</p>
+<p>We've received your intake for <strong>${escapeHtml(record.projectName)}</strong> and will review it for builder matching within two business days.</p>
+<p>If you have anything to add in the meantime, just reply to this email.</p>
+<p>- Mojo AI Studio<br><a href="https://MojoAiStudio.com">MojoAiStudio.com</a></p>`;
+
+  const adminRes = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Mojo AI Studio <noreply@mojoaistudio.com>",
+      to: [adminEmail],
+      reply_to: email,
+      subject: `[Mojo Intake] ${record.projectName} - ${record.contactName}`,
+      html: adminHtml,
+    }),
+  });
+
+  if (!adminRes.ok) {
+    const err = await adminRes.json().catch(() => ({}));
+    console.error("[submitBrief] admin email error:", err);
+    return json({ ok: false, message: "Email could not be sent. Please email admin@mojoaistudio.com directly." }, 500);
+  }
+
+  const replyRes = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "Mojo AI Studio <noreply@mojoaistudio.com>",
+      to: [email],
+      reply_to: adminEmail,
+      subject: "We received your AI builder intake - Mojo AI Studio",
+      html: submitterHtml,
+    }),
+  });
+
+  if (!replyRes.ok) {
+    const err = await replyRes.json().catch(() => ({}));
+    console.error("[submitBrief] auto-reply email error:", err);
+  }
+
+  return json({ ok: true });
+}
+
+
 async function handleSubmitProduct(request, env, ctx) {
   if (request.method !== "POST") {
     return json({ ok: false, message: "Method not allowed." }, 405);
@@ -586,4 +700,12 @@ function json(payload, status = 200) {
     status,
     headers: JSON_HEADERS,
   });
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }

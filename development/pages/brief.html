@@ -6,9 +6,9 @@
     <meta name="robots" content="noindex, follow" />
     <meta
       name="description"
-      content="Submit a custom AI development brief to Mojo AI Studio. Describe your workflow problem and we'll respond within two business days."
+      content="Submit one AI product intake to Mojo AI Studio and get matched with curated AI builders you can interview before choosing a team."
     />
-    <title>Mojo AI Studio | Project Brief</title>
+    <title>Mojo AI Studio | AI Builder Intake</title>
     <link rel="stylesheet" href="../../styles/shared.css?v=__CACHE_BUST__" />
     <style>
       .brief-form-section {
@@ -103,11 +103,12 @@
 
     <main>
       <section class="section brief-form-section">
-        <p class="kicker">Project Brief</p>
-        <h1>Tell us about your project.</h1>
+        <p class="kicker">AI builder intake</p>
+        <h1>Tell us what you want built.</h1>
         <p>
-          Describe the workflow problem you're trying to solve, your current tools, and what you
-          need the AI to do. We'll review and respond within two business days.
+          Complete one intake and Mojo will use it to match your project with AI developers from
+          our builder network. You can interview the builders you like and choose the team that
+          feels right before you commit.
         </p>
 
         <form
@@ -151,14 +152,14 @@
           </div>
 
           <div class="field">
-            <label for="problem-description">What problem are you solving?</label>
+            <label for="problem-description">What do you want the AI product to do?</label>
             <textarea
               id="problem-description"
               name="problemDescription"
-              placeholder="Describe the workflow, the pain point, and what a good outcome looks like..."
+              placeholder="Describe the workflow, user, pain point, and what a good outcome looks like..."
               required
             ></textarea>
-            <span class="hint">Be as specific as you can — the more context you give, the more accurate our estimate will be.</span>
+            <span class="hint">Be as specific as you can — the more context you give, the better we can match you with the right builders.</span>
           </div>
 
           <div class="field">
@@ -169,6 +170,30 @@
               type="text"
               placeholder="e.g. HubSpot, Google Sheets, Slack, Notion..."
             />
+          </div>
+
+          <div class="field">
+            <label for="builder-priority">What matters most in the builder you choose?</label>
+            <select id="builder-priority" name="builderPriority">
+              <option value="">Select a priority</option>
+              <option value="speed">Speed to prototype</option>
+              <option value="technical-depth">Deep technical architecture</option>
+              <option value="product-strategy">Product strategy and UX thinking</option>
+              <option value="industry-experience">Relevant industry experience</option>
+              <option value="communication">Communication and project management</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="interview-count">How many matched builders would you like to interview?</label>
+            <select id="interview-count" name="interviewCount">
+              <option value="">Select a preference</option>
+              <option value="1-2">1-2 strong matches</option>
+              <option value="3-5">3-5 builders</option>
+              <option value="as-many-as-fit">As many qualified builders as fit</option>
+              <option value="recommend">Let Mojo recommend the shortlist</option>
+            </select>
           </div>
 
           <div class="field">
@@ -204,8 +229,8 @@
           </div>
 
           <div class="form-submit">
-            <button class="button dark" type="submit">Submit brief →</button>
-            <p class="form-note">We'll respond within two business days at the email address you provided.</p>
+            <button class="button dark" type="submit">Submit intake →</button>
+            <p class="form-note">We'll respond within two business days with next steps for matching and builder interviews.</p>
           </div>
         </form>
       </section>
@@ -217,12 +242,12 @@
           <span class="brand-mark">M</span>
           <span>Mojo AI Studio</span>
         </a>
-        <p>AI-built software for practical workflows.</p>
+        <p>Brokered AI product development for practical workflows.</p>
       </div>
       <div>
         <b>Development</b>
         <a href="/development">How it works</a>
-        <a href="/development/pages/brief.html">Start a project</a>
+        <a href="/development/pages/brief.html">Start your intake</a>
         <a href="mailto:admin@MojoAiStudio.com">Contact</a>
       </div>
       <div>
