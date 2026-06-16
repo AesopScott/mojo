@@ -6,7 +6,8 @@
 /sellers/* /404.html 404
 /buy /products/ 200
 /buy/* /products/:splat 200
-/request /development/ 200
-/request/* /development/:splat 200
+/request /request/ 301
+/development /request/ 301
+/development/* /request/:splat 301
 /learn /watch/ 200
 /learn/* /watch/:splat 200

@@ -1,5 +1,5 @@
 /**
- * brief-form.js — Client-side handler for the custom development brief form.
+ * brief-form.js — Client-side handler for the AI builder intake form.
  *
  * Submits form data as JSON to /api/submit-brief.
  * On success, redirects to the confirmation page.
@@ -45,7 +45,7 @@
         return res.json();
       })
       .then(function () {
-        window.location.href = '/development/pages/confirmation.html';
+        window.location.href = '/request/pages/confirmation.html';
       })
       .catch(function (err) {
         submitBtn.textContent = originalText;
