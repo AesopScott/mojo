@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="tealAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f766e"/>
+      <stop offset="100%" style="stop-color:#22a06b"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softShadow">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#050713" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g opacity="0.06" stroke="#6366f1" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <circle cx="910" cy="180" r="220" fill="#4f46e5" opacity="0.08" filter="url(#glow)"/>
+  <circle cx="292" cy="490" r="166" fill="#7c3aed" opacity="0.06" filter="url(#glow)"/>
+  <circle cx="980" cy="470" r="120" fill="#0f766e" opacity="0.08" filter="url(#glow)"/>
+
+  <rect x="80" y="80" width="72" height="72" rx="16" fill="url(#accent)"/>
+  <text x="116" y="136" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="800" text-anchor="middle" fill="white">M</text>
+  <text x="172" y="128" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="700" fill="white" letter-spacing="0.5">Mojo AI Studio</text>
+
+  <rect x="80" y="200" width="560" height="2" fill="url(#accent)" opacity="0.4" rx="1"/>
+
+  <text x="80" y="284" font-family="system-ui, -apple-system, sans-serif" font-size="60" font-weight="850" fill="white" letter-spacing="-1.2">One Intake.</text>
+  <text x="80" y="358" font-family="system-ui, -apple-system, sans-serif" font-size="60" font-weight="850" fill="white" letter-spacing="-1.2">Multiple AI Builders.</text>
+  <text x="80" y="432" font-family="system-ui, -apple-system, sans-serif" font-size="60" font-weight="850" fill="white" letter-spacing="-1.2">Choose Your Team.</text>
+
+  <text x="80" y="492" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#a5b4fc" font-weight="400">Interview builders · Compare approaches</text>
+
+  <rect x="80" y="535" width="156" height="40" rx="20" fill="#4f46e5" opacity="0.25"/>
+  <text x="158" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#c4b5fd" text-anchor="middle">10-20 builders</text>
+  <rect x="250" y="535" width="152" height="40" rx="20" fill="#0f766e" opacity="0.26"/>
+  <text x="326" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700" fill="#99f6e4" text-anchor="middle">Global bench</text>
+
+  <g transform="translate(730, 132)" filter="url(#softShadow)">
+    <path d="M178 208 L98 302" stroke="#6366f1" stroke-width="2" opacity="0.34"/>
+    <path d="M178 208 L278 302" stroke="#6366f1" stroke-width="2" opacity="0.34"/>
+    <path d="M178 208 L178 334" stroke="#0f766e" stroke-width="2" opacity="0.34"/>
+
+    <rect x="42" y="28" width="270" height="210" rx="18" fill="#252545" stroke="#6366f1" stroke-width="1.4"/>
+    <rect x="42" y="28" width="270" height="58" rx="18" fill="#2d2d55"/>
+    <rect x="42" y="60" width="270" height="26" fill="#2d2d55"/>
+    <rect x="62" y="48" width="34" height="34" rx="9" fill="url(#accent)"/>
+    <text x="79" y="71" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="850" text-anchor="middle" fill="white">M</text>
+    <text x="108" y="61" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="800" fill="white">Mojo Intake</text>
+    <text x="108" y="78" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="650" fill="#a5b4fc">Project brief · Builder matching</text>
+
+    <rect x="64" y="112" width="188" height="10" rx="5" fill="#3d3d6b"/>
+    <rect x="64" y="136" width="224" height="10" rx="5" fill="#3d3d6b"/>
+    <rect x="64" y="160" width="156" height="10" rx="5" fill="#3d3d6b"/>
+    <rect x="64" y="194" width="92" height="28" rx="14" fill="#4f46e5" opacity="0.7"/>
+    <text x="110" y="213" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="750" text-anchor="middle" fill="white">Intake</text>
+    <rect x="168" y="194" width="116" height="28" rx="14" fill="#0f766e" opacity="0.72"/>
+    <text x="226" y="213" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="750" text-anchor="middle" fill="white">Shortlist</text>
+
+    <g transform="translate(0, 0)">
+      <rect x="0" y="282" width="158" height="102" rx="16" fill="#1e1e3a" stroke="#6366f1" stroke-width="1"/>
+      <circle cx="34" cy="318" r="16" fill="url(#accent)"/>
+      <text x="34" y="324" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="850" text-anchor="middle" fill="white">A</text>
+      <text x="62" y="313" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="white">AI SaaS</text>
+      <text x="62" y="331" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#a5b4fc">Builder match</text>
+      <rect x="20" y="356" width="94" height="8" rx="4" fill="#3d3d6b"/>
+    </g>
+
+    <g transform="translate(188, 0)">
+      <rect x="0" y="282" width="158" height="102" rx="16" fill="#1e1e3a" stroke="#0f766e" stroke-width="1"/>
+      <circle cx="34" cy="318" r="16" fill="url(#tealAccent)"/>
+      <text x="34" y="324" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="850" text-anchor="middle" fill="white">B</text>
+      <text x="62" y="313" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="white">Agents</text>
+      <text x="62" y="331" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#99f6e4">Builder match</text>
+      <rect x="20" y="356" width="108" height="8" rx="4" fill="#2f5f59"/>
+    </g>
+
+    <g transform="translate(94, 120)">
+      <rect x="0" y="232" width="158" height="102" rx="16" fill="#1e1e3a" stroke="#7c3aed" stroke-width="1"/>
+      <circle cx="34" cy="268" r="16" fill="#7c3aed"/>
+      <text x="34" y="274" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="850" text-anchor="middle" fill="white">C</text>
+      <text x="62" y="263" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="800" fill="white">Ops AI</text>
+      <text x="62" y="281" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#c4b5fd">Builder match</text>
+      <rect x="20" y="306" width="86" height="8" rx="4" fill="#3d3d6b"/>
+    </g>
+  </g>
+
+  <text x="80" y="606" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#6366f1" font-weight="600">mojoaistudio.com/request</text>
+</svg>
