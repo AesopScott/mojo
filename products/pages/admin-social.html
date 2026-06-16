@@ -253,25 +253,20 @@
 
     .compose-layout {
       display: grid;
-      grid-template-columns: minmax(320px, 0.85fr) minmax(360px, 1.15fr);
+      grid-template-columns: minmax(320px, 0.82fr) minmax(380px, 1.18fr);
       gap: 18px;
       align-items: start;
     }
 
-    .post-list,
     .calendar-board {
       display: grid;
       gap: 14px;
     }
 
-    .post-card {
-      padding: 18px;
-    }
-
-    .post-card h3,
     .calendar-item h3 {
       margin: 0;
-      font-size: 18px;
+      font-size: 13px;
+      line-height: 1.25;
     }
 
     .post-body-preview {
@@ -288,8 +283,7 @@
       gap: 8px;
     }
 
-    .meta-row span,
-    .status-badge {
+    .meta-row span {
       display: inline-flex;
       align-items: center;
       min-height: 26px;
@@ -301,50 +295,87 @@
       font-weight: 800;
     }
 
-    .status-draft { background: #f1f5f9; color: #334155; }
-    .status-scheduled { background: #dbeafe; color: #1d4ed8; }
-    .status-staged { background: #fef3c7; color: #92400e; }
-    .status-posted { background: #dcfce7; color: #166534; }
-    .status-canceled { background: #f3f4f6; color: #6b7280; }
-
     .calendar-board {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
     }
 
-    .calendar-group {
-      min-height: 320px;
-      padding: 16px;
+    .calendar-heading-cell {
+      padding: 10px;
+      background: #eef3f8;
+      color: #405064;
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
     }
 
-    .calendar-group h2 {
-      margin: 0;
-      font-size: 18px;
-      line-height: 1.1;
-    }
-
-    .calendar-group p {
-      margin: 5px 0 14px;
-      font-size: 13px;
-    }
-
-    .calendar-items {
+    .calendar-day {
+      min-height: 150px;
       display: grid;
-      gap: 10px;
+      align-content: start;
+      gap: 8px;
+      border-top: 1px solid var(--soft-line);
+      border-right: 1px solid var(--soft-line);
+      padding: 10px;
+      background: #fff;
+    }
+
+    .calendar-day:nth-child(7n + 7) {
+      border-right: 0;
+    }
+
+    .calendar-day.is-outside {
+      background: #f8fafc;
+      color: #94a3b8;
+    }
+
+    .calendar-day.is-today {
+      box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.4);
+    }
+
+    .calendar-day-number {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .calendar-day.is-outside .calendar-day-number {
+      color: #94a3b8;
     }
 
     .calendar-item {
-      border: 1px solid var(--soft-line);
-      border-radius: 8px;
-      padding: 12px;
-      background: #f8fafc;
+      width: 100%;
+      min-height: 38px;
+      justify-content: flex-start;
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      border-radius: 6px;
+      padding: 8px;
+      background: #eff6ff;
+      color: #172033;
+      text-align: left;
     }
 
-    .calendar-item time {
+    .calendar-item span {
       display: block;
-      margin: 8px 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 700;
+    }
+
+    .calendar-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .calendar-controls h3 {
+      margin: 0;
+      font-size: 22px;
     }
 
     .empty-state {
@@ -358,14 +389,21 @@
       font-size: 13px;
     }
 
+    .preview-panel {
+      padding: 0;
+      overflow: hidden;
+      position: sticky;
+      top: 20px;
+    }
+
     .platform-preview {
       display: grid;
       align-content: start;
       gap: 12px;
       min-height: 100%;
-      border: 1px solid var(--line);
+      border: 0;
       border-radius: 8px;
-      padding: 16px;
+      padding: 20px;
       background: #0f172a;
       color: #fff;
     }
@@ -394,15 +432,6 @@
       color: #0f172a;
       font-size: 15px;
       font-weight: 900;
-    }
-
-    .preview-status {
-      border-radius: 999px;
-      padding: 5px 9px;
-      background: rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.82);
-      font-size: 12px;
-      font-weight: 800;
     }
 
     .preview-card {
@@ -454,7 +483,7 @@
     }
 
     .preview-body {
-      min-height: 110px;
+      min-height: 220px;
       margin: 0;
       white-space: pre-wrap;
       color: #263349;
@@ -507,9 +536,20 @@
 
     @media (max-width: 1080px) {
       .compose-layout,
-      .calendar-board,
       .composer-shell {
         grid-template-columns: 1fr;
+      }
+
+      .calendar-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .calendar-heading-cell {
+        display: none;
+      }
+
+      .preview-panel {
+        position: static;
       }
 
       .toolbar,
@@ -529,7 +569,6 @@
 
       .admin-header,
       .panel-header,
-      .post-card-header,
       .calendar-item-header {
         align-items: stretch;
         flex-direction: column;
@@ -565,7 +604,7 @@
       <header class="admin-header">
         <div>
           <h1>Social Posts</h1>
-          <p>Compose, schedule, publish, and track Mojo marketing posts.</p>
+          <p>Compose platform posts and keep a calendar of what went live.</p>
         </div>
         <div class="admin-actions">
           <button class="btn-ghost" id="refresh-btn" type="button">Refresh</button>
@@ -586,7 +625,7 @@
             <div class="panel-header">
               <div>
                 <h2 id="compose-heading">Post Workspace</h2>
-                <p>Create one platform post at a time, then schedule or publish it.</p>
+                <p>Create one platform post, publish manually, then save it to the calendar.</p>
               </div>
               <button class="btn-ghost" id="new-post-btn" type="button">New</button>
             </div>
@@ -596,7 +635,7 @@
 
               <label class="form-span-2">
                 Title
-                <input id="post-title" type="text" placeholder="Launch clip for GAIN" required>
+                <input id="post-title" type="text" placeholder="Launch clip for GAIN" autocomplete="off" data-lpignore="true" data-1p-ignore="true" required>
               </label>
 
               <label>
@@ -614,17 +653,6 @@
               </label>
 
               <label>
-                Status
-                <select id="post-status">
-                  <option value="draft">Draft</option>
-                  <option value="scheduled">Scheduled</option>
-                  <option value="staged">Staged</option>
-                  <option value="posted">Posted</option>
-                  <option value="canceled">Canceled</option>
-                </select>
-              </label>
-
-              <label>
                 Mojo function
                 <select id="post-function">
                   <option value="marketplace">Marketplace</option>
@@ -638,70 +666,32 @@
               </label>
 
               <label>
-                Client
-                <input id="post-client" type="text" placeholder="Mojo, client name, or blank">
+                Client or project
+                <input id="post-client" type="text" placeholder="Mojo, client name, or blank" autocomplete="off" data-lpignore="true" data-1p-ignore="true">
               </label>
 
               <label>
                 Campaign
-                <input id="post-campaign" type="text" placeholder="June launch, GAIN, AAC...">
+                <input id="post-campaign" type="text" placeholder="June launch, GAIN, AAC..." autocomplete="off" data-lpignore="true" data-1p-ignore="true">
               </label>
 
-              <label>
-                Scheduled time
-                <input id="post-scheduled-at" type="datetime-local">
+              <label class="form-span-4">
+                Post text
+                <textarea id="post-body" placeholder="Write the platform-ready social post here." autocomplete="off" data-lpignore="true" data-1p-ignore="true" required></textarea>
               </label>
 
-              <div class="composer-shell">
-                <div class="composer-fields">
-                  <label>
-                    Post text
-                    <textarea id="post-body" placeholder="Write the platform-ready social post here." required></textarea>
-                  </label>
-
-                  <div class="copy-row">
-                    <span class="preview-count" id="post-character-count">0 characters</span>
-                  </div>
-                </div>
-
-                <aside class="platform-preview" id="platform-preview" data-platform="x" aria-label="Selected platform preview">
-                  <div class="preview-topbar">
-                    <div class="preview-platform">
-                      <span class="preview-icon" id="preview-icon">X</span>
-                      <span id="preview-platform-name">X</span>
-                    </div>
-                    <span class="preview-status" id="preview-status">Draft</span>
-                  </div>
-                  <div class="preview-card">
-                    <div class="preview-author">
-                      <span class="preview-avatar">M</span>
-                      <div>
-                        <strong>Mojo AI Studio</strong>
-                        <span id="preview-handle">@MojoAiStudio</span>
-                      </div>
-                      <span id="preview-menu">...</span>
-                    </div>
-                    <h3 class="preview-title" id="preview-title">Untitled post</h3>
-                    <p class="preview-body" id="preview-body">Write the platform-ready social post here.</p>
-                    <div class="preview-asset" id="preview-asset">Visual or link preview</div>
-                    <div class="preview-meta" id="preview-meta">General Mojo · No campaign</div>
-                    <div class="preview-actions" id="preview-actions">
-                      <span>Reply</span>
-                      <span>Share</span>
-                      <span>Save</span>
-                    </div>
-                  </div>
-                </aside>
+              <div class="form-span-4 copy-row">
+                <span class="preview-count" id="post-character-count">0 characters</span>
               </div>
 
               <label class="form-span-2">
                 Asset URL
-                <input id="post-asset-url" type="url" placeholder="https://...">
+                <input id="post-asset-url" type="url" placeholder="https://..." autocomplete="off">
               </label>
 
               <label class="form-span-2">
                 Live post URL
-                <input id="post-url" type="url" placeholder="Paste after publishing">
+                <input id="post-url" type="url" placeholder="Paste after publishing" autocomplete="off">
               </label>
 
               <label class="form-span-4">
@@ -710,44 +700,41 @@
               </label>
 
               <div class="form-span-4 post-actions">
-                <button class="btn-primary" type="submit">Save Post</button>
+                <button class="btn-primary" type="submit">Save Posted Record</button>
                 <button class="btn-dark" id="copy-post-btn" type="button">Copy Text</button>
                 <a class="button-link btn-ghost" id="open-platform-link" href="https://x.com/compose/post" target="_blank" rel="noopener">Open Platform</a>
-                <button class="btn-ghost" id="mark-posted-btn" type="button">Mark Posted</button>
               </div>
             </form>
           </section>
 
-          <section class="panel" aria-labelledby="recent-heading">
-            <div class="panel-header">
-              <div>
-                <h2 id="recent-heading">Recent Posts</h2>
-                <p>Load a post to edit, publish, or mark complete.</p>
+          <section class="panel preview-panel" aria-labelledby="preview-heading">
+            <aside class="platform-preview" id="platform-preview" data-platform="x" aria-label="Selected platform preview">
+              <div class="preview-topbar">
+                <div class="preview-platform">
+                  <span class="preview-icon" id="preview-icon">X</span>
+                  <span id="preview-platform-name">X</span>
+                </div>
               </div>
-            </div>
-            <div class="toolbar">
-              <label>
-                Status
-                <select data-filter="status">
-                  <option value="active">Active</option>
-                  <option value="all">All</option>
-                  <option value="draft">Draft</option>
-                  <option value="scheduled">Scheduled</option>
-                  <option value="staged">Staged</option>
-                  <option value="posted">Posted</option>
-                  <option value="canceled">Canceled</option>
-                </select>
-              </label>
-              <label>
-                Platform
-                <select data-filter="platform"></select>
-              </label>
-              <label class="form-span-2">
-                Search
-                <input data-filter="search" type="search" placeholder="Title, client, campaign, text">
-              </label>
-            </div>
-            <div id="post-list" class="post-list"></div>
+              <div class="preview-card">
+                <div class="preview-author">
+                  <span class="preview-avatar">M</span>
+                  <div>
+                    <strong>Mojo AI Studio</strong>
+                    <span id="preview-handle">@MojoAiStudio</span>
+                  </div>
+                  <span id="preview-menu">...</span>
+                </div>
+                <h3 class="preview-title" id="preview-title">Untitled post</h3>
+                <p class="preview-body" id="preview-body">Write the platform-ready social post here.</p>
+                <div class="preview-asset" id="preview-asset">Visual or link preview</div>
+                <div class="preview-meta" id="preview-meta">General Mojo · No campaign</div>
+                <div class="preview-actions" id="preview-actions">
+                  <span>Reply</span>
+                  <span>Share</span>
+                  <span>Save</span>
+                </div>
+              </div>
+            </aside>
           </section>
         </div>
       </section>
@@ -757,19 +744,15 @@
           <div class="panel-header">
             <div>
               <h2 id="calendar-heading">Calendar</h2>
-              <p>Scheduled, due, and completed social posts by platform and campaign.</p>
+              <p>Browse posts by the day they were published.</p>
             </div>
           </div>
+          <div class="calendar-controls">
+            <button class="btn-ghost" id="calendar-prev" type="button">Previous</button>
+            <h3 id="calendar-month-label">Calendar</h3>
+            <button class="btn-ghost" id="calendar-next" type="button">Next</button>
+          </div>
           <div class="toolbar">
-            <label>
-              Window
-              <select data-calendar-filter="window">
-                <option value="week">This week</option>
-                <option value="today">Today</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="all">All dates</option>
-              </select>
-            </label>
             <label>
               Platform
               <select data-calendar-filter="platform"></select>
