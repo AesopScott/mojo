@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Posts — Mojo AI Studio</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background: #f8fafc;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <iframe id="social-admin-frame" title="Mojo social posts admin" src="/products/pages/admin-social.html"></iframe>
+  <script>
+    (function () {
+      var frame = document.getElementById('social-admin-frame');
+      var query = window.location.search || '';
+      var hash = window.location.hash || '';
+      frame.src = '/products/pages/admin-social.html' + query + hash;
+    }());
+  </script>
+</body>
+</html>

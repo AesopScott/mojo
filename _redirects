@@ -11,4 +11,3 @@
 /development/* /request/:splat 301
 /learn /watch/ 200
 /learn/* /watch/:splat 200
-/social.html /products/pages/admin-social.html 200
