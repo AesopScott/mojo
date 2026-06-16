@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 2: Design | Mojo AI Studio</title>
+    <meta name="description" content="Phase 2 of MAPS uses Research and Recommend to turn an agent brief into an agent design with workflow, roles, controls, tools, failure paths, and observability needs.">
+    <link rel="canonical" href="https://mojoaistudio.com/2.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/2.html">
+    <meta property="og:title" content="MAPS Phase 2: Design">
+    <meta property="og:description" content="Turn an agent brief into an agent design using Research and Recommend.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Phase 2: Design">
+    <meta name="twitter:description" content="Turn an agent brief into an agent design using Research and Recommend.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="maps.css?v=phase2-design">
+    <script src="maps-data.js?v=phase2-design" defer></script>
+    <script src="maps-page.js?v=external-links" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="2">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="0.html">Phase 0</a>
+              <a href="1.html">Phase 1</a>
+              <a href="2.html">Phase 2</a>
+              <a href="maps.html#layers">M/APS</a>
+              <a href="#references">References</a>
+            </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#rr">R&amp;R</a>
+              <a href="#output">Output</a>
+              <a href="#questions">Design questions</a>
+              <a href="#walkthrough">Build path</a>
+              <a href="#resources">Resources</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 2</p>
+          <h1>Design</h1>
+          <p>
+            Design turns the agent brief into a buildable agent design. The default
+            method is Research and Recommend: inspect the brief, research comparable
+            agents, recommend the design choices, then capture user overrides.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#rr">Run Research and Recommend</a>
+            <a class="maps-button" href="#output">See the output</a>
+            <a class="maps-button" href="1.html">Back to Phase 1</a>
+          </div>
+        </div>
+
+        <aside class="maps-card">
+          <h2>Build navigation</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="2"></div>
+        </aside>
+      </section>
+
+      <main class="maps-main">
+        <section id="rr" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Research and Recommend</h2>
+            <p>
+              R&amp;R means the agent does the first pass of design judgment instead of handing the user a blank questionnaire.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Research</h3>
+              <p>Find comparable agents, reference architectures, open-source implementations, product patterns, and design guidance.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Recommend</h3>
+              <p>Recommend answers for operating model, roles, workflow, memory, tools, approvals, failures, and observability.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Override</h3>
+              <p>Ask the user to accept the recommendations or override only the parts that are wrong, risky, or incomplete.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="output" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 2 output</h2>
+            <p>
+              At the end of Design, the required artifact is `agents/{agent-handle}/agent-design.md`.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Input</h3>
+              <p><strong>`agents/{agent-handle}/agent-brief.md`</strong> from Phase 1 Define.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Skill</h3>
+              <p><strong>/design-agent</strong> runs R&amp;R and produces or updates the design.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Template</h3>
+              <p><strong>`templates/workflow-spec.md`</strong> provides the design structure.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Artifact</h3>
+              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> captures recommendations, overrides, workflow, roles, controls, and proof needs.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="questions" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Recommend every design choice</h2>
+            <p>
+              The user should review a proposed design, not assemble one from scratch.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Design question</th>
+                  <th>Recommendation should cover</th>
+                  <th>Override prompt</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Operating model</td>
+                  <td>Single agent, tool-using agent, supervised agent, or multi-agent participant.</td>
+                  <td>Accept this model or name the model you prefer.</td>
+                </tr>
+                <tr>
+                  <td>Roles and responsibilities</td>
+                  <td>What the agent owns, what a human owns, and what other systems own.</td>
+                  <td>Remove, add, or rename responsibilities.</td>
+                </tr>
+                <tr>
+                  <td>Workflow states</td>
+                  <td>Trigger, intake, plan, act, check, escalate, complete, and stop conditions.</td>
+                  <td>Change any state that does not match the real workflow.</td>
+                </tr>
+                <tr>
+                  <td>Memory and context</td>
+                  <td>What is read, remembered, retrieved, retained, or intentionally forgotten.</td>
+                  <td>Tighten access, retention, or retrieval boundaries.</td>
+                </tr>
+                <tr>
+                  <td>Tools and integrations</td>
+                  <td>Tool candidates, required permissions, failure behavior, and constraints.</td>
+                  <td>Approve, reject, or substitute tools.</td>
+                </tr>
+                <tr>
+                  <td>Approvals and escalation</td>
+                  <td>Human approval gates, forbidden paths, escalation triggers, and owners.</td>
+                  <td>Raise or lower the authorization boundary.</td>
+                </tr>
+                <tr>
+                  <td>Observability</td>
+                  <td>Logs, traces, review points, quality signals, cost, latency, and failure evidence.</td>
+                  <td>Add any signal needed to trust the design.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="references" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Design references</h2>
+            <p>
+              Phase 2 references help convert a brief into a build-ready specification.
+            </p>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Spec-writing guidance</p>
+              <h3><a href="https://addyosmani.com/blog/good-spec/" target="_blank" rel="noopener noreferrer">How to write a good spec for AI agents</a></h3>
+              <p>Useful for objectives, context, constraints, acceptance criteria, boundaries, and the quality of the design spec.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Source repository</p>
+              <h3><a href="https://github.com/AesopScott/maps" target="_blank" rel="noopener noreferrer">AesopScott/maps</a></h3>
+              <p>Contains `/design-agent`, `templates/workflow-spec.md`, catalogs, and the phase source docs.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="walkthrough" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Self-guided design path</h2>
+          </div>
+
+          <div class="maps-walkthrough">
+            <article class="maps-step">
+              <span>01</span>
+              <h3>Read the brief</h3>
+              <p>Start from `agents/{agent-handle}/agent-brief.md` and restate the goal, user, success criteria, and authority boundary.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The design should not invent a new job for the agent.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>02</span>
+              <h3>Research peers</h3>
+              <p>Search for similar agents, tools, implementations, reference architectures, and product patterns.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The recommendation should name the comparable patterns it is borrowing from.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>03</span>
+              <h3>Recommend the design</h3>
+              <p>Fill the recommendation table before asking for user decisions.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Every design question should have a recommendation and reasoning.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>04</span>
+              <h3>Capture overrides</h3>
+              <p>Ask the user to change only the recommendations that do not fit.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>User overrides should appear in `agents/{agent-handle}/agent-design.md`.</p>
+              </details>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Full phase navigation</h2>
+            <p>
+              Phase 2 is active now. Later APS pages stay visible and marked under construction until delivered.
+              The M phases are scaffolded and out of scope for this week.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="2"></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 2 resources</h2>
+            <p>
+              `/design-agent` uses `templates/workflow-spec.md` to produce `agents/{agent-handle}/agent-design.md`.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Catalogs</h3>
+              <ul data-maps-catalogs></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

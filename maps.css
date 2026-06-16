@@ -837,6 +837,41 @@ body.maps-page {
   color: var(--maps-ink);
 }
 
+.maps-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--maps-line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.maps-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.maps-table th,
+.maps-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--maps-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.maps-table th {
+  color: var(--maps-teal);
+  background: #eef7f2;
+  font-size: 14px;
+}
+
+.maps-table td {
+  color: var(--maps-muted);
+}
+
+.maps-table tr:last-child td {
+  border-bottom: 0;
+}
+
 @media (max-width: 900px) {
   .maps-hero,
   .maps-section-header,

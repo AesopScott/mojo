@@ -21,8 +21,8 @@ window.MAPS_SITE = {
       file: "2.html",
       label: "Phase 2",
       title: "Design",
-      output: "System design",
-      status: "under-construction"
+      output: "Agent design",
+      status: "available"
     },
     {
       number: "3",
@@ -86,6 +86,10 @@ window.MAPS_SITE = {
       {
         name: "/define-agent",
         note: "Creates agents/{agent-handle}/agent-brief.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
+      },
+      {
+        name: "/design-agent",
+        note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md."
       }
     ],
     repos: [
@@ -117,6 +121,15 @@ window.MAPS_SITE = {
       {
         name: "Git",
         note: "Records scaffold and phase changes."
+      },
+      {
+        name: "Web and repository research",
+        note: "Finds comparable agents, reference architectures, implementation patterns, and design guidance."
+      },
+      {
+        name: "Addy Osmani agent spec guidance",
+        url: "https://addyosmani.com/blog/good-spec/",
+        note: "Useful Design reference for objectives, context, constraints, acceptance criteria, and boundaries."
       }
     ],
     catalogs: [
@@ -141,6 +154,10 @@ window.MAPS_SITE = {
       {
         name: "templates/agent-definition-template.md",
         note: "Captures the Phase 1 Define artifact."
+      },
+      {
+        name: "templates/workflow-spec.md",
+        note: "Captures the Phase 2 Design artifact."
       }
     ]
   },
@@ -157,6 +174,13 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills"],
       templates: ["templates/agent-definition-template.md"],
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+    },
+    "2": {
+      skills: ["/design-agent"],
+      repos: ["AesopScott/maps"],
+      tools: ["Git", "Agent Skills", "Web and repository research", "Addy Osmani agent spec guidance"],
+      templates: ["templates/workflow-spec.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     }
   }
