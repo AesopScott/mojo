@@ -148,6 +148,10 @@ window.MAPS_SITE = {
     ],
     templates: [
       {
+        name: "templates/maps-scaffold-template.md",
+        note: "Defines the repeatable MAPS repository structure that /scaffold instantiates."
+      },
+      {
         name: "templates/phase-alignment-brief.md",
         note: "Captures Phase 0 structure decisions."
       },
@@ -166,7 +170,7 @@ window.MAPS_SITE = {
       skills: ["/scaffold", "phase-alignment"],
       repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
       tools: ["Python", "GitHub CLI", "Git"],
-      templates: ["templates/phase-alignment-brief.md"],
+      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     },
     "1": {

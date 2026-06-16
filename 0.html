@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=phase-nav-green">
-    <script src="maps-data.js?v=phase2-design" defer></script>
+    <script src="maps-data.js?v=scaffold-template" defer></script>
     <script src="maps-page.js?v=external-links" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="0">
@@ -132,7 +132,31 @@
             </article>
             <article class="maps-panel">
               <h3>Reusable scaffold</h3>
-              <p>Use `/scaffold` so future MAPS projects can reproduce the same structure.</p>
+              <p>Keep the repeatable structure in <code>templates/maps-scaffold-template.md</code> so future MAPS projects can reproduce it.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Skill and template are separate</h2>
+            <p>
+              The skill performs the scaffolding work. The template defines the structure that work creates.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>/scaffold skill</h3>
+              <p>Runs the scaffold process, creates files and folders, checks the result, and reports the generated artifacts.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Scaffold template</h3>
+              <p><code>templates/maps-scaffold-template.md</code> is the reusable contract for docs, phases, skills, templates, and catalogs.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Phase 0 output</h3>
+              <p>A MAPS repo shape that is explicit, repeatable, and ready for Phase 1 Define.</p>
             </article>
           </div>
         </section>
@@ -152,7 +176,7 @@
           <div class="maps-section-header">
             <h2>Phase 0 resources</h2>
             <p>
-              Phase Alignment currently depends on these skills, repositories, tools, and catalogs.
+              Phase Alignment currently depends on these skills, repositories, tools, templates, and catalogs.
             </p>
           </div>
 
