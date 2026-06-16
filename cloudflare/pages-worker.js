@@ -12,6 +12,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    if (url.pathname === "/social.html") {
+      const assetUrl = new URL("/products/pages/admin-social", url);
+      assetUrl.search = url.search;
+      return env.ASSETS.fetch(new Request(assetUrl.toString(), request));
+    }
+
     if (url.pathname === "/api/meetup-admin" || url.pathname === "/api/meetup-admin.php") {
       return handleMeetupAdmin(request, env, url);
     }
