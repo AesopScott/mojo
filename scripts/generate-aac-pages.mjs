@@ -362,20 +362,25 @@ function activityTopicKey(title) {
 }
 
 function eventStateClass(event) {
-  const date = String(event?.dateTime || "").slice(0, 10);
-  const topic = activityTopicKey(event?.title);
-  if (topic === "building your own ai command center" && date === "2026-06-05") {
-    return " aac-event-complete";
-  }
-  if (date === "2026-06-07") {
-    return " aac-event-today";
-  }
   return "";
+}
+
+function isProSession(event) {
+  return /^Pro Session\b/i.test(String(event?.title || ""));
+}
+
+function isUpcomingEvent(event) {
+  const timestamp = Date.parse(event?.dateTime || "");
+  return Number.isFinite(timestamp) && timestamp >= Date.now();
+}
+
+function isPublicUpcomingEvent(event) {
+  return !isProSession(event) && isUpcomingEvent(event);
 }
 
 function zoomEventLinksMarkup(events, globalEvents = []) {
   const globalByTopic = new Map();
-  for (const event of globalEvents) {
+  for (const event of globalEvents.filter(isPublicUpcomingEvent)) {
     const key = activityTopicKey(event.title);
     if (key && !globalByTopic.has(key)) {
       globalByTopic.set(key, event);
@@ -792,6 +797,7 @@ async function main() {
     const events = group.events.edges
       .map((edge) => edge.node)
       .filter((event) => event.status === "ACTIVE")
+      .filter(isPublicUpcomingEvent)
       .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     chapters.push({
       ...city,
@@ -805,6 +811,7 @@ async function main() {
   const globalEvents = globalGroup.events.edges
     .map((edge) => edge.node)
     .filter((event) => event.status === "ACTIVE" && /^Global\s*-\s*/i.test(event.title))
+    .filter(isPublicUpcomingEvent)
     .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
 
   const heroSource = await resolveHeroImageSource(env, chapters);
@@ -815,7 +822,7 @@ async function main() {
 
   await generateOgImage(heroSource, {
     city: "Advanced AI Concepts",
-    state: "Over 20 city chapters",
+    state: "67 global city chapters",
     events: chapters[0].events,
   }, "og-hub.jpg");
 
