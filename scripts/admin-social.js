@@ -32,6 +32,7 @@
   let posts = [];
   let calendarFilters = { platform: 'all', siteFunction: 'all', campaign: 'all' };
   let calendarMonth = new Date();
+  let selectedMedia = null;
   calendarMonth.setDate(1);
 
   const loginView = document.getElementById('login-view');
@@ -82,6 +83,7 @@
   refreshBtn.addEventListener('click', loadPosts);
   newPostBtn.addEventListener('click', resetForm);
   copyPostBtn.addEventListener('click', copyCurrentPostText);
+  document.getElementById('post-media-file').addEventListener('change', handleMediaFileChange);
   document.getElementById('calendar-prev')?.addEventListener('click', function () {
     calendarMonth.setMonth(calendarMonth.getMonth() - 1);
     renderCalendar();
@@ -104,6 +106,7 @@
     field.addEventListener('input', renderPlatformPreview);
     field.addEventListener('change', renderPlatformPreview);
   });
+  document.getElementById('post-body').addEventListener('input', autoSizePostBody);
 
   document.getElementById('post-platform').addEventListener('change', updatePlatformLink);
   document.querySelectorAll('[data-calendar-filter]').forEach((field) => {
@@ -258,8 +261,10 @@
     document.getElementById('post-asset-url').value = post.assetUrl || '';
     document.getElementById('post-url').value = post.postUrl || '';
     document.getElementById('post-notes').value = post.notes || '';
+    clearSelectedMedia();
     updatePlatformLink();
     renderPlatformPreview();
+    autoSizePostBody();
     showTab('compose');
     document.getElementById('tab-compose').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -269,8 +274,10 @@
     document.getElementById('post-id').value = '';
     document.getElementById('post-platform').value = 'x';
     document.getElementById('post-function').value = 'general';
+    clearSelectedMedia();
     updatePlatformLink();
     renderPlatformPreview();
+    autoSizePostBody();
   }
 
   function readForm() {
@@ -313,6 +320,36 @@
       textarea.remove();
       showMessage('Post text copied', 'success');
     }
+  }
+
+  function handleMediaFileChange(event) {
+    const file = event.target.files && event.target.files[0];
+    if (selectedMedia?.url) URL.revokeObjectURL(selectedMedia.url);
+    selectedMedia = null;
+    if (!file) {
+      renderPlatformPreview();
+      return;
+    }
+
+    selectedMedia = {
+      url: URL.createObjectURL(file),
+      type: file.type || '',
+      name: file.name || 'Selected media',
+    };
+    renderPlatformPreview();
+  }
+
+  function clearSelectedMedia() {
+    if (selectedMedia?.url) URL.revokeObjectURL(selectedMedia.url);
+    selectedMedia = null;
+    const input = document.getElementById('post-media-file');
+    if (input) input.value = '';
+  }
+
+  function autoSizePostBody() {
+    const textarea = document.getElementById('post-body');
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.max(260, textarea.scrollHeight + 2)}px`;
   }
 
   function renderFilterOptions() {
@@ -386,7 +423,13 @@
     countEl.style.color = overLimit ? '#b91c1c' : '';
 
     const asset = document.getElementById('preview-asset');
-    if (isImageUrl(assetUrl)) {
+    if (selectedMedia?.url && selectedMedia.type.startsWith('video/')) {
+      asset.innerHTML = `<video src="${escapeAttribute(selectedMedia.url)}" controls></video>`;
+    } else if (selectedMedia?.url) {
+      asset.innerHTML = `<img src="${escapeAttribute(selectedMedia.url)}" alt="${escapeAttribute(selectedMedia.name)}">`;
+    } else if (isVideoUrl(assetUrl)) {
+      asset.innerHTML = `<video src="${escapeAttribute(assetUrl)}" controls></video>`;
+    } else if (isImageUrl(assetUrl)) {
       asset.innerHTML = `<img src="${escapeAttribute(assetUrl)}" alt="Post visual preview">`;
     } else if (assetUrl) {
       asset.textContent = assetUrl;
@@ -411,6 +454,10 @@
 
   function isImageUrl(value) {
     return /^https?:\/\/.+\.(png|jpe?g|gif|webp|avif)(\?.*)?$/i.test(String(value || '').trim());
+  }
+
+  function isVideoUrl(value) {
+    return /^https?:\/\/.+\.(mp4|webm|mov|m4v)(\?.*)?$/i.test(String(value || '').trim());
   }
 
   function showTab(tabName) {
