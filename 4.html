@@ -137,7 +137,7 @@
             </article>
             <article class="maps-panel">
               <h3>Skill</h3>
-              <p><a href="assets/maps/skills/equip-agent/SKILL.md" download><strong>/equip-agent</strong></a> produces the capability map.</p>
+              <p><a href="assets/maps/skills/equip-agent/SKILL.md" download><strong>/equip-agent</strong></a> runs Research and Recommend and produces the capability map.</p>
             </article>
             <article class="maps-panel">
               <h3>Template</h3>
@@ -160,9 +160,9 @@
 
         <section id="capabilities" class="maps-section">
           <div class="maps-section-header">
-            <h2>Capability map questions</h2>
+            <h2>Research and recommend the capability map</h2>
             <p>
-              Equip should make every capability inspectable before the agent is evaluated.
+              Equip should recommend the first capability map, then ask the user to override only the parts that are wrong, risky, missing, or too broad.
             </p>
           </div>
 
@@ -171,40 +171,40 @@
               <thead>
                 <tr>
                   <th>Capability question</th>
-                  <th>Equip should define</th>
-                  <th>Evidence to capture</th>
+                  <th>Recommendation should cover</th>
+                  <th>Override prompt</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>What can the agent call?</td>
                   <td>Tools, functions, MCP servers, connectors, APIs, browser, files, and databases.</td>
-                  <td>Capability inventory with owner and purpose.</td>
+                  <td>Accept these capabilities or remove tools the agent should not use.</td>
                 </tr>
                 <tr>
                   <td>What can the agent read or write?</td>
                   <td>Data sources, write targets, scopes, credentials, and read-only boundaries.</td>
-                  <td>Access matrix and permission notes.</td>
+                  <td>Raise or lower read/write scope, especially around production systems.</td>
                 </tr>
                 <tr>
                   <td>What memory does it use?</td>
                   <td>Short-term state, long-term memory, retrieval sources, retention, and delete behavior.</td>
-                  <td>Memory/retrieval configuration.</td>
+                  <td>Change what is remembered, retrieved, retained, or forgotten.</td>
                 </tr>
                 <tr>
                   <td>What does the runtime need?</td>
                   <td>Environment variables, API keys, sandbox permissions, adapter settings, and deployment config.</td>
-                  <td>Runtime configuration checklist.</td>
+                  <td>Change secrets, sandbox, adapter, or deployment assumptions.</td>
                 </tr>
                 <tr>
                   <td>What needs human approval?</td>
                   <td>Actions that spend money, modify systems, send messages, publish, delete, or access sensitive data.</td>
-                  <td>Approval gate list and escalation owner.</td>
+                  <td>Add approval gates for risky or sensitive capabilities.</td>
                 </tr>
                 <tr>
                   <td>What happens when a capability fails?</td>
                   <td>Retry, fallback, degrade, ask, escalate, or stop behavior for each tool boundary.</td>
-                  <td>Failure behavior table.</td>
+                  <td>Change retry, fallback, escalate, or stop behavior.</td>
                 </tr>
               </tbody>
             </table>
@@ -285,26 +285,26 @@
           <div class="maps-walkthrough">
             <article class="maps-step">
               <span>01</span>
-              <h3>Read the build</h3>
-              <p>Start from the working agent and identify every real-world capability it needs.</p>
+              <h3>Read and research</h3>
+              <p>Start from the working agent, then research comparable tools, connectors, memory patterns, and runtime settings.</p>
               <details>
                 <summary>Check it</summary>
-                <p>The map should not grant access the build does not actually require.</p>
+                <p>The recommendation should name the patterns or references it is borrowing from.</p>
               </details>
             </article>
             <article class="maps-step">
               <span>02</span>
-              <h3>Map access</h3>
-              <p>List tools, connectors, data access, memory, runtime permissions, credentials, and scopes.</p>
+              <h3>Recommend access</h3>
+              <p>Recommend tools, connectors, data access, memory, runtime permissions, credentials, and scopes.</p>
               <details>
                 <summary>Check it</summary>
-                <p>Every capability should have read/write boundaries and ownership.</p>
+                <p>Every recommendation should include reasoning, assumptions, risk, and confidence.</p>
               </details>
             </article>
             <article class="maps-step">
               <span>03</span>
-              <h3>Add limits</h3>
-              <p>Define approvals, budgets, rate limits, forbidden actions, and sandbox or production boundaries.</p>
+              <h3>Recommend limits</h3>
+              <p>Recommend approvals, budgets, rate limits, forbidden actions, and sandbox or production boundaries.</p>
               <details>
                 <summary>Check it</summary>
                 <p>The agent should not be able to exceed its mandate by tool access alone.</p>
@@ -312,11 +312,11 @@
             </article>
             <article class="maps-step">
               <span>04</span>
-              <h3>Define fallbacks</h3>
-              <p>State what the agent does when tools, connectors, memory, or runtime config fail.</p>
+              <h3>Capture overrides</h3>
+              <p>Ask the user to change only the recommendations that are wrong, risky, missing, or too broad.</p>
               <details>
                 <summary>Check it</summary>
-                <p>Phase 5 should be able to evaluate failures, not just happy paths.</p>
+                <p>User overrides should appear in `agents/{agent-handle}/capability-map.md`.</p>
               </details>
             </article>
           </div>
@@ -326,7 +326,7 @@
           <div class="maps-section-header">
             <h2>Phase 4 resources</h2>
             <p>
-              <a href="assets/maps/skills/equip-agent/SKILL.md" download>`/equip-agent`</a> uses <a href="assets/maps/templates/capability-map.md" download>`templates/capability-map.md`</a> to produce `agents/{agent-handle}/capability-map.md`.
+              <a href="assets/maps/skills/equip-agent/SKILL.md" download>`/equip-agent`</a> uses Research and Recommend with <a href="assets/maps/templates/capability-map.md" download>`templates/capability-map.md`</a> to produce `agents/{agent-handle}/capability-map.md`.
             </p>
           </div>
 

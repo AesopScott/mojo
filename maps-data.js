@@ -115,7 +115,7 @@ window.MAPS_SITE = {
         name: "/equip-agent",
         url: "assets/maps/skills/equip-agent/SKILL.md",
         download: true,
-        note: "Creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, and operating limits."
+        note: "Runs Research and Recommend, then creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
       }
     ],
     repos: [

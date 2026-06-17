@@ -6,10 +6,24 @@
 - Agent build:
 - Target runtime:
 - Runtime adapter or profile:
+- Research sources:
+
+## Recommendation Summary
+
+- Recommended operating capability model:
+- Key assumptions:
+- User overrides:
+- Deferred capabilities:
 
 ## Capability Inventory
 
-| Capability | Tool/Connector | Read | Write | Approval Required | Failure Behavior |
+| Capability | Tool/Connector | Recommendation | Reasoning | Confidence | User Override |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
+## Access Matrix
+
+| Capability | Read | Write | Spend/Send/Publish/Delete | Approval Required | Failure Behavior |
 |---|---|---|---|---|---|
 |  |  |  |  |  |  |
 
