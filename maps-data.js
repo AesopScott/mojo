@@ -70,7 +70,7 @@ window.MAPS_SITE = {
       label: "Phase 8",
       title: "Improve",
       output: "Improvement backlog",
-      status: "under-construction"
+      status: "available"
     }
   ],
   resources: {
@@ -164,6 +164,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/observe-agent-phoenix/SKILL.md",
         download: true,
         note: "Wraps base Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis."
+      },
+      {
+        name: "/improve-agent",
+        url: "assets/maps/skills/improve-agent/SKILL.md",
+        download: true,
+        note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
       }
     ],
     repos: [
@@ -478,6 +484,21 @@ window.MAPS_SITE = {
         name: "Cloudflare Workers observability",
         url: "https://developers.cloudflare.com/workers/observability/",
         note: "Provides runtime logs, metrics, traces, analytics, errors, and tailing for Cloudflare-hosted agents."
+      },
+      {
+        name: "Google SRE postmortem culture",
+        url: "https://sre.google/sre-book/postmortem-culture/",
+        note: "Provides incident-learning practices for evidence-backed improvement without blame."
+      },
+      {
+        name: "Google SRE embracing risk",
+        url: "https://sre.google/sre-book/embracing-risk/",
+        note: "Provides reliability, cost, and risk tradeoff framing for prioritizing improvement work."
+      },
+      {
+        name: "Atlassian postmortems",
+        url: "https://www.atlassian.com/incident-management/postmortem",
+        note: "Provides incident review structure for turning failures into action items and owners."
       }
     ],
     templates: [
@@ -570,6 +591,12 @@ window.MAPS_SITE = {
         url: "assets/maps/templates/improvement-backlog.md",
         download: true,
         note: "Captures Phase 8 improvement items from observations, eval failures, incidents, user feedback, dependencies, priorities, and next improvement slices."
+      },
+      {
+        name: "templates/improvement-review.md",
+        url: "assets/maps/templates/improvement-review.md",
+        download: true,
+        note: "Captures Phase 8 evidence review, classification, routing, prioritization, iteration decisions, and MAPS handoff."
       }
     ]
   },
@@ -623,10 +650,10 @@ window.MAPS_SITE = {
       templates: ["templates/observation-plan.md", "templates/observation-log.md", "templates/improvement-backlog.md"]
     },
     "8": {
-      skills: [],
+      skills: ["/improve-agent"],
       repos: ["AesopScott/maps"],
-      tools: ["Git", "Agent Skills", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
-      templates: ["templates/agent-backlog.md", "templates/improvement-backlog.md"]
+      tools: ["Git", "Agent Skills", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues", "Google SRE postmortem culture", "Google SRE embracing risk", "Atlassian postmortems"],
+      templates: ["templates/improvement-review.md", "templates/improvement-backlog.md"]
     }
   }
 };

@@ -39,3 +39,6 @@
 | 8 | Scrum Guide product backlog | Keep the improvement backlog ordered and evolving as new evidence appears. |
 | 8 | Atlassian product backlog guide | Refine improvement items and make tradeoffs before another build cycle starts. |
 | 8 | GitHub sub-issues | Split larger improvement projects into smaller implementation-ready items. |
+| 8 | Google SRE postmortem culture | Use incident evidence to produce concrete learning and follow-up without blame. |
+| 8 | Google SRE embracing risk | Prioritize reliability, cost, and risk tradeoffs instead of treating every issue equally. |
+| 8 | Atlassian postmortems | Convert incidents into action items, owners, follow-up, and visible improvement work. |

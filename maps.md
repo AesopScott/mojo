@@ -23,7 +23,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
 | 6 Deploy | `6.html` | Release plan and deployment record | Available | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan and observation log | Available | Track runtime logs, traces, cost, latency, quality signals, incidents, feedback, and evidence-backed improvement handoff. |
-| 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, incidents, and user feedback into prioritized improvement backlog items with dependencies. |
+| 8 Improve | `8.html` | Improvement review and improvement backlog | Available | Feed observations, eval failures, incidents, user feedback, and operating signals into prioritized improvement backlog items with dependencies. |
 
 ## Runtime Adapter Model
 
@@ -215,8 +215,11 @@ Phase 6 references should include Cloudflare Agents SDK, cloudflare/agents, clou
 
 Improve should convert observations, eval failures, incidents, user feedback, and technical debt into an improvement backlog before another build cycle starts.
 
+Improve should use `/improve-agent` as the base Phase 8 skill. Do not create a plus-plus wrapper until a specific external capability is selected and merged into the process.
+
 Phase 8 should record:
 
+- Improvement review:
 - Improvement source and evidence:
 - Priority:
 - Dependencies:
@@ -226,6 +229,8 @@ Phase 8 should record:
 - Deferred items:
 
 Use `templates/improvement-backlog.md` for Phase 8. If an improvement is too broad, split it into smaller backlog items before sending it back into Design or Build.
+
+Use `templates/improvement-review.md` to capture the evidence review, classification, routing, priority method, iteration decision, and handoff.
 
 ## Immediate Backlog
 
