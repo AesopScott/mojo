@@ -25,6 +25,15 @@ window.MAPS_SITE = {
       status: "available"
     },
     {
+      number: "2a",
+      file: "",
+      label: "Optional A2",
+      title: "Experience Design",
+      output: "Use only without a multi-agent M3 experience phase",
+      status: "under-construction",
+      statusLabel: "Under construction"
+    },
+    {
       number: "3",
       file: "3.html",
       label: "Phase 3",

@@ -19,6 +19,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 0 Phase Alignment | `0.html` | Scaffold and structure | Available | Keep MAPS/M and APS boundaries clear. |
 | 1 Define | `1.html` | Agent brief | Available | Keep authority, user, outcome, success, failure, and escalation fields aligned with later phases. |
 | 2 Design | `2.html` | Agent design and build backlog | Available | Add runtime target, adapter requirement planning, dependency mapping, priority order, and first build slice. |
+| Optional A2 Experience Design | M3 experience design page | Single-agent experience constraints | Under construction | Use only when there is no multi-agent system and no M3 experience design phase doing this work. |
 | 3 Build | `3.html` | Working agent | Available | Build from the highest-priority unblocked backlog item; split oversized work before coding. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
@@ -28,11 +29,11 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 
 ## Single-Agent Experience Design Placement
 
-Standalone agent projects still need experience design when there is no multi-agent application layer doing that work. Use optional `A1.5 Experience Design` between `A1 Define` and `A2 Design` when the agent has a visible surface, care text, UI, workflow, or user-facing configuration that needs product judgment before the agent design is locked.
+Standalone agent projects still need experience design when there is no multi-agent application layer doing that work. Use optional `A2 Experience Design` between the current `Phase 2 Design` and `Phase 3 Build` when the agent has a visible surface, care text, UI, workflow, or user-facing configuration that needs product judgment before implementation starts.
 
-Use `M3 Experience Design` when the project is part of a multi-agent system. Use `A1.5 Experience Design` when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase.
+Use `M3 Experience Design` when the project is part of a multi-agent system. Use optional `A2 Experience Design` only when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase. The A2 button should reference the same M3 experience design page once the multi-agent page exists; until then it remains under construction.
 
-`A1.5 Experience Design` should answer:
+`A2 Experience Design` should answer:
 
 - What UI, front end, chat surface, workflow, or configuration surface is this agent part of?
 - What should the experience feel like to the user?
@@ -41,7 +42,7 @@ Use `M3 Experience Design` when the project is part of a multi-agent system. Use
 - How does the agent's activity, uncertainty, tool use, memory use, and handoff behavior appear to the user?
 - What care text, guidance, labels, warnings, or confirmations does the user need before the agent acts?
 
-This step feeds `A2 Design` and `A3 Build`. It does not replace the agent design phase; it gives that phase the product and interface constraints it needs.
+This step feeds `Phase 3 Build`. It does not replace the agent design phase; it gives Build the product and interface constraints it needs when there is no M3 layer doing that work.
 
 ## Multi-Agent Phase List
 

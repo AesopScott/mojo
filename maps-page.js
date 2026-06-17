@@ -17,7 +17,7 @@
         if (phase.status === "available") {
           el.href = phase.file;
         }
-        const statusLabel = phase.status === "available" ? "" : `<em>Under construction</em>`;
+        const statusLabel = phase.status === "available" ? "" : `<em>${phase.statusLabel || "Under construction"}</em>`;
         el.innerHTML = `<strong>${phase.label}: ${phase.title}</strong><span>${phase.output}</span>${statusLabel}`;
         nav.appendChild(el);
       });
