@@ -233,7 +233,7 @@ window.MAPS_SITE = {
       },
       {
         name: "Secrets and environment configuration",
-        note: "Provides API keys, runtime variables, scoped credentials, and deployment configuration."
+        note: "Provides local dev env files, platform runtime secrets, CI/CD secrets, managed secret stores, scoped credentials, and deployment configuration."
       },
       {
         name: "Memory and retrieval stores",

@@ -19,7 +19,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 1 Define | `1.html` | Agent brief | Available | Keep authority, user, outcome, success, failure, and escalation fields aligned with later phases. |
 | 2 Design | `2.html` | Agent design | Available | Add runtime target and adapter requirement planning. |
 | 3 Build | `3.html` | Working agent | Available | Build adapter/profile when needed for the first working runtime. |
-| 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, fallback behavior, and operating limits. |
+| 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite | Planned | Prove agent behavior in the target runtime, including adapter-specific failure modes. |
 | 6 Deploy | `6.html` | Release plan | Planned | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
@@ -111,3 +111,4 @@ LangSmith should be treated as an Observe-phase reference even when LangGraph is
   - `templates/runtime-portability-checklist.md`
 - Add LangSmith and other observability options to Phase 7 Observe when that page is built.
 - Keep Phase 4 focused on capability provisioning: tools, permissions, memory, connectors, runtime config, limits, and fallbacks.
+- Phase 4 runtime config should recommend where API keys live: local `.env` only for development, platform runtime secrets for deployed agents, CI/CD encrypted secrets for deploy pipelines, managed secret managers for audited/rotated operations, and connector/OAuth token stores for delegated access.

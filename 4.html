@@ -55,6 +55,7 @@
               <a href="#output">Output</a>
               <a href="#answers">Map answers</a>
               <a href="#capabilities">Capabilities</a>
+              <a href="#runtime-config">Runtime config</a>
               <a href="#limits">Limits</a>
               <a href="#references">References</a>
               <a href="#walkthrough">Walkthrough</a>
@@ -150,7 +151,7 @@
             </article>
             <article class="maps-panel">
               <h3>Runtime config</h3>
-              <p>Environment variables, API keys, MCP servers, connectors, and permissions are prepared for the target runtime.</p>
+              <p>Secrets, environment variables, MCP servers, connectors, and permissions are prepared for local development, deployment, and the target runtime.</p>
             </article>
             <article class="maps-panel">
               <h3>Evaluate gate</h3>
@@ -215,7 +216,7 @@
                 </tr>
                 <tr>
                   <td>What does the runtime need?</td>
-                  <td>Environment variables, API keys, sandbox permissions, adapter settings, and deployment config.</td>
+                  <td>Secret storage, environment variables, sandbox permissions, adapter settings, and deployment config.</td>
                   <td>Change secrets, sandbox, adapter, or deployment assumptions.</td>
                 </tr>
                 <tr>
@@ -230,6 +231,74 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <section id="runtime-config" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime config details</h2>
+            <p>
+              Recommend where each API key or credential should live for local development, CI/CD, production runtime, and managed operations.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Storage option</th>
+                  <th>Use when</th>
+                  <th>Equip recommendation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Local `.env`, `.env.local`, or runtime dev file</td>
+                  <td>The key is only needed for developer workstations or local sandbox runs.</td>
+                  <td>Keep it out of git, publish only `.env.example`, and avoid using production keys locally.</td>
+                </tr>
+                <tr>
+                  <td>Platform runtime secrets</td>
+                  <td>The deployed agent runs on Cloudflare Workers/Pages, Vercel, Netlify, Firebase, or another managed runtime.</td>
+                  <td>Store production secrets in the host's secret system and inject them at runtime instead of baking them into code or static files.</td>
+                </tr>
+                <tr>
+                  <td>CI/CD encrypted secrets</td>
+                  <td>The key is needed by GitHub Actions or another deploy pipeline.</td>
+                  <td>Use repository, environment, or organization secrets for build/deploy credentials, then pass runtime secrets into the hosting platform where possible.</td>
+                </tr>
+                <tr>
+                  <td>Managed secret manager</td>
+                  <td>The agent needs audited, rotated, shared, or multi-environment secrets.</td>
+                  <td>Use a service such as Google Secret Manager, AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, Doppler, Infisical, 1Password, or Bitwarden Secrets Manager.</td>
+                </tr>
+                <tr>
+                  <td>Connector or OAuth token store</td>
+                  <td>The agent uses Gmail, Slack, Drive, GitHub, or another OAuth-backed connector.</td>
+                  <td>Prefer provider-managed connector storage or an encrypted backend token store rather than plain config files.</td>
+                </tr>
+                <tr>
+                  <td>Browser-exposed public key</td>
+                  <td>The provider explicitly supports browser-side public keys, such as publishable keys or restricted map/browser keys.</td>
+                  <td>Restrict by domain, API, scope, quota, and environment; never expose server-side keys in client code.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Scope by environment</h3>
+              <p>Use separate dev, staging, and production keys so a test agent cannot mutate production systems by accident.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Limit blast radius</h3>
+              <p>Prefer read-only scopes, allowlists, referrer/IP restrictions, spend caps, and tool-specific approval gates.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Plan rotation</h3>
+              <p>Record who owns each secret, how it is revoked, how it is rotated, and what should happen when it leaks.</p>
+            </article>
           </div>
         </section>
 
@@ -295,6 +364,26 @@
               <p class="maps-layer-kicker">Dependency injection</p>
               <h3><a href="https://pydantic.dev/docs/ai/core-concepts/dependencies/" target="_blank" rel="noopener noreferrer">Pydantic AI dependencies</a></h3>
               <p>Reference for passing data and services to prompts, tools, and output validators in a type-safe way.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Runtime secrets</p>
+              <h3><a href="https://developers.cloudflare.com/workers/configuration/secrets/" target="_blank" rel="noopener noreferrer">Cloudflare Workers secrets</a></h3>
+              <p>Reference for production secrets that are passed to Workers like environment variables while remaining hidden after creation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">CI/CD secrets</p>
+              <h3><a href="https://docs.github.com/actions/security-guides/using-secrets-in-github-actions" target="_blank" rel="noopener noreferrer">GitHub Actions secrets</a></h3>
+              <p>Reference for encrypted repository, environment, and organization secrets used by deploy workflows.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Managed secrets</p>
+              <h3><a href="https://docs.cloud.google.com/secret-manager/docs" target="_blank" rel="noopener noreferrer">Google Secret Manager</a></h3>
+              <p>Reference for storing API keys, passwords, certificates, and other sensitive data in a managed secret store.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Managed secrets</p>
+              <h3><a href="https://docs.aws.amazon.com/secretsmanager/" target="_blank" rel="noopener noreferrer">AWS Secrets Manager</a></h3>
+              <p>Reference for encrypted secret storage, retrieval, access control, and rotation for credentials and API keys.</p>
             </article>
           </div>
         </section>

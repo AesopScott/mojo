@@ -49,6 +49,19 @@
 - Sandbox/runtime permissions:
 - API keys and environment variables:
 
+## Runtime Config Details
+
+- Local development secrets (`.env`, `.env.local`, `.dev.vars`, or runtime equivalent):
+- Platform runtime secrets:
+- CI/CD encrypted secrets:
+- Managed secret manager:
+- Connector or OAuth token storage:
+- Browser-exposed public keys:
+- Separate dev/staging/production keys:
+- Key restrictions, scopes, quotas, or allowlists:
+- Rotation, revocation, and leak response:
+- `.env.example` entries to document required names:
+
 ## Memory And Retrieval
 
 - Short-term memory:

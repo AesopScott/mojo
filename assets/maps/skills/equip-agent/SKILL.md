@@ -25,7 +25,7 @@ This skill must not become a blank questionnaire. It should research and recomme
    - MCP servers or native integrations
    - browser, repo, mail, chat, drive, database, file, and API access
    - short-term memory, long-term memory, retrieval, retention, and delete behavior
-   - runtime permissions, sandbox settings, secrets, and environment variables
+   - runtime permissions, sandbox settings, secret storage, and environment variables
    - rate limits, budgets, scopes, and approval gates
    - fallback behavior for each tool, connector, memory, or runtime failure
    - forbidden capabilities
@@ -51,6 +51,12 @@ This skill must not become a blank questionnaire. It should research and recomme
 - Prefer least privilege over broad access.
 - Recommend read-only access before write access unless the working loop requires writes.
 - Recommend sandbox or test credentials before production credentials.
+- Recommend `.env`, `.env.local`, `.dev.vars`, or the runtime's local equivalent only for local development and sandbox runs.
+- Recommend platform runtime secrets for deployed agents, such as Cloudflare Workers/Pages secrets or the equivalent secret system in the selected host.
+- Recommend CI/CD encrypted secrets for deploy-time credentials and pipeline tokens, not as the only production runtime secret store when the host supports runtime secrets.
+- Recommend a managed secret manager when secrets need audit history, rotation, multi-environment sharing, or central access control.
+- Recommend connector-managed OAuth storage or an encrypted backend token store for Gmail, Slack, Drive, GitHub, and similar delegated-access connectors.
+- Recommend browser-exposed keys only when the provider explicitly supports public client keys, and require domain, API, scope, quota, and environment restrictions.
 - Recommend explicit human approval for money movement, external messages, publishing, deletion, production writes, sensitive data access, and irreversible actions.
 - Prefer MCP servers or connector standards when they reduce custom integration work without weakening security.
 - Do not invent a tool requirement if the Phase 3 build does not need it.
