@@ -13,7 +13,7 @@
       site.phases.forEach((phase) => {
         const isCurrent = phase.number === current;
         const el = document.createElement(phase.status === "available" ? "a" : "span");
-        el.className = `maps-phase-link${isCurrent ? " current" : ""}${phase.status !== "available" ? " under-construction" : ""}`;
+        el.className = `maps-phase-link${phase.kind === "lab" ? " lab" : ""}${isCurrent ? " current" : ""}${phase.status !== "available" ? " under-construction" : ""}`;
         if (phase.status === "available") {
           el.href = phase.file;
         }
@@ -34,6 +34,58 @@
     document.querySelectorAll(`.maps-pipeline-links a[href="${phase.file}"]`).forEach((link) => {
       link.classList.add("current");
       link.setAttribute("aria-current", "page");
+    });
+  }
+
+  function renderLabPills() {
+    const labs = site.phases.filter((phase) => phase.kind === "lab" && phase.status === "available");
+    if (!labs.length) {
+      return;
+    }
+
+    document.querySelectorAll(".maps-pipeline-group.agentic .maps-pipeline-links").forEach((links) => {
+      if (links.querySelector("[data-maps-lab-pill]")) {
+        return;
+      }
+
+      const current = document.body.getAttribute("data-maps-phase");
+      labs.forEach((lab) => {
+        const pill = document.createElement("a");
+        pill.href = lab.file;
+        pill.className = `maps-lab-pill${lab.number === current ? " current" : ""}`;
+        pill.dataset.mapsLabPill = lab.number;
+        if (lab.number === current) {
+          pill.setAttribute("aria-current", "page");
+        }
+        pill.textContent = `${lab.label} ${lab.title}`;
+        links.appendChild(pill);
+      });
+    });
+  }
+
+  function renderApsDownloadButton() {
+    const skill = site.resources.skills.find((item) => item.name === "Aps/");
+    if (!skill?.url) {
+      return;
+    }
+
+    document.querySelectorAll(".maps-links").forEach((links) => {
+      if (links.querySelector("[data-aps-download-button]")) {
+        return;
+      }
+
+      const agentsLink = Array.from(links.querySelectorAll("a")).find((link) => link.getAttribute("href") === "agents.html");
+      if (!agentsLink) {
+        return;
+      }
+
+      const button = document.createElement("a");
+      button.href = skill.url;
+      button.download = "";
+      button.className = "maps-aps-download-button";
+      button.dataset.apsDownloadButton = "true";
+      button.textContent = "Download Aps/ skill";
+      agentsLink.insertAdjacentElement("afterend", button);
     });
   }
 
@@ -145,6 +197,8 @@
   }
 
   highlightCurrentPipelinePhase();
+  renderLabPills();
+  renderApsDownloadButton();
   renderPhaseNav();
   renderResources();
   renderReferencePhases();

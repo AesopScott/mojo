@@ -95,6 +95,26 @@ body.maps-page {
   background: var(--maps-soft);
 }
 
+.maps-links .maps-aps-download-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 9px 13px;
+  border: 1px solid var(--maps-teal);
+  border-radius: 8px;
+  color: #fff;
+  background: var(--maps-teal);
+  font-size: 13px;
+  font-weight: 850;
+  box-shadow: 0 8px 20px rgba(35, 107, 99, 0.18);
+}
+
+.maps-links .maps-aps-download-button:hover {
+  color: #fff;
+  background: #174f45;
+}
+
 .maps-pipeline-group {
   display: grid;
   grid-template-columns: 160px minmax(0, 1fr);
@@ -200,6 +220,22 @@ body.maps-page {
 
 .maps-pipeline-group .maps-pipeline-links a.current,
 .maps-pipeline-group .maps-pipeline-links a.current:hover {
+  color: #fff;
+  background: var(--maps-orange);
+}
+
+.maps-pipeline-group.agentic .maps-pipeline-links a.maps-lab-pill {
+  color: #fff;
+  background: var(--maps-teal);
+}
+
+.maps-pipeline-group.agentic .maps-pipeline-links a.maps-lab-pill:hover {
+  color: #fff;
+  background: #174f45;
+}
+
+.maps-pipeline-group.agentic .maps-pipeline-links a.maps-lab-pill.current,
+.maps-pipeline-group.agentic .maps-pipeline-links a.maps-lab-pill.current:hover {
   color: #fff;
   background: var(--maps-orange);
 }

@@ -79,6 +79,33 @@ window.MAPS_SITE = {
       title: "Improve",
       output: "Improvement backlog",
       status: "available"
+    },
+    {
+      number: "lab1",
+      file: "lab-research-agent.html",
+      label: "Lab 1",
+      title: "Research Agent",
+      output: "Class lab",
+      status: "available",
+      kind: "lab"
+    },
+    {
+      number: "lab2",
+      file: "lab-data-agent.html",
+      label: "Lab 2",
+      title: "Data Agent",
+      output: "Class lab",
+      status: "available",
+      kind: "lab"
+    },
+    {
+      number: "lab3",
+      file: "lab-support-agent.html",
+      label: "Lab 3",
+      title: "Support Agent",
+      output: "Class lab",
+      status: "available",
+      kind: "lab"
     }
   ],
   resources: {
@@ -184,6 +211,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/improve-agent/SKILL.md",
         download: true,
         note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
+      },
+      {
+        name: "Aps/",
+        url: "assets/maps/plugins/aps-pipeline.zip",
+        download: true,
+        note: "Installable master APS plugin and /aps skill for Codex and Claude Code. It runs all agentic pipeline phases in a new project folder and tracks local progress in `.aps/progress.json`."
       }
     ],
     repos: [

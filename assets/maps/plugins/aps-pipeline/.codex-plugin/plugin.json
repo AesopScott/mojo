@@ -1,0 +1,29 @@
+{
+  "name": "aps-pipeline",
+  "version": "1.0.0",
+  "description": "Installable Agentic Pipeline Skills bundle with the master /aps skill, phase skills, templates, and tool catalogs.",
+  "author": {
+    "name": "Mojo AI Studio",
+    "url": "https://mojoaistudio.com"
+  },
+  "homepage": "https://mojoaistudio.com/maps.html",
+  "repository": "https://github.com/AesopScott/mojo",
+  "license": "MIT",
+  "keywords": ["aps", "maps", "agents", "pipeline", "skills"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "APS Pipeline",
+    "shortDescription": "Run the agentic pipeline with bundled MAPS assets.",
+    "longDescription": "APS Pipeline installs the master /aps skill plus all current MAPS/APS phase skills, templates, catalogs, and tool references. Use it to create a new agent project folder, run the phases in order, and track progress in a local .aps/progress.json file.",
+    "developerName": "Mojo AI Studio",
+    "category": "Productivity",
+    "capabilities": ["Write", "Interactive"],
+    "websiteURL": "https://mojoaistudio.com/maps.html",
+    "defaultPrompt": [
+      "Use /aps to start a new agent project.",
+      "Use /aps to continue the next APS phase.",
+      "Use /aps to show my pipeline progress."
+    ],
+    "brandColor": "#236B63"
+  }
+}
