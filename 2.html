@@ -53,6 +53,7 @@
               <a href="#rr">Research and Recommend</a>
               <a href="#output">Output</a>
               <a href="#questions">Design questions</a>
+              <a href="#runtime">Runtime target</a>
               <a href="#proof">Proof plan</a>
               <a href="#alternatives">References</a>
               <a href="#walkthrough">Build path</a>
@@ -133,7 +134,7 @@
             </article>
             <article class="maps-panel">
               <h3>Artifact</h3>
-              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> captures recommendations, overrides, workflow, roles, controls, and proof needs.</p>
+              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> captures recommendations, overrides, workflow, roles, controls, runtime target, adapter requirements, and proof needs.</p>
             </article>
           </div>
         </section>
@@ -211,8 +212,37 @@
                   <td>What must keep passing before the agent can move into Build, Evaluate, and Deploy.</td>
                   <td>Add required gates before Build starts.</td>
                 </tr>
+                <tr>
+                  <td>Runtime target and adapter requirement</td>
+                  <td>Primary runtime, secondary runtimes, skill format, tool interface, memory model, sandbox assumptions, packaging path, and portability risks.</td>
+                  <td>Choose the target runtime or mark the design runtime-neutral until Build.</td>
+                </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <section id="runtime" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime target and adapter requirement</h2>
+            <p>
+              Design should decide where the agent may run. It should not build the adapter yet.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Runtime target</h3>
+              <p>Name the primary runtime and any secondary runtimes, such as OpenClaw, Manus, Hermes, Codex, Claude Code, LangGraph, OpenAI Agents SDK, CrewAI, or Google ADK.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Profile or adapter</h3>
+              <p>Decide whether the runtime only needs an install/use profile or a fuller adapter that transforms files, tools, memory, permissions, or packaging.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Portability risks</h3>
+              <p>Record unsupported MAPS features, tool limitations, memory differences, sandbox constraints, approval gaps, and packaging risks before Build begins.</p>
+            </article>
           </div>
         </section>
 
@@ -248,6 +278,10 @@
             <article class="maps-panel">
               <h3>Build gate</h3>
               <p>State what must be proven before Phase 3 Build starts: failure cases, regression gates, and minimum acceptance evidence.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Adapter gate</h3>
+              <p>State whether Build must create a runtime profile, a runtime adapter, or no adapter for the first working agent.</p>
             </article>
           </div>
         </section>
@@ -324,11 +358,11 @@
             </article>
             <article class="maps-step">
               <span>04</span>
-              <h3>Capture overrides</h3>
-              <p>Ask the user to change only the recommendations that do not fit.</p>
+              <h3>Capture runtime and overrides</h3>
+              <p>Ask the user to change only the recommendations that do not fit, including runtime target and adapter requirements.</p>
               <details>
                 <summary>Check it</summary>
-                <p>User overrides should appear in `agents/{agent-handle}/agent-design.md`.</p>
+                <p>User overrides and runtime portability notes should appear in `agents/{agent-handle}/agent-design.md`.</p>
               </details>
             </article>
           </div>
@@ -338,7 +372,7 @@
           <div class="maps-section-header">
             <h2>Phase 2 resources</h2>
             <p>
-              <a href="assets/maps/skills/design-agent/SKILL.md" download>`/design-agent`</a> uses <a href="assets/maps/templates/workflow-spec.md" download>`templates/workflow-spec.md`</a> to produce `agents/{agent-handle}/agent-design.md`.
+              <a href="assets/maps/skills/design-agent/SKILL.md" download>`/design-agent`</a> uses <a href="assets/maps/templates/workflow-spec.md" download>`templates/workflow-spec.md`</a> to produce `agents/{agent-handle}/agent-design.md`. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
             </p>
           </div>
 

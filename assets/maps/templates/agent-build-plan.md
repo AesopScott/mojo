@@ -5,6 +5,18 @@
 - Agent design:
 - Build gate:
 - Target runtime:
+- Runtime profile or adapter requirement:
+
+## Runtime Adapter Build
+
+- Adapter/profile selected:
+- Files created or transformed:
+- Runtime-specific instructions:
+- Tool bindings:
+- Memory setup:
+- Permission gates:
+- Verification command or manual check:
+- Known incompatibilities:
 
 ## Build Slices
 

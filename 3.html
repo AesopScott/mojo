@@ -52,6 +52,7 @@
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#skill">Build skill</a>
               <a href="#output">Output</a>
+              <a href="#adapter">Adapter build</a>
               <a href="#slices">Slices</a>
               <a href="#references">References</a>
               <a href="#walkthrough">Walkthrough</a>
@@ -136,12 +137,36 @@
               <p><strong>`agents/{agent-handle}/agent-build.md`</strong> records implementation slices, checks, evidence, blockers, and handoff notes.</p>
             </article>
             <article class="maps-panel">
-              <h3>Code</h3>
-              <p>The working agent code, config, prompts, tests, and fixtures live in the project structure selected during Design.</p>
+              <h3>Adapter/profile</h3>
+              <p>If Design requires a target runtime, Build creates the smallest runtime adapter or runtime profile needed for the first working agent.</p>
             </article>
             <article class="maps-panel">
               <h3>Gate</h3>
               <p>Build exits when the first working agent passes its defined checks and is ready for Phase 4 Equip.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="adapter" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime adapter build</h2>
+            <p>
+              Build creates runtime-specific packaging only when the first working agent needs it.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Runtime profile</h3>
+              <p>Use a lightweight profile when the runtime can consume MAPS-style skills directly and only needs install paths, repo instructions, tool discovery, or usage notes.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Runtime adapter</h3>
+              <p>Build an adapter when the runtime needs transformed files, API wrappers, tool bindings, memory setup, permission gates, or import/export packaging.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Runtime proof</h3>
+              <p>Verify the first slice in the selected runtime or a safe sandbox, then record known incompatibilities for Equip, Evaluate, and Deploy.</p>
             </article>
           </div>
         </section>
@@ -178,6 +203,11 @@
                   <td>What tool boundary is touched?</td>
                   <td>Whether the slice uses a fake, sandbox, local tool, or real integration.</td>
                   <td>Tool inputs, outputs, failure behavior, and permissions.</td>
+                </tr>
+                <tr>
+                  <td>What adapter/profile is required?</td>
+                  <td>Whether the slice needs a runtime profile, transformed package, API wrapper, tool binding, or memory setup.</td>
+                  <td>Adapter files, runtime assumptions, verification command, and known incompatibilities.</td>
                 </tr>
                 <tr>
                   <td>What can be safely deferred?</td>
@@ -283,11 +313,11 @@
             </article>
             <article class="maps-step">
               <span>02</span>
-              <h3>Pick the first slice</h3>
-              <p>Choose the smallest behavior that proves the agent can make progress.</p>
+              <h3>Pick runtime and slice</h3>
+              <p>Choose the target runtime/profile and the smallest behavior that proves the agent can make progress.</p>
               <details>
                 <summary>Check it</summary>
-                <p>The slice should be observable through a test, eval, trace, or runtime check.</p>
+                <p>The slice should be observable through a test, eval, trace, or runtime check in the selected runtime or sandbox.</p>
               </details>
             </article>
             <article class="maps-step">
@@ -315,7 +345,7 @@
           <div class="maps-section-header">
             <h2>Phase 3 downloads</h2>
             <p>
-              Download <a href="assets/maps/skills/build-agent-plus-plus/SKILL.md" download>`/build-agent++`</a>, the base <a href="assets/maps/skills/build-agent/SKILL.md" download>`/build-agent`</a>, and the Build templates from this resource list.
+              Download <a href="assets/maps/skills/build-agent-plus-plus/SKILL.md" download>`/build-agent++`</a>, the base <a href="assets/maps/skills/build-agent/SKILL.md" download>`/build-agent`</a>, and the Build templates from this resource list. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
             </p>
           </div>
 

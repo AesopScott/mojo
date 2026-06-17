@@ -226,6 +226,12 @@ window.MAPS_SITE = {
         url: "assets/maps/catalogs/tools.md",
         download: true,
         note: "Records tools and services by MAPS phase."
+      },
+      {
+        name: "maps.md",
+        url: "maps.md",
+        download: true,
+        note: "Tracks MAPS phase build decisions, runtime adapter work, and future phase backlog."
       }
     ],
     templates: [
@@ -287,14 +293,14 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills", "Web and repository research"],
       templates: ["templates/workflow-spec.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],
       repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "langchain-ai/langgraph", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
       tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
       templates: ["templates/agent-build-plan.md", "templates/build-log.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
     }
   }
 };

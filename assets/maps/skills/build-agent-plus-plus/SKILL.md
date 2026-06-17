@@ -36,6 +36,7 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 - `agents/{agent-handle}/agent-design.md`
 - Phase 2 Build gate and proof plan
 - Target runtime, framework, or platform
+- Runtime profile or adapter requirement from Phase 2
 - Existing project conventions and tests
 
 ## Stop If
@@ -48,19 +49,21 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 ## Workflow
 
 1. Read the approved agent design.
-2. Extract the build target, behavior contract, tool boundaries, and proof plan.
+2. Extract the build target, runtime target, adapter requirement, behavior contract, tool boundaries, and proof plan.
 3. Create or update `agents/{agent-handle}/agent-build.md` with:
    - implementation slices
+   - runtime adapter/profile work
    - tests or evals per slice
    - acceptance evidence
    - remaining risks
-4. Choose the first thin vertical slice that creates observable agent behavior.
-5. Write or update the smallest failing test, eval, fixture, or scripted check for that slice.
-6. Implement the minimum code or configuration needed to pass.
-7. Run the slice checks and the relevant regression checks.
-8. Refactor only after checks pass.
-9. Record evidence in the build artifact.
-10. Repeat until the first working agent is usable enough for Phase 4 Equip.
+4. If the first working agent needs a runtime adapter or runtime profile, create the smallest adapter/profile that lets the first slice run.
+5. Choose the first thin vertical slice that creates observable agent behavior.
+6. Write or update the smallest failing test, eval, fixture, or scripted check for that slice.
+7. Implement the minimum code, configuration, or adapter transformation needed to pass.
+8. Run the slice checks and the relevant regression checks.
+9. Refactor only after checks pass.
+10. Record evidence in the build artifact.
+11. Repeat until the first working agent is usable enough for Phase 4 Equip.
 
 ## Slice Rules
 
@@ -77,9 +80,18 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 - The proof must fail for the right reason before implementation.
 - If a test-first path is impossible, document why and add the closest verification guard before moving on.
 
+## Runtime Adapter Rules
+
+- Treat Codex and Claude Code as runtime profiles unless the target requires transformation beyond install/use instructions.
+- Treat OpenClaw, Manus, Hermes, LangGraph, OpenAI Agents SDK, CrewAI, and Google ADK as possible runtime adapters until their packaging requirements are proven simple.
+- Build only the adapter/profile required for the first working runtime in Phase 3.
+- Defer broader multi-runtime packaging to Phase 6 Deploy unless portability is part of the first working agent.
+- Record unsupported MAPS features and runtime-specific assumptions in the build artifact.
+
 ## Output
 
 - Working agent implementation
 - `agents/{agent-handle}/agent-build.md`
+- Runtime adapter/profile files when required
 - Passing checks or documented blocked checks
 - Evidence needed by Phase 4 Equip and Phase 5 Evaluate
