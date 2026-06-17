@@ -193,6 +193,51 @@ window.MAPS_SITE = {
         note: "Working MAPS repository."
       },
       {
+        name: "shadcn-ui/ui",
+        url: "https://github.com/shadcn-ui/ui",
+        note: "UI design system and copy-in component reference for polished, accessible React interfaces. Current research signal: 116,840 stars."
+      },
+      {
+        name: "radix-ui/primitives",
+        url: "https://github.com/radix-ui/primitives",
+        note: "Low-level accessible primitives for custom product design systems. Current research signal: 18,986 stars."
+      },
+      {
+        name: "tailwindlabs/headlessui",
+        url: "https://github.com/tailwindlabs/headlessui",
+        note: "Unstyled accessible UI primitives designed for Tailwind-based interfaces. Current research signal: 28,622 stars."
+      },
+      {
+        name: "mui/material-ui",
+        url: "https://github.com/mui/material-ui",
+        note: "Comprehensive React component library implementing Material Design. Current research signal: 98,425 stars."
+      },
+      {
+        name: "ant-design/ant-design",
+        url: "https://github.com/ant-design/ant-design",
+        note: "Enterprise-class UI design language and React component library. Current research signal: 98,374 stars."
+      },
+      {
+        name: "chakra-ui/chakra-ui",
+        url: "https://github.com/chakra-ui/chakra-ui",
+        note: "Component system for fast SaaS and product UI development. Current research signal: 40,441 stars."
+      },
+      {
+        name: "mantinedev/mantine",
+        url: "https://github.com/mantinedev/mantine",
+        note: "Full-featured React component library with broad UX coverage. Current research signal: 31,266 stars."
+      },
+      {
+        name: "heroui-inc/heroui",
+        url: "https://github.com/heroui-inc/heroui",
+        note: "Modern React UI library formerly known as NextUI. Current research signal: 29,651 stars."
+      },
+      {
+        name: "adobe/react-spectrum",
+        url: "https://github.com/adobe/react-spectrum",
+        note: "Accessible, adaptive UI libraries and tools from Adobe. Current research signal: 15,541 stars."
+      },
+      {
         name: "uswds/uswds",
         url: "https://github.com/uswds/uswds",
         note: "Accessible, mobile-friendly public-service design system reference. Current research signal: 7,114 stars."
@@ -205,7 +250,7 @@ window.MAPS_SITE = {
       {
         name: "microsoft/fluentui",
         url: "https://github.com/microsoft/fluentui",
-        note: "Enterprise product UI component and interaction pattern reference. Current research signal: 20,057 stars."
+        note: "Enterprise product UI component and interaction pattern reference. Current research signal: 20,059 stars."
       },
       {
         name: "primer/react",
@@ -215,17 +260,57 @@ window.MAPS_SITE = {
       {
         name: "assistant-ui/assistant-ui",
         url: "https://github.com/assistant-ui/assistant-ui",
-        note: "AI chat UI reference for streaming, thread surfaces, tool UI, and assistant interaction patterns. Current research signal: 10,663 stars."
+        note: "AI chat UI reference for streaming, thread surfaces, tool UI, and assistant interaction patterns. Current research signal: 10,666 stars."
       },
       {
         name: "CopilotKit/CopilotKit",
         url: "https://github.com/CopilotKit/CopilotKit",
-        note: "Agentic frontend and generative UI reference for shared state, human-in-the-loop flows, and AG-UI patterns. Current research signal: 35,247 stars."
+        note: "Agentic frontend and generative UI reference for shared state, human-in-the-loop flows, and AG-UI patterns. Current research signal: 35,251 stars."
       },
       {
         name: "langchain-ai/agent-chat-ui",
         url: "https://github.com/langchain-ai/agent-chat-ui",
         note: "Reference chat UI for LangGraph agents, including deployment URL setup and agent conversation surfaces. Current research signal: 2,934 stars."
+      },
+      {
+        name: "open-webui/open-webui",
+        url: "https://github.com/open-webui/open-webui",
+        note: "Full AI chat/product surface reference for model selection, threads, tools, settings, and local-first AI workflows. Current research signal: 142,022 stars."
+      },
+      {
+        name: "lobehub/lobehub",
+        url: "https://github.com/lobehub/lobehub",
+        note: "Agent/operator UI reference for organizing AI agents, scheduling, reporting, and multi-agent operations. Current research signal: 78,779 stars."
+      },
+      {
+        name: "mckaywrigley/chatbot-ui",
+        url: "https://github.com/mckaywrigley/chatbot-ui",
+        note: "AI chat application reference for model-agnostic conversation surfaces. Current research signal: 33,273 stars."
+      },
+      {
+        name: "vercel/chatbot",
+        url: "https://github.com/vercel/chatbot",
+        note: "Full-featured Next.js AI chatbot reference from Vercel. Current research signal: 20,502 stars."
+      },
+      {
+        name: "vercel/ai",
+        url: "https://github.com/vercel/ai",
+        note: "AI SDK and UI streaming reference for TypeScript AI applications and agents. Current research signal: 24,934 stars."
+      },
+      {
+        name: "Chainlit/chainlit",
+        url: "https://github.com/Chainlit/chainlit",
+        note: "Conversational AI app framework reference for rapid agent/chat prototyping. Current research signal: 12,218 stars."
+      },
+      {
+        name: "gradio-app/gradio",
+        url: "https://github.com/gradio-app/gradio",
+        note: "Rapid ML/AI app surface reference for demos, controls, and human review flows. Current research signal: 42,951 stars."
+      },
+      {
+        name: "streamlit/streamlit",
+        url: "https://github.com/streamlit/streamlit",
+        note: "Rapid data and AI app surface reference for dashboards, review tools, and internal workflows. Current research signal: 44,992 stars."
       },
       {
         name: "VoltAgent/awesome-agent-skills",
@@ -421,12 +506,12 @@ window.MAPS_SITE = {
         note: "Checks keyboard behavior, semantic structure, focus, contrast, motion, readable copy, and assistive-technology expectations."
       },
       {
-        name: "Design-system references",
-        note: "Provides component, token, layout, accessibility, and content guidance from mature public design systems."
+        name: "UI design system references",
+        note: "Provides component, token, layout, accessibility, content, theming, and product-polish guidance from mature UI systems."
       },
       {
-        name: "Agent UI references",
-        note: "Provides patterns for chat, copilot, generative UI, tool call display, streaming, approvals, and user control around agent activity."
+        name: "Agent interaction surface references",
+        note: "Provides patterns for chat, copilot, generative UI, tool call display, streaming, approvals, review flows, handoff, and user control around agent activity."
       },
       {
         name: "Web and repository research",
@@ -704,8 +789,8 @@ window.MAPS_SITE = {
     },
     "2a": {
       skills: ["/design-experience"],
-      repos: ["AesopScott/maps", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui"],
-      tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "Design-system references", "Agent UI references"],
+      repos: ["AesopScott/maps", "shadcn-ui/ui", "radix-ui/primitives", "tailwindlabs/headlessui", "mui/material-ui", "ant-design/ant-design", "chakra-ui/chakra-ui", "mantinedev/mantine", "heroui-inc/heroui", "adobe/react-spectrum", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui", "open-webui/open-webui", "lobehub/lobehub", "mckaywrigley/chatbot-ui", "vercel/chatbot", "vercel/ai", "Chainlit/chainlit", "gradio-app/gradio", "streamlit/streamlit"],
+      tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "UI design system references", "Agent interaction surface references"],
       templates: ["templates/experience-design.md"]
     },
     "3": {

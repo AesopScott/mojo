@@ -85,11 +85,10 @@ M8 Experience Design should record the product experience, user journeys, front-
 
 M8 should use `/design-experience` and `templates/experience-design.md`. The phase should explicitly hand product, UI, interaction-state, accessibility, and agent-visibility scenarios to M9 System Evaluate, M10 System Deploy/Observe, M11 System Improve, and any APS phase that needs correction.
 
-M8 references should include mature product design systems and agent UI examples:
+M8 references should be split into two shelves:
 
-- USWDS and GOV.UK Frontend for accessible service design, forms, content clarity, and public trust patterns.
-- Fluent UI and Primer React for dense product UI, component states, navigation, dialogs, and enterprise/developer surfaces.
-- assistant-ui, CopilotKit, and Agent Chat UI for chat, copilot, generative UI, streaming, tool call visibility, approvals, and agent conversation surfaces.
+- UI Design Systems: shadcn-ui, Radix Primitives, Headless UI, MUI, Ant Design, Chakra UI, Mantine, HeroUI, React Spectrum, USWDS, GOV.UK Frontend, Fluent UI, and Primer React for components, primitives, layout, forms, navigation, accessibility, content clarity, theming, and product polish.
+- Agent Interaction Surfaces: assistant-ui, CopilotKit, Agent Chat UI, Open WebUI, LobeHub, Chatbot UI, Vercel Chatbot, Vercel AI SDK, Chainlit, Gradio, and Streamlit for chat, copilot, generative UI, streaming, tool call visibility, approvals, human review, handoff, and rapid AI workflow surfaces.
 
 M9 System Evaluate should prove product-level and cross-agent workflows, not just individual agent quality. It should include user journey success, handoff failures, tool contention, shared-state mistakes, conflicting agent outputs, routing errors, escalation behavior, timeout/retry paths, cost spikes, permission boundaries, and regression scenarios.
 

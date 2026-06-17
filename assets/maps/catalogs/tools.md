@@ -16,8 +16,8 @@
 | M8 / optional A2 | Information architecture | Define navigation, object hierarchy, labels, wayfinding, and the relationship between product surfaces and agent work. |
 | M8 / optional A2 | Interaction state modeling | Capture loading, streaming, tool-use, approval, refusal, escalation, success, empty, error, and recovery states before Build. |
 | M8 / optional A2 | Accessibility and inclusive design | Check keyboard behavior, semantics, focus, contrast, motion, readable copy, and assistive-technology expectations. |
-| M8 / optional A2 | Design-system references | Reuse mature component, token, layout, accessibility, and content guidance. |
-| M8 / optional A2 | Agent UI references | Compare chat, copilot, generative UI, tool call display, streaming, approval, and user-control patterns. |
+| M8 / optional A2 | UI design system references | Compare mature component systems, primitives, tokens, layout, accessibility, content, theming, forms, navigation, and product polish. |
+| M8 / optional A2 | Agent interaction surface references | Compare chat, copilot, generative UI, tool call display, streaming, approval, review, handoff, and user-control patterns. |
 | 3 | Backlog planning | Pull the highest-priority unblocked backlog item into Build and split oversized items before coding. |
 | 3 | GitHub sub-issues | Keep implementation slices small enough to prove independently. |
 | 3 | Test runner | Prove each Build slice. |

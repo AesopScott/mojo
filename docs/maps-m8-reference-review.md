@@ -19,27 +19,49 @@ M8 is still shared with optional single-agent A2, but only the multi-agent place
 
 ## Evaluation: M8 Experience Design References
 
-Mode: Search/direct hybrid
+Mode: Search/direct hybrid. Repository stars are a point-in-time research signal from 2026-06-17.
 
 ### Recommended action
 
-Use all listed repos as references. Do not make M8 depend on a UI framework yet. If a later implementation needs a UI dependency, evaluate that specific runtime and product surface then.
+Use two reference shelves. Do not make M8 depend on a UI framework yet. If a later implementation needs a UI dependency, evaluate that specific runtime, target surface, accessibility need, license, bundle impact, and maintenance profile then.
 
-### Candidate breakdown
+### UI Design Systems
 
 | Repo | Verdict | Evidence |
 |---|---|---|
-| `uswds/uswds` | Use as reference only | Strong accessibility and public-service design fit, active as of 2026-06-16 with 7,114 stars; license reports as non-standard/NOASSERTION, so avoid adopting code by default. |
-| `alphagov/govuk-frontend` | Use as reference; adopt with caveats only for service flows | MIT, active as of 2026-06-17, 1,414 stars; excellent fit for service UX, forms, errors, content clarity, and progressive disclosure. |
-| `microsoft/fluentui` | Use as reference only | Very active and high-adoption at 20,057 stars; license reports as non-standard/NOASSERTION through repo metadata, and it is broader/heavier than M3 needs. |
-| `primer/react` | Use as reference; adopt with caveats for React product UI | MIT, active as of 2026-06-17, 3,860 stars; good fit for compact product surfaces and accessible component states. |
-| `assistant-ui/assistant-ui` | Use as reference; adopt with caveats for React assistant surfaces | MIT, active as of 2026-06-17, 10,663 stars; strong fit for chat threads, streaming, tool UI, and assistant-specific interaction patterns. |
-| `CopilotKit/CopilotKit` | Use as reference; adopt with caveats for agentic frontends | MIT, active as of 2026-06-17, 35,247 stars; strong fit for generative UI, shared state, and human-in-the-loop flows, but broader than a phase reference. |
-| `langchain-ai/agent-chat-ui` | Use as reference only | MIT, active as of 2026-06-13, 2,934 stars; useful for agent conversation surfaces, but specifically shaped around LangGraph server/chat assumptions. |
+| `shadcn-ui/ui` | Use as reference; adopt only after runtime review | 116,840 stars; strong fit for copy-in React components, accessible primitives, local ownership, and polished SaaS/product UI. |
+| `radix-ui/primitives` | Use as reference; adopt with caveats for custom design systems | 18,986 stars; excellent reference for focus, overlays, menus, dialogs, and low-level accessibility behavior. |
+| `tailwindlabs/headlessui` | Use as reference; adopt with caveats for Tailwind projects | 28,622 stars; useful for unstyled accessible controls that can inherit the product visual language. |
+| `mui/material-ui` | Use as reference; adopt with caveats for Material-style React apps | 98,425 stars; mature coverage for components, navigation, data display, forms, theming, and dense states. |
+| `ant-design/ant-design` | Use as reference; adopt with caveats for enterprise apps | 98,374 stars; strong reference for operational workflows, tables, filters, dashboards, confirmations, and enterprise density. |
+| `chakra-ui/chakra-ui` | Use as reference; adopt with caveats for SaaS/product UI | 40,441 stars; useful for accessible defaults, themeable controls, and fast product composition. |
+| `mantinedev/mantine` | Use as reference; adopt with caveats for broad React UX coverage | 31,266 stars; broad component and utility surface spanning inputs, overlays, layout, charts, and app utilities. |
+| `heroui-inc/heroui` | Use as reference; adopt with caveats for modern React/Next UI | 29,651 stars; useful for contemporary styling and NextUI-derived component patterns. |
+| `adobe/react-spectrum` | Use as reference; adopt with caveats when accessibility depth matters | 15,541 stars; strong reference for accessibility, adaptive behavior, internationalization, and cross-device rules. |
+| `uswds/uswds` | Use as reference only | 7,114 stars; strong reference for accessibility, plain-language service design, responsive guidance, and public trust. |
+| `alphagov/govuk-frontend` | Use as reference only | 1,414 stars; excellent fit for service UX, forms, errors, content clarity, and progressive disclosure. |
+| `microsoft/fluentui` | Use as reference only | 20,059 stars; useful for dense product interfaces, enterprise controls, theming, and cross-surface component behavior. |
+| `primer/react` | Use as reference only | 3,860 stars; good fit for compact developer-product surfaces, accessible component states, navigation, and dialogs. |
+
+### Agent Interaction Surfaces
+
+| Repo | Verdict | Evidence |
+|---|---|---|
+| `assistant-ui/assistant-ui` | Use as reference; adopt with caveats for React assistant surfaces | 10,666 stars; strong fit for chat threads, streaming, tool UI, and assistant-specific interaction patterns. |
+| `CopilotKit/CopilotKit` | Use as reference; adopt with caveats for agentic frontends | 35,251 stars; strong fit for generative UI, shared state, human-in-the-loop flows, and agent activity inside products. |
+| `langchain-ai/agent-chat-ui` | Use as reference only | 2,934 stars; useful for running-agent conversation surfaces, but shaped around LangGraph server/chat assumptions. |
+| `open-webui/open-webui` | Use as reference only | 142,022 stars; strong reference for full AI product surfaces, model selection, threads, tools, settings, and local-first workflows. |
+| `lobehub/lobehub` | Use as reference only | 78,779 stars; useful for organizing agents, workspaces, scheduling, reporting, and agent operations surfaces. |
+| `mckaywrigley/chatbot-ui` | Use as reference only | 33,273 stars; useful for model-agnostic chat, conversation organization, and configurable assistant surfaces. |
+| `vercel/chatbot` | Use as reference; adopt patterns with runtime review | 20,502 stars; useful for Next.js chat flows, persistence, streaming, artifacts, and Vercel AI SDK integration. |
+| `vercel/ai` | Use as reference; adopt with caveats for TypeScript AI apps | 24,934 stars; strong reference for streaming messages, tool calls, generated UI, structured outputs, and AI application state. |
+| `Chainlit/chainlit` | Use as reference only | 12,218 stars; useful for rapid conversational AI prototypes, session state, feedback, and evaluation-friendly chat surfaces. |
+| `gradio-app/gradio` | Use as reference only | 42,951 stars; useful for demos, controls, multimodal inputs, review queues, and human-in-the-loop AI interfaces. |
+| `streamlit/streamlit` | Use as reference only | 44,992 stars; useful for internal dashboards, inspection tools, review surfaces, and fast data-rich AI workflows. |
 
 ## Local Reference Clones
 
-Shallow clones are kept outside git in `tmp/maps-m8-references/` for local inspection.
+Any shallow reference clones are local inspection cache only and stay outside git under `tmp/`.
 
 ## M8 Build Decision
 
