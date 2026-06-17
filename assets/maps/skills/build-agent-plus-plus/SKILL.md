@@ -24,7 +24,6 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 - Code review and quality skill: `https://github.com/addyosmani/agent-skills/blob/main/skills/code-review-and-quality/SKILL.md`
 - GitHub Spec Kit: `https://github.com/github/spec-kit`
 - OpenAI Agents SDK: `https://github.com/openai/openai-agents-python`
-- LangGraph: `https://github.com/langchain-ai/langgraph`
 - CrewAI: `https://github.com/crewAIInc/crewAI`
 - Google ADK: `https://github.com/google/adk-python`
 - Awesome Agent Skills: `https://github.com/VoltAgent/awesome-agent-skills`
@@ -62,8 +61,10 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 7. Implement the minimum code, configuration, or adapter transformation needed to pass.
 8. Run the slice checks and the relevant regression checks.
 9. Refactor only after checks pass.
-10. Record evidence in the build artifact.
-11. Repeat until the first working agent is usable enough for Phase 4 Equip.
+10. Recommend whether the build should receive an optional code review before Equip.
+11. For higher-risk builds, recommend a second optional review with a different model or reviewer to catch builder-model blind spots.
+12. Record evidence in the build artifact, including review decision, findings, fixes, skipped-review rationale, or unresolved risks.
+13. Repeat until the first working agent is usable enough for Phase 4 Equip.
 
 ## Slice Rules
 
@@ -80,10 +81,20 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 - The proof must fail for the right reason before implementation.
 - If a test-first path is impossible, document why and add the closest verification guard before moving on.
 
+## Optional Review Rules
+
+- Treat code review as optional but worth raising before Phase 4 Equip.
+- Recommend a standard review when the build touches tools, credentials, runtime adapters, production code, user-facing behavior, memory, permissions, or security-sensitive paths.
+- Recommend a second review with a different model or reviewer for high-risk, high-impact, security-sensitive, production-facing, or model-generated changes.
+- The second review should look for blind spots from the original builder model, not repeat the same checklist mechanically.
+- Record whether review was skipped, completed, escalated, or deferred.
+- Record review findings, fixes applied, unresolved risks, and why a different-model review was or was not used.
+
 ## Runtime Adapter Rules
 
 - Treat Codex and Claude Code as runtime profiles unless the target requires transformation beyond install/use instructions.
-- Treat OpenClaw, Manus, Hermes, LangGraph, OpenAI Agents SDK, CrewAI, and Google ADK as possible runtime adapters until their packaging requirements are proven simple.
+- Treat OpenClaw, Manus, Hermes, OpenAI Agents SDK, CrewAI, and Google ADK as possible runtime adapters until their packaging requirements are proven simple.
+- Reserve LangGraph for later multi-agent orchestration implementation or graph-state runtimes when the design requires it.
 - Build only the adapter/profile required for the first working runtime in Phase 3.
 - Defer broader multi-runtime packaging to Phase 6 Deploy unless portability is part of the first working agent.
 - Record unsupported MAPS features and runtime-specific assumptions in the build artifact.
@@ -94,4 +105,5 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 - `agents/{agent-handle}/agent-build.md`
 - Runtime adapter/profile files when required
 - Passing checks or documented blocked checks
+- Optional code review decision and different-model review decision
 - Evidence needed by Phase 4 Equip and Phase 5 Evaluate

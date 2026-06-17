@@ -9,6 +9,7 @@
 | 3 | Test runner | Prove each Build slice. |
 | 3 | Agent runtime | Execute the working agent. |
 | 3 | Browser/runtime verifier | Confirm user-facing or runtime behavior. |
+| 3 | Optional code review | Review Phase 3 changes before Equip, with an optional second pass from a different model or reviewer for higher-risk builds. |
 | 4 | MCP servers | Expose tools, data sources, prompts, and workflows to equipped agents. |
 | 4 | Connectors | Attach GitHub, Gmail, Slack, Drive, databases, and internal systems. |
 | 4 | Secrets and environment configuration | Provide local dev env files, platform runtime secrets, CI/CD secrets, managed secret stores, scoped credentials, and runtime variables. |

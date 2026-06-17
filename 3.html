@@ -56,6 +56,7 @@
               <a href="#output">Output</a>
               <a href="#slices">Slices</a>
               <a href="#adapter">Adapter build</a>
+              <a href="#review">Review</a>
               <a href="#references">References</a>
               <a href="#walkthrough">Walkthrough</a>
               <a href="#resources">Resources</a>
@@ -144,7 +145,7 @@
             </article>
             <article class="maps-panel">
               <h3>Gate</h3>
-              <p>Build exits when the first working agent passes its defined checks and is ready for Phase 4 Equip.</p>
+              <p>Build exits when the first working agent passes its defined checks, optional review is recorded, and the agent is ready for Phase 4 Equip.</p>
             </article>
           </div>
         </section>
@@ -222,6 +223,30 @@
             <article class="maps-panel">
               <h3>Runtime proof</h3>
               <p>Verify the first slice in the selected runtime or a safe sandbox, then record known incompatibilities for Equip, Evaluate, and Deploy.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="review" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Optional code review</h2>
+            <p>
+              Phase 3 should raise code review as an optional Build gate before Equip, especially when the agent touches tools, credentials, runtime adapters, production code, or user-facing behavior.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Standard review</h3>
+              <p>Run a code review pass for bugs, security issues, missing tests, broken assumptions, runtime edge cases, and handoff gaps.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Different-model review</h3>
+              <p>For higher-risk builds, run a second review with a different model or reviewer to catch blind spots from the builder model.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Review evidence</h3>
+              <p>Record whether review was skipped, completed, or escalated, plus findings, fixes, unresolved risks, and why a second pass was or was not used.</p>
             </article>
           </div>
         </section>

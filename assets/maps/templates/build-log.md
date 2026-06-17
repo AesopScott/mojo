@@ -16,6 +16,14 @@
 
 - 
 
+## Optional Review Evidence
+
+- Standard review:
+- Different-model review:
+- Findings fixed:
+- Unresolved risks:
+- Skipped or deferred rationale:
+
 ## Blockers
 
 - 

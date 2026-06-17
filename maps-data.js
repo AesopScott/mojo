@@ -245,6 +245,10 @@ window.MAPS_SITE = {
         note: "Confirms user-facing or runtime behavior when the build has visible output."
       },
       {
+        name: "Optional code review",
+        note: "Reviews Phase 3 changes before Equip, with an optional second pass from a different model or reviewer for higher-risk builds."
+      },
+      {
         name: "MCP servers",
         note: "Expose tools, data sources, prompts, and workflows to equipped agents."
       },
@@ -355,7 +359,7 @@ window.MAPS_SITE = {
     "3": {
       skills: ["/build-agent++", "/build-agent"],
       repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
-      tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
+      tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier", "Optional code review"],
       templates: ["templates/agent-build-plan.md", "templates/build-log.md"]
     },
     "4": {

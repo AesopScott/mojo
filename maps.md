@@ -65,6 +65,8 @@ Build should record:
 - Memory setup:
 - Permission gates:
 - Verification command or manual check:
+- Optional code review decision:
+- Optional different-model review decision:
 - Known incompatibilities:
 - Handoff notes for Equip, Evaluate, and Deploy:
 

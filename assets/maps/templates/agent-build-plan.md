@@ -35,6 +35,16 @@
 - Scenario eval:
 - Runtime/manual:
 
+## Optional Code Review
+
+- Standard review recommended:
+- Standard review result:
+- Different-model review recommended:
+- Different-model review result:
+- Findings fixed:
+- Unresolved risks:
+- Review skipped or deferred rationale:
+
 ## Handoff
 
 - Ready for Phase 4 Equip:
