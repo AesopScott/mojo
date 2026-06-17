@@ -111,6 +111,12 @@ window.MAPS_SITE = {
   resources: {
     skills: [
       {
+        name: "/foundation",
+        url: "assets/maps/skills/foundation/SKILL.md",
+        download: true,
+        note: "Starts M0 Project Foundation with project intent, notes scaffold, source inventory, evidence index, assumptions, decisions, and RAG-readiness."
+      },
+      {
         name: "/scaffold",
         url: "assets/maps/skills/scaffold/SKILL.md",
         download: true,
@@ -696,6 +702,12 @@ window.MAPS_SITE = {
       }
     ],
     templates: [
+      {
+        name: "templates/project-foundation.md",
+        url: "assets/maps/templates/project-foundation.md",
+        download: true,
+        note: "Captures M0 Project Foundation: intent, scaffold, evidence, sources, assumptions, decisions, open questions, and RAG readiness."
+      },
       {
         name: "templates/maps-scaffold-template.md",
         url: "assets/maps/templates/maps-scaffold-template.md",

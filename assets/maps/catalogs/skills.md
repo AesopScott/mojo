@@ -2,6 +2,7 @@
 
 | Phase | Skill | Purpose |
 |---|---|---|
+| M0 | `/foundation` | Start Project Foundation with project intent, notes scaffold, source inventory, evidence index, assumptions, decisions, and RAG-readiness. |
 | 0 | `/scaffold` | Create the MAPS structure. |
 | 0 | `phase-alignment` | Align lifecycle names, boundaries, and catalogs. |
 | 1 | `/define-agent` | Create the agent brief. |
