@@ -38,7 +38,7 @@ window.MAPS_SITE = {
       label: "Phase 4",
       title: "Equip",
       output: "Capability map",
-      status: "under-construction"
+      status: "available"
     },
     {
       number: "5",
@@ -110,6 +110,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/build-agent-plus-plus/SKILL.md",
         download: true,
         note: "MAPS Build skill that merges base /build-agent, incremental implementation, and test-driven development."
+      },
+      {
+        name: "/equip-agent",
+        url: "assets/maps/skills/equip-agent/SKILL.md",
+        download: true,
+        note: "Creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, and operating limits."
       }
     ],
     repos: [
@@ -167,6 +173,16 @@ window.MAPS_SITE = {
         name: "microsoft/ai-agents-for-beginners",
         url: "https://github.com/microsoft/ai-agents-for-beginners",
         note: "Beginner-friendly curriculum for building agent systems."
+      },
+      {
+        name: "modelcontextprotocol/modelcontextprotocol",
+        url: "https://github.com/modelcontextprotocol/modelcontextprotocol",
+        note: "Reference for connecting agents to tools, data sources, prompts, and workflows through MCP."
+      },
+      {
+        name: "pydantic/pydantic-ai",
+        url: "https://github.com/pydantic/pydantic-ai",
+        note: "Reference for type-safe tools, dependency injection, and service access in agents."
       }
     ],
     tools: [
@@ -206,6 +222,22 @@ window.MAPS_SITE = {
       {
         name: "Browser/runtime verifier",
         note: "Confirms user-facing or runtime behavior when the build has visible output."
+      },
+      {
+        name: "MCP servers",
+        note: "Expose tools, data sources, prompts, and workflows to equipped agents."
+      },
+      {
+        name: "Connectors",
+        note: "Attach services such as GitHub, Gmail, Slack, Drive, databases, or internal systems."
+      },
+      {
+        name: "Secrets and environment configuration",
+        note: "Provides API keys, runtime variables, scoped credentials, and deployment configuration."
+      },
+      {
+        name: "Memory and retrieval stores",
+        note: "Provides short-term state, long-term memory, vector retrieval, or structured knowledge sources."
       }
     ],
     catalogs: [
@@ -270,6 +302,12 @@ window.MAPS_SITE = {
         url: "assets/maps/templates/build-log.md",
         download: true,
         note: "Records implementation evidence, checks, decisions, blockers, and next-phase notes."
+      },
+      {
+        name: "templates/capability-map.md",
+        url: "assets/maps/templates/capability-map.md",
+        download: true,
+        note: "Captures Phase 4 tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
       }
     ]
   },
@@ -300,6 +338,13 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "langchain-ai/langgraph", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
       tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
       templates: ["templates/agent-build-plan.md", "templates/build-log.md"],
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
+    },
+    "4": {
+      skills: ["/equip-agent"],
+      repos: ["AesopScott/maps", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "langchain-ai/langgraph", "pydantic/pydantic-ai"],
+      tools: ["Git", "Agent Skills", "MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
+      templates: ["templates/capability-map.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
     }
   }

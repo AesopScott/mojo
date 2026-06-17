@@ -8,3 +8,4 @@
 | 2 | `/design-agent` | Create the agent design through Research and Recommend. |
 | 3 | `/build-agent` | Base Build skill. |
 | 3 | `/build-agent++` | Build with incremental implementation and TDD. |
+| 4 | `/equip-agent` | Create the capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks. |

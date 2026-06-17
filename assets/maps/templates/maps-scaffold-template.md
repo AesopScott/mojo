@@ -22,7 +22,7 @@ Use this template to create a repeatable MAPS repository structure.
 - Phase 1: agent brief
 - Phase 2: agent design
 - Phase 3: agent build
-- Phase 4: capability map
+- Phase 4: capability map with tools, permissions, memory, connectors, runtime settings, limits, and fallbacks
 - Phase 5: eval suite
 - Phase 6: release plan
 - Phase 7: observation plan

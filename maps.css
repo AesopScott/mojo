@@ -212,6 +212,25 @@ body.maps-page {
   font-size: 13px;
 }
 
+.maps-equip-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 720px;
+  margin-top: 24px;
+}
+
+.maps-equip-list span {
+  padding: 9px 10px;
+  border: 1px solid rgba(35, 107, 99, 0.22);
+  border-left: 4px solid var(--maps-teal);
+  border-radius: 8px;
+  color: #315f51;
+  background: #eef7f2;
+  font-size: 14px;
+  font-weight: 720;
+}
+
 .maps-button {
   display: inline-flex;
   align-items: center;
@@ -932,6 +951,7 @@ body.maps-page {
   .maps-path-chooser,
   .maps-rule-grid,
   .maps-walkthrough,
+  .maps-equip-list,
   .maps-scope-strip {
     grid-template-columns: 1fr;
   }

@@ -12,3 +12,7 @@
 | 3 | `VoltAgent/awesome-agent-skills` | Skill catalog reference. |
 | 3 | `davila7/claude-code-templates` | Agent, command, hook, MCP, and template catalog reference. |
 | 3 | `microsoft/ai-agents-for-beginners` | Beginner-friendly agent build curriculum. |
+| 4 | `modelcontextprotocol/modelcontextprotocol` | MCP tool, connector, prompt, and workflow standard reference. |
+| 4 | `openai/openai-agents-python` | Tools, handoffs, guardrails, sessions, tracing, and runtime behavior reference. |
+| 4 | `langchain-ai/langgraph` | Durable state, memory, and runtime persistence reference. |
+| 4 | `pydantic/pydantic-ai` | Type-safe tools and dependency injection reference. |
