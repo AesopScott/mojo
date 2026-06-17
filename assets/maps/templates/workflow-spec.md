@@ -43,6 +43,14 @@
 - Mock policy:
 - Regression gates:
 
+## Build Backlog Summary
+
+- Backlog source:
+- Prioritization method:
+- First build slice:
+- Dependency risks:
+- Deferred improvement items:
+
 ## Build Gate
 
 - Required before Phase 3:

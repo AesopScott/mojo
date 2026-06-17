@@ -6,6 +6,12 @@
 | 0 | GitHub CLI | Repository setup and publishing. |
 | 1 | Git | Save phase artifacts. |
 | 2 | Web and repository research | Find comparable agents and build patterns. |
+| 2 | Backlog planning | Turn the design into prioritized, dependency-aware build slices and deferred improvement items before implementation starts. |
+| 2 | Scrum Guide product backlog | Treat the backlog as an ordered, evolving source of product work. |
+| 2 | Atlassian product backlog guide | Refine, prioritize, and align backlog items before implementation. |
+| 2 | GitHub sub-issues | Break larger backlog items into smaller child issues with visible dependency structure. |
+| 3 | Backlog planning | Pull the highest-priority unblocked backlog item into Build and split oversized items before coding. |
+| 3 | GitHub sub-issues | Keep implementation slices small enough to prove independently. |
 | 3 | Test runner | Prove each Build slice. |
 | 3 | Agent runtime | Execute the working agent. |
 | 3 | Browser/runtime verifier | Confirm user-facing or runtime behavior. |
@@ -23,3 +29,7 @@
 | 6 | Runtime packaging | Provide manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes. |
 | 6 | MCPB | Provide portable MCP server bundles with manifest metadata, capabilities, runtime requirements, and install packaging. |
 | 6 | Temporal durable execution | Provide durable workflow execution, retries, state persistence, recovery, and activity-based tool calls for production agents. |
+| 8 | Backlog planning | Convert observation, eval, incident, and feedback evidence into prioritized improvement work. |
+| 8 | Scrum Guide product backlog | Keep the improvement backlog ordered and evolving as new evidence appears. |
+| 8 | Atlassian product backlog guide | Refine improvement items and make tradeoffs before another build cycle starts. |
+| 8 | GitHub sub-issues | Split larger improvement projects into smaller implementation-ready items. |

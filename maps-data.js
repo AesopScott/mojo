@@ -97,7 +97,7 @@ window.MAPS_SITE = {
         name: "/design-agent",
         url: "assets/maps/skills/design-agent/SKILL.md",
         download: true,
-        note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md."
+        note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md and agents/{agent-handle}/agent-backlog.md."
       },
       {
         name: "/build-agent",
@@ -306,9 +306,28 @@ window.MAPS_SITE = {
         note: "Finds comparable agents, reference architectures, implementation patterns, and design guidance."
       },
       {
+        name: "Backlog planning",
+        note: "Turns the approved design into prioritized, dependency-aware build slices and deferred improvement items before implementation starts."
+      },
+      {
         name: "Addy Osmani agent spec guidance",
         url: "https://addyosmani.com/blog/good-spec/",
         note: "Useful Design reference for objectives, context, constraints, acceptance criteria, and boundaries."
+      },
+      {
+        name: "Scrum Guide product backlog",
+        url: "https://scrumguides.org/scrum-guide.html#product-backlog",
+        note: "Reference for treating the backlog as an ordered, evolving source of work."
+      },
+      {
+        name: "Atlassian product backlog guide",
+        url: "https://www.atlassian.com/agile/scrum/backlogs",
+        note: "Reference for refining, prioritizing, and aligning backlog items before implementation."
+      },
+      {
+        name: "GitHub sub-issues",
+        url: "https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues",
+        note: "Reference for breaking larger backlog items into smaller child issues with visible dependency structure."
       },
       {
         name: "Test runner",
@@ -413,6 +432,12 @@ window.MAPS_SITE = {
         note: "Captures the Phase 2 Design artifact."
       },
       {
+        name: "templates/agent-backlog.md",
+        url: "assets/maps/templates/agent-backlog.md",
+        download: true,
+        note: "Captures prioritized build slices, dependencies, proof, runtime impact, status, and deferred improvements."
+      },
+      {
         name: "templates/agent-build-plan.md",
         url: "assets/maps/templates/agent-build-plan.md",
         download: true,
@@ -453,6 +478,12 @@ window.MAPS_SITE = {
         url: "assets/maps/templates/deployment-record.md",
         download: true,
         note: "Captures Phase 6 deployment evidence, GitHub/Cloudflare run details, smoke results, rollback readiness, and Observe handoff."
+      },
+      {
+        name: "templates/improvement-backlog.md",
+        url: "assets/maps/templates/improvement-backlog.md",
+        download: true,
+        note: "Captures Phase 8 improvement items from observations, eval failures, incidents, user feedback, dependencies, priorities, and next improvement slices."
       }
     ]
   },
@@ -472,14 +503,14 @@ window.MAPS_SITE = {
     "2": {
       skills: ["/design-agent"],
       repos: ["AesopScott/maps"],
-      tools: ["Git", "Agent Skills", "Web and repository research"],
-      templates: ["templates/workflow-spec.md"]
+      tools: ["Git", "Agent Skills", "Web and repository research", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
+      templates: ["templates/workflow-spec.md", "templates/agent-backlog.md"]
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],
       repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
-      tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier", "Optional code review"],
-      templates: ["templates/agent-build-plan.md", "templates/build-log.md"]
+      tools: ["Git", "Agent Skills", "Backlog planning", "GitHub sub-issues", "Test runner", "Agent runtime", "Browser/runtime verifier", "Optional code review"],
+      templates: ["templates/agent-backlog.md", "templates/agent-build-plan.md", "templates/build-log.md"]
     },
     "4": {
       skills: ["/equip-agent"],
@@ -498,6 +529,12 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps", "cloudflare/agents", "cloudflare/workers-sdk", "modelcontextprotocol/mcpb", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "temporalio/sdk-python", "temporal-community/openai-agents-demos", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
       tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging", "MCPB", "Temporal durable execution"],
       templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
+    },
+    "8": {
+      skills: [],
+      repos: ["AesopScott/maps"],
+      tools: ["Git", "Agent Skills", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
+      templates: ["templates/agent-backlog.md", "templates/improvement-backlog.md"]
     }
   }
 };

@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=agents-primer">
-    <script src="maps-data.js?v=base-evaluate-skill" defer></script>
+    <script src="maps-data.js?v=backlog-planning" defer></script>
     <script src="maps-page.js?v=repo-stars-plain" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="2">
@@ -58,6 +58,7 @@
               <a href="#output">Output</a>
               <a href="#questions">Design questions</a>
               <a href="#runtime">Runtime target</a>
+              <a href="#backlog">Backlog</a>
               <a href="#proof">Proof plan</a>
               <a href="#alternatives">References</a>
               <a href="#walkthrough">Build path</a>
@@ -119,7 +120,7 @@
           <div class="maps-section-header">
             <h2>Phase 2 output</h2>
             <p>
-              At the end of Design, the required artifact is `agents/{agent-handle}/agent-design.md`.
+              At the end of Design, the required artifacts are `agents/{agent-handle}/agent-design.md` and `agents/{agent-handle}/agent-backlog.md`.
             </p>
           </div>
 
@@ -137,8 +138,12 @@
               <p><a href="assets/maps/templates/workflow-spec.md" download><strong>`templates/workflow-spec.md`</strong></a> provides the design structure.</p>
             </article>
             <article class="maps-panel">
+              <h3>Backlog template</h3>
+              <p><a href="assets/maps/templates/agent-backlog.md" download><strong>`templates/agent-backlog.md`</strong></a> turns the design into prioritized build slices, dependencies, and deferred improvement items.</p>
+            </article>
+            <article class="maps-panel">
               <h3>Artifact</h3>
-              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> captures recommendations, overrides, workflow, roles, controls, runtime target, adapter requirements, and proof needs.</p>
+              <p><strong>`agent-design.md`</strong> captures recommendations and proof needs; <strong>`agent-backlog.md`</strong> captures the ordered work before Build starts.</p>
             </article>
           </div>
         </section>
@@ -217,6 +222,11 @@
                   <td>Add required gates before Build starts.</td>
                 </tr>
                 <tr>
+                  <td>Backlog and dependencies</td>
+                  <td>Epics, build slices, task dependencies, priority order, first slice, deferred items, and proof required per item.</td>
+                  <td>Reorder, split, combine, defer, or mark blocked items before Build starts.</td>
+                </tr>
+                <tr>
                   <td>Runtime target and adapter requirement</td>
                   <td>Primary runtime, secondary runtimes, skill format, tool interface, memory model, sandbox assumptions, packaging path, and portability risks.</td>
                   <td>Choose the target runtime or mark the design runtime-neutral until Build.</td>
@@ -246,6 +256,42 @@
             <article class="maps-panel">
               <h3>Portability risks</h3>
               <p>Record unsupported MAPS features, tool limitations, memory differences, sandbox constraints, approval gaps, and packaging risks before Build begins.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="backlog" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Backlog-driven build planning</h2>
+            <p>
+              Design should turn the approved direction into a dependency-aware backlog before Phase 3 starts.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Break it down</h3>
+              <p>Split large projects into epics, slices, tasks, spikes, and deferred improvement items that can be reasoned about separately.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Map dependencies</h3>
+              <p>Name prerequisites, blocked work, runtime adapter needs, data/setup work, and proof gates so Build does not start in the wrong order.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Prioritize</h3>
+              <p>Order work by user value, risk reduction, dependency sequence, safety, and the smallest slice that proves real behavior.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Define the first slice</h3>
+              <p>Choose the smallest vertical behavior that can be implemented, tested, reviewed, and handed to Equip without dragging the whole project behind it.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Defer consciously</h3>
+              <p>Move polish, later capabilities, tech debt, and observation-driven improvements into the Phase 8 improvement backlog instead of hiding them in Build.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Create the artifact</h3>
+              <p>Use <a href="assets/maps/templates/agent-backlog.md" download><strong>`templates/agent-backlog.md`</strong></a> so the Build agent receives ordered work, dependencies, proof, and status.</p>
             </article>
           </div>
         </section>
@@ -315,6 +361,21 @@
               <p>Process reference for moving from intent to specification, technical plan, tasks, and implementation.</p>
             </article>
             <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog definition</p>
+              <h3><a href="https://scrumguides.org/scrum-guide.html#product-backlog" target="_blank" rel="noopener noreferrer">Scrum Guide product backlog</a></h3>
+              <p>Reference for treating the backlog as an emergent ordered list of work needed to improve the product.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog refinement</p>
+              <h3><a href="https://www.atlassian.com/agile/scrum/backlogs" target="_blank" rel="noopener noreferrer">Atlassian product backlog guide</a></h3>
+              <p>Reference for prioritizing, refining, and aligning backlog items before the team starts implementation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Work breakdown</p>
+              <h3><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues" target="_blank" rel="noopener noreferrer">GitHub sub-issues</a></h3>
+              <p>Reference for breaking larger work into smaller related items that can be tracked by parent/sub-issue progress.</p>
+            </article>
+            <article class="maps-reference-card">
               <p class="maps-layer-kicker">Test-first workflow reference</p>
               <h3><a href="https://code.visualstudio.com/docs/copilot/guides/test-driven-development-guide" target="_blank" rel="noopener noreferrer">VS Code Copilot TDD guide</a></h3>
               <p>Reference for designing a test-first workflow with custom agents, handoffs, and planning before Build. Actual TDD execution belongs mainly in Phase 3.</p>
@@ -369,6 +430,15 @@
                 <p>User overrides and runtime portability notes should appear in `agents/{agent-handle}/agent-design.md`.</p>
               </details>
             </article>
+            <article class="maps-step">
+              <span>05</span>
+              <h3>Write the backlog</h3>
+              <p>Turn the design into prioritized backlog items with dependencies, proof, first slice, and deferred improvement work.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Phase 3 should receive ordered work, not a vague project description.</p>
+              </details>
+            </article>
           </div>
         </section>
 
@@ -376,7 +446,7 @@
           <div class="maps-section-header">
             <h2>Phase 2 resources</h2>
             <p>
-              <a href="assets/maps/skills/design-agent/SKILL.md" download>`/design-agent`</a> uses <a href="assets/maps/templates/workflow-spec.md" download>`templates/workflow-spec.md`</a> to produce `agents/{agent-handle}/agent-design.md`. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
+              <a href="assets/maps/skills/design-agent/SKILL.md" download>`/design-agent`</a> uses <a href="assets/maps/templates/workflow-spec.md" download>`templates/workflow-spec.md`</a> and <a href="assets/maps/templates/agent-backlog.md" download>`templates/agent-backlog.md`</a> to produce the design and build backlog. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
             </p>
           </div>
 

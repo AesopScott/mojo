@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=agents-primer">
-    <script src="maps-data.js?v=base-evaluate-skill" defer></script>
+    <script src="maps-data.js?v=backlog-planning" defer></script>
     <script src="maps-page.js?v=repo-stars-plain" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="3">
@@ -56,6 +56,7 @@
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#skill">Build skill</a>
               <a href="#output">Output</a>
+              <a href="#backlog">Backlog</a>
               <a href="#slices">Slices</a>
               <a href="#adapter">Adapter build</a>
               <a href="#review">Review</a>
@@ -127,7 +128,7 @@
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Input</h3>
-              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> from Phase 2 Design.</p>
+              <p><strong>`agents/{agent-handle}/agent-design.md`</strong> and <strong>`agents/{agent-handle}/agent-backlog.md`</strong> from Phase 2 Design.</p>
             </article>
             <article class="maps-panel">
               <h3>Skill</h3>
@@ -152,6 +153,34 @@
           </div>
         </section>
 
+        <section id="backlog" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Build from the backlog</h2>
+            <p>
+              Phase 3 should start from the dependency-aware backlog created in Design, not from a fresh interpretation of the project.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Check readiness</h3>
+              <p>Confirm the selected backlog item has prerequisites, runtime setup, proof, and acceptance criteria before implementation starts.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Respect dependencies</h3>
+              <p>Do not pull blocked items forward. Build prerequisite slices, spikes, adapters, or fixtures first.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Keep slices small</h3>
+              <p>If an item is too large to prove independently, split it again and update the backlog before coding.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Update status</h3>
+              <p>Record completed, blocked, deferred, and newly discovered backlog items in the build evidence.</p>
+            </article>
+          </div>
+        </section>
+
         <section id="slices" class="maps-section">
           <div class="maps-section-header">
             <h2>Build one slice at a time</h2>
@@ -170,6 +199,11 @@
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td>Which backlog item is ready?</td>
+                  <td>The highest-priority unblocked item from `agent-backlog.md`, or a smaller split item if the original is too large.</td>
+                  <td>Backlog ID, dependency check, priority, and ready/blocked status.</td>
+                </tr>
                 <tr>
                   <td>What is the first useful behavior?</td>
                   <td>The smallest vertical slice that proves the agent can do real work.</td>
@@ -288,6 +322,16 @@
               <p>Template/process reference for moving from spec to plan, tasks, implementation, and validation.</p>
             </article>
             <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog breakdown</p>
+              <h3><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues" target="_blank" rel="noopener noreferrer">GitHub sub-issues</a></h3>
+              <p>Reference for breaking large backlog items into smaller child issues before implementation starts.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog order</p>
+              <h3><a href="https://scrumguides.org/scrum-guide.html#product-backlog" target="_blank" rel="noopener noreferrer">Scrum Guide product backlog</a></h3>
+              <p>Reference for treating the backlog as the ordered source of work Build pulls from.</p>
+            </article>
+            <article class="maps-reference-card">
               <p class="maps-layer-kicker">Agent runtime</p>
               <h3><a href="https://github.com/openai/openai-agents-python" target="_blank" rel="noopener noreferrer">OpenAI Agents SDK</a></h3>
               <p>Reference for tools, handoffs, guardrails, sessions, tracing, and sandbox agents.</p>
@@ -329,7 +373,7 @@
             <article class="maps-step">
               <span>01</span>
               <h3>Check the gate</h3>
-              <p>Read the Phase 2 design and confirm the Build gate is satisfied.</p>
+              <p>Read the Phase 2 design and backlog, then confirm the Build gate is satisfied.</p>
               <details>
                 <summary>Check it</summary>
                 <p>The build should not start from unresolved design questions.</p>
@@ -337,8 +381,8 @@
             </article>
             <article class="maps-step">
               <span>02</span>
-              <h3>Pick runtime and slice</h3>
-              <p>Choose the target runtime/profile and the smallest behavior that proves the agent can make progress.</p>
+              <h3>Pick runtime and backlog item</h3>
+              <p>Choose the target runtime/profile and the highest-priority unblocked backlog item that can be proven as a small slice.</p>
               <details>
                 <summary>Check it</summary>
                 <p>The slice should be observable through a test, eval, trace, or runtime check in the selected runtime or sandbox.</p>

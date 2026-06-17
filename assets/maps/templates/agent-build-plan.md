@@ -3,9 +3,19 @@
 ## Input
 
 - Agent design:
+- Agent backlog:
 - Build gate:
 - Target runtime:
 - Runtime profile or adapter requirement:
+
+## Backlog Item
+
+- Backlog ID:
+- Priority:
+- Depends on:
+- Ready/blocked:
+- Split needed:
+- Deferred follow-ups:
 
 ## Runtime Adapter Build
 

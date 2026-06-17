@@ -1,5 +1,5 @@
 ---
-name: build-agent++
+name: build-agent-plus-plus
 description: MAPS Phase 3 Build skill that merges base /build-agent, incremental implementation, and test-driven development into one implementation workflow.
 ---
 
@@ -33,6 +33,7 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 ## Inputs
 
 - `agents/{agent-handle}/agent-design.md`
+- `agents/{agent-handle}/agent-backlog.md`
 - Phase 2 Build gate and proof plan
 - Target runtime, framework, or platform
 - Runtime profile or adapter requirement from Phase 2
@@ -47,29 +48,32 @@ This skill is MAPS-native, but it is explicitly augmented by these reference ski
 
 ## Workflow
 
-1. Read the approved agent design.
-2. Extract the build target, runtime target, adapter requirement, behavior contract, tool boundaries, and proof plan.
+1. Read the approved agent design and dependency-aware backlog.
+2. Extract the build target, runtime target, adapter requirement, behavior contract, backlog priority, dependencies, tool boundaries, and proof plan.
 3. Create or update `agents/{agent-handle}/agent-build.md` with:
    - implementation slices
    - runtime adapter/profile work
    - tests or evals per slice
    - acceptance evidence
    - remaining risks
-4. If the first working agent needs a runtime adapter or runtime profile, create the smallest adapter/profile that lets the first slice run.
-5. Choose the first thin vertical slice that creates observable agent behavior.
-6. Write or update the smallest failing test, eval, fixture, or scripted check for that slice.
-7. Implement the minimum code, configuration, or adapter transformation needed to pass.
-8. Run the slice checks and the relevant regression checks.
-9. Refactor only after checks pass.
-10. Recommend whether the build should receive an optional code review before Equip.
-11. For higher-risk builds, recommend a second optional review with a different model or reviewer to catch builder-model blind spots.
-12. Record evidence in the build artifact, including review decision, findings, fixes, skipped-review rationale, or unresolved risks.
-13. Repeat until the first working agent is usable enough for Phase 4 Equip.
+4. Select the highest-priority unblocked backlog item. If it is too large, split it into smaller items before coding.
+5. If the first working agent needs a runtime adapter or runtime profile, create the smallest adapter/profile that lets the first slice run.
+6. Choose the first thin vertical slice that creates observable agent behavior.
+7. Write or update the smallest failing test, eval, fixture, or scripted check for that slice.
+8. Implement the minimum code, configuration, or adapter transformation needed to pass.
+9. Run the slice checks and the relevant regression checks.
+10. Refactor only after checks pass.
+11. Recommend whether the build should receive an optional code review before Equip.
+12. For higher-risk builds, recommend a second optional review with a different model or reviewer to catch builder-model blind spots.
+13. Record evidence in the build artifact, including review decision, findings, fixes, skipped-review rationale, or unresolved risks.
+14. Repeat until the first working agent is usable enough for Phase 4 Equip.
 
 ## Slice Rules
 
 - Each slice must leave the system working.
 - Prefer vertical behavior over horizontal plumbing.
+- Pull slices from the backlog in priority/dependency order.
+- Split oversized backlog items before implementation.
 - Keep defaults safe and reversible.
 - Do not add broad abstractions before the second real use.
 - Treat external tools as explicit boundaries with failure behavior.

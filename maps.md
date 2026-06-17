@@ -17,13 +17,13 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 |---|---|---|---|---|
 | 0 Phase Alignment | `0.html` | Scaffold and structure | Available | Keep MAPS/M and APS boundaries clear. |
 | 1 Define | `1.html` | Agent brief | Available | Keep authority, user, outcome, success, failure, and escalation fields aligned with later phases. |
-| 2 Design | `2.html` | Agent design | Available | Add runtime target and adapter requirement planning. |
-| 3 Build | `3.html` | Working agent | Available | Build adapter/profile when needed for the first working runtime. |
+| 2 Design | `2.html` | Agent design and build backlog | Available | Add runtime target, adapter requirement planning, dependency mapping, priority order, and first build slice. |
+| 3 Build | `3.html` | Working agent | Available | Build from the highest-priority unblocked backlog item; split oversized work before coding. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
 | 6 Deploy | `6.html` | Release plan and deployment record | Available | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
-| 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, and user feedback into the next iteration. |
+| 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, incidents, and user feedback into prioritized improvement backlog items with dependencies. |
 
 ## Runtime Adapter Model
 
@@ -52,9 +52,19 @@ Design should answer:
 
 Phase 2 should not build the adapter. It should produce the adapter requirement and portability notes.
 
+Phase 2 should also produce `agents/{agent-handle}/agent-backlog.md`. The backlog should break the approved design into smaller build items, record dependencies, assign priority, identify the first build slice, and defer polish or evidence-driven follow-up work to Phase 8.
+
+Backlog planning references:
+
+- Scrum Guide product backlog: ordered, evolving source of work.
+- Atlassian product backlog guide: refinement, priority, and implementation readiness.
+- GitHub sub-issues: split larger work into smaller child issues with visible structure.
+
 ## Phase 3 Build Additions
 
 Build should create or assemble the runtime adapter/profile only when it is required for the first working agent.
+
+Build should start from `agent-backlog.md`, choose the highest-priority unblocked item, and split the item again if it is too large to prove independently.
 
 Build should record:
 
@@ -69,6 +79,8 @@ Build should record:
 - Optional different-model review decision:
 - Known incompatibilities:
 - Handoff notes for Equip, Evaluate, and Deploy:
+
+Build should update backlog status as work completes, blocks, splits, or gets deferred.
 
 ## Candidate Runtime Profiles And Adapters
 
@@ -169,11 +181,32 @@ Phase 6 must not claim deployment happened when only packaging or specification 
 
 Phase 6 references should include Cloudflare Agents SDK, cloudflare/agents, cloudflare/workers-sdk, GitHub Actions environments, Cloudflare rollback docs, MCPB package/manifest references, Google ADK, Google Agent Starter Pack, OpenAI Agents Python and JS, Temporal + OpenAI Agents SDK durable execution, OpenClaw, AutoClaw, Hermes Agent, Electron Forge, and electron-builder.
 
+## Phase 8 Improve Additions
+
+Improve should convert observations, eval failures, incidents, user feedback, and technical debt into an improvement backlog before another build cycle starts.
+
+Phase 8 should record:
+
+- Improvement source and evidence:
+- Priority:
+- Dependencies:
+- Target phase for the fix or enhancement:
+- Smallest independently provable improvement slice:
+- Regression or safety proof required:
+- Deferred items:
+
+Use `templates/improvement-backlog.md` for Phase 8. If an improvement is too broad, split it into smaller backlog items before sending it back into Design or Build.
+
 ## Immediate Backlog
 
 - Add runtime target and adapter requirement content to Phase 2.
+- Add backlog-driven build planning content to Phase 2.
 - Add runtime adapter/profile build content to Phase 3.
+- Add backlog-driven build execution content to Phase 3.
+- Add Phase 8 improvement backlog content when `8.html` is built.
 - Update `templates/workflow-spec.md` with runtime target fields.
+- Add `templates/agent-backlog.md` for Design-to-Build planning.
+- Add `templates/improvement-backlog.md` for evidence-driven improvement planning.
 - Update `templates/agent-build-plan.md` with runtime adapter build fields.
 - Update `/build-agent++` so adapter/profile work is explicit.
 - Consider future downloadable runtime adapter templates:
