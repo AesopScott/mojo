@@ -52,11 +52,11 @@
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#skill">Build skill</a>
               <a href="#output">Output</a>
-              <a href="#adapter">Adapter build</a>
               <a href="#slices">Slices</a>
+              <a href="#adapter">Adapter build</a>
               <a href="#references">References</a>
               <a href="#walkthrough">Walkthrough</a>
-              <a href="#resources">Downloads</a>
+              <a href="#resources">Resources</a>
             </div>
           </div>
         </nav>
@@ -73,8 +73,8 @@
             merged into one slice-by-slice workflow.
           </p>
           <div class="maps-actions">
-            <a class="maps-button primary" href="assets/maps/skills/build-agent-plus-plus/SKILL.md" download>Download /build-agent++</a>
-            <a class="maps-button" href="assets/maps/skills/build-agent/SKILL.md" download>Download base /build-agent</a>
+            <a class="maps-button primary" href="#skill">Review /build-agent++</a>
+            <a class="maps-button" href="#output">See the output</a>
             <a class="maps-button" href="2.html">Back to Phase 2</a>
           </div>
         </div>
@@ -147,30 +147,6 @@
           </div>
         </section>
 
-        <section id="adapter" class="maps-section">
-          <div class="maps-section-header">
-            <h2>Runtime adapter build</h2>
-            <p>
-              Build creates runtime-specific packaging only when the first working agent needs it.
-            </p>
-          </div>
-
-          <div class="maps-grid">
-            <article class="maps-panel">
-              <h3>Runtime profile</h3>
-              <p>Use a lightweight profile when the runtime can consume MAPS-style skills directly and only needs install paths, repo instructions, tool discovery, or usage notes.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Runtime adapter</h3>
-              <p>Build an adapter when the runtime needs transformed files, API wrappers, tool bindings, memory setup, permission gates, or import/export packaging.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Runtime proof</h3>
-              <p>Verify the first slice in the selected runtime or a safe sandbox, then record known incompatibilities for Equip, Evaluate, and Deploy.</p>
-            </article>
-          </div>
-        </section>
-
         <section id="slices" class="maps-section">
           <div class="maps-section-header">
             <h2>Build one slice at a time</h2>
@@ -221,6 +197,30 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <section id="adapter" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime adapter build</h2>
+            <p>
+              Build creates runtime-specific packaging only when the first working agent needs it.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Runtime profile</h3>
+              <p>Use a lightweight profile when the runtime can consume MAPS-style skills directly and only needs install paths, repo instructions, tool discovery, or usage notes.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Runtime adapter</h3>
+              <p>Build an adapter when the runtime needs transformed files, API wrappers, tool bindings, memory setup, permission gates, or import/export packaging.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Runtime proof</h3>
+              <p>Verify the first slice in the selected runtime or a safe sandbox, then record known incompatibilities for Equip, Evaluate, and Deploy.</p>
+            </article>
           </div>
         </section>
 
@@ -343,9 +343,9 @@
 
         <section id="resources" class="maps-section">
           <div class="maps-section-header">
-            <h2>Phase 3 downloads</h2>
+            <h2>Phase 3 resources</h2>
             <p>
-              Download <a href="assets/maps/skills/build-agent-plus-plus/SKILL.md" download>`/build-agent++`</a>, the base <a href="assets/maps/skills/build-agent/SKILL.md" download>`/build-agent`</a>, and the Build templates from this resource list. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
+              <a href="assets/maps/skills/build-agent-plus-plus/SKILL.md" download>`/build-agent++`</a> uses the base <a href="assets/maps/skills/build-agent/SKILL.md" download>`/build-agent`</a>, Build templates, and <a href="maps.md" download>`maps.md`</a> to track cross-phase work.
             </p>
           </div>
 
