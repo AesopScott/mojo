@@ -281,7 +281,7 @@ body.maps-page {
   font-weight: 820;
 }
 
-.maps-week-path li:nth-child(3)::before {
+.maps-week-path li:nth-child(4)::before {
   background: var(--maps-blue);
 }
 
@@ -524,7 +524,7 @@ body.maps-page {
 
 .maps-path-chooser {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
   margin-top: 10px;
   padding: 0 0 26px;
