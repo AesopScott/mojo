@@ -213,10 +213,10 @@ window.MAPS_SITE = {
         note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
       },
       {
-        name: "Aps/",
+        name: "/aps",
         url: "assets/maps/plugins/aps-pipeline.zip",
         download: true,
-        note: "Installable master APS plugin and /aps skill for Codex and Claude Code. It runs all agentic pipeline phases in a new project folder and tracks local progress in `.aps/progress.json`."
+        note: "Installable master APS plugin and /aps skill for Codex and Claude Code. It runs all agentic pipeline phases in a new project folder and tracks progress in `.aps/progress.json`."
       }
     ],
     repos: [

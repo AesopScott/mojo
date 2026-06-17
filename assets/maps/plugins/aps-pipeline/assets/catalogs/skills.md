@@ -19,4 +19,4 @@
 | 7 | `/observe-agent+fuse` | Wrap Observe with Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability. |
 | 7 | `/observe-agent+phoenix` | Wrap Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis. |
 | 8 | `/improve-agent` | Review evidence, classify and route improvements, prioritize and split backlog items, define proof, and hand off the next MAPS iteration. |
-| APS | `Aps/` | Installable master APS plugin and skill bundle for running A0-A8 in a new project folder with local `.aps/progress.json` tracking. |
+| APS | `/aps` | Installable master APS plugin and skill bundle for running A0-A8 in a new project folder with local `.aps/progress.json` tracking. |

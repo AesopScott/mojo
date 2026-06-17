@@ -64,29 +64,22 @@
   }
 
   function renderApsDownloadButton() {
-    const skill = site.resources.skills.find((item) => item.name === "Aps/");
+    const skill = site.resources.skills.find((item) => item.name === "/aps");
     if (!skill?.url) {
       return;
     }
 
-    document.querySelectorAll(".maps-links").forEach((links) => {
-      if (links.querySelector("[data-aps-download-button]")) {
-        return;
-      }
+    if (document.querySelector("[data-aps-download-button]")) {
+      return;
+    }
 
-      const agentsLink = Array.from(links.querySelectorAll("a")).find((link) => link.getAttribute("href") === "agents.html");
-      if (!agentsLink) {
-        return;
-      }
-
-      const button = document.createElement("a");
-      button.href = skill.url;
-      button.download = "";
-      button.className = "maps-aps-download-button";
-      button.dataset.apsDownloadButton = "true";
-      button.textContent = "Download Aps/ skill";
-      agentsLink.insertAdjacentElement("afterend", button);
-    });
+    const button = document.createElement("a");
+    button.href = skill.url;
+    button.download = "";
+    button.className = "maps-aps-download-button";
+    button.dataset.apsDownloadButton = "true";
+    button.textContent = "Download /aps skill";
+    document.body.appendChild(button);
   }
 
   function renderResourceGroup(selector, items) {
