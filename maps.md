@@ -28,42 +28,42 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 
 ## Multi-Agent Phase List
 
-The M layer is the multi-agent system pipeline. APS builds one agent or one capability; the M layer decides which agents exist, how they coordinate, how shared state and tools work, and how the full system is proven.
+The M layer is the multi-agent application pipeline. APS builds one agent or one capability; the M layer decides what product is being built, what it should feel like, why it needs multiple agents, which agents exist, how they coordinate, and how the full system is proven.
 
 | M Phase | Name | Primary Output | Core Question | Feeds APS |
 |---|---|---|---|---|
-| M0 | System Align | Multi-agent system brief | What outcome requires more than one agent, and what are the system boundaries? | Creates the overall MAPS system context before agent briefs are written. |
-| M1 | Roster | Agent roster and role map | Which agents are needed, what job does each own, and where does human ownership remain? | Creates candidate Phase 1 Define inputs for each agent. |
-| M2 | Contracts | Interface and responsibility contracts | What does each agent receive, produce, own, refuse, and hand off? | Adds constraints and handoff requirements to Phase 1 Define and Phase 2 Design. |
-| M3 | Coordination Design | Coordination model | How do agents route work, sequence tasks, share context, resolve conflicts, escalate, and stop? | Adds workflow, state, routing, and orchestration requirements to Phase 2 Design. |
-| M4 | Shared Capabilities | Shared capability map | Which tools, memory, connectors, permissions, runtime settings, budgets, and approval gates are shared or isolated? | Shapes Phase 4 Equip for each agent and for shared infrastructure. |
-| M5 | Orchestration Build | Working orchestration layer | What runtime, graph, queue, state machine, supervisor, or handoff mechanism coordinates the agents? | Triggers Phase 3 Build for orchestration code and any agent changes required by the coordinator. |
-| M6 | System Evaluate | End-to-end system eval suite and report | Does the agent team complete full workflows safely, reliably, and observably under realistic failure conditions? | Extends Phase 5 Evaluate from individual agents to cross-agent scenarios. |
-| M7 | System Deploy | Multi-agent release plan and deployment record | How is the whole system packaged, configured, released, smoke tested, and rolled back? | Extends Phase 6 Deploy across agents, orchestrator, shared services, and runtime adapters. |
-| M8 | System Observe | Cross-agent observation plan and log | Can we see work moving across agents, tools, state, queues, costs, failures, approvals, and escalations? | Extends Phase 7 Observe with system traces, coordination metrics, and incident triggers. |
-| M9 | System Improve | System improvement backlog | What should change in agents, contracts, coordination, shared capabilities, or runtime based on evidence? | Routes work back into the right M phase or APS phase. |
+| M0 | Product Intent | Product intent brief | What are we building, who is it for, why should it exist, and what should it feel like to use? | Creates the product-level context and taste standard before any agent brief is written. |
+| M1 | System Shape | Application/system map | What are the surfaces, workflows, boundaries, user journeys, data flows, and non-goals of the application? | Defines where agents may participate and what product surfaces they support. |
+| M2 | Roster | Agent roster and role map | Which agents are needed, why does each one exist, and where does human ownership remain? | Creates candidate Phase 1 Define inputs for each agent. |
+| M3 | Contracts | Interface and responsibility contracts | What does each agent receive, produce, own, refuse, and hand off? | Adds constraints and handoff requirements to Phase 1 Define and Phase 2 Design. |
+| M4 | Coordination Design | Coordination model | How do agents route work, sequence tasks, share context, resolve conflicts, escalate, and stop? | Adds workflow, state, routing, and orchestration requirements to Phase 2 Design. |
+| M5 | Shared Capabilities | Shared capability map | Which tools, memory, connectors, permissions, runtime settings, budgets, and approval gates are shared or isolated? | Shapes Phase 4 Equip for each agent and for shared infrastructure. |
+| M6 | Orchestration Build | Working orchestration layer | What runtime, graph, queue, state machine, supervisor, or handoff mechanism coordinates the agents? | Triggers Phase 3 Build for orchestration code and any agent changes required by the coordinator. |
+| M7 | System Evaluate | End-to-end system eval suite and report | Does the product and agent team complete full workflows safely, reliably, and observably under realistic failure conditions? | Extends Phase 5 Evaluate from individual agents to product-level and cross-agent scenarios. |
+| M8 | System Deploy/Observe | Multi-agent release and observation record | How is the whole system released, watched, paused, rolled back, and understood in production? | Extends Phase 6 Deploy and Phase 7 Observe across agents, orchestrator, shared services, and runtime adapters. |
+| M9 | System Improve | System improvement backlog | What should change in product intent, UX, agents, contracts, coordination, shared capabilities, or runtime based on evidence? | Routes work back into the right M phase or APS phase. |
 
 ### Multi-Agent Phase Details
 
-M0 System Align should record the system outcome, users/operators, business goal, boundary, non-goals, success criteria, failure criteria, safety constraints, human accountability, and what makes a multi-agent design necessary.
+M0 Product Intent should record what is being built, who it is for, the product promise, the user job, the emotional/taste standard, the application personality, the trust boundary, what the product should never become, success criteria, failure criteria, and why a multi-agent system is justified instead of a simpler workflow.
 
-M1 Roster should record every proposed agent, role, owner, authority level, responsibilities, excluded responsibilities, required inputs, expected outputs, escalation points, and whether the role should be automated, human-supervised, or human-owned.
+M1 System Shape should record the application surfaces, user journeys, workflows, data flows, business rules, system boundaries, non-goals, primary objects, integrations, operating environments, human touchpoints, and the first useful system slice.
 
-M2 Contracts should record agent-to-agent interfaces, handoff formats, shared vocabulary, data contracts, ownership boundaries, refusal behavior, escalation behavior, completion criteria, and what happens when another agent provides bad, late, incomplete, or conflicting information.
+M2 Roster should record every proposed agent, role, owner, authority level, responsibilities, excluded responsibilities, required inputs, expected outputs, escalation points, and whether the role should be automated, human-supervised, or human-owned.
 
-M3 Coordination Design should record the coordination pattern: supervisor, router, planner-executor, graph, queue, swarm, sequential pipeline, debate/review pair, human-in-the-loop checkpoint, or hybrid. It should also record ordering rules, concurrency rules, state ownership, retries, conflict resolution, termination conditions, and fallback behavior.
+M3 Contracts should record agent-to-agent interfaces, handoff formats, shared vocabulary, data contracts, ownership boundaries, refusal behavior, escalation behavior, completion criteria, and what happens when another agent provides bad, late, incomplete, or conflicting information.
 
-M4 Shared Capabilities should record shared tools, per-agent tools, shared memory, per-agent memory, MCP servers, connectors, credentials, approval gates, rate limits, budgets, sandbox/runtime permissions, observability hooks, and environment-specific configuration.
+M4 Coordination Design should record the coordination pattern: supervisor, router, planner-executor, graph, queue, swarm, sequential pipeline, debate/review pair, human-in-the-loop checkpoint, or hybrid. It should also record ordering rules, concurrency rules, state ownership, retries, conflict resolution, termination conditions, and fallback behavior.
 
-M5 Orchestration Build should build only the coordination layer required for the first working system slice. LangGraph, Temporal, OpenAI Agents SDK handoffs, CrewAI flows, Google ADK workflows, queues, state machines, or custom supervisors belong here when the system design requires them.
+M5 Shared Capabilities should record shared tools, per-agent tools, shared memory, per-agent memory, MCP servers, connectors, credentials, approval gates, rate limits, budgets, sandbox/runtime permissions, observability hooks, and environment-specific configuration.
 
-M6 System Evaluate should prove cross-agent workflows, not just individual agent quality. It should include handoff failures, tool contention, shared-state mistakes, conflicting agent outputs, routing errors, escalation behavior, timeout/retry paths, cost spikes, permission boundaries, and regression scenarios.
+M6 Orchestration Build should build only the coordination layer required for the first working system slice. LangGraph, Temporal, OpenAI Agents SDK handoffs, CrewAI flows, Google ADK workflows, queues, state machines, or custom supervisors belong here when the system design requires them.
 
-M7 System Deploy should package and release the orchestrator, participating agents, shared services, configuration, secrets, manifests, queues, schedules, dashboards, and rollback plan as one system release.
+M7 System Evaluate should prove product-level and cross-agent workflows, not just individual agent quality. It should include user journey success, handoff failures, tool contention, shared-state mistakes, conflicting agent outputs, routing errors, escalation behavior, timeout/retry paths, cost spikes, permission boundaries, and regression scenarios.
 
-M8 System Observe should trace agent-to-agent work, routing decisions, tool calls, shared memory writes, queue depth, stuck tasks, approval gates, costs, latency, failures, escalations, user feedback, and system-level incidents.
+M8 System Deploy/Observe should package, release, smoke test, observe, and operate the orchestrator, participating agents, shared services, configuration, secrets, manifests, queues, schedules, dashboards, rollback plan, traces, alerts, costs, latency, failures, escalations, user feedback, and system-level incidents.
 
-M9 System Improve should classify evidence-backed improvements as agent work, contract work, coordination work, shared capability work, eval work, deployment work, observability work, or product/process work before sending the item back into M or APS.
+M9 System Improve should classify evidence-backed improvements as product intent work, UX/system-shape work, agent work, contract work, coordination work, shared capability work, eval work, deployment work, observability work, or product/process work before sending the item back into M or APS.
 
 ## Runtime Adapter Model
 
