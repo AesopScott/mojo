@@ -170,9 +170,15 @@ body.maps-page {
   text-decoration: none;
 }
 
-.maps-pipeline-group.multi-agent .maps-pipeline-links span {
+.maps-pipeline-group.multi-agent .maps-pipeline-links span,
+.maps-pipeline-group.multi-agent .maps-pipeline-links a {
   color: #274b75;
   background: rgba(255, 255, 255, 0.72);
+}
+
+.maps-pipeline-group.multi-agent .maps-pipeline-links a:hover {
+  color: #fff;
+  background: var(--maps-blue);
 }
 
 .maps-pipeline-group.agentic .maps-pipeline-links a {

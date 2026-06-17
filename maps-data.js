@@ -26,12 +26,11 @@ window.MAPS_SITE = {
     },
     {
       number: "2a",
-      file: "",
+      file: "m3.html",
       label: "Optional A2",
       title: "Experience Design",
       output: "Use only without a multi-agent M3 experience phase",
-      status: "under-construction",
-      statusLabel: "Under construction"
+      status: "available"
     },
     {
       number: "3",
@@ -107,6 +106,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/design-agent/SKILL.md",
         download: true,
         note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md and agents/{agent-handle}/agent-backlog.md."
+      },
+      {
+        name: "/design-experience",
+        url: "assets/maps/skills/design-experience/SKILL.md",
+        download: true,
+        note: "Creates the M3 experience design artifact for journeys, surfaces, IA, interaction states, visual/tone standards, accessibility, and agent visibility."
       },
       {
         name: "/build-agent",
@@ -186,6 +191,41 @@ window.MAPS_SITE = {
         name: "AesopScott/maps",
         url: "https://github.com/AesopScott/maps",
         note: "Working MAPS repository."
+      },
+      {
+        name: "uswds/uswds",
+        url: "https://github.com/uswds/uswds",
+        note: "Accessible, mobile-friendly public-service design system reference. Current research signal: 7,114 stars."
+      },
+      {
+        name: "alphagov/govuk-frontend",
+        url: "https://github.com/alphagov/govuk-frontend",
+        note: "Service UX and component guidance reference from GOV.UK. Current research signal: 1,414 stars."
+      },
+      {
+        name: "microsoft/fluentui",
+        url: "https://github.com/microsoft/fluentui",
+        note: "Enterprise product UI component and interaction pattern reference. Current research signal: 20,057 stars."
+      },
+      {
+        name: "primer/react",
+        url: "https://github.com/primer/react",
+        note: "GitHub Primer React implementation reference for product UI patterns, accessibility, and component behavior. Current research signal: 3,860 stars."
+      },
+      {
+        name: "assistant-ui/assistant-ui",
+        url: "https://github.com/assistant-ui/assistant-ui",
+        note: "AI chat UI reference for streaming, thread surfaces, tool UI, and assistant interaction patterns. Current research signal: 10,663 stars."
+      },
+      {
+        name: "CopilotKit/CopilotKit",
+        url: "https://github.com/CopilotKit/CopilotKit",
+        note: "Agentic frontend and generative UI reference for shared state, human-in-the-loop flows, and AG-UI patterns. Current research signal: 35,247 stars."
+      },
+      {
+        name: "langchain-ai/agent-chat-ui",
+        url: "https://github.com/langchain-ai/agent-chat-ui",
+        note: "Reference chat UI for LangGraph agents, including deployment URL setup and agent conversation surfaces. Current research signal: 2,934 stars."
       },
       {
         name: "VoltAgent/awesome-agent-skills",
@@ -359,6 +399,34 @@ window.MAPS_SITE = {
       {
         name: "Agent Skills",
         note: "Provides the SKILL.md packaging and workflow format used by /design-agent."
+      },
+      {
+        name: "Experience design research",
+        note: "Finds comparable product experiences, user journeys, front-end surfaces, design-system patterns, and agent UI interaction models."
+      },
+      {
+        name: "Journey mapping",
+        note: "Maps the user's path through surfaces, agent touchpoints, decision points, handoffs, approvals, empty states, errors, and recovery."
+      },
+      {
+        name: "Information architecture",
+        note: "Defines navigation, object hierarchy, content grouping, labels, wayfinding, and the relationship between product surfaces and agent work."
+      },
+      {
+        name: "Interaction state modeling",
+        note: "Captures loading, streaming, tool-use, approval, refusal, escalation, success, empty, error, and recovery states before Build."
+      },
+      {
+        name: "Accessibility and inclusive design",
+        note: "Checks keyboard behavior, semantic structure, focus, contrast, motion, readable copy, and assistive-technology expectations."
+      },
+      {
+        name: "Design-system references",
+        note: "Provides component, token, layout, accessibility, and content guidance from mature public design systems."
+      },
+      {
+        name: "Agent UI references",
+        note: "Provides patterns for chat, copilot, generative UI, tool call display, streaming, approvals, and user control around agent activity."
       },
       {
         name: "Web and repository research",
@@ -536,6 +604,12 @@ window.MAPS_SITE = {
         note: "Captures the Phase 2 Design artifact."
       },
       {
+        name: "templates/experience-design.md",
+        url: "assets/maps/templates/experience-design.md",
+        download: true,
+        note: "Captures the M3 product experience, journeys, surfaces, IA, visual/tone standards, accessibility, states, and APS handoffs."
+      },
+      {
         name: "templates/agent-backlog.md",
         url: "assets/maps/templates/agent-backlog.md",
         download: true,
@@ -627,6 +701,12 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills", "Web and repository research", "Backlog planning", "Addy Osmani agent spec guidance", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
       templates: ["templates/workflow-spec.md", "templates/agent-backlog.md"]
+    },
+    "2a": {
+      skills: ["/design-experience"],
+      repos: ["AesopScott/maps", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui"],
+      tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "Design-system references", "Agent UI references"],
+      templates: ["templates/experience-design.md"]
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],

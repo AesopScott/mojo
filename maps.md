@@ -19,7 +19,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 0 Phase Alignment | `0.html` | Scaffold and structure | Available | Keep MAPS/M and APS boundaries clear. |
 | 1 Define | `1.html` | Agent brief | Available | Keep authority, user, outcome, success, failure, and escalation fields aligned with later phases. |
 | 2 Design | `2.html` | Agent design and build backlog | Available | Add runtime target, adapter requirement planning, dependency mapping, priority order, and first build slice. |
-| Optional A2 Experience Design | M3 experience design page | Single-agent experience constraints | Under construction | Use only when there is no multi-agent system and no M3 experience design phase doing this work. |
+| M3 / optional A2 Experience Design | `m3.html` | Product experience and UX constraints | Available | Use as M3 for multi-agent systems; use as optional A2 only when there is no multi-agent system and no M3 experience design phase doing this work. |
 | 3 Build | `3.html` | Working agent | Available | Build from the highest-priority unblocked backlog item; split oversized work before coding. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
@@ -31,7 +31,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 
 Standalone agent projects still need experience design when there is no multi-agent application layer doing that work. Use optional `A2 Experience Design` between the current `Phase 2 Design` and `Phase 3 Build` when the agent has a visible surface, care text, UI, workflow, or user-facing configuration that needs product judgment before implementation starts.
 
-Use `M3 Experience Design` when the project is part of a multi-agent system. Use optional `A2 Experience Design` only when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase. The A2 button should reference the same M3 experience design page once the multi-agent page exists; until then it remains under construction.
+Use `M3 Experience Design` when the project is part of a multi-agent system. Use optional `A2 Experience Design` only when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase. The A2 button references the same M3 experience design page.
 
 `A2 Experience Design` should answer:
 
@@ -72,6 +72,14 @@ M1 System Shape should record the application surfaces, workflows, data flows, b
 M2 Roster should record every proposed agent, role, owner, authority level, responsibilities, excluded responsibilities, required inputs, expected outputs, escalation points, and whether the role should be automated, human-supervised, or human-owned.
 
 M3 Experience Design should record the product experience, user journeys, front-end surfaces, interaction model, information architecture, design system expectations, visual/tone standards, accessibility needs, state/error/loading behavior, and how agent activity appears to users. It comes after Roster so the experience can account for the agents users will encounter, supervise, or rely on.
+
+M3 should use `/design-experience` and `templates/experience-design.md`. The phase should explicitly hand product, UI, interaction-state, accessibility, and agent-visibility constraints to APS Phase 1 Define, Phase 2 Design, Phase 3 Build, Phase 5 Evaluate, and Phase 7 Observe.
+
+M3 references should include mature product design systems and agent UI examples:
+
+- USWDS and GOV.UK Frontend for accessible service design, forms, content clarity, and public trust patterns.
+- Fluent UI and Primer React for dense product UI, component states, navigation, dialogs, and enterprise/developer surfaces.
+- assistant-ui, CopilotKit, and Agent Chat UI for chat, copilot, generative UI, streaming, tool call visibility, approvals, and agent conversation surfaces.
 
 M4 Contracts should record agent-to-agent interfaces, handoff formats, shared vocabulary, data contracts, ownership boundaries, refusal behavior, escalation behavior, completion criteria, and what happens when another agent provides bad, late, incomplete, or conflicting information.
 
