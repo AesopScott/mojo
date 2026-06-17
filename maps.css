@@ -844,6 +844,25 @@ body.maps-page {
   font-weight: 760;
 }
 
+.maps-star-history {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border: 1px solid rgba(66, 111, 159, 0.22);
+  border-radius: 7px;
+  color: var(--maps-blue) !important;
+  background: #eef5fb;
+  font-size: 12px;
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.maps-resource-grid .maps-star-history {
+  margin-top: 0;
+  margin-left: 4px;
+}
+
 .maps-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--maps-line);
