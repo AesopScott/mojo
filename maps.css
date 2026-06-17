@@ -52,7 +52,7 @@ body.maps-page {
   position: relative;
   align-items: center;
   gap: 10px;
-  padding-top: 56px;
+  padding-top: 69px;
   font-weight: 800;
   text-decoration: none;
 }
@@ -62,8 +62,8 @@ body.maps-page {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 82px;
-  height: 44px;
+  width: 107px;
+  height: 57px;
   background: url("logo.png") center / contain no-repeat;
   transform: translateX(-50%);
 }
