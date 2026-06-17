@@ -3,7 +3,7 @@
 ## Project
 
 - Project handle:
-- Experience mode: M3 multi-agent / optional single-agent A2
+- Experience mode: M8 multi-agent / optional single-agent A2
 - Date:
 - Owner:
 - Source artifacts:

@@ -19,7 +19,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 0 Phase Alignment | `0.html` | Scaffold and structure | Available | Keep MAPS/M and APS boundaries clear. |
 | 1 Define | `1.html` | Agent brief | Available | Keep authority, user, outcome, success, failure, and escalation fields aligned with later phases. |
 | 2 Design | `2.html` | Agent design and build backlog | Available | Add runtime target, adapter requirement planning, dependency mapping, priority order, and first build slice. |
-| M3 / optional A2 Experience Design | `m3.html` | Product experience and UX constraints | Available | Use as M3 for multi-agent systems; use as optional A2 only when there is no multi-agent system and no M3 experience design phase doing this work. |
+| M8 / optional A2 Experience Design | `m8.html` | Product experience and UX constraints | Available | Use as M8 for multi-agent systems after orchestration exists; use as optional A2 only when there is no multi-agent system and no M8 experience design phase doing this work. |
 | 3 Build | `3.html` | Working agent | Available | Build from the highest-priority unblocked backlog item; split oversized work before coding. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
@@ -31,7 +31,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 
 Standalone agent projects still need experience design when there is no multi-agent application layer doing that work. Use optional `A2 Experience Design` between the current `Phase 2 Design` and `Phase 3 Build` when the agent has a visible surface, care text, UI, workflow, or user-facing configuration that needs product judgment before implementation starts.
 
-Use `M3 Experience Design` when the project is part of a multi-agent system. Use optional `A2 Experience Design` only when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase. The A2 button references the same M3 experience design page.
+Use `M8 Experience Design` when the project is part of a multi-agent system. Use optional `A2 Experience Design` only when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase. The A2 button references the same M8 experience design page.
 
 `A2 Experience Design` should answer:
 
@@ -42,7 +42,7 @@ Use `M3 Experience Design` when the project is part of a multi-agent system. Use
 - How does the agent's activity, uncertainty, tool use, memory use, and handoff behavior appear to the user?
 - What care text, guidance, labels, warnings, or confirmations does the user need before the agent acts?
 
-This step feeds `Phase 3 Build`. It does not replace the agent design phase; it gives Build the product and interface constraints it needs when there is no M3 layer doing that work.
+This step feeds `Phase 3 Build`. It does not replace the agent design phase; it gives Build the product and interface constraints it needs when there is no M8 layer doing that work.
 
 ## Multi-Agent Phase List
 
@@ -53,12 +53,12 @@ The M layer is the multi-agent application pipeline. APS builds one agent or one
 | M0 | Product Intent | Product intent brief | What are we building, who is it for, why should it exist, and what should it feel like to use? | Creates the product-level context and taste standard before any agent brief is written. |
 | M1 | System Shape | Application/system map | What connects to what: surfaces, workflows, data flows, boundaries, integrations, and system objects? | Defines the application shape that UI and agents must plug into. |
 | M2 | Roster | Agent roster and role map | Which agents are needed, why does each one exist, and where does human ownership remain? | Creates candidate Phase 1 Define inputs for each agent. |
-| M3 | Experience Design | Product experience and UI design | What should the user experience, front end, interaction model, information architecture, and visual standard be now that the system shape and roster are known? | Adds product, UI, and workflow constraints to each agent's Phase 2 Design. |
-| M4 | Contracts | Interface and responsibility contracts | What does each agent receive, produce, own, refuse, and hand off? | Adds constraints and handoff requirements to Phase 1 Define and Phase 2 Design. |
-| M5 | Coordination Design | Coordination model | How do agents route work, sequence tasks, share context, resolve conflicts, escalate, and stop? | Adds workflow, state, routing, and orchestration requirements to Phase 2 Design. |
-| M6 | Agent Buildout | Built and evaluated agent roster | Which individual agents must be defined, designed, built, equipped, and evaluated before system orchestration can be trusted? | Runs APS for each required agent or capability. |
-| M7 | Shared Capabilities | Shared capability map | Which tools, memory, connectors, permissions, runtime settings, budgets, and approval gates are shared or isolated? | Shapes Phase 4 Equip for each agent and for shared infrastructure. |
-| M8 | Orchestration Build | Working orchestration layer | What runtime, graph, queue, state machine, supervisor, or handoff mechanism coordinates the agents? | Triggers Phase 3 Build for orchestration code and any agent changes required by the coordinator. |
+| M3 | Contracts | Interface and responsibility contracts | What does each agent receive, produce, own, refuse, and hand off? | Adds constraints and handoff requirements to Phase 1 Define and Phase 2 Design. |
+| M4 | Coordination Design | Coordination model | How do agents route work, sequence tasks, share context, resolve conflicts, escalate, and stop? | Adds workflow, state, routing, and orchestration requirements to Phase 2 Design. |
+| M5 | Agent Buildout | Built and evaluated agent roster | Which individual agents must be defined, designed, built, equipped, and evaluated before system orchestration can be trusted? | Runs APS for each required agent or capability. |
+| M6 | Shared Capabilities | Shared capability map | Which tools, memory, connectors, permissions, runtime settings, budgets, and approval gates are shared or isolated? | Shapes Phase 4 Equip for each agent and for shared infrastructure. |
+| M7 | Orchestration Build | Working orchestration layer | What runtime, graph, queue, state machine, supervisor, or handoff mechanism coordinates the agents? | Triggers Phase 3 Build for orchestration code and any agent changes required by the coordinator. |
+| M8 | Experience Design | Product experience and UI design | What should the user experience, front end, interaction model, information architecture, and visual standard be now that orchestration behavior is known? | Adds product, UI, workflow, state, accessibility, and agent-visibility scenarios to M9 System Evaluate. |
 | M9 | System Evaluate | End-to-end system eval suite and report | Does the product and agent team complete full workflows safely, reliably, and observably under realistic failure conditions? | Extends Phase 5 Evaluate from individual agents to product-level and cross-agent scenarios. |
 | M10 | System Deploy/Observe | Multi-agent release and observation record | How is the whole system released, watched, paused, rolled back, and understood in production? | Extends Phase 6 Deploy and Phase 7 Observe across agents, orchestrator, shared services, and runtime adapters. |
 | M11 | System Improve | System improvement backlog | What should change in product intent, UX, agents, contracts, coordination, shared capabilities, or runtime based on evidence? | Routes work back into the right M phase or APS phase. |
@@ -67,29 +67,29 @@ The M layer is the multi-agent application pipeline. APS builds one agent or one
 
 M0 Product Intent should record what is being built, who it is for, the product promise, the user job, the emotional/taste standard, the application personality, the trust boundary, what the product should never become, success criteria, failure criteria, and why a multi-agent system is justified instead of a simpler workflow.
 
-M1 System Shape should record the application surfaces, workflows, data flows, business rules, system boundaries, non-goals, primary objects, integrations, operating environments, human touchpoints, and the first useful system slice. This comes before Experience Design because the UI needs to know what it is plugging into.
+M1 System Shape should record the application surfaces, workflows, data flows, business rules, system boundaries, non-goals, primary objects, integrations, operating environments, human touchpoints, and the first useful system slice.
 
 M2 Roster should record every proposed agent, role, owner, authority level, responsibilities, excluded responsibilities, required inputs, expected outputs, escalation points, and whether the role should be automated, human-supervised, or human-owned.
 
-M3 Experience Design should record the product experience, user journeys, front-end surfaces, interaction model, information architecture, design system expectations, visual/tone standards, accessibility needs, state/error/loading behavior, and how agent activity appears to users. It comes after Roster so the experience can account for the agents users will encounter, supervise, or rely on.
+M3 Contracts should record agent-to-agent interfaces, handoff formats, shared vocabulary, data contracts, ownership boundaries, refusal behavior, escalation behavior, completion criteria, and what happens when another agent provides bad, late, incomplete, or conflicting information.
 
-M3 should use `/design-experience` and `templates/experience-design.md`. The phase should explicitly hand product, UI, interaction-state, accessibility, and agent-visibility constraints to APS Phase 1 Define, Phase 2 Design, Phase 3 Build, Phase 5 Evaluate, and Phase 7 Observe.
+M4 Coordination Design should record the coordination pattern: supervisor, router, planner-executor, graph, queue, swarm, sequential pipeline, debate/review pair, human-in-the-loop checkpoint, or hybrid. It should also record ordering rules, concurrency rules, state ownership, retries, conflict resolution, termination conditions, and fallback behavior.
 
-M3 references should include mature product design systems and agent UI examples:
+M5 Agent Buildout should run the Agentic Pipeline for each required agent or capability: Define, Design, Build, Equip, and Evaluate. This is where the individual agents that need to be evaluated are actually built before they are wired into the full multi-agent system.
+
+M6 Shared Capabilities should record shared tools, per-agent tools, shared memory, per-agent memory, MCP servers, connectors, credentials, approval gates, rate limits, budgets, sandbox/runtime permissions, observability hooks, and environment-specific configuration.
+
+M7 Orchestration Build should build only the coordination layer required for the first working system slice. LangGraph, Temporal, OpenAI Agents SDK handoffs, CrewAI flows, Google ADK workflows, queues, state machines, or custom supervisors belong here when the system design requires them.
+
+M8 Experience Design should record the product experience, user journeys, front-end surfaces, interaction model, information architecture, design system expectations, visual/tone standards, accessibility needs, state/error/loading behavior, and how agent activity appears to users. It comes after Orchestration Build so the experience can account for real coordination behavior, handoffs, waiting states, approvals, and failure recovery before the system is evaluated.
+
+M8 should use `/design-experience` and `templates/experience-design.md`. The phase should explicitly hand product, UI, interaction-state, accessibility, and agent-visibility scenarios to M9 System Evaluate, M10 System Deploy/Observe, M11 System Improve, and any APS phase that needs correction.
+
+M8 references should include mature product design systems and agent UI examples:
 
 - USWDS and GOV.UK Frontend for accessible service design, forms, content clarity, and public trust patterns.
 - Fluent UI and Primer React for dense product UI, component states, navigation, dialogs, and enterprise/developer surfaces.
 - assistant-ui, CopilotKit, and Agent Chat UI for chat, copilot, generative UI, streaming, tool call visibility, approvals, and agent conversation surfaces.
-
-M4 Contracts should record agent-to-agent interfaces, handoff formats, shared vocabulary, data contracts, ownership boundaries, refusal behavior, escalation behavior, completion criteria, and what happens when another agent provides bad, late, incomplete, or conflicting information.
-
-M5 Coordination Design should record the coordination pattern: supervisor, router, planner-executor, graph, queue, swarm, sequential pipeline, debate/review pair, human-in-the-loop checkpoint, or hybrid. It should also record ordering rules, concurrency rules, state ownership, retries, conflict resolution, termination conditions, and fallback behavior.
-
-M6 Agent Buildout should run the Agentic Pipeline for each required agent or capability: Define, Design, Build, Equip, and Evaluate. This is where the individual agents that need to be evaluated are actually built before they are wired into the full multi-agent system.
-
-M7 Shared Capabilities should record shared tools, per-agent tools, shared memory, per-agent memory, MCP servers, connectors, credentials, approval gates, rate limits, budgets, sandbox/runtime permissions, observability hooks, and environment-specific configuration.
-
-M8 Orchestration Build should build only the coordination layer required for the first working system slice. LangGraph, Temporal, OpenAI Agents SDK handoffs, CrewAI flows, Google ADK workflows, queues, state machines, or custom supervisors belong here when the system design requires them.
 
 M9 System Evaluate should prove product-level and cross-agent workflows, not just individual agent quality. It should include user journey success, handoff failures, tool contention, shared-state mistakes, conflicting agent outputs, routing errors, escalation behavior, timeout/retry paths, cost spikes, permission boundaries, and regression scenarios.
 

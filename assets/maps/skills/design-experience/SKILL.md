@@ -1,17 +1,18 @@
 ---
 name: design-experience
-description: Run MAPS M3 Experience Design for multi-agent products, or optional A2 Experience Design for single-agent products without an M layer. Use when Codex needs to turn product intent, system shape, roster, and agent design constraints into user journeys, surfaces, information architecture, interaction states, accessibility requirements, and APS handoffs.
+description: Run MAPS M8 Experience Design for multi-agent products, or optional A2 Experience Design for single-agent products without an M layer. Use when Codex needs to turn product intent, orchestration behavior, agent behavior, and product constraints into user journeys, surfaces, information architecture, interaction states, accessibility requirements, and system-evaluation handoffs.
 ---
 
 # Design Experience
 
-Use this skill after M0 Product Intent, M1 System Shape, and M2 Roster exist, and before M4 Contracts and M6 Agent Buildout depend on product behavior. For a standalone agent with no multi-agent system, use the same workflow as optional A2 between Phase 2 Design and Phase 3 Build.
+Use this skill after M7 Orchestration Build exists and before M9 System Evaluate depends on product behavior. For a standalone agent with no multi-agent system, use the same workflow as optional A2 between Phase 2 Design and Phase 3 Build.
 
 ## Inputs
 
 - Product intent, audience, promise, success criteria, failure criteria, and taste standard
 - System shape: surfaces, workflows, objects, integrations, boundaries, and first useful slice
 - Agent roster: agent roles, authority, responsibilities, handoffs, and human ownership
+- Contracts, coordination model, shared capabilities, and orchestration behavior
 - Existing Phase 1 and Phase 2 APS artifacts when the project already has agent briefs or designs
 - Brand, design-system, accessibility, compliance, or platform constraints
 
@@ -25,7 +26,7 @@ Use this skill after M0 Product Intent, M1 System Shape, and M2 Roster exist, an
 6. Model interaction states: loading, streaming, empty, draft, pending approval, blocked, partial success, error, retry, escalation, success, and post-completion review.
 7. Define visual and tone standards: density, hierarchy, affordances, language, voice, motion, and personality.
 8. Define accessibility expectations: keyboard paths, focus behavior, semantics, contrast, motion, readable copy, form errors, and assistive-technology notes.
-9. Decide what the experience requires from each APS agent: brief changes, design constraints, tool visibility, memory boundaries, eval scenarios, and observability signals.
+9. Decide what the experience requires from M9 System Evaluate, M10 Deploy/Observe, M11 Improve, and any APS phase that needs correction.
 10. Write `experience-design.md` from the template and record unresolved decisions as explicit follow-up items.
 
 ## Output
@@ -36,12 +37,12 @@ Use this skill after M0 Product Intent, M1 System Shape, and M2 Roster exist, an
 - Agent visibility, control, approval, refusal, handoff, and recovery rules
 - Interaction-state inventory
 - Accessibility and content requirements
-- APS handoff notes for Phase 1 Define, Phase 2 Design, Phase 3 Build, Phase 5 Evaluate, and Phase 7 Observe
+- Handoff notes for M9 System Evaluate, M10 Deploy/Observe, M11 Improve, and any APS correction work
 
 ## Guardrails
 
-- Do not design generic decoration. M3 is about product behavior, user control, clarity, and trust.
+- Do not design generic decoration. M8 is about product behavior, user control, clarity, and trust.
 - Do not hide agent uncertainty, tool use, or approval needs if the user must understand them to make a safe decision.
-- Do not move orchestration logic into M3. Coordination belongs in M5; M3 describes the user-facing experience of coordination.
+- Do not move orchestration logic into M8. Coordination belongs in M4 and orchestration belongs in M7; M8 describes the user-facing experience of that behavior.
 - Do not create new agent responsibilities silently. Send responsibility changes back to M2 Roster or APS Phase 1.
 - Do not skip accessibility. Treat keyboard, focus, semantics, contrast, motion, and readable state/error copy as phase requirements.

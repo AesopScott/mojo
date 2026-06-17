@@ -31,7 +31,12 @@
       return;
     }
 
-    document.querySelectorAll(`.maps-pipeline-links a[href="${phase.file}"]`).forEach((link) => {
+    const currentLinks = Array.from(document.querySelectorAll(`.maps-pipeline-links a[href="${phase.file}"]`));
+    const linksToMark = current === "2a"
+      ? currentLinks.filter((link) => link.closest(".maps-pipeline-group.multi-agent"))
+      : currentLinks;
+
+    linksToMark.forEach((link) => {
       link.classList.add("current");
       link.setAttribute("aria-current", "page");
     });

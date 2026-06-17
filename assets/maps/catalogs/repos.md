@@ -3,13 +3,13 @@
 | Phase | Repo | Use |
 |---|---|---|
 | 0 | `AesopScott/maps` | Working MAPS repository. |
-| M3 / optional A2 | `uswds/uswds` | Accessible, mobile-friendly public-service design system reference. Current research signal: 7,114 stars. |
-| M3 / optional A2 | `alphagov/govuk-frontend` | GOV.UK service UX and component guidance reference. Current research signal: 1,414 stars. |
-| M3 / optional A2 | `microsoft/fluentui` | Enterprise product UI component and interaction pattern reference. Current research signal: 20,057 stars. |
-| M3 / optional A2 | `primer/react` | GitHub Primer React reference for product UI patterns, accessibility, and component behavior. Current research signal: 3,860 stars. |
-| M3 / optional A2 | `assistant-ui/assistant-ui` | AI chat UI reference for streaming, thread surfaces, tool UI, and assistant interaction patterns. Current research signal: 10,663 stars. |
-| M3 / optional A2 | `CopilotKit/CopilotKit` | Agentic frontend and generative UI reference for shared state, human-in-the-loop flows, and AG-UI patterns. Current research signal: 35,247 stars. |
-| M3 / optional A2 | `langchain-ai/agent-chat-ui` | Reference chat UI for LangGraph agents and agent conversation surfaces. Current research signal: 2,934 stars. |
+| M8 / optional A2 | `uswds/uswds` | Accessible, mobile-friendly public-service design system reference. Current research signal: 7,114 stars. |
+| M8 / optional A2 | `alphagov/govuk-frontend` | GOV.UK service UX and component guidance reference. Current research signal: 1,414 stars. |
+| M8 / optional A2 | `microsoft/fluentui` | Enterprise product UI component and interaction pattern reference. Current research signal: 20,057 stars. |
+| M8 / optional A2 | `primer/react` | GitHub Primer React reference for product UI patterns, accessibility, and component behavior. Current research signal: 3,860 stars. |
+| M8 / optional A2 | `assistant-ui/assistant-ui` | AI chat UI reference for streaming, thread surfaces, tool UI, and assistant interaction patterns. Current research signal: 10,663 stars. |
+| M8 / optional A2 | `CopilotKit/CopilotKit` | Agentic frontend and generative UI reference for shared state, human-in-the-loop flows, and AG-UI patterns. Current research signal: 35,247 stars. |
+| M8 / optional A2 | `langchain-ai/agent-chat-ui` | Reference chat UI for LangGraph agents and agent conversation surfaces. Current research signal: 2,934 stars. |
 | 2 | `addyosmani/agent-skills` | Design, Build, Test, Review skill references. |
 | 3 | `github/spec-kit` | Spec-to-plan-to-tasks implementation reference. |
 | 3 | `openai/openai-agents-python` | Agent runtime reference. |

@@ -26,10 +26,10 @@ window.MAPS_SITE = {
     },
     {
       number: "2a",
-      file: "m3.html",
-      label: "Optional A2",
+      file: "m8.html",
+      label: "M8 / Optional A2",
       title: "Experience Design",
-      output: "Use only without a multi-agent M3 experience phase",
+      output: "After M7 orchestration, or before A3 build when there is no M layer",
       status: "available"
     },
     {
@@ -111,7 +111,7 @@ window.MAPS_SITE = {
         name: "/design-experience",
         url: "assets/maps/skills/design-experience/SKILL.md",
         download: true,
-        note: "Creates the M3 experience design artifact for journeys, surfaces, IA, interaction states, visual/tone standards, accessibility, and agent visibility."
+        note: "Creates the M8 experience design artifact for journeys, surfaces, IA, interaction states, visual/tone standards, accessibility, and agent visibility."
       },
       {
         name: "/build-agent",
@@ -607,7 +607,7 @@ window.MAPS_SITE = {
         name: "templates/experience-design.md",
         url: "assets/maps/templates/experience-design.md",
         download: true,
-        note: "Captures the M3 product experience, journeys, surfaces, IA, visual/tone standards, accessibility, states, and APS handoffs."
+        note: "Captures the M8 product experience, journeys, surfaces, IA, visual/tone standards, accessibility, states, and APS handoffs."
       },
       {
         name: "templates/agent-backlog.md",

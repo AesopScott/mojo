@@ -11,13 +11,13 @@
 | 2 | Scrum Guide product backlog | Treat the backlog as an ordered, evolving source of product work. |
 | 2 | Atlassian product backlog guide | Refine, prioritize, and align backlog items before implementation. |
 | 2 | GitHub sub-issues | Break larger backlog items into smaller child issues with visible dependency structure. |
-| M3 / optional A2 | Experience design research | Find comparable product experiences, user journeys, front-end surfaces, design-system patterns, and agent UI interaction models. |
-| M3 / optional A2 | Journey mapping | Map user paths through surfaces, agent touchpoints, decisions, handoffs, approvals, errors, and recovery. |
-| M3 / optional A2 | Information architecture | Define navigation, object hierarchy, labels, wayfinding, and the relationship between product surfaces and agent work. |
-| M3 / optional A2 | Interaction state modeling | Capture loading, streaming, tool-use, approval, refusal, escalation, success, empty, error, and recovery states before Build. |
-| M3 / optional A2 | Accessibility and inclusive design | Check keyboard behavior, semantics, focus, contrast, motion, readable copy, and assistive-technology expectations. |
-| M3 / optional A2 | Design-system references | Reuse mature component, token, layout, accessibility, and content guidance. |
-| M3 / optional A2 | Agent UI references | Compare chat, copilot, generative UI, tool call display, streaming, approval, and user-control patterns. |
+| M8 / optional A2 | Experience design research | Find comparable product experiences, user journeys, front-end surfaces, design-system patterns, and agent UI interaction models. |
+| M8 / optional A2 | Journey mapping | Map user paths through surfaces, agent touchpoints, decisions, handoffs, approvals, errors, and recovery. |
+| M8 / optional A2 | Information architecture | Define navigation, object hierarchy, labels, wayfinding, and the relationship between product surfaces and agent work. |
+| M8 / optional A2 | Interaction state modeling | Capture loading, streaming, tool-use, approval, refusal, escalation, success, empty, error, and recovery states before Build. |
+| M8 / optional A2 | Accessibility and inclusive design | Check keyboard behavior, semantics, focus, contrast, motion, readable copy, and assistive-technology expectations. |
+| M8 / optional A2 | Design-system references | Reuse mature component, token, layout, accessibility, and content guidance. |
+| M8 / optional A2 | Agent UI references | Compare chat, copilot, generative UI, tool call display, streaming, approval, and user-control patterns. |
 | 3 | Backlog planning | Pull the highest-priority unblocked backlog item into Build and split oversized items before coding. |
 | 3 | GitHub sub-issues | Keep implementation slices small enough to prove independently. |
 | 3 | Test runner | Prove each Build slice. |
