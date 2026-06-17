@@ -24,31 +24,6 @@
     });
   }
 
-  function githubRepoPath(url) {
-    const match = String(url || "").match(/^https:\/\/github\.com\/([^/]+\/[^/#?]+)/);
-    return match ? match[1] : "";
-  }
-
-  function starHistoryUrl(url) {
-    const repo = githubRepoPath(url);
-    return repo ? `https://star-history.com/#${repo}&Date` : "";
-  }
-
-  function createStarHistoryLink(url) {
-    const href = starHistoryUrl(url);
-    if (!href) {
-      return null;
-    }
-
-    const link = document.createElement("a");
-    link.className = "maps-star-history";
-    link.href = href;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    link.textContent = "Star history";
-    return link;
-  }
-
   function renderResourceGroup(selector, items) {
     const target = document.querySelector(selector);
     if (!target) {
@@ -73,50 +48,7 @@
       if (item.note) {
         li.append(` ${item.note}`);
       }
-      if (!item.download) {
-        const starLink = createStarHistoryLink(item.url);
-        if (starLink) {
-          li.append(" ");
-          li.appendChild(starLink);
-        }
-      }
       target.appendChild(li);
-    });
-  }
-
-  function enhanceReferenceCards() {
-    document.querySelectorAll(".maps-reference-card h3 a[href^='https://github.com/']").forEach((repoLink) => {
-      const card = repoLink.closest(".maps-reference-card");
-      if (!card || card.querySelector(".maps-star-history")) {
-        return;
-      }
-
-      const starLink = createStarHistoryLink(repoLink.href);
-      if (!starLink) {
-        return;
-      }
-
-      repoLink.closest("h3").insertAdjacentElement("afterend", starLink);
-    });
-  }
-
-  function enhanceInlineGithubLinks() {
-    document.querySelectorAll(".maps-main a[href^='https://github.com/'], .maps-hero a[href^='https://github.com/']").forEach((repoLink) => {
-      if (
-        repoLink.closest("[data-maps-repos]") ||
-        repoLink.closest(".maps-reference-card h3") ||
-        repoLink.nextElementSibling?.classList?.contains("maps-star-history")
-      ) {
-        return;
-      }
-
-      const starLink = createStarHistoryLink(repoLink.href);
-      if (!starLink) {
-        return;
-      }
-
-      repoLink.insertAdjacentText("afterend", " ");
-      repoLink.insertAdjacentElement("afterend", starLink);
     });
   }
 
@@ -133,6 +65,4 @@
 
   renderPhaseNav();
   renderResources();
-  enhanceReferenceCards();
-  enhanceInlineGithubLinks();
 })();
