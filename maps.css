@@ -232,6 +232,25 @@ body.maps-page {
   background: var(--maps-teal);
 }
 
+.maps-term-highlight,
+.maps-heading-highlight {
+  color: #174f45;
+  background: linear-gradient(180deg, transparent 54%, #f6d88f 54%);
+  font-weight: 850;
+}
+
+.maps-heading-highlight {
+  display: inline;
+}
+
+.maps-button-highlight {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: #f6d88f;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
 .maps-card {
   padding: 22px;
   border: 1px solid var(--maps-line);
