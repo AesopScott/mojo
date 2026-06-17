@@ -86,12 +86,35 @@
   function positionApsDownloadButton() {
     const button = document.querySelector(".maps-aps-download-button");
     const topbar = document.querySelector(".maps-topbar");
+    const agentsLink = document.querySelector('.maps-links > a[href="agents.html"]');
+    const multiAgent = document.querySelector(".maps-pipeline-group.multi-agent");
+    const agentic = document.querySelector(".maps-pipeline-group.agentic");
     if (!button || !topbar) {
       return;
     }
 
-    const topbarBottom = topbar.getBoundingClientRect().bottom;
-    document.documentElement.style.setProperty("--maps-aps-button-top", `${Math.ceil(topbarBottom + 24)}px`);
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      document.documentElement.style.removeProperty("--maps-aps-button-left");
+      document.documentElement.style.removeProperty("--maps-aps-button-top");
+      return;
+    }
+
+    const buttonRect = button.getBoundingClientRect();
+    const topbarRect = topbar.getBoundingClientRect();
+    const agentsRect = agentsLink?.getBoundingClientRect();
+    const multiRect = multiAgent?.getBoundingClientRect();
+    const agenticRect = agentic?.getBoundingClientRect();
+
+    const desiredCenterX = agentsRect ? agentsRect.left + agentsRect.width / 2 : topbarRect.left + 176;
+    const desiredCenterY = multiRect && agenticRect
+      ? (multiRect.bottom + agenticRect.top) / 2
+      : topbarRect.top + topbarRect.height / 2;
+
+    const left = Math.max(16, Math.min(window.innerWidth - buttonRect.width - 16, desiredCenterX - buttonRect.width / 2));
+    const top = Math.max(16, desiredCenterY - buttonRect.height / 2);
+
+    document.documentElement.style.setProperty("--maps-aps-button-left", `${Math.round(left)}px`);
+    document.documentElement.style.setProperty("--maps-aps-button-top", `${Math.round(top)}px`);
   }
 
   function renderResourceGroup(selector, items) {
