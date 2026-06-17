@@ -14,3 +14,6 @@
 | 6 | `/deploy-agent` | Base Deploy skill for target runtime, package artifact, runtime metadata, deploy commands, secrets/config handoff, preflight, smoke test, release evidence, rollback, and deployment record. |
 | 6 | `/deploy-agent++` | Wrap Deploy with GitHub Actions environments and Cloudflare deployment automation. |
 | 7 | `/observe-agent` | Create the observation plan, review runtime evidence, record findings, define incident triggers, and hand off evidence-backed improvements. |
+| 7 | `/observe-agent+smith` | Wrap Observe with LangSmith traces, runs, datasets, feedback, annotations, experiments, and eval-to-observe continuity. |
+| 7 | `/observe-agent+fuse` | Wrap Observe with Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability. |
+| 7 | `/observe-agent+phoenix` | Wrap Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis. |

@@ -146,6 +146,24 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/observe-agent/SKILL.md",
         download: true,
         note: "Base Phase 7 Observe skill for traces, logs, metrics, feedback, incidents, review cadence, alert triggers, and Phase 8 improvement handoff."
+      },
+      {
+        name: "/observe-agent+smith",
+        url: "assets/maps/skills/observe-agent-smith/SKILL.md",
+        download: true,
+        note: "Wraps base Observe with LangSmith traces, runs, datasets, feedback, annotations, experiments, and eval-to-observe continuity."
+      },
+      {
+        name: "/observe-agent+fuse",
+        url: "assets/maps/skills/observe-agent-fuse/SKILL.md",
+        download: true,
+        note: "Wraps base Observe with Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability."
+      },
+      {
+        name: "/observe-agent+phoenix",
+        url: "assets/maps/skills/observe-agent-phoenix/SKILL.md",
+        download: true,
+        note: "Wraps base Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis."
       }
     ],
     repos: [
@@ -599,7 +617,7 @@ window.MAPS_SITE = {
       templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
     },
     "7": {
-      skills: ["/observe-agent"],
+      skills: ["/observe-agent", "/observe-agent+smith", "/observe-agent+fuse", "/observe-agent+phoenix"],
       repos: ["AesopScott/maps", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix", "langfuse/langfuse", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "traceloop/openllmetry"],
       tools: ["Git", "Agent Skills", "LangSmith observability", "Phoenix tracing", "Langfuse", "OpenTelemetry GenAI conventions", "OpenAI Agents SDK tracing", "Cloudflare Workers observability"],
       templates: ["templates/observation-plan.md", "templates/observation-log.md", "templates/improvement-backlog.md"]

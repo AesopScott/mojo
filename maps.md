@@ -100,6 +100,14 @@ Build should update backlog status as work completes, blocks, splits, or gets de
 
 Observe should use `/observe-agent` as the base Phase 7 skill for production feedback loops after the agent is deployed or running in a target environment.
 
+Phase 7 should also provide three comparable wrapper skills:
+
+- `/observe-agent+smith`: base Observe plus LangSmith traces, runs, datasets, feedback, annotations, experiments, and eval-to-observe continuity.
+- `/observe-agent+fuse`: base Observe plus Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability.
+- `/observe-agent+phoenix`: base Observe plus Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis.
+
+The page should let students compare all three instead of telling them one answer is always best.
+
 Phase 7 should answer:
 
 - Does the agent produce enough runtime evidence for us to understand behavior, quality, cost, failures, safety, and what should improve next?

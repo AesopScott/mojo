@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=must-cover-secrets">
-    <script src="maps-data.js?v=observe-phase" defer></script>
+    <script src="maps-data.js?v=observe-wrappers" defer></script>
     <script src="maps-page.js?v=repo-stars-plain" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="7">
@@ -59,6 +59,7 @@
               <a href="#output">Output</a>
               <a href="#signals">Signals</a>
               <a href="#runtime">Runtime evidence</a>
+              <a href="#wrappers">Wrappers</a>
               <a href="#incidents">Incidents</a>
               <a href="#improve">Improve handoff</a>
               <a href="#references">References</a>
@@ -141,6 +142,10 @@
             <article class="maps-panel">
               <h3>Skill</h3>
               <p><a href="assets/maps/skills/observe-agent/SKILL.md" download><strong>/observe-agent</strong></a> creates the observation plan, runtime signal map, incident criteria, review cadence, and improvement handoff.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Wrapper skills</h3>
+              <p><a href="assets/maps/skills/observe-agent-smith/SKILL.md" download><strong>/observe-agent+smith</strong></a>, <a href="assets/maps/skills/observe-agent-fuse/SKILL.md" download><strong>/observe-agent+fuse</strong></a>, and <a href="assets/maps/skills/observe-agent-phoenix/SKILL.md" download><strong>/observe-agent+phoenix</strong></a> let students compare three Observe stacks against the same base workflow.</p>
             </article>
             <article class="maps-panel">
               <h3>Templates</h3>
@@ -226,6 +231,44 @@
               <h3>Ownership</h3>
               <p>Assign review cadence, owner, escalation path, rollback trigger, and Phase 8 backlog handoff responsibility.</p>
             </article>
+          </div>
+        </section>
+
+        <section id="wrappers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Observe wrappers</h2>
+            <p>
+              Use the same base Observe workflow through three different observability stacks so students can compare the tradeoffs themselves.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Wrapper</th>
+                  <th>Best lens</th>
+                  <th>Students should compare</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="assets/maps/skills/observe-agent-smith/SKILL.md" download><strong>/observe-agent+smith</strong></a></td>
+                  <td>LangSmith eval-to-observe continuity: traces, runs, datasets, experiments, feedback, and annotation.</td>
+                  <td>How cleanly Phase 5 eval evidence turns into production monitoring and improvement decisions.</td>
+                </tr>
+                <tr>
+                  <td><a href="assets/maps/skills/observe-agent-fuse/SKILL.md" download><strong>/observe-agent+fuse</strong></a></td>
+                  <td>Langfuse open-source/self-hostable LLM observability: traces, sessions, scores, prompts, metrics, and feedback.</td>
+                  <td>How data control, prompt/version tracking, scoring, and self-hosting change the operating model.</td>
+                </tr>
+                <tr>
+                  <td><a href="assets/maps/skills/observe-agent-phoenix/SKILL.md" download><strong>/observe-agent+phoenix</strong></a></td>
+                  <td>Phoenix open instrumentation workbench: OpenInference, OpenTelemetry, traces, datasets, experiments, and LLM/RAG eval analysis.</td>
+                  <td>How open trace standards and eval analysis help debug real agent behavior across frameworks.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -397,6 +440,7 @@
             <h2>Phase 7 resources</h2>
             <p>
               <a href="assets/maps/skills/observe-agent/SKILL.md" download>`/observe-agent`</a> uses <a href="assets/maps/templates/observation-plan.md" download>`templates/observation-plan.md`</a> and <a href="assets/maps/templates/observation-log.md" download>`templates/observation-log.md`</a> to turn runtime evidence into a Phase 8 improvement handoff.
+              The wrapper skills <a href="assets/maps/skills/observe-agent-smith/SKILL.md" download>`/observe-agent+smith`</a>, <a href="assets/maps/skills/observe-agent-fuse/SKILL.md" download>`/observe-agent+fuse`</a>, and <a href="assets/maps/skills/observe-agent-phoenix/SKILL.md" download>`/observe-agent+phoenix`</a> apply the same workflow through LangSmith, Langfuse, and Phoenix.
             </p>
           </div>
 
