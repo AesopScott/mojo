@@ -112,3 +112,4 @@ LangSmith should be treated as an Observe-phase reference even when LangGraph is
 - Add LangSmith and other observability options to Phase 7 Observe when that page is built.
 - Keep Phase 4 focused on capability provisioning: tools, permissions, memory, connectors, runtime config, limits, and fallbacks.
 - Phase 4 runtime config should recommend where API keys live: local `.env` only for development, platform runtime secrets for deployed agents, CI/CD encrypted secrets for deploy pipelines, managed secret managers for audited/rotated operations, and connector/OAuth token stores for delegated access.
+- Phase 4 must visibly cover scope by environment, blast-radius limits, and rotation/leak response for secrets.

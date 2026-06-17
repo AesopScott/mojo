@@ -57,6 +57,7 @@ This skill must not become a blank questionnaire. It should research and recomme
 - Recommend a managed secret manager when secrets need audit history, rotation, multi-environment sharing, or central access control.
 - Recommend connector-managed OAuth storage or an encrypted backend token store for Gmail, Slack, Drive, GitHub, and similar delegated-access connectors.
 - Recommend browser-exposed keys only when the provider explicitly supports public client keys, and require domain, API, scope, quota, and environment restrictions.
+- Always cover these runtime config controls explicitly: scope by environment, limit blast radius, and plan rotation.
 - Recommend explicit human approval for money movement, external messages, publishing, deletion, production writes, sensitive data access, and irreversible actions.
 - Prefer MCP servers or connector standards when they reduce custom integration work without weakening security.
 - Do not invent a tool requirement if the Phase 3 build does not need it.

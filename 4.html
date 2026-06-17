@@ -286,16 +286,19 @@
             </table>
           </div>
 
-          <div class="maps-grid">
-            <article class="maps-panel">
+          <div class="maps-must-cover-grid" aria-label="Required runtime config coverage">
+            <article class="maps-must-cover-card">
+              <span>Must cover</span>
               <h3>Scope by environment</h3>
               <p>Use separate dev, staging, and production keys so a test agent cannot mutate production systems by accident.</p>
             </article>
-            <article class="maps-panel">
+            <article class="maps-must-cover-card">
+              <span>Must cover</span>
               <h3>Limit blast radius</h3>
               <p>Prefer read-only scopes, allowlists, referrer/IP restrictions, spend caps, and tool-specific approval gates.</p>
             </article>
-            <article class="maps-panel">
+            <article class="maps-must-cover-card">
+              <span>Must cover</span>
               <h3>Plan rotation</h3>
               <p>Record who owns each secret, how it is revoked, how it is rotated, and what should happen when it leaks.</p>
             </article>

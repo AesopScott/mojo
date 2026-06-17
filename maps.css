@@ -642,6 +642,49 @@ body.maps-page {
   color: var(--maps-muted);
 }
 
+.maps-must-cover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.maps-must-cover-card {
+  min-height: 190px;
+  padding: 20px;
+  border: 2px solid rgba(184, 135, 47, 0.45);
+  border-left: 7px solid var(--maps-gold);
+  border-radius: 8px;
+  background: #fff8e8;
+  box-shadow: 0 14px 34px rgba(184, 135, 47, 0.16);
+}
+
+.maps-must-cover-card span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  color: #fff;
+  background: #7b5a1c;
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.maps-must-cover-card h3 {
+  margin: 0 0 10px;
+  color: #6e4d11;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.maps-must-cover-card p {
+  margin: 0;
+  color: #4f432d;
+  font-size: 16px;
+  font-weight: 650;
+}
+
 .maps-auth-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -949,6 +992,7 @@ body.maps-page {
   .maps-reference-grid,
   .maps-resource-grid,
   .maps-path-chooser,
+  .maps-must-cover-grid,
   .maps-rule-grid,
   .maps-walkthrough,
   .maps-equip-list,

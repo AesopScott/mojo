@@ -57,9 +57,17 @@
 - Managed secret manager:
 - Connector or OAuth token storage:
 - Browser-exposed public keys:
-- Separate dev/staging/production keys:
-- Key restrictions, scopes, quotas, or allowlists:
-- Rotation, revocation, and leak response:
+- Must cover - scope by environment:
+  - Separate dev/staging/production keys:
+  - Test agent cannot mutate production systems:
+- Must cover - limit blast radius:
+  - Read-only scopes:
+  - Allowlists, referrer/IP restrictions, spend caps, and tool-specific approval gates:
+- Must cover - plan rotation:
+  - Secret owner:
+  - Rotation schedule:
+  - Revocation path:
+  - Leak response:
 - `.env.example` entries to document required names:
 
 ## Memory And Retrieval
