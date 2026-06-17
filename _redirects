@@ -1,5 +1,7 @@
 /WatchAI /learn/ 301
 /WatchAI/* /learn/:splat 301
+/m3 /m8 301
+/m3.html /m8 301
 /watch /learn/ 301
 /api/* /404.html 404
 /oauth/* /404.html 404
