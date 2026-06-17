@@ -32,3 +32,11 @@
 | 6 | `NousResearch/hermes-agent` | Hermes gateway, desktop, provider, channel, and deployment reference. Current research signal: 195,561 stars. |
 | 6 | `electron/forge` | Electron packaging and publishing reference. Current research signal: 7,089 stars. |
 | 6 | `electron-userland/electron-builder` | Electron packaging, GitHub Actions CI/CD, signing, publishing, and auto-update reference. Current research signal: 14,594 stars. |
+| 7 | `langchain-ai/langsmith-sdk` | LangSmith tracing, runs, datasets, feedback, and hosted observability reference. Current research signal: 930 stars. |
+| 7 | `Arize-ai/phoenix` | Open-source AI observability and evaluation reference. Current research signal: 10,175 stars. |
+| 7 | `langfuse/langfuse` | Open-source LLM observability, tracing, evals, metrics, prompt management, and feedback reference. Current research signal: 29,263 stars. |
+| 7 | `open-telemetry/opentelemetry-js` | JavaScript OpenTelemetry instrumentation reference. Current research signal: 3,396 stars. |
+| 7 | `open-telemetry/opentelemetry-python` | Python OpenTelemetry instrumentation reference. Current research signal: 2,492 stars. |
+| 7 | `openai/openai-agents-python` | Agents SDK tracing, tool call, handoff, guardrail, and span reference. Current research signal: 27,209 stars. |
+| 7 | `openai/openai-agents-js` | JavaScript/TypeScript Agents SDK runtime and tracing reference. Current research signal: 3,234 stars. |
+| 7 | `traceloop/openllmetry` | OpenTelemetry-based observability reference for GenAI and LLM applications. Current research signal: 7,201 stars. |

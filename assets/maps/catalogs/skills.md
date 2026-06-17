@@ -13,3 +13,4 @@
 | 5 | `/evaluate-agent++` | Wrap base Evaluate with LangSmith, Inspect AI, and Phoenix. |
 | 6 | `/deploy-agent` | Base Deploy skill for target runtime, package artifact, runtime metadata, deploy commands, secrets/config handoff, preflight, smoke test, release evidence, rollback, and deployment record. |
 | 6 | `/deploy-agent++` | Wrap Deploy with GitHub Actions environments and Cloudflare deployment automation. |
+| 7 | `/observe-agent` | Create the observation plan, review runtime evidence, record findings, define incident triggers, and hand off evidence-backed improvements. |

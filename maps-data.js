@@ -62,7 +62,7 @@ window.MAPS_SITE = {
       label: "Phase 7",
       title: "Observe",
       output: "Observation plan",
-      status: "under-construction"
+      status: "available"
     },
     {
       number: "8",
@@ -140,6 +140,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/deploy-agent-plus-plus/SKILL.md",
         download: true,
         note: "Wraps /deploy-agent with GitHub Actions environments and Cloudflare deployment automation so GitHub can deploy Pages, Workers, and Cloudflare Agents projects."
+      },
+      {
+        name: "/observe-agent",
+        url: "assets/maps/skills/observe-agent/SKILL.md",
+        download: true,
+        note: "Base Phase 7 Observe skill for traces, logs, metrics, feedback, incidents, review cadence, alert triggers, and Phase 8 improvement handoff."
       }
     ],
     repos: [
@@ -171,7 +177,7 @@ window.MAPS_SITE = {
       {
         name: "openai/openai-agents-python",
         url: "https://github.com/openai/openai-agents-python",
-        note: "Lightweight agent runtime reference for tools, handoffs, guardrails, sessions, tracing, and sandbox agents."
+        note: "Lightweight agent runtime reference for tools, handoffs, guardrails, sessions, tracing, and sandbox agents. Current research signal: 27,209 stars."
       },
       {
         name: "crewAIInc/crewAI",
@@ -206,7 +212,7 @@ window.MAPS_SITE = {
       {
         name: "langchain-ai/langsmith-sdk",
         url: "https://github.com/langchain-ai/langsmith-sdk",
-        note: "Reference SDK for LangSmith tracing, datasets, experiments, and evaluations without requiring LangGraph."
+        note: "Reference SDK for LangSmith tracing, datasets, experiments, and evaluations without requiring LangGraph. Current research signal: 930 stars."
       },
       {
         name: "UKGovernmentBEIS/inspect_ai",
@@ -221,7 +227,7 @@ window.MAPS_SITE = {
       {
         name: "Arize-ai/phoenix",
         url: "https://github.com/Arize-ai/phoenix",
-        note: "Open-source AI observability and evaluation reference for traces, datasets, experiments, and LLM/RAG evals."
+        note: "Open-source AI observability and evaluation reference for traces, datasets, experiments, and LLM/RAG evals. Current research signal: 10,175 stars."
       },
       {
         name: "cloudflare/agents",
@@ -246,7 +252,7 @@ window.MAPS_SITE = {
       {
         name: "openai/openai-agents-js",
         url: "https://github.com/openai/openai-agents-js",
-        note: "JavaScript/TypeScript agent runtime reference for packaging Node-based agent services. Current research signal: 3,231 stars."
+        note: "JavaScript/TypeScript agent runtime reference for packaging Node-based agent services. Current research signal: 3,234 stars."
       },
       {
         name: "temporalio/sdk-python",
@@ -282,6 +288,26 @@ window.MAPS_SITE = {
         name: "electron-userland/electron-builder",
         url: "https://github.com/electron-userland/electron-builder",
         note: "Electron packaging, GitHub Actions CI/CD, signing, publishing, and auto-update reference. Current research signal: 14,594 stars."
+      },
+      {
+        name: "langfuse/langfuse",
+        url: "https://github.com/langfuse/langfuse",
+        note: "Open-source LLM observability, tracing, evals, metrics, prompt management, and feedback reference. Current research signal: 29,263 stars."
+      },
+      {
+        name: "open-telemetry/opentelemetry-js",
+        url: "https://github.com/open-telemetry/opentelemetry-js",
+        note: "JavaScript OpenTelemetry instrumentation reference for traces, metrics, exporters, and runtime observability. Current research signal: 3,396 stars."
+      },
+      {
+        name: "open-telemetry/opentelemetry-python",
+        url: "https://github.com/open-telemetry/opentelemetry-python",
+        note: "Python OpenTelemetry instrumentation reference for traces, metrics, logs, exporters, and service observability. Current research signal: 2,492 stars."
+      },
+      {
+        name: "traceloop/openllmetry",
+        url: "https://github.com/traceloop/openllmetry",
+        note: "OpenTelemetry-based observability reference for GenAI and LLM applications. Current research signal: 7,201 stars."
       }
     ],
     tools: [
@@ -404,6 +430,36 @@ window.MAPS_SITE = {
         name: "Temporal durable execution",
         url: "https://docs.temporal.io/ai-cookbook/openai-agents-sdk-python",
         note: "Provides durable workflow execution, retries, recovery, and long-running agent runtime patterns for OpenAI Agents SDK deployments."
+      },
+      {
+        name: "LangSmith observability",
+        url: "https://docs.langchain.com/langsmith/observability",
+        note: "Provides production tracing, monitoring, debugging, feedback, annotations, and quality review."
+      },
+      {
+        name: "Phoenix tracing",
+        url: "https://arize.com/docs/phoenix/tracing/integrations-tracing",
+        note: "Provides OpenInference and OpenTelemetry-compatible tracing integrations for LLM applications."
+      },
+      {
+        name: "Langfuse",
+        url: "https://langfuse.com/docs",
+        note: "Provides open-source LLM traces, sessions, scores, datasets, metrics, prompt/version tracking, and feedback capture."
+      },
+      {
+        name: "OpenTelemetry GenAI conventions",
+        url: "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+        note: "Provides vendor-neutral semantic conventions for GenAI, agent, tool, token, and model-call telemetry."
+      },
+      {
+        name: "OpenAI Agents SDK tracing",
+        url: "https://openai.github.io/openai-agents-python/tracing/",
+        note: "Provides tracing for agent runs, tool calls, handoffs, guardrails, custom spans, and trace processors."
+      },
+      {
+        name: "Cloudflare Workers observability",
+        url: "https://developers.cloudflare.com/workers/observability/",
+        note: "Provides runtime logs, metrics, traces, analytics, errors, and tailing for Cloudflare-hosted agents."
       }
     ],
     templates: [
@@ -480,6 +536,18 @@ window.MAPS_SITE = {
         note: "Captures Phase 6 deployment evidence, GitHub/Cloudflare run details, smoke results, rollback readiness, and Observe handoff."
       },
       {
+        name: "templates/observation-plan.md",
+        url: "assets/maps/templates/observation-plan.md",
+        download: true,
+        note: "Captures Phase 7 runtime evidence sources, signals, thresholds, owners, alert triggers, and improvement handoff rules."
+      },
+      {
+        name: "templates/observation-log.md",
+        url: "assets/maps/templates/observation-log.md",
+        download: true,
+        note: "Captures Phase 7 observed evidence, findings, review decisions, and Phase 8 improvement backlog handoff."
+      },
+      {
         name: "templates/improvement-backlog.md",
         url: "assets/maps/templates/improvement-backlog.md",
         download: true,
@@ -529,6 +597,12 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps", "cloudflare/agents", "cloudflare/workers-sdk", "modelcontextprotocol/mcpb", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "temporalio/sdk-python", "temporal-community/openai-agents-demos", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
       tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging", "MCPB", "Temporal durable execution"],
       templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
+    },
+    "7": {
+      skills: ["/observe-agent"],
+      repos: ["AesopScott/maps", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix", "langfuse/langfuse", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "traceloop/openllmetry"],
+      tools: ["Git", "Agent Skills", "LangSmith observability", "Phoenix tracing", "Langfuse", "OpenTelemetry GenAI conventions", "OpenAI Agents SDK tracing", "Cloudflare Workers observability"],
+      templates: ["templates/observation-plan.md", "templates/observation-log.md", "templates/improvement-backlog.md"]
     },
     "8": {
       skills: [],

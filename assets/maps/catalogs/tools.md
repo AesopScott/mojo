@@ -29,6 +29,12 @@
 | 6 | Runtime packaging | Provide manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes. |
 | 6 | MCPB | Provide portable MCP server bundles with manifest metadata, capabilities, runtime requirements, and install packaging. |
 | 6 | Temporal durable execution | Provide durable workflow execution, retries, state persistence, recovery, and activity-based tool calls for production agents. |
+| 7 | LangSmith observability | Provide production traces, monitoring, debugging, feedback, annotations, and quality review. |
+| 7 | Phoenix tracing | Provide OpenInference and OpenTelemetry-compatible tracing integrations for LLM applications. |
+| 7 | Langfuse | Provide open-source LLM traces, sessions, scores, datasets, metrics, prompt/version tracking, and feedback capture. |
+| 7 | OpenTelemetry GenAI conventions | Provide vendor-neutral semantic conventions for GenAI, agent, tool, token, and model-call telemetry. |
+| 7 | OpenAI Agents SDK tracing | Provide traces for agent runs, tool calls, handoffs, guardrails, custom spans, and trace processors. |
+| 7 | Cloudflare Workers observability | Provide runtime logs, metrics, traces, analytics, errors, and tailing for Cloudflare-hosted agents. |
 | 8 | Backlog planning | Convert observation, eval, incident, and feedback evidence into prioritized improvement work. |
 | 8 | Scrum Guide product backlog | Keep the improvement backlog ordered and evolving as new evidence appears. |
 | 8 | Atlassian product backlog guide | Refine improvement items and make tradeoffs before another build cycle starts. |

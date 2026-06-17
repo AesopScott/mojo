@@ -22,7 +22,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
 | 6 Deploy | `6.html` | Release plan and deployment record | Available | Package and publish to the selected runtime or distribution channel. |
-| 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
+| 7 Observe | `7.html` | Observation plan and observation log | Available | Track runtime logs, traces, cost, latency, quality signals, incidents, feedback, and evidence-backed improvement handoff. |
 | 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, incidents, and user feedback into prioritized improvement backlog items with dependencies. |
 
 ## Runtime Adapter Model
@@ -96,16 +96,38 @@ Build should update backlog status as work completes, blocks, splits, or gets de
 | CrewAI | Runtime adapter | Convert MAPS roles/tasks into crew, flow, agents.yaml, tasks.yaml, and tools. |
 | Google ADK | Runtime adapter | Convert MAPS design into agents, workflow nodes, routing, state, retries, and HITL points. |
 
-## Observe Phase References
+## Phase 7 Observe Additions
 
-Phase 7 should cover production observation and feedback loops after the agent is deployed or running in a target environment.
+Observe should use `/observe-agent` as the base Phase 7 skill for production feedback loops after the agent is deployed or running in a target environment.
 
-Candidate references and tools:
+Phase 7 should answer:
 
-- LangSmith: tracing, monitoring, evaluation, cost/latency tracking, production failure debugging, and trace-backed improvement loops.
-- Langfuse: open-source observability, tracing, evaluations, and production monitoring across several agent frameworks.
-- Arize/Phoenix: tracing, evaluation, dataset analysis, and production ML/LLM observability.
-- OpenTelemetry: vendor-neutral trace/log/metric instrumentation where runtime adapters support it.
+- Does the agent produce enough runtime evidence for us to understand behavior, quality, cost, failures, safety, and what should improve next?
+
+Phase 7 should record:
+
+- Observation plan:
+- Observation log:
+- Production URL:
+- Trace source:
+- Log source:
+- Metric source:
+- Feedback source:
+- Review cadence:
+- Alert destination:
+- Incident triggers:
+- Rollback or pause triggers:
+- Improvement handoff:
+
+Observe should track:
+
+- Agent work: runs, traces, tool calls, connector calls, retries, approvals, fallbacks, final outputs, and escalation decisions.
+- Operating health: latency, cost, token use, uptime, queue depth, timeouts, rate limits, failed jobs, and stuck runs.
+- Quality: user feedback, recurring failures, bad tool choices, incomplete tasks, eval drift, and regression patterns.
+- Safety and boundaries: denied tool calls, permission violations, approval gates, budget limits, unexpected data access, unsafe requests, and fallback behavior.
+- Improvement evidence: traces, logs, metrics, incidents, eval misses, user feedback, support notes, and review decisions that justify Phase 8 backlog items.
+
+Phase 7 references should include LangSmith observability, Phoenix tracing, Langfuse, OpenTelemetry GenAI semantic conventions, OpenAI Agents SDK tracing, Cloudflare Workers observability, and OpenTelemetry-based GenAI instrumentation references.
 
 LangSmith should be treated as an Evaluate and Observe reference without requiring LangGraph. LangGraph should be reserved for multi-agent orchestration implementation or graph-state runtimes when the design requires it.
 
@@ -216,7 +238,7 @@ Use `templates/improvement-backlog.md` for Phase 8. If an improvement is too bro
   - `templates/runtime-profile-codex.md`
   - `templates/runtime-profile-claude-code.md`
   - `templates/runtime-portability-checklist.md`
-- Add LangSmith and other observability options to Phase 7 Observe when that page is built.
+- Keep Phase 7 focused on production evidence, not dashboard decoration.
 - Keep LangGraph positioned as a multi-agent orchestration implementation reference, not a default single-agent Build dependency.
 - Keep Phase 4 focused on capability provisioning: tools, permissions, memory, connectors, runtime config, limits, and fallbacks.
 - Phase 4 runtime config should recommend where API keys live: local `.env` only for development, platform runtime secrets for deployed agents, CI/CD encrypted secrets for deploy pipelines, managed secret managers for audited/rotated operations, and connector/OAuth token stores for delegated access.
