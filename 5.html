@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=must-cover-secrets">
-    <script src="maps-data.js?v=evaluate-phase" defer></script>
+    <script src="maps-data.js?v=base-evaluate-skill" defer></script>
     <script src="maps-page.js?v=repo-stars-plain" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="5">
@@ -140,8 +140,12 @@
               <p><strong>`agents/{agent-handle}/capability-map.md`</strong> from Phase 4, plus the working agent and target runtime.</p>
             </article>
             <article class="maps-panel">
-              <h3>Skill</h3>
-              <p><a href="assets/maps/skills/evaluate-agent-plus-plus/SKILL.md" download><strong>/evaluate-agent++</strong></a> wraps base Evaluate with LangSmith, Inspect AI, and Phoenix.</p>
+              <h3>Base skill</h3>
+              <p><a href="assets/maps/skills/evaluate-agent/SKILL.md" download><strong>/evaluate-agent</strong></a> creates the eval suite, chooses execution mode, records evidence, and recommends the release gate.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Wrapper skill</h3>
+              <p><a href="assets/maps/skills/evaluate-agent-plus-plus/SKILL.md" download><strong>/evaluate-agent++</strong></a> extends base Evaluate with LangSmith, Inspect AI, and Phoenix.</p>
             </article>
             <article class="maps-panel">
               <h3>Templates</h3>
@@ -401,7 +405,7 @@
           <div class="maps-section-header">
             <h2>Phase 5 resources</h2>
             <p>
-              <a href="assets/maps/skills/evaluate-agent-plus-plus/SKILL.md" download>`/evaluate-agent++`</a> uses <a href="assets/maps/templates/eval-suite.md" download>`templates/eval-suite.md`</a> and <a href="assets/maps/templates/eval-report.md" download>`templates/eval-report.md`</a> to prove the equipped agent.
+              <a href="assets/maps/skills/evaluate-agent/SKILL.md" download>`/evaluate-agent`</a> and <a href="assets/maps/skills/evaluate-agent-plus-plus/SKILL.md" download>`/evaluate-agent++`</a> use <a href="assets/maps/templates/eval-suite.md" download>`templates/eval-suite.md`</a> and <a href="assets/maps/templates/eval-report.md" download>`templates/eval-report.md`</a> to prove the equipped agent.
             </p>
           </div>
 

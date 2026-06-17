@@ -9,12 +9,20 @@ Use this skill after Phase 4 has produced `agents/{agent-handle}/capability-map.
 
 This skill is one wrapper, not three competing tool choices. It combines:
 
-- Base MAPS Evaluate process
+- MAPS `/evaluate-agent`: base eval suite, execution mode, report, release gate, and handoff
 - LangSmith for datasets, traces, trajectory review, regression history, and Phase 7 handoff
 - Inspect AI for structured task, solver, scorer, tool-use, and safety evaluations
 - Phoenix for open-source tracing, LLM/RAG eval analysis, and observability bridge
 
 LangGraph is not required for this skill. Treat LangGraph as a later multi-agent orchestration implementation option, not a default single-agent Build dependency.
+
+## References To Cite
+
+- MAPS base `/evaluate-agent`: `assets/maps/skills/evaluate-agent/SKILL.md`
+- LangSmith evaluation: `https://docs.langchain.com/langsmith/evaluation`
+- LangSmith trajectory evals: `https://docs.langchain.com/langsmith/trajectory-evals`
+- Inspect AI: `https://inspect.aisi.org.uk/`
+- Phoenix: `https://arize.com/docs/phoenix`
 
 ## Input
 
@@ -39,7 +47,7 @@ LangGraph is not required for this skill. Treat LangGraph as a later multi-agent
    - runtime adapter or portability evals if relevant
    - regression and release-gate evals
 5. Recommend which wrapper components to use:
-   - Base Evaluate for artifact structure and release gate
+   - `/evaluate-agent` for artifact structure, execution mode, eval report, and release gate
    - LangSmith for trace-backed datasets, experiments, trajectory review, and regression tracking
    - Inspect AI for structured eval tasks, solvers, scorers, tool-use checks, and safety/boundary tests
    - Phoenix for local or self-hosted tracing, LLM eval analysis, retrieval evals, and Observe handoff

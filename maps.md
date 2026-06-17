@@ -20,7 +20,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 2 Design | `2.html` | Agent design | Available | Add runtime target and adapter requirement planning. |
 | 3 Build | `3.html` | Working agent | Available | Build adapter/profile when needed for the first working runtime. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
-| 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
+| 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with base `/evaluate-agent`, `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
 | 6 Deploy | `6.html` | Release plan and deployment record | Available | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
 | 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, and user feedback into the next iteration. |
@@ -99,7 +99,7 @@ LangSmith should be treated as an Evaluate and Observe reference without requiri
 
 ## Phase 5 Evaluate Additions
 
-Evaluate should use `/evaluate-agent++` as one wrapper over the base Evaluate process, LangSmith, Inspect AI, and Phoenix.
+Evaluate should use `/evaluate-agent` as the base Phase 5 skill and `/evaluate-agent++` as one wrapper over the base Evaluate process, LangSmith, Inspect AI, and Phoenix.
 
 Phase 5 should record:
 

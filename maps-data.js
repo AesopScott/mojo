@@ -118,6 +118,12 @@ window.MAPS_SITE = {
         note: "Runs Research and Recommend, then creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
       },
       {
+        name: "/evaluate-agent",
+        url: "assets/maps/skills/evaluate-agent/SKILL.md",
+        download: true,
+        note: "Base Phase 5 Evaluate skill for eval suites, execution modes, evidence, release gates, and Deploy/Observe handoff."
+      },
+      {
         name: "/evaluate-agent++",
         url: "assets/maps/skills/evaluate-agent-plus-plus/SKILL.md",
         download: true,
@@ -482,7 +488,7 @@ window.MAPS_SITE = {
       templates: ["templates/capability-map.md"]
     },
     "5": {
-      skills: ["/evaluate-agent++"],
+      skills: ["/evaluate-agent", "/evaluate-agent++"],
       repos: ["AesopScott/maps", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "UKGovernmentBEIS/inspect_evals", "Arize-ai/phoenix"],
       tools: ["Git", "Agent Skills", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
       templates: ["templates/eval-suite.md", "templates/eval-report.md"]
