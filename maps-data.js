@@ -30,7 +30,7 @@ window.MAPS_SITE = {
       label: "Phase 3",
       title: "Build",
       output: "Working agent",
-      status: "under-construction"
+      status: "available"
     },
     {
       number: "4",
@@ -77,19 +77,39 @@ window.MAPS_SITE = {
     skills: [
       {
         name: "/scaffold",
+        url: "assets/maps/skills/scaffold/SKILL.md",
+        download: true,
         note: "Creates the MAPS repository structure, phase docs, phase skills, templates, catalogs, project page, README, license, and gitignore."
       },
       {
         name: "phase-alignment",
+        url: "assets/maps/skills/phase-alignment/SKILL.md",
+        download: true,
         note: "Captures lifecycle names, boundaries, scaffolding decisions, and open questions."
       },
       {
         name: "/define-agent",
+        url: "assets/maps/skills/define-agent/SKILL.md",
+        download: true,
         note: "Creates agents/{agent-handle}/agent-brief.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       },
       {
         name: "/design-agent",
+        url: "assets/maps/skills/design-agent/SKILL.md",
+        download: true,
         note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md."
+      },
+      {
+        name: "/build-agent",
+        url: "assets/maps/skills/build-agent/SKILL.md",
+        download: true,
+        note: "Base Phase 3 Build skill for turning an approved agent design into a working agent implementation."
+      },
+      {
+        name: "/build-agent++",
+        url: "assets/maps/skills/build-agent-plus-plus/SKILL.md",
+        download: true,
+        note: "MAPS Build skill that merges base /build-agent, incremental implementation, and test-driven development."
       }
     ],
     repos: [
@@ -107,6 +127,46 @@ window.MAPS_SITE = {
         name: "hqhq1025/skill-optimizer",
         url: "https://github.com/hqhq1025/skill-optimizer",
         note: "Reference for skill lifecycle tooling."
+      },
+      {
+        name: "addyosmani/agent-skills",
+        url: "https://github.com/addyosmani/agent-skills",
+        note: "Reference for incremental implementation, TDD, code review, and agent build discipline."
+      },
+      {
+        name: "github/spec-kit",
+        url: "https://github.com/github/spec-kit",
+        note: "Spec-to-plan-to-task implementation reference."
+      },
+      {
+        name: "openai/openai-agents-python",
+        url: "https://github.com/openai/openai-agents-python",
+        note: "Lightweight agent runtime reference for tools, handoffs, guardrails, sessions, tracing, and sandbox agents."
+      },
+      {
+        name: "langchain-ai/langgraph",
+        url: "https://github.com/langchain-ai/langgraph",
+        note: "Durable stateful workflow reference for long-running agents."
+      },
+      {
+        name: "crewAIInc/crewAI",
+        url: "https://github.com/crewAIInc/crewAI",
+        note: "Agent scaffold and task configuration reference."
+      },
+      {
+        name: "google/adk-python",
+        url: "https://github.com/google/adk-python",
+        note: "Code-first build, evaluate, and deploy reference for agent workflows."
+      },
+      {
+        name: "davila7/claude-code-templates",
+        url: "https://github.com/davila7/claude-code-templates",
+        note: "Template catalog for agents, commands, hooks, MCP integrations, and development workflows."
+      },
+      {
+        name: "microsoft/ai-agents-for-beginners",
+        url: "https://github.com/microsoft/ai-agents-for-beginners",
+        note: "Beginner-friendly curriculum for building agent systems."
       }
     ],
     tools: [
@@ -134,38 +194,76 @@ window.MAPS_SITE = {
         name: "Addy Osmani agent spec guidance",
         url: "https://addyosmani.com/blog/good-spec/",
         note: "Useful Design reference for objectives, context, constraints, acceptance criteria, and boundaries."
+      },
+      {
+        name: "Test runner",
+        note: "Runs slice-level tests, regression checks, and build proof for /build-agent++."
+      },
+      {
+        name: "Agent runtime",
+        note: "Runs the working agent implementation created in Phase 3."
+      },
+      {
+        name: "Browser/runtime verifier",
+        note: "Confirms user-facing or runtime behavior when the build has visible output."
       }
     ],
     catalogs: [
       {
         name: "catalogs/skills.md",
+        url: "assets/maps/catalogs/skills.md",
+        download: true,
         note: "Records skills by MAPS phase."
       },
       {
         name: "catalogs/repos.md",
+        url: "assets/maps/catalogs/repos.md",
+        download: true,
         note: "Records useful repositories by MAPS phase."
       },
       {
         name: "catalogs/tools.md",
+        url: "assets/maps/catalogs/tools.md",
+        download: true,
         note: "Records tools and services by MAPS phase."
       }
     ],
     templates: [
       {
         name: "templates/maps-scaffold-template.md",
+        url: "assets/maps/templates/maps-scaffold-template.md",
+        download: true,
         note: "Defines the repeatable MAPS repository structure that /scaffold instantiates."
       },
       {
         name: "templates/phase-alignment-brief.md",
+        url: "assets/maps/templates/phase-alignment-brief.md",
+        download: true,
         note: "Captures Phase 0 structure decisions."
       },
       {
         name: "templates/agent-definition-template.md",
+        url: "assets/maps/templates/agent-definition-template.md",
+        download: true,
         note: "Captures the Phase 1 Define artifact."
       },
       {
         name: "templates/workflow-spec.md",
+        url: "assets/maps/templates/workflow-spec.md",
+        download: true,
         note: "Captures the Phase 2 Design artifact."
+      },
+      {
+        name: "templates/agent-build-plan.md",
+        url: "assets/maps/templates/agent-build-plan.md",
+        download: true,
+        note: "Captures the Phase 3 Build slices, proof, evidence, and handoff notes."
+      },
+      {
+        name: "templates/build-log.md",
+        url: "assets/maps/templates/build-log.md",
+        download: true,
+        note: "Records implementation evidence, checks, decisions, blockers, and next-phase notes."
       }
     ]
   },
@@ -189,6 +287,13 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills", "Web and repository research"],
       templates: ["templates/workflow-spec.md"],
+      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+    },
+    "3": {
+      skills: ["/build-agent++", "/build-agent"],
+      repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "langchain-ai/langgraph", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
+      tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
+      templates: ["templates/agent-build-plan.md", "templates/build-log.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     }
   }

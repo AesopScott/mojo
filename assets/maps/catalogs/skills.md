@@ -1,0 +1,10 @@
+# MAPS Skills Catalog
+
+| Phase | Skill | Purpose |
+|---|---|---|
+| 0 | `/scaffold` | Create the MAPS structure. |
+| 0 | `phase-alignment` | Align lifecycle names, boundaries, and catalogs. |
+| 1 | `/define-agent` | Create the agent brief. |
+| 2 | `/design-agent` | Create the agent design through Research and Recommend. |
+| 3 | `/build-agent` | Base Build skill. |
+| 3 | `/build-agent++` | Build with incremental implementation and TDD. |

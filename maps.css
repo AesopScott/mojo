@@ -837,6 +837,13 @@ body.maps-page {
   color: var(--maps-ink);
 }
 
+.maps-download-link::after {
+  content: " download";
+  color: var(--maps-teal);
+  font-size: 12px;
+  font-weight: 760;
+}
+
 .maps-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--maps-line);
