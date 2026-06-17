@@ -616,7 +616,7 @@ window.MAPS_SITE = {
     "2": {
       skills: ["/design-agent"],
       repos: ["AesopScott/maps"],
-      tools: ["Git", "Agent Skills", "Web and repository research", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
+      tools: ["Git", "Agent Skills", "Web and repository research", "Backlog planning", "Addy Osmani agent spec guidance", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
       templates: ["templates/workflow-spec.md", "templates/agent-backlog.md"]
     },
     "3": {

@@ -63,6 +63,75 @@
     renderResourceGroup("[data-maps-templates]", phaseResources ? byName(site.resources.templates, phaseResources.templates) : site.resources.templates);
   }
 
+  function buildReferenceList(category, names) {
+    const items = names
+      .map((name) => site.resources[category].find((item) => item.name === name))
+      .filter(Boolean);
+
+    if (!items.length) {
+      return "";
+    }
+
+    const label = {
+      skills: "Skills",
+      repos: "Repos",
+      tools: "Tools",
+      templates: "Templates"
+    }[category];
+
+    const listItems = items.map((item) => {
+      const attrs = [];
+      if (item.url) {
+        attrs.push(`href="${item.url}"`);
+        if (item.download) {
+          attrs.push("download");
+          attrs.push('class="maps-download-link"');
+        } else {
+          attrs.push('target="_blank"');
+          attrs.push('rel="noopener noreferrer"');
+        }
+      }
+      const title = item.url ? `<a ${attrs.join(" ")}>${item.name}</a>` : `<strong>${item.name}</strong>`;
+      return `<li>${title}${item.note ? ` <span>${item.note}</span>` : ""}</li>`;
+    }).join("");
+
+    return `<div class="maps-reference-column"><h3>${label}</h3><ul>${listItems}</ul></div>`;
+  }
+
+  function renderReferencePhases() {
+    const target = document.querySelector("[data-maps-reference-phases]");
+    if (!target) {
+      return;
+    }
+
+    target.innerHTML = "";
+    site.phases.forEach((phase) => {
+      const resources = site.phaseResources?.[phase.number];
+      if (!resources) {
+        return;
+      }
+
+      const section = document.createElement("article");
+      section.className = "maps-reference-phase";
+      section.id = `phase-${phase.number}`;
+      section.innerHTML = `
+        <header>
+          <p class="maps-layer-kicker">${phase.label}</p>
+          <h2>${phase.title}</h2>
+          <p>${phase.output}</p>
+        </header>
+        <div class="maps-reference-columns">
+          ${buildReferenceList("skills", resources.skills || [])}
+          ${buildReferenceList("repos", resources.repos || [])}
+          ${buildReferenceList("tools", resources.tools || [])}
+          ${buildReferenceList("templates", resources.templates || [])}
+        </div>
+      `;
+      target.appendChild(section);
+    });
+  }
+
   renderPhaseNav();
   renderResources();
+  renderReferencePhases();
 })();

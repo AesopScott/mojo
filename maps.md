@@ -10,6 +10,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 - Runtime-specific artifacts live in adapter/profile work: skill format, tool bindings, memory conventions, sandbox assumptions, packaging, install steps, and verification commands.
 - Codex and Claude Code likely need lightweight runtime install profiles.
 - OpenClaw, Manus, Hermes, LangGraph, OpenAI Agents SDK, CrewAI, and Google ADK may need fuller adapters depending on how much transformation is required.
+- `references.html` is the program-wide MAPS reference catalog. Phase pages keep local Resources sections, but the top navigation References link should point to the catalog page.
 
 ## Phase Tracker
 

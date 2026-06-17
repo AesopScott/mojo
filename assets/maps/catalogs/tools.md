@@ -7,6 +7,7 @@
 | 1 | Git | Save phase artifacts. |
 | 2 | Web and repository research | Find comparable agents and build patterns. |
 | 2 | Backlog planning | Turn the design into prioritized, dependency-aware build slices and deferred improvement items before implementation starts. |
+| 2 | Addy Osmani agent spec guidance | Shape objectives, context, constraints, acceptance criteria, and boundaries before build. |
 | 2 | Scrum Guide product backlog | Treat the backlog as an ordered, evolving source of product work. |
 | 2 | Atlassian product backlog guide | Refine, prioritize, and align backlog items before implementation. |
 | 2 | GitHub sub-issues | Break larger backlog items into smaller child issues with visible dependency structure. |
