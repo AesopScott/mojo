@@ -26,6 +26,23 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 7 Observe | `7.html` | Observation plan and observation log | Available | Track runtime logs, traces, cost, latency, quality signals, incidents, feedback, and evidence-backed improvement handoff. |
 | 8 Improve | `8.html` | Improvement review and improvement backlog | Available | Feed observations, eval failures, incidents, user feedback, and operating signals into prioritized improvement backlog items with dependencies. |
 
+## Single-Agent Experience Design Placement
+
+Standalone agent projects still need experience design when there is no multi-agent application layer doing that work. Use optional `A1.5 Experience Design` between `A1 Define` and `A2 Design` when the agent has a visible surface, care text, UI, workflow, or user-facing configuration that needs product judgment before the agent design is locked.
+
+Use `M3 Experience Design` when the project is part of a multi-agent system. Use `A1.5 Experience Design` when the agent is the product, or when the agent will ship inside a single-agent interface without a separate multi-agent experience phase.
+
+`A1.5 Experience Design` should answer:
+
+- What UI, front end, chat surface, workflow, or configuration surface is this agent part of?
+- What should the experience feel like to the user?
+- What user journey, information architecture, interaction model, and visual/tone standard are needed?
+- What loading, empty, error, refusal, approval, escalation, and success states should exist?
+- How does the agent's activity, uncertainty, tool use, memory use, and handoff behavior appear to the user?
+- What care text, guidance, labels, warnings, or confirmations does the user need before the agent acts?
+
+This step feeds `A2 Design` and `A3 Build`. It does not replace the agent design phase; it gives that phase the product and interface constraints it needs.
+
 ## Multi-Agent Phase List
 
 The M layer is the multi-agent application pipeline. APS builds one agent or one capability; the M layer decides what product is being built, what it should feel like, why it needs multiple agents, which agents exist, how they coordinate, and how the full system is proven.
