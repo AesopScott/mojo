@@ -18,3 +18,14 @@
 | 5 | `UKGovernmentBEIS/inspect_ai` | Structured eval framework for tasks, solvers, scorers, tools, agents, and safety checks. |
 | 5 | `UKGovernmentBEIS/inspect_evals` | Community Inspect AI eval implementations. |
 | 5 | `Arize-ai/phoenix` | Open-source tracing, datasets, experiments, and LLM/RAG eval reference. |
+| 6 | `cloudflare/agents` | Cloudflare Agents SDK deploy reference. Current research signal: 5,122 stars. |
+| 6 | `cloudflare/workers-sdk` | Wrangler and Cloudflare deployment tooling reference. Current research signal: 4,163 stars. |
+| 6 | `GoogleCloudPlatform/agent-starter-pack` | Production-ready agent templates with CI/CD, evaluation, observability, Cloud Run, and Agent Engine patterns. Current research signal: 6,479 stars. |
+| 6 | `google/adk-python` | Python agent build, evaluate, and deploy reference. Current research signal: 20,147 stars. |
+| 6 | `openai/openai-agents-python` | Python agent runtime and production wrapper reference. Current research signal: 27,199 stars. |
+| 6 | `openai/openai-agents-js` | JavaScript/TypeScript agent runtime reference. Current research signal: 3,231 stars. |
+| 6 | `openclaw/openclaw` | OpenClaw gateway, daemon, channel, routing, and runtime deployment reference. Current research signal: 379,079 stars. |
+| 6 | `datopian/autoclaw.sh` | Open deployment playbook for operating OpenClaw agents in production. |
+| 6 | `NousResearch/hermes-agent` | Hermes gateway, desktop, provider, channel, and deployment reference. Current research signal: 195,561 stars. |
+| 6 | `electron/forge` | Electron packaging and publishing reference. Current research signal: 7,089 stars. |
+| 6 | `electron-userland/electron-builder` | Electron packaging, GitHub Actions CI/CD, signing, publishing, and auto-update reference. Current research signal: 14,594 stars. |

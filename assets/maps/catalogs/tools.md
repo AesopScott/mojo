@@ -17,3 +17,7 @@
 | 5 | LangSmith | Provide datasets, traces, trajectory evals, regression tracking, and Observe handoff. |
 | 5 | Inspect AI | Provide structured eval tasks, solvers, scorers, tool-use checks, and safety or boundary tests. |
 | 5 | Phoenix | Provide open-source tracing, LLM/RAG eval analysis, datasets, experiments, and Observe continuity. |
+| 6 | GitHub Actions environments | Provide environment secrets, deployment protection, branch controls, and approval gates for GitHub-driven releases. |
+| 6 | Cloudflare Wrangler | Provide Cloudflare Pages and Workers deploy commands, config validation, and project operations. |
+| 6 | Cloudflare rollback | Provide Worker rollback commands and dashboard rollback behavior for release recovery. |
+| 6 | Runtime packaging | Provide manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes. |

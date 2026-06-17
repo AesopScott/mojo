@@ -54,7 +54,7 @@ window.MAPS_SITE = {
       label: "Phase 6",
       title: "Deploy",
       output: "Release plan",
-      status: "under-construction"
+      status: "available"
     },
     {
       number: "7",
@@ -122,6 +122,18 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/evaluate-agent-plus-plus/SKILL.md",
         download: true,
         note: "Wraps base Evaluate with LangSmith, Inspect AI, and Phoenix to create eval suites, trace-backed reports, release gates, and Observe handoff."
+      },
+      {
+        name: "/deploy-agent",
+        url: "assets/maps/skills/deploy-agent/SKILL.md",
+        download: true,
+        note: "Base Phase 6 Deploy skill for target runtime, package artifact, runtime metadata, deploy commands, secrets/config handoff, preflight, smoke test, release evidence, rollback, and deployment record."
+      },
+      {
+        name: "/deploy-agent++",
+        url: "assets/maps/skills/deploy-agent-plus-plus/SKILL.md",
+        download: true,
+        note: "Wraps /deploy-agent with GitHub Actions environments and Cloudflare deployment automation so GitHub can deploy Pages, Workers, and Cloudflare Agents projects."
       }
     ],
     repos: [
@@ -204,6 +216,51 @@ window.MAPS_SITE = {
         name: "Arize-ai/phoenix",
         url: "https://github.com/Arize-ai/phoenix",
         note: "Open-source AI observability and evaluation reference for traces, datasets, experiments, and LLM/RAG evals."
+      },
+      {
+        name: "cloudflare/agents",
+        url: "https://github.com/cloudflare/agents",
+        note: "Cloudflare Agents SDK reference for deploying stateful AI agents. Current research signal: 5,122 stars."
+      },
+      {
+        name: "cloudflare/workers-sdk",
+        url: "https://github.com/cloudflare/workers-sdk",
+        note: "Wrangler and Cloudflare Workers/Pages deployment tooling reference. Current research signal: 4,163 stars."
+      },
+      {
+        name: "GoogleCloudPlatform/agent-starter-pack",
+        url: "https://github.com/GoogleCloudPlatform/agent-starter-pack",
+        note: "Production-ready Google agent templates with CI/CD, evaluation, observability, Cloud Run, and Agent Engine patterns. Current research signal: 6,479 stars."
+      },
+      {
+        name: "openai/openai-agents-js",
+        url: "https://github.com/openai/openai-agents-js",
+        note: "JavaScript/TypeScript agent runtime reference for packaging Node-based agent services. Current research signal: 3,231 stars."
+      },
+      {
+        name: "openclaw/openclaw",
+        url: "https://github.com/openclaw/openclaw",
+        note: "OpenClaw gateway and runtime deployment reference. Current research signal: 379,079 stars."
+      },
+      {
+        name: "datopian/autoclaw.sh",
+        url: "https://github.com/datopian/autoclaw.sh",
+        note: "Open deployment playbook for operating OpenClaw agents in production."
+      },
+      {
+        name: "NousResearch/hermes-agent",
+        url: "https://github.com/NousResearch/hermes-agent",
+        note: "Hermes gateway, desktop, provider, channel, and deployment reference. Current research signal: 195,561 stars."
+      },
+      {
+        name: "electron/forge",
+        url: "https://github.com/electron/forge",
+        note: "Electron packaging and publishing reference. Current research signal: 7,089 stars."
+      },
+      {
+        name: "electron-userland/electron-builder",
+        url: "https://github.com/electron-userland/electron-builder",
+        note: "Electron packaging, GitHub Actions CI/CD, signing, publishing, and auto-update reference. Current research signal: 14,594 stars."
       }
     ],
     tools: [
@@ -278,6 +335,25 @@ window.MAPS_SITE = {
         name: "Phoenix",
         url: "https://arize.com/docs/phoenix",
         note: "Provides open-source tracing, eval analysis, retrieval evals, and Observe-phase continuity."
+      },
+      {
+        name: "GitHub Actions environments",
+        url: "https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment",
+        note: "Provides environment secrets, deployment protection, branch controls, and approval gates for GitHub-driven releases."
+      },
+      {
+        name: "Cloudflare Wrangler",
+        url: "https://developers.cloudflare.com/workers/wrangler/commands/",
+        note: "Provides Cloudflare Pages and Workers deploy commands, config validation, and project operations."
+      },
+      {
+        name: "Cloudflare rollback",
+        url: "https://developers.cloudflare.com/workers/configuration/versions-and-deployments/rollbacks/",
+        note: "Provides Worker rollback commands and dashboard rollback behavior for release recovery."
+      },
+      {
+        name: "Runtime packaging",
+        note: "Provides manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes."
       }
     ],
     templates: [
@@ -334,6 +410,18 @@ window.MAPS_SITE = {
         url: "assets/maps/templates/eval-report.md",
         download: true,
         note: "Captures Phase 5 eval results, evidence links, failures, release decision, and Observe handoff."
+      },
+      {
+        name: "templates/deploy-plan.md",
+        url: "assets/maps/templates/deploy-plan.md",
+        download: true,
+        note: "Captures Phase 6 release path, runtime package, secrets/config handoff, preflight, smoke test, and rollback plan."
+      },
+      {
+        name: "templates/deployment-record.md",
+        url: "assets/maps/templates/deployment-record.md",
+        download: true,
+        note: "Captures Phase 6 deployment evidence, GitHub/Cloudflare run details, smoke results, rollback readiness, and Observe handoff."
       }
     ]
   },
@@ -373,6 +461,12 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "UKGovernmentBEIS/inspect_evals", "Arize-ai/phoenix"],
       tools: ["Git", "Agent Skills", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
       templates: ["templates/eval-suite.md", "templates/eval-report.md"]
+    },
+    "6": {
+      skills: ["/deploy-agent", "/deploy-agent++"],
+      repos: ["AesopScott/maps", "cloudflare/agents", "cloudflare/workers-sdk", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
+      tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging"],
+      templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
     }
   }
 };

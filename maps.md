@@ -21,7 +21,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 3 Build | `3.html` | Working agent | Available | Build adapter/profile when needed for the first working runtime. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
 | 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
-| 6 Deploy | `6.html` | Release plan | Planned | Package and publish to the selected runtime or distribution channel. |
+| 6 Deploy | `6.html` | Release plan and deployment record | Available | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
 | 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, and user feedback into the next iteration. |
 
@@ -123,6 +123,51 @@ Specification mode means the agent cannot run yet because secrets, runtime acces
 Phase 5 must not score a description of the agent as if the agent ran. Eval reports must distinguish executed evidence from planned checks.
 
 LangGraph should stay out of the default single-agent Build and Equip phases and be reserved for multi-agent orchestration implementation or graph-state runtimes when the design requires it.
+
+## Phase 6 Deploy Additions
+
+Deploy should use `/deploy-agent` as the base Phase 6 skill for runtime-neutral release discipline.
+
+Base `/deploy-agent` should cover:
+
+- Target runtime:
+- Package artifact:
+- Runtime manifest/package metadata:
+- Deploy commands:
+- Secrets/config handoff:
+- Preflight checks:
+- Smoke test:
+- Release evidence:
+- Rollback plan:
+- Deployment record:
+
+`/deploy-agent++` should be a separate wrapper for GitHub Actions environments and Cloudflare deployment automation. Use it when GitHub should deploy a Cloudflare Pages, Workers, or Cloudflare Agents project instead of Scott running manual Wrangler commands locally.
+
+Phase 6 should record:
+
+- Deploy plan:
+- Deployment record:
+- Deployment mode: executable deploy, package-only deploy, or specification deploy:
+- Runtime target and environment:
+- Package artifact and manifest/package metadata:
+- GitHub workflow and environment when applicable:
+- Cloudflare project/service and Wrangler config when applicable:
+- Runtime secrets versus CI/CD deployment secrets:
+- Preflight checks:
+- Smoke test:
+- Release evidence:
+- Rollback command or dashboard rollback path:
+- Observe handoff:
+
+Executable deploy means the agent can deploy now, the release path is run, the production target is smoke tested, and live release evidence is recorded.
+
+Package-only deploy means the deployable artifact can be built, but release is intentionally held. The deployment record must capture artifact details, exact release commands, missing approvals, and deferred release steps.
+
+Specification deploy means the target runtime is not ready because accounts, secrets, credentials, approvals, runtime access, or deployment pieces are missing. The skill must record exact commands, missing requirements, fixtures, and manual checks needed to deploy later.
+
+Phase 6 must not claim deployment happened when only packaging or specification happened.
+
+Phase 6 references should include Cloudflare Agents SDK, cloudflare/agents, cloudflare/workers-sdk, GitHub Actions environments, Cloudflare rollback docs, Google ADK, Google Agent Starter Pack, OpenAI Agents Python and JS, OpenClaw, AutoClaw, Hermes Agent, Electron Forge, and electron-builder.
 
 ## Immediate Backlog
 
