@@ -65,6 +65,8 @@ This is the base Deploy skill. It is runtime-neutral. Use `/deploy-agent++` only
 
 - For Python agents, consider Google ADK, OpenAI Agents Python, Cloud Run, containers, serverless functions, or durable workflow hosts.
 - For JavaScript/TypeScript agents, consider OpenAI Agents JS, Cloudflare Workers, Node services, package scripts, and CI/CD build output.
+- For MCP server packaging, consider MCPB when the deployable artifact should be a portable bundle with `manifest.json`, local server files, capabilities, runtime requirements, and install metadata.
+- For durable OpenAI Agents SDK deployments, consider Temporal when the agent needs long-running execution, retries, state persistence, recovery, human-in-the-loop waits, or activity-based tool calls.
 - For Cloudflare agents, prefer GitHub-driven deployment through `/deploy-agent++` when repo and credentials are available.
 - For OpenClaw, verify gateway setup, daemon mode, `openclaw.json`, routing bindings, skills, channels, and provider config.
 - For Hermes, verify install/update path, gateway or desktop distribution, providers, channel surfaces, remote backend sync, and GitHub integration.

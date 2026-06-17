@@ -167,7 +167,7 @@ Specification deploy means the target runtime is not ready because accounts, sec
 
 Phase 6 must not claim deployment happened when only packaging or specification happened.
 
-Phase 6 references should include Cloudflare Agents SDK, cloudflare/agents, cloudflare/workers-sdk, GitHub Actions environments, Cloudflare rollback docs, Google ADK, Google Agent Starter Pack, OpenAI Agents Python and JS, OpenClaw, AutoClaw, Hermes Agent, Electron Forge, and electron-builder.
+Phase 6 references should include Cloudflare Agents SDK, cloudflare/agents, cloudflare/workers-sdk, GitHub Actions environments, Cloudflare rollback docs, MCPB package/manifest references, Google ADK, Google Agent Starter Pack, OpenAI Agents Python and JS, Temporal + OpenAI Agents SDK durable execution, OpenClaw, AutoClaw, Hermes Agent, Electron Forge, and electron-builder.
 
 ## Immediate Backlog
 

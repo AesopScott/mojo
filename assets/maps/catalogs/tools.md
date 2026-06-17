@@ -21,3 +21,5 @@
 | 6 | Cloudflare Wrangler | Provide Cloudflare Pages and Workers deploy commands, config validation, and project operations. |
 | 6 | Cloudflare rollback | Provide Worker rollback commands and dashboard rollback behavior for release recovery. |
 | 6 | Runtime packaging | Provide manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes. |
+| 6 | MCPB | Provide portable MCP server bundles with manifest metadata, capabilities, runtime requirements, and install packaging. |
+| 6 | Temporal durable execution | Provide durable workflow execution, retries, state persistence, recovery, and activity-based tool calls for production agents. |

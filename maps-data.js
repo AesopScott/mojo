@@ -228,6 +228,11 @@ window.MAPS_SITE = {
         note: "Wrangler and Cloudflare Workers/Pages deployment tooling reference. Current research signal: 4,163 stars."
       },
       {
+        name: "modelcontextprotocol/mcpb",
+        url: "https://github.com/modelcontextprotocol/mcpb",
+        note: "MCP Bundle packaging and manifest reference for portable MCP server distribution. Current research signal: 1,967 stars."
+      },
+      {
         name: "GoogleCloudPlatform/agent-starter-pack",
         url: "https://github.com/GoogleCloudPlatform/agent-starter-pack",
         note: "Production-ready Google agent templates with CI/CD, evaluation, observability, Cloud Run, and Agent Engine patterns. Current research signal: 6,479 stars."
@@ -236,6 +241,16 @@ window.MAPS_SITE = {
         name: "openai/openai-agents-js",
         url: "https://github.com/openai/openai-agents-js",
         note: "JavaScript/TypeScript agent runtime reference for packaging Node-based agent services. Current research signal: 3,231 stars."
+      },
+      {
+        name: "temporalio/sdk-python",
+        url: "https://github.com/temporalio/sdk-python",
+        note: "Temporal Python SDK reference for durable workflow execution around production agents. Current research signal: 1,100 stars."
+      },
+      {
+        name: "temporal-community/openai-agents-demos",
+        url: "https://github.com/temporal-community/openai-agents-demos",
+        note: "OpenAI Agents Python SDK demos integrated with Temporal durable execution. Current research signal: 45 stars."
       },
       {
         name: "openclaw/openclaw",
@@ -354,6 +369,16 @@ window.MAPS_SITE = {
       {
         name: "Runtime packaging",
         note: "Provides manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes."
+      },
+      {
+        name: "MCPB",
+        url: "https://github.com/modelcontextprotocol/mcpb",
+        note: "Provides a portable MCP server bundle format with a manifest.json describing capabilities and runtime requirements."
+      },
+      {
+        name: "Temporal durable execution",
+        url: "https://docs.temporal.io/ai-cookbook/openai-agents-sdk-python",
+        note: "Provides durable workflow execution, retries, recovery, and long-running agent runtime patterns for OpenAI Agents SDK deployments."
       }
     ],
     templates: [
@@ -464,8 +489,8 @@ window.MAPS_SITE = {
     },
     "6": {
       skills: ["/deploy-agent", "/deploy-agent++"],
-      repos: ["AesopScott/maps", "cloudflare/agents", "cloudflare/workers-sdk", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
-      tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging"],
+      repos: ["AesopScott/maps", "cloudflare/agents", "cloudflare/workers-sdk", "modelcontextprotocol/mcpb", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "temporalio/sdk-python", "temporal-community/openai-agents-demos", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
+      tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging", "MCPB", "Temporal durable execution"],
       templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
     }
   }
