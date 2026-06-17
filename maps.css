@@ -49,10 +49,23 @@ body.maps-page {
 
 .maps-brand {
   display: flex;
+  position: relative;
   align-items: center;
   gap: 10px;
+  padding-top: 56px;
   font-weight: 800;
   text-decoration: none;
+}
+
+.maps-brand::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 82px;
+  height: 44px;
+  background: url("logo.png") center / contain no-repeat;
+  transform: translateX(-50%);
 }
 
 .maps-mark {
