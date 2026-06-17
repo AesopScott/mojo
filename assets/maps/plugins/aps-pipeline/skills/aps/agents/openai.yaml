@@ -1,7 +1,0 @@
-interface:
-  display_name: "APS"
-  short_description: "Run the full agentic pipeline."
-  brand_color: "#236B63"
-  default_prompt: "Use $aps to start a new agent project and track each phase."
-policy:
-  allow_implicit_invocation: true

@@ -214,9 +214,8 @@ window.MAPS_SITE = {
       },
       {
         name: "/aps",
-        url: "assets/maps/plugins/aps-pipeline.zip",
-        download: true,
-        note: "Installable master APS plugin and /aps skill for Codex and Claude Code. It runs all agentic pipeline phases in a new project folder and tracks progress in `.aps/progress.json`."
+        url: "https://github.com/AesopScott/maps",
+        note: "Source repository for the APS pipeline skillset. This will evolve into the full /maps skill."
       }
     ],
     repos: [

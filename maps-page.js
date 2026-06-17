@@ -75,10 +75,15 @@
 
     const button = document.createElement("a");
     button.href = skill.url;
-    button.download = "";
+    if (skill.download) {
+      button.download = "";
+    } else {
+      button.target = "_blank";
+      button.rel = "noopener noreferrer";
+    }
     button.className = "maps-aps-download-button";
     button.dataset.apsDownloadButton = "true";
-    button.textContent = "Download /aps skill";
+    button.textContent = "Open /aps source";
     document.body.appendChild(button);
     positionApsDownloadButton();
   }
