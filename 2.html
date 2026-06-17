@@ -29,7 +29,7 @@
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=phase2-design">
-    <script src="maps-data.js?v=scaffold-template" defer></script>
+    <script src="maps-data.js?v=phase2-proof" defer></script>
     <script src="maps-page.js?v=external-links" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="2">
@@ -47,12 +47,14 @@
               <a href="1.html">Phase 1</a>
               <a href="2.html">Phase 2</a>
               <a href="maps.html#layers">M/APS</a>
-              <a href="#references">References</a>
+              <a href="#alternatives">Alternatives</a>
             </div>
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#rr">Research and Recommend</a>
               <a href="#output">Output</a>
               <a href="#questions">Design questions</a>
+              <a href="#proof">Proof plan</a>
+              <a href="#alternatives">Alternatives</a>
               <a href="#walkthrough">Build path</a>
               <a href="#resources">Resources</a>
             </div>
@@ -188,29 +190,120 @@
                   <td>Logs, traces, review points, quality signals, cost, latency, and failure evidence.</td>
                   <td>Add any signal needed to trust the design.</td>
                 </tr>
+                <tr>
+                  <td>Test strategy</td>
+                  <td>How the agent will be proven before implementation: TDD, ATDD, scenario evals, or a blended approach.</td>
+                  <td>Change the proof style or raise the required evidence.</td>
+                </tr>
+                <tr>
+                  <td>Acceptance scenarios</td>
+                  <td>Given/when/then examples that define correct behavior, edge cases, and escalation behavior.</td>
+                  <td>Add missing scenarios or reject weak proof.</td>
+                </tr>
+                <tr>
+                  <td>Mock vs real tools</td>
+                  <td>Which tests use fakes, mocks, sandbox integrations, real APIs, or replayed traces.</td>
+                  <td>Change where real integrations are required.</td>
+                </tr>
+                <tr>
+                  <td>Regression gates</td>
+                  <td>What must keep passing before the agent can move into Build, Evaluate, and Deploy.</td>
+                  <td>Add required gates before Build starts.</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <section id="references" class="maps-section">
+        <section id="proof" class="maps-section">
           <div class="maps-section-header">
-            <h2>Design references</h2>
+            <h2>Test-first proof plan</h2>
             <p>
-              Phase 2 references help convert a brief into a build-ready specification.
+              In Design, TDD is not implementation detail yet. It is a design requirement: define what evidence will prove the agent works before building it.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Test strategy</h3>
+              <p>Recommend TDD, ATDD, scenario evals, integration tests, or a blended proof plan based on the agent's risk and tool use.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Acceptance scenarios</h3>
+              <p>Write the given/when/then cases that define correct behavior, human escalation, refusal, recovery, and completion.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Eval shape</h3>
+              <p>Decide whether proof uses deterministic tests, rubric-based evals, trace review, golden datasets, or human review gates.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Test balance</h3>
+              <p>Recommend the unit, integration, and e2e mix before implementation choices make the system hard to test.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Mock policy</h3>
+              <p>Name where mocks or fakes are acceptable, where sandbox tools are required, and where real integrations must prove behavior.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Build gate</h3>
+              <p>State what must be proven before Phase 3 Build starts: failure cases, regression gates, and minimum acceptance evidence.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="alternatives" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Design alternatives</h2>
+            <p>
+              These references represent outside approaches to agent design, spec-to-plan workflow, and test-first proof.
             </p>
           </div>
 
           <div class="maps-reference-grid">
             <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Skill/workflow alternative</p>
+              <h3><a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener noreferrer">addyosmani/agent-skills</a></h3>
+              <p>Reference for spec, plan, interface design, ADR, and test-driven-development skills.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Design-template alternative</p>
+              <h3><a href="https://github.com/GSA-TTS/devCrew_s/blob/master/docs/templates/AI%20Agent%20Specification%20Template.md" target="_blank" rel="noopener noreferrer">GSA-TTS AI Agent Specification Template</a></h3>
+              <p>Deep template for agent architecture, autonomy, reasoning, tools, memory, permissions, and oversight.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Spec-to-plan process alternative</p>
+              <h3><a href="https://github.com/github/spec-kit" target="_blank" rel="noopener noreferrer">GitHub Spec Kit</a></h3>
+              <p>Process reference for moving from intent to specification, technical plan, tasks, and implementation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">TDD skill</p>
+              <h3><a href="https://github.com/addyosmani/agent-skills/blob/main/skills/test-driven-development/SKILL.md" target="_blank" rel="noopener noreferrer">Addy Osmani TDD skill</a></h3>
+              <p>Red-green-refactor workflow with proof discipline, bug reproduction tests, test pyramid guidance, and regression protection.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Strict TDD skill</p>
+              <h3><a href="https://github.com/obra/superpowers/blob/main/skills/test-driven-development/SKILL.md" target="_blank" rel="noopener noreferrer">Obra Superpowers TDD skill</a></h3>
+              <p>Strict TDD loop: write the test first, watch it fail, write the minimum code to pass, then refactor.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">ATDD reference</p>
+              <h3><a href="https://github.com/swingerman/disciplined-agentic-engineering" target="_blank" rel="noopener noreferrer">Disciplined Agentic Engineering</a></h3>
+              <p>Acceptance Test Driven Development reference for agentic engineering, mutation testing, and proof gates.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Platform TDD guide</p>
+              <h3><a href="https://code.visualstudio.com/docs/copilot/guides/test-driven-development-guide" target="_blank" rel="noopener noreferrer">VS Code Copilot TDD guide</a></h3>
+              <p>Official AI-assisted TDD workflow using custom agents, handoffs, and custom instructions.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Focused TDD skill</p>
+              <h3><a href="https://github.com/mfranzon/tdd" target="_blank" rel="noopener noreferrer">mfranzon/tdd</a></h3>
+              <p>Claude Code TDD skill that breaks a plan or feature description into small testable increments.</p>
+            </article>
+            <article class="maps-reference-card">
               <p class="maps-layer-kicker">Spec-writing guidance</p>
               <h3><a href="https://addyosmani.com/blog/good-spec/" target="_blank" rel="noopener noreferrer">How to write a good spec for AI agents</a></h3>
               <p>Useful for objectives, context, constraints, acceptance criteria, boundaries, and the quality of the design spec.</p>
-            </article>
-            <article class="maps-reference-card">
-              <p class="maps-layer-kicker">Source repository</p>
-              <h3><a href="https://github.com/AesopScott/maps" target="_blank" rel="noopener noreferrer">AesopScott/maps</a></h3>
-              <p>Contains `/design-agent`, `templates/workflow-spec.md`, catalogs, and the phase source docs.</p>
             </article>
           </div>
         </section>
