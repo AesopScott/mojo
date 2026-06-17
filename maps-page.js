@@ -83,6 +83,54 @@
     positionApsDownloadButton();
   }
 
+  function balancePipelineRows() {
+    if (window.matchMedia("(max-width: 640px)").matches) {
+      document.querySelectorAll(".maps-pipeline-links > *").forEach((item) => {
+        item.style.width = "";
+      });
+      return;
+    }
+
+    document.querySelectorAll(".maps-pipeline-group .maps-pipeline-links").forEach((links) => {
+      const items = Array.from(links.children);
+      items.forEach((item) => {
+        item.style.width = "";
+      });
+
+      const rows = new Map();
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const rowKey = Math.round(rect.top);
+        if (!rows.has(rowKey)) {
+          rows.set(rowKey, []);
+        }
+        rows.get(rowKey).push({ item, width: rect.width, left: rect.left, right: rect.right });
+      });
+
+      const rowData = Array.from(rows.values()).map((rowItems) => ({
+        items: rowItems,
+        width: Math.max(...rowItems.map((entry) => entry.right)) - Math.min(...rowItems.map((entry) => entry.left))
+      }));
+
+      if (rowData.length < 2) {
+        return;
+      }
+
+      const targetWidth = Math.max(...rowData.map((row) => row.width));
+      rowData.forEach((row) => {
+        const deficit = targetWidth - row.width;
+        if (deficit <= 1) {
+          return;
+        }
+
+        const extraPerItem = deficit / row.items.length;
+        row.items.forEach((entry) => {
+          entry.item.style.width = `${Math.ceil(entry.width + extraPerItem)}px`;
+        });
+      });
+    });
+  }
+
   function positionApsDownloadButton() {
     const button = document.querySelector(".maps-aps-download-button");
     const topbar = document.querySelector(".maps-topbar");
@@ -230,6 +278,16 @@
   renderPhaseNav();
   renderResources();
   renderReferencePhases();
-  window.addEventListener("resize", positionApsDownloadButton);
-  window.addEventListener("load", positionApsDownloadButton);
+  requestAnimationFrame(() => {
+    balancePipelineRows();
+    positionApsDownloadButton();
+  });
+  window.addEventListener("resize", () => {
+    balancePipelineRows();
+    positionApsDownloadButton();
+  });
+  window.addEventListener("load", () => {
+    balancePipelineRows();
+    positionApsDownloadButton();
+  });
 })();
