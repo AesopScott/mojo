@@ -45,7 +45,36 @@ LangGraph is not required for this skill. Treat LangGraph as a later multi-agent
    - Phoenix for local or self-hosted tracing, LLM eval analysis, retrieval evals, and Observe handoff
 6. Ask the user to accept the recommended eval plan or override only the parts that are wrong, risky, missing, too broad, or too expensive.
 7. Produce or update the eval suite and eval report.
-8. If the runtime can be executed, run the highest-signal evals available and record evidence. If it cannot be executed, write exact commands, required secrets, fixtures, and manual verification steps.
+8. Choose the execution mode:
+   - Executable mode when the real built/equipped agent can run locally, in a sandbox, or in the target runtime.
+   - Specification mode when the agent cannot run yet because secrets, runtime access, connectors, credentials, or deployment pieces are missing.
+9. In Executable mode, run the highest-signal evals against the actual agent and record traces, tool calls, outputs, failures, scores, and release evidence.
+10. In Specification mode, create the eval suite and report shell, then record exact commands, missing requirements, fixtures, secrets, connector access, runtime setup, and manual checks needed to run later.
+11. Do not score a description of the agent as if the agent ran. Distinguish executed evidence from planned checks.
+
+## Execution Modes
+
+### Executable mode
+
+Use this mode when the agent can run locally, in a sandbox, or in the target runtime.
+
+The skill should:
+
+- Run eval cases against the actual built and equipped agent.
+- Apply the Phase 4 capability map: tools, permissions, memory, runtime config, limits, and fallbacks.
+- Wrap the run with the selected harnesses: LangSmith, Inspect AI, Phoenix, or the base MAPS harness.
+- Capture traces, tool calls, outputs, failures, scores, and release evidence.
+
+### Specification mode
+
+Use this mode only when the agent cannot run yet because secrets, runtime access, connectors, credentials, deployment pieces, or external dependencies are missing.
+
+The skill should:
+
+- Create the eval suite and report shell.
+- Record why executable mode is blocked.
+- Record exact commands, missing secrets, connector access, fixtures, runtime setup, deployment steps, and manual checks needed to run later.
+- Mark affected evals as planned or blocked, not passed.
 
 ## Evaluation Must Cover
 
@@ -70,6 +99,7 @@ LangGraph is not required for this skill. Treat LangGraph as a later multi-agent
 - `agents/{agent-handle}/eval-suite.md`
 - `agents/{agent-handle}/eval-report.md`
 - Recommended eval plan with user overrides
+- Execution mode decision and rationale
 - Harness recommendation for LangSmith, Inspect AI, and Phoenix
 - Commands, datasets, traces, fixtures, and evidence links where available
 - Release gate recommendation: pass, conditional pass, blocked, or needs more evaluation

@@ -13,6 +13,9 @@
 ## Recommendation Summary
 
 - Recommended eval strategy:
+- Execution mode:
+- Executable mode available:
+- Specification mode rationale:
 - Wrapper components:
   - Base Evaluate:
   - LangSmith:
@@ -33,6 +36,24 @@
 | Memory or retrieval |  |  |  |  |  |
 | Runtime adapter |  |  |  |  |  |
 | Regression |  |  |  |  |  |
+
+## Execution Mode Details
+
+- If executable mode:
+  - Agent run command:
+  - Runtime:
+  - Sandbox or target environment:
+  - Required environment variables/secrets:
+  - Required connectors:
+  - Required fixtures:
+- If specification mode:
+  - Why the agent cannot run:
+  - Missing secrets:
+  - Missing runtime access:
+  - Missing connectors or credentials:
+  - Missing deployment pieces:
+  - Exact command to run later:
+  - Manual verification steps:
 
 ## LangSmith Plan
 

@@ -105,6 +105,7 @@ Phase 5 should record:
 
 - Eval suite:
 - Eval report:
+- Execution mode: executable mode or specification mode:
 - LangSmith datasets, traces, trajectory checks, experiments, and regression history:
 - Inspect AI tasks, solvers, scorers, tool-use checks, and safety/boundary tests:
 - Phoenix traces, LLM/RAG eval analysis, datasets, experiments, and Observe handoff:
@@ -114,6 +115,12 @@ Phase 5 should record:
 - Failure and fallback behavior:
 - Regression and release gate:
 - Observe handoff:
+
+Executable mode means the real built/equipped agent can run locally, in a sandbox, or in the target runtime, and `/evaluate-agent++` runs eval cases against that actual agent while recording traces, tool calls, outputs, failures, scores, and release evidence.
+
+Specification mode means the agent cannot run yet because secrets, runtime access, connectors, credentials, or deployment pieces are missing. In that case, `/evaluate-agent++` still creates the eval suite and report shell, but must record exact commands, missing requirements, fixtures, and manual checks needed to run later.
+
+Phase 5 must not score a description of the agent as if the agent ran. Eval reports must distinguish executed evidence from planned checks.
 
 LangGraph should stay out of the default single-agent Build and Equip phases and be reserved for multi-agent orchestration implementation or graph-state runtimes when the design requires it.
 

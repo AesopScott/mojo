@@ -56,6 +56,7 @@
               <a href="#output">Output</a>
               <a href="#coverage">Coverage</a>
               <a href="#wrapper">Wrapper</a>
+              <a href="#modes">Modes</a>
               <a href="#gates">Gates</a>
               <a href="#references">References</a>
               <a href="#walkthrough">Walkthrough</a>
@@ -87,6 +88,7 @@
           <div class="maps-actions">
             <a class="maps-button primary" href="#meaning">Understand Evaluate</a>
             <a class="maps-button" href="#wrapper">See the wrapper</a>
+            <a class="maps-button" href="#modes">Execution modes</a>
             <a class="maps-button" href="4.html">Back to Phase 4</a>
           </div>
         </div>
@@ -248,6 +250,30 @@
           </div>
         </section>
 
+        <section id="modes" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Execution modes</h2>
+            <p>
+              `/evaluate-agent++` should evaluate the real built agent whenever possible. When it cannot run the agent yet, it must make the missing runtime requirements explicit.
+            </p>
+          </div>
+
+          <div class="maps-rule-grid">
+            <article class="maps-rule-card allow">
+              <h3>Executable mode</h3>
+              <p>The agent can run locally, in a sandbox, or in the target runtime. `/evaluate-agent++` runs eval cases against the actual built and equipped agent, then records traces, tool calls, outputs, failures, scores, and release evidence.</p>
+            </article>
+            <article class="maps-rule-card ask">
+              <h3>Specification mode</h3>
+              <p>The agent cannot run yet because secrets, runtime access, connectors, credentials, or deployment pieces are missing. `/evaluate-agent++` still creates the eval suite and report shell, but records exact commands, missing requirements, fixtures, and manual checks needed to run later.</p>
+            </article>
+            <article class="maps-rule-card never">
+              <h3>Do not fake it</h3>
+              <p>Do not score a description of the agent as if the agent ran. The report must distinguish executed evidence from planned checks and blocked runtime requirements.</p>
+            </article>
+          </div>
+        </section>
+
         <section id="gates" class="maps-section">
           <div class="maps-section-header">
             <h2>Release gates</h2>
@@ -350,8 +376,8 @@
             </article>
             <article class="maps-step">
               <span>03</span>
-              <h3>Run or specify</h3>
-              <p>Run available evals, or write exact commands, fixtures, secrets, and manual verification steps.</p>
+              <h3>Choose execution mode</h3>
+              <p>Use Executable mode when the real agent can run. Use Specification mode only when missing secrets, connectors, runtime access, or deployment pieces block execution.</p>
               <details>
                 <summary>Check it</summary>
                 <p>The report should distinguish executed evidence from planned checks.</p>

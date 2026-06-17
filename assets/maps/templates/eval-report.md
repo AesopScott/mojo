@@ -7,7 +7,19 @@
 - Runtime:
 - Commit/build:
 - Evaluator:
+- Execution mode:
 - Release gate decision:
+
+## Execution Mode Evidence
+
+- Executable mode used:
+- Specification mode used:
+- If executable, run command:
+- If executable, trace/eval run IDs:
+- If specification, blocked by:
+- If specification, exact command to run later:
+- If specification, missing secrets/connectors/runtime access:
+- Planned checks that were not executed:
 
 ## Results
 
