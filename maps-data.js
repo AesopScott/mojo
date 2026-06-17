@@ -231,6 +231,91 @@ window.MAPS_SITE = {
         note: "Working MAPS repository."
       },
       {
+        name: "NotebookLM",
+        url: "https://notebooklm.google/",
+        note: "M0 source-grounded research reference for collecting project sources, asking questions against them, and synthesizing evidence with citations."
+      },
+      {
+        name: "Obsidian",
+        url: "https://obsidian.md/",
+        note: "M0 notes and memory reference for local-first Markdown vaults, linked notes, graph view, project memory, and durable context."
+      },
+      {
+        name: "LlamaIndex",
+        url: "https://developers.llamaindex.ai/python/framework/understanding/rag/",
+        note: "M0 RAG-readiness reference for source loading, indexing, retrieval, and queryable project knowledge."
+      },
+      {
+        name: "Atlassian Project Kickoff",
+        url: "https://www.atlassian.com/team-playbook/plays/project-kickoff",
+        note: "M0 kickoff reference for aligning purpose, roles, responsibilities, success markers, and next actions."
+      },
+      {
+        name: "NN/g Service Blueprints",
+        url: "https://www.nngroup.com/articles/service-blueprints-definition/",
+        note: "M0 service-design reference for mapping people, touchpoints, processes, evidence, and customer/operator journeys."
+      },
+      {
+        name: "Logseq",
+        url: "https://logseq.com/",
+        note: "M0 outliner and daily-notes reference for research capture, linked blocks, tasks, and privacy-first knowledge work."
+      },
+      {
+        name: "Anytype",
+        url: "https://anytype.io/",
+        note: "M0 local-first object workspace reference for project entities, sources, decisions, tasks, and graph/database views."
+      },
+      {
+        name: "AFFiNE",
+        url: "https://affine.pro/",
+        note: "M0 workspace reference combining docs, whiteboards, databases, and AI for notes plus service maps."
+      },
+      {
+        name: "AppFlowy",
+        url: "https://github.com/appflowy-io/appflowy",
+        note: "M0 open-source workspace reference for project wikis, notes, tasks, and user-controlled data."
+      },
+      {
+        name: "SiYuan",
+        url: "https://github.com/siyuan-note/siyuan",
+        note: "M0 privacy-first PKM reference for block-level references, Markdown WYSIWYG, and granular future retrieval."
+      },
+      {
+        name: "Dovetail Research Repository",
+        url: "https://dovetail.com/solutions/research-repository/",
+        note: "M0 research repository reference for turning studies, transcripts, feedback, and customer evidence into reusable intelligence."
+      },
+      {
+        name: "Productboard Feedback",
+        url: "https://www.productboard.com/customer-feedback-tool/",
+        note: "M0 product feedback reference for consolidating scattered customer signals and linking them to product decisions."
+      },
+      {
+        name: "RAGFlow",
+        url: "https://github.com/infiniflow/ragflow",
+        note: "M0 document-heavy RAG reference for future knowledge-base implementation decisions."
+      },
+      {
+        name: "Haystack",
+        url: "https://github.com/deepset-ai/haystack",
+        note: "M0 production RAG pipeline reference for retrieval systems that may follow the foundation scaffold."
+      },
+      {
+        name: "Qdrant",
+        url: "https://github.com/qdrant/qdrant",
+        note: "M0 vector-store reference for later retrieval infrastructure choices."
+      },
+      {
+        name: "Weaviate",
+        url: "https://github.com/weaviate/weaviate",
+        note: "M0 vector database reference for future semantic search and RAG infrastructure."
+      },
+      {
+        name: "Chroma",
+        url: "https://github.com/chroma-core/chroma",
+        note: "M0 embedding database reference for local or app-level RAG prototypes."
+      },
+      {
         name: "shadcn-ui/ui",
         url: "https://github.com/shadcn-ui/ui",
         note: "UI design system and copy-in component reference for polished, accessible React interfaces. Current research signal: 116,840 stars."
@@ -814,10 +899,10 @@ window.MAPS_SITE = {
   },
   phaseResources: {
     "0": {
-      skills: ["/scaffold", "phase-alignment"],
-      repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
-      tools: ["Python", "GitHub CLI", "Git"],
-      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
+      skills: ["/foundation", "/scaffold", "phase-alignment"],
+      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      tools: ["Python", "GitHub CLI", "Git", "Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting"],
+      templates: ["templates/project-foundation.md", "templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],

@@ -3,6 +3,23 @@
 | Phase | Repo | Use |
 |---|---|---|
 | 0 | `AesopScott/maps` | Working MAPS repository. |
+| M0 | `NotebookLM` | Source-grounded research workspace for collecting sources, asking questions against them, and synthesizing evidence with citations. |
+| M0 | `Obsidian` | Local-first Markdown vault, graph notes, linked project memory, and durable context reference. |
+| M0 | `LlamaIndex` | RAG-readiness reference for source loading, indexing, retrieval, and queryable project knowledge. |
+| M0 | `Atlassian Project Kickoff` | Kickoff reference for purpose, roles, responsibilities, success markers, and next actions. |
+| M0 | `NN/g Service Blueprints` | Service-design reference for mapping people, touchpoints, processes, evidence, and customer/operator journeys. |
+| M0 | `Logseq` | Outliner and daily-notes reference for research capture, linked blocks, tasks, and privacy-first knowledge work. |
+| M0 | `Anytype` | Local-first object workspace reference for project entities, sources, decisions, tasks, and graph/database views. |
+| M0 | `AFFiNE` | Workspace reference combining docs, whiteboards, databases, and AI for notes plus service maps. |
+| M0 | `AppFlowy` | Open-source workspace reference for project wikis, notes, tasks, and user-controlled data. |
+| M0 | `SiYuan` | Privacy-first PKM reference for block-level references, Markdown WYSIWYG, and granular future retrieval. |
+| M0 | `Dovetail Research Repository` | Research repository reference for turning studies, transcripts, feedback, and customer evidence into reusable intelligence. |
+| M0 | `Productboard Feedback` | Product feedback reference for consolidating scattered customer signals and linking them to product decisions. |
+| M0 | `RAGFlow` | Document-heavy RAG reference for future knowledge-base implementation decisions. |
+| M0 | `Haystack` | Production RAG pipeline reference for retrieval systems that may follow the foundation scaffold. |
+| M0 | `Qdrant` | Vector-store reference for later retrieval infrastructure choices. |
+| M0 | `Weaviate` | Vector database reference for future semantic search and RAG infrastructure. |
+| M0 | `Chroma` | Embedding database reference for local or app-level RAG prototypes. |
 | M8 / optional A2 | `shadcn-ui/ui` | UI Design Systems: copy-in component system for polished, accessible React interfaces. Current research signal: 116,840 stars. |
 | M8 / optional A2 | `radix-ui/primitives` | UI Design Systems: low-level accessible primitives for custom product design systems. Current research signal: 18,986 stars. |
 | M8 / optional A2 | `tailwindlabs/headlessui` | UI Design Systems: unstyled accessible primitives for Tailwind-based interfaces. Current research signal: 28,622 stars. |
