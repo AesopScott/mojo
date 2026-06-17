@@ -240,32 +240,6 @@ window.MAPS_SITE = {
         note: "Provides short-term state, long-term memory, vector retrieval, or structured knowledge sources."
       }
     ],
-    catalogs: [
-      {
-        name: "catalogs/skills.md",
-        url: "assets/maps/catalogs/skills.md",
-        download: true,
-        note: "Records skills by MAPS phase."
-      },
-      {
-        name: "catalogs/repos.md",
-        url: "assets/maps/catalogs/repos.md",
-        download: true,
-        note: "Records useful repositories by MAPS phase."
-      },
-      {
-        name: "catalogs/tools.md",
-        url: "assets/maps/catalogs/tools.md",
-        download: true,
-        note: "Records tools and services by MAPS phase."
-      },
-      {
-        name: "maps.md",
-        url: "maps.md",
-        download: true,
-        note: "Tracks MAPS phase build decisions, runtime adapter work, and future phase backlog."
-      }
-    ],
     templates: [
       {
         name: "templates/maps-scaffold-template.md",
@@ -316,36 +290,31 @@ window.MAPS_SITE = {
       skills: ["/scaffold", "phase-alignment"],
       repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
       tools: ["Python", "GitHub CLI", "Git"],
-      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills"],
-      templates: ["templates/agent-definition-template.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
+      templates: ["templates/agent-definition-template.md"]
     },
     "2": {
       skills: ["/design-agent"],
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills", "Web and repository research"],
-      templates: ["templates/workflow-spec.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
+      templates: ["templates/workflow-spec.md"]
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],
       repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "langchain-ai/langgraph", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
       tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
-      templates: ["templates/agent-build-plan.md", "templates/build-log.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
+      templates: ["templates/agent-build-plan.md", "templates/build-log.md"]
     },
     "4": {
       skills: ["/equip-agent"],
       repos: ["AesopScott/maps", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "langchain-ai/langgraph", "pydantic/pydantic-ai"],
       tools: ["Git", "Agent Skills", "MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
-      templates: ["templates/capability-map.md"],
-      catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md", "maps.md"]
+      templates: ["templates/capability-map.md"]
     }
   }
 };

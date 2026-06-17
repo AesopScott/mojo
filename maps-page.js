@@ -129,7 +129,6 @@
     renderResourceGroup("[data-maps-repos]", phaseResources ? byName(site.resources.repos, phaseResources.repos) : site.resources.repos);
     renderResourceGroup("[data-maps-tools]", phaseResources ? byName(site.resources.tools, phaseResources.tools) : site.resources.tools);
     renderResourceGroup("[data-maps-templates]", phaseResources ? byName(site.resources.templates, phaseResources.templates) : site.resources.templates);
-    renderResourceGroup("[data-maps-catalogs]", phaseResources ? byName(site.resources.catalogs, phaseResources.catalogs) : site.resources.catalogs);
   }
 
   renderPhaseNav();
