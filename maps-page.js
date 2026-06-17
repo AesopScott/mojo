@@ -24,6 +24,19 @@
     });
   }
 
+  function highlightCurrentPipelinePhase() {
+    const current = document.body.getAttribute("data-maps-phase");
+    const phase = current ? site.phases.find((item) => item.number === current) : null;
+    if (!phase?.file) {
+      return;
+    }
+
+    document.querySelectorAll(`.maps-pipeline-links a[href="${phase.file}"]`).forEach((link) => {
+      link.classList.add("current");
+      link.setAttribute("aria-current", "page");
+    });
+  }
+
   function renderResourceGroup(selector, items) {
     const target = document.querySelector(selector);
     if (!target) {
@@ -131,6 +144,7 @@
     });
   }
 
+  highlightCurrentPipelinePhase();
   renderPhaseNav();
   renderResources();
   renderReferencePhases();

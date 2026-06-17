@@ -6,6 +6,7 @@
   --maps-soft: #eef3ef;
   --maps-teal: #236b63;
   --maps-gold: #b8872f;
+  --maps-orange: #d66f22;
   --maps-blue: #426f9f;
   --maps-rose: #b95c5c;
   --maps-shadow: 0 22px 60px rgba(23, 33, 31, 0.12);
@@ -195,6 +196,12 @@ body.maps-page {
 .maps-pipeline-group.agentic .maps-pipeline-links a:hover {
   color: #fff;
   background: var(--maps-teal);
+}
+
+.maps-pipeline-group .maps-pipeline-links a.current,
+.maps-pipeline-group .maps-pipeline-links a.current:hover {
+  color: #fff;
+  background: var(--maps-orange);
 }
 
 .maps-inline-links {
