@@ -15,6 +15,18 @@
 - User overrides:
 - Deferred capabilities:
 
+## Capability Map Answers
+
+- What tools does this agent have?
+- What can each tool do?
+- What permissions does each tool require?
+- What data can the agent read/write?
+- What memory does it use?
+- What runtime or adapter settings are required?
+- Which capabilities need human approval?
+- Which capabilities are forbidden?
+- What happens when a tool fails?
+
 ## Capability Inventory
 
 | Capability | Tool/Connector | Recommendation | Reasoning | Confidence | User Override |

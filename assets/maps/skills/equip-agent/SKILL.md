@@ -34,6 +34,18 @@ This skill must not become a blank questionnaire. It should research and recomme
 7. Apply user overrides.
 8. Produce or update the capability map.
 
+## Capability Map Must Answer
+
+- What tools does this agent have?
+- What can each tool do?
+- What permissions does each tool require?
+- What data can the agent read/write?
+- What memory does it use?
+- What runtime or adapter settings are required?
+- Which capabilities need human approval?
+- Which capabilities are forbidden?
+- What happens when a tool fails?
+
 ## Recommendation Rules
 
 - Prefer least privilege over broad access.
