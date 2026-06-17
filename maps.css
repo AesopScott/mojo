@@ -98,9 +98,9 @@ body.maps-page {
 .maps-aps-download-button {
   display: inline-flex;
   position: fixed;
-  top: 148px;
+  top: var(--maps-aps-button-top, 292px);
   right: clamp(18px, 7vw, 116px);
-  z-index: 8;
+  z-index: 20;
   align-items: center;
   justify-content: center;
   min-height: 44px;

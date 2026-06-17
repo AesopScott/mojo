@@ -80,6 +80,18 @@
     button.dataset.apsDownloadButton = "true";
     button.textContent = "Download /aps skill";
     document.body.appendChild(button);
+    positionApsDownloadButton();
+  }
+
+  function positionApsDownloadButton() {
+    const button = document.querySelector(".maps-aps-download-button");
+    const topbar = document.querySelector(".maps-topbar");
+    if (!button || !topbar) {
+      return;
+    }
+
+    const topbarBottom = topbar.getBoundingClientRect().bottom;
+    document.documentElement.style.setProperty("--maps-aps-button-top", `${Math.ceil(topbarBottom + 24)}px`);
   }
 
   function renderResourceGroup(selector, items) {
@@ -195,4 +207,6 @@
   renderPhaseNav();
   renderResources();
   renderReferencePhases();
+  window.addEventListener("resize", positionApsDownloadButton);
+  window.addEventListener("load", positionApsDownloadButton);
 })();
