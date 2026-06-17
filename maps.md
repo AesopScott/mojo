@@ -22,7 +22,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 4 Equip | `4.html` | Capability map | Planned | Wire tools, runtime permissions, memory, connectors, and environment capabilities. |
 | 5 Evaluate | `5.html` | Eval suite | Planned | Prove agent behavior in the target runtime, including adapter-specific failure modes. |
 | 6 Deploy | `6.html` | Release plan | Planned | Package and publish to the selected runtime or distribution channel. |
-| 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. |
+| 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
 | 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, and user feedback into the next iteration. |
 
 ## Runtime Adapter Model
@@ -82,6 +82,19 @@ Build should record:
 | CrewAI | Runtime adapter | Convert MAPS roles/tasks into crew, flow, agents.yaml, tasks.yaml, and tools. |
 | Google ADK | Runtime adapter | Convert MAPS design into agents, workflow nodes, routing, state, retries, and HITL points. |
 
+## Observe Phase References
+
+Phase 7 should cover production observation and feedback loops after the agent is deployed or running in a target environment.
+
+Candidate references and tools:
+
+- LangSmith: tracing, monitoring, evaluation, cost/latency tracking, production failure debugging, and trace-backed improvement loops.
+- Langfuse: open-source observability, tracing, evaluations, and production monitoring across several agent frameworks.
+- Arize/Phoenix: tracing, evaluation, dataset analysis, and production ML/LLM observability.
+- OpenTelemetry: vendor-neutral trace/log/metric instrumentation where runtime adapters support it.
+
+LangSmith should be treated as an Observe-phase reference even when LangGraph is only used in Phase 3 for single-agent durability. The pairing is natural, but LangSmith can also observe non-LangGraph agents through SDKs and framework integrations.
+
 ## Immediate Backlog
 
 - Add runtime target and adapter requirement content to Phase 2.
@@ -96,3 +109,4 @@ Build should record:
   - `templates/runtime-profile-codex.md`
   - `templates/runtime-profile-claude-code.md`
   - `templates/runtime-portability-checklist.md`
+- Add LangSmith and other observability options to Phase 7 Observe when that page is built.
