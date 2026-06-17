@@ -20,7 +20,7 @@ MAPS should define an agent once, then package it for one or more runtimes throu
 | 2 Design | `2.html` | Agent design | Available | Add runtime target and adapter requirement planning. |
 | 3 Build | `3.html` | Working agent | Available | Build adapter/profile when needed for the first working runtime. |
 | 4 Equip | `4.html` | Capability map | Available | Wire tools, runtime permissions, memory, connectors, secret storage, fallback behavior, and operating limits. |
-| 5 Evaluate | `5.html` | Eval suite | Planned | Prove agent behavior in the target runtime, including adapter-specific failure modes. |
+| 5 Evaluate | `5.html` | Eval suite and eval report | Available | Prove agent behavior in the target runtime with `/evaluate-agent++`, LangSmith, Inspect AI, Phoenix, and adapter-specific failure checks. |
 | 6 Deploy | `6.html` | Release plan | Planned | Package and publish to the selected runtime or distribution channel. |
 | 7 Observe | `7.html` | Observation plan | Planned | Track runtime logs, traces, cost, latency, quality signals, incidents, and feedback. Include LangSmith as a likely observability/evals reference. |
 | 8 Improve | `8.html` | Improvement backlog | Planned | Feed observations, eval failures, and user feedback into the next iteration. |
@@ -93,7 +93,27 @@ Candidate references and tools:
 - Arize/Phoenix: tracing, evaluation, dataset analysis, and production ML/LLM observability.
 - OpenTelemetry: vendor-neutral trace/log/metric instrumentation where runtime adapters support it.
 
-LangSmith should be treated as an Observe-phase reference even when LangGraph is only used in Phase 3 for single-agent durability. The pairing is natural, but LangSmith can also observe non-LangGraph agents through SDKs and framework integrations.
+LangSmith should be treated as an Evaluate and Observe reference without requiring LangGraph. LangGraph should be reserved for multi-agent orchestration implementation or graph-state runtimes when the design requires it.
+
+## Phase 5 Evaluate Additions
+
+Evaluate should use `/evaluate-agent++` as one wrapper over the base Evaluate process, LangSmith, Inspect AI, and Phoenix.
+
+Phase 5 should record:
+
+- Eval suite:
+- Eval report:
+- LangSmith datasets, traces, trajectory checks, experiments, and regression history:
+- Inspect AI tasks, solvers, scorers, tool-use checks, and safety/boundary tests:
+- Phoenix traces, LLM/RAG eval analysis, datasets, experiments, and Observe handoff:
+- Core loop success:
+- Tool trajectory behavior:
+- Capability boundary behavior:
+- Failure and fallback behavior:
+- Regression and release gate:
+- Observe handoff:
+
+LangGraph should stay out of the default single-agent Build and Equip phases and be reserved for multi-agent orchestration implementation or graph-state runtimes when the design requires it.
 
 ## Immediate Backlog
 
@@ -110,6 +130,7 @@ LangSmith should be treated as an Observe-phase reference even when LangGraph is
   - `templates/runtime-profile-claude-code.md`
   - `templates/runtime-portability-checklist.md`
 - Add LangSmith and other observability options to Phase 7 Observe when that page is built.
+- Keep LangGraph positioned as a multi-agent orchestration implementation reference, not a default single-agent Build dependency.
 - Keep Phase 4 focused on capability provisioning: tools, permissions, memory, connectors, runtime config, limits, and fallbacks.
 - Phase 4 runtime config should recommend where API keys live: local `.env` only for development, platform runtime secrets for deployed agents, CI/CD encrypted secrets for deploy pipelines, managed secret managers for audited/rotated operations, and connector/OAuth token stores for delegated access.
 - Phase 4 must visibly cover scope by environment, blast-radius limits, and rotation/leak response for secrets.

@@ -46,7 +46,7 @@ window.MAPS_SITE = {
       label: "Phase 5",
       title: "Evaluate",
       output: "Eval suite",
-      status: "under-construction"
+      status: "available"
     },
     {
       number: "6",
@@ -116,6 +116,12 @@ window.MAPS_SITE = {
         url: "assets/maps/skills/equip-agent/SKILL.md",
         download: true,
         note: "Runs Research and Recommend, then creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
+      },
+      {
+        name: "/evaluate-agent++",
+        url: "assets/maps/skills/evaluate-agent-plus-plus/SKILL.md",
+        download: true,
+        note: "Wraps base Evaluate with LangSmith, Inspect AI, and Phoenix to create eval suites, trace-backed reports, release gates, and Observe handoff."
       }
     ],
     repos: [
@@ -150,11 +156,6 @@ window.MAPS_SITE = {
         note: "Lightweight agent runtime reference for tools, handoffs, guardrails, sessions, tracing, and sandbox agents."
       },
       {
-        name: "langchain-ai/langgraph",
-        url: "https://github.com/langchain-ai/langgraph",
-        note: "Durable stateful workflow reference for long-running agents."
-      },
-      {
         name: "crewAIInc/crewAI",
         url: "https://github.com/crewAIInc/crewAI",
         note: "Agent scaffold and task configuration reference."
@@ -183,6 +184,26 @@ window.MAPS_SITE = {
         name: "pydantic/pydantic-ai",
         url: "https://github.com/pydantic/pydantic-ai",
         note: "Reference for type-safe tools, dependency injection, and service access in agents."
+      },
+      {
+        name: "langchain-ai/langsmith-sdk",
+        url: "https://github.com/langchain-ai/langsmith-sdk",
+        note: "Reference SDK for LangSmith tracing, datasets, experiments, and evaluations without requiring LangGraph."
+      },
+      {
+        name: "UKGovernmentBEIS/inspect_ai",
+        url: "https://github.com/UKGovernmentBEIS/inspect_ai",
+        note: "Structured evaluation framework for datasets, solvers, scorers, tools, agents, and safety checks."
+      },
+      {
+        name: "UKGovernmentBEIS/inspect_evals",
+        url: "https://github.com/UKGovernmentBEIS/inspect_evals",
+        note: "Community eval implementations for Inspect AI, including agent and safety benchmarks."
+      },
+      {
+        name: "Arize-ai/phoenix",
+        url: "https://github.com/Arize-ai/phoenix",
+        note: "Open-source AI observability and evaluation reference for traces, datasets, experiments, and LLM/RAG evals."
       }
     ],
     tools: [
@@ -238,6 +259,21 @@ window.MAPS_SITE = {
       {
         name: "Memory and retrieval stores",
         note: "Provides short-term state, long-term memory, vector retrieval, or structured knowledge sources."
+      },
+      {
+        name: "LangSmith",
+        url: "https://docs.langchain.com/langsmith/evaluation",
+        note: "Provides datasets, traces, trajectory evals, regression history, and Phase 7 observability handoff."
+      },
+      {
+        name: "Inspect AI",
+        url: "https://inspect.aisi.org.uk/",
+        note: "Provides structured eval tasks, solvers, scorers, tool-use checks, and safety or boundary tests."
+      },
+      {
+        name: "Phoenix",
+        url: "https://arize.com/docs/phoenix",
+        note: "Provides open-source tracing, eval analysis, retrieval evals, and Observe-phase continuity."
       }
     ],
     templates: [
@@ -282,6 +318,18 @@ window.MAPS_SITE = {
         url: "assets/maps/templates/capability-map.md",
         download: true,
         note: "Captures Phase 4 tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
+      },
+      {
+        name: "templates/eval-suite.md",
+        url: "assets/maps/templates/eval-suite.md",
+        download: true,
+        note: "Captures Phase 5 eval coverage, wrapper components, harness choices, and release gates."
+      },
+      {
+        name: "templates/eval-report.md",
+        url: "assets/maps/templates/eval-report.md",
+        download: true,
+        note: "Captures Phase 5 eval results, evidence links, failures, release decision, and Observe handoff."
       }
     ]
   },
@@ -306,15 +354,21 @@ window.MAPS_SITE = {
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],
-      repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "langchain-ai/langgraph", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
+      repos: ["AesopScott/maps", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
       tools: ["Git", "Agent Skills", "Test runner", "Agent runtime", "Browser/runtime verifier"],
       templates: ["templates/agent-build-plan.md", "templates/build-log.md"]
     },
     "4": {
       skills: ["/equip-agent"],
-      repos: ["AesopScott/maps", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "langchain-ai/langgraph", "pydantic/pydantic-ai"],
+      repos: ["AesopScott/maps", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
       tools: ["Git", "Agent Skills", "MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
       templates: ["templates/capability-map.md"]
+    },
+    "5": {
+      skills: ["/evaluate-agent++"],
+      repos: ["AesopScott/maps", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "UKGovernmentBEIS/inspect_evals", "Arize-ai/phoenix"],
+      tools: ["Git", "Agent Skills", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
+      templates: ["templates/eval-suite.md", "templates/eval-report.md"]
     }
   }
 };

@@ -625,6 +625,10 @@ body.maps-page {
   gap: 14px;
 }
 
+.maps-gap-top {
+  margin-top: 14px;
+}
+
 .maps-panel {
   padding: 18px;
   border: 1px solid var(--maps-line);

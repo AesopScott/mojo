@@ -13,3 +13,6 @@
 | 4 | Connectors | Attach GitHub, Gmail, Slack, Drive, databases, and internal systems. |
 | 4 | Secrets and environment configuration | Provide local dev env files, platform runtime secrets, CI/CD secrets, managed secret stores, scoped credentials, and runtime variables. |
 | 4 | Memory and retrieval stores | Provide short-term state, long-term memory, and retrieval sources. |
+| 5 | LangSmith | Provide datasets, traces, trajectory evals, regression tracking, and Observe handoff. |
+| 5 | Inspect AI | Provide structured eval tasks, solvers, scorers, tool-use checks, and safety or boundary tests. |
+| 5 | Phoenix | Provide open-source tracing, LLM/RAG eval analysis, datasets, experiments, and Observe continuity. |

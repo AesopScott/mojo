@@ -9,3 +9,4 @@
 | 3 | `/build-agent` | Base Build skill. |
 | 3 | `/build-agent++` | Build with incremental implementation and TDD. |
 | 4 | `/equip-agent` | Create the capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks. |
+| 5 | `/evaluate-agent++` | Wrap base Evaluate with LangSmith, Inspect AI, and Phoenix. |
