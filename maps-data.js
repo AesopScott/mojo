@@ -90,21 +90,6 @@ window.MAPS_SITE = {
       {
         name: "/design-agent",
         note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md."
-      },
-      {
-        name: "Addy TDD skill",
-        url: "https://github.com/addyosmani/agent-skills/blob/main/skills/test-driven-development/SKILL.md",
-        note: "Addy Osmani agent skill for red-green-refactor, proof discipline, test pyramid thinking, and regression protection."
-      },
-      {
-        name: "Obra TDD skill",
-        url: "https://github.com/obra/superpowers/blob/main/skills/test-driven-development/SKILL.md",
-        note: "Obra Superpowers skill for strict TDD: write the test, watch it fail, write minimal code, then refactor."
-      },
-      {
-        name: "/tdd",
-        url: "https://github.com/mfranzon/tdd",
-        note: "Focused Claude Code TDD skill that breaks plans or feature descriptions into small testable increments."
       }
     ],
     repos: [
@@ -122,26 +107,6 @@ window.MAPS_SITE = {
         name: "hqhq1025/skill-optimizer",
         url: "https://github.com/hqhq1025/skill-optimizer",
         note: "Reference for skill lifecycle tooling."
-      },
-      {
-        name: "addyosmani/agent-skills",
-        url: "https://github.com/addyosmani/agent-skills",
-        note: "Skill/workflow alternative for spec, plan, API/interface design, ADRs, and test-driven development."
-      },
-      {
-        name: "GSA-TTS AI Agent Specification Template",
-        url: "https://github.com/GSA-TTS/devCrew_s/blob/master/docs/templates/AI%20Agent%20Specification%20Template.md",
-        note: "Design-template alternative for agent architecture, autonomy, reasoning, tools, memory, and oversight."
-      },
-      {
-        name: "GitHub Spec Kit",
-        url: "https://github.com/github/spec-kit",
-        note: "Spec-to-plan process alternative for turning intent into specification, technical plan, and tasks."
-      },
-      {
-        name: "swingerman/disciplined-agentic-engineering",
-        url: "https://github.com/swingerman/disciplined-agentic-engineering",
-        note: "Acceptance Test Driven Development reference for agentic engineering and proof gates."
       }
     ],
     tools: [
@@ -158,6 +123,10 @@ window.MAPS_SITE = {
         note: "Records scaffold and phase changes."
       },
       {
+        name: "Agent Skills",
+        note: "Provides the SKILL.md packaging and workflow format used by /design-agent."
+      },
+      {
         name: "Web and repository research",
         note: "Finds comparable agents, reference architectures, implementation patterns, and design guidance."
       },
@@ -165,11 +134,6 @@ window.MAPS_SITE = {
         name: "Addy Osmani agent spec guidance",
         url: "https://addyosmani.com/blog/good-spec/",
         note: "Useful Design reference for objectives, context, constraints, acceptance criteria, and boundaries."
-      },
-      {
-        name: "VS Code Copilot TDD guide",
-        url: "https://code.visualstudio.com/docs/copilot/guides/test-driven-development-guide",
-        note: "Official AI-assisted TDD guide using custom agents, handoffs, and custom instructions."
       }
     ],
     catalogs: [
@@ -221,9 +185,9 @@ window.MAPS_SITE = {
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     },
     "2": {
-      skills: ["/design-agent", "Addy TDD skill", "Obra TDD skill", "/tdd"],
-      repos: ["AesopScott/maps", "addyosmani/agent-skills", "GSA-TTS AI Agent Specification Template", "GitHub Spec Kit", "swingerman/disciplined-agentic-engineering"],
-      tools: ["Git", "Agent Skills", "Web and repository research", "Addy Osmani agent spec guidance", "VS Code Copilot TDD guide"],
+      skills: ["/design-agent"],
+      repos: ["AesopScott/maps"],
+      tools: ["Git", "Agent Skills", "Web and repository research"],
       templates: ["templates/workflow-spec.md"],
       catalogs: ["catalogs/skills.md", "catalogs/repos.md", "catalogs/tools.md"]
     }
