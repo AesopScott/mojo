@@ -24,6 +24,8 @@
 | M1 | `BPMN` | Workflow-shape reference for tasks, gateways, messages, swimlanes, approvals, and process boundaries. |
 | M1 | `Team Topologies` | Role-pressure reference for deciding when separation reduces cognitive load or creates coordination cost. |
 | M1 | `OpenAI Agent Orchestration` | Agent orchestration reference for manager, handoff, and code-led versus LLM-led flow patterns. |
+| M1 | `OpenAI Swarm` | Educational handoff reference for lightweight agent coordination, routines, and agent-to-agent transfers. |
+| M1 | `OpenAI Cookbook Routines and Handoffs` | Practical handoff reference for deciding when to keep one agent, split routines, or transfer control between agents. |
 | M1 | `LangGraph` | Graph-shaped agent workflow reference for single-agent, multi-agent, supervisor, and hierarchical control flows. |
 | M8 / optional A2 | `shadcn-ui/ui` | UI Design Systems: copy-in component system for polished, accessible React interfaces. Current research signal: 116,840 stars. |
 | M8 / optional A2 | `radix-ui/primitives` | UI Design Systems: low-level accessible primitives for custom product design systems. Current research signal: 18,986 stars. |

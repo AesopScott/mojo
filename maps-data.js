@@ -342,6 +342,16 @@ window.MAPS_SITE = {
         note: "M1 agent orchestration reference for manager, handoff, and code-led versus LLM-led flow patterns."
       },
       {
+        name: "OpenAI Swarm",
+        url: "https://github.com/openai/swarm",
+        note: "M1 educational handoff reference for lightweight agent coordination, routines, and agent-to-agent transfers."
+      },
+      {
+        name: "OpenAI Cookbook Routines and Handoffs",
+        url: "https://cookbook.openai.com/examples/orchestrating_agents",
+        note: "M1 practical handoff reference for deciding when to keep one agent, split routines, or transfer control between agents."
+      },
+      {
         name: "LangGraph",
         url: "https://www.langchain.com/langgraph",
         note: "M1 graph-shaped agent workflow reference for single-agent, multi-agent, supervisor, and hierarchical control flows."
@@ -937,7 +947,7 @@ window.MAPS_SITE = {
   phaseResources: {
     "0": {
       skills: ["/foundation", "/shape", "/scaffold", "phase-alignment"],
-      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
       tools: ["Python", "GitHub CLI", "Git", "Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite", "BPMN Lite", "Role-pressure checks"],
       templates: ["templates/project-foundation.md", "templates/system-shape.md", "templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
     },
