@@ -26,6 +26,18 @@ Project Intent + Scaffolding Structure, Kickoff.
 - Workarounds:
 - Evidence:
 
+## EventStorming Lite
+
+| Domain event | Trigger or command | Actor | Policy or rule | System/data touched | Pain point | Question |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+## Service Blueprint Lite
+
+| Customer/operator action | Visible agent/system action | Backstage process | Supporting system/data | Evidence/source | Failure point |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
 ## Product Intent
 
 - Project purpose:
@@ -94,7 +106,17 @@ memory/
 
 ## Next Path
 
-- MAPS:
-- APS:
-- Both:
+- Scope First:
+- Single-Agent / APS:
+- Multi-Agent / MAPS:
 - Recommendation:
+
+## M1 Handoff Questions
+
+- What is still unknown about the workflow?
+- Which actors or jobs are distinct enough to matter?
+- Which decisions need review, approval, or escalation?
+- Which source/data needs are unclear?
+- Which roles need separate tools, permissions, or memory?
+- What can run in parallel?
+- What failure modes change the system shape?

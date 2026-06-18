@@ -20,6 +20,11 @@
 | M0 | `Qdrant` | Vector-store reference for later retrieval infrastructure choices. |
 | M0 | `Weaviate` | Vector database reference for future semantic search and RAG infrastructure. |
 | M0 | `Chroma` | Embedding database reference for local or app-level RAG prototypes. |
+| M1 | `EventStorming` | Scope First reference for discovering domain events, commands, actors, policies, pain points, and hidden handoffs. |
+| M1 | `BPMN` | Workflow-shape reference for tasks, gateways, messages, swimlanes, approvals, and process boundaries. |
+| M1 | `Team Topologies` | Role-pressure reference for deciding when separation reduces cognitive load or creates coordination cost. |
+| M1 | `OpenAI Agent Orchestration` | Agent orchestration reference for manager, handoff, and code-led versus LLM-led flow patterns. |
+| M1 | `LangGraph` | Graph-shaped agent workflow reference for single-agent, multi-agent, supervisor, and hierarchical control flows. |
 | M8 / optional A2 | `shadcn-ui/ui` | UI Design Systems: copy-in component system for polished, accessible React interfaces. Current research signal: 116,840 stars. |
 | M8 / optional A2 | `radix-ui/primitives` | UI Design Systems: low-level accessible primitives for custom product design systems. Current research signal: 18,986 stars. |
 | M8 / optional A2 | `tailwindlabs/headlessui` | UI Design Systems: unstyled accessible primitives for Tailwind-based interfaces. Current research signal: 28,622 stars. |

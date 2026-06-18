@@ -114,7 +114,13 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with project intent, notes scaffold, source inventory, evidence index, assumptions, decisions, and RAG-readiness."
+        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, and RAG-readiness."
+      },
+      {
+        name: "/shape",
+        url: "assets/maps/skills/shape/SKILL.md",
+        download: true,
+        note: "Runs M1 System Shape to scope the workflow and choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
       },
       {
         name: "/scaffold",
@@ -314,6 +320,31 @@ window.MAPS_SITE = {
         name: "Chroma",
         url: "https://github.com/chroma-core/chroma",
         note: "M0 embedding database reference for local or app-level RAG prototypes."
+      },
+      {
+        name: "EventStorming",
+        url: "https://www.eventstorming.com/book/",
+        note: "M1 Scope First reference for discovering domain events, commands, actors, policies, pain points, and hidden handoffs."
+      },
+      {
+        name: "BPMN",
+        url: "https://www.omg.org/bpmn/",
+        note: "M1 workflow-shape reference for tasks, gateways, messages, swimlanes, approvals, and process boundaries."
+      },
+      {
+        name: "Team Topologies",
+        url: "https://teamtopologies.com/key-concepts",
+        note: "M1 role-pressure reference for deciding when separation reduces cognitive load or creates coordination cost."
+      },
+      {
+        name: "OpenAI Agent Orchestration",
+        url: "https://openai.github.io/openai-agents-python/multi_agent/",
+        note: "M1 agent orchestration reference for manager, handoff, and code-led versus LLM-led flow patterns."
+      },
+      {
+        name: "LangGraph",
+        url: "https://www.langchain.com/langgraph",
+        note: "M1 graph-shaped agent workflow reference for single-agent, multi-agent, supervisor, and hierarchical control flows."
       },
       {
         name: "shadcn-ui/ui",
@@ -791,7 +822,13 @@ window.MAPS_SITE = {
         name: "templates/project-foundation.md",
         url: "assets/maps/templates/project-foundation.md",
         download: true,
-        note: "Captures M0 Project Foundation: intent, scaffold, evidence, sources, assumptions, decisions, open questions, and RAG readiness."
+        note: "Captures M0 Project Foundation: intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, open questions, and RAG readiness."
+      },
+      {
+        name: "templates/system-shape.md",
+        url: "assets/maps/templates/system-shape.md",
+        download: true,
+        note: "Captures M1 System Shape: S/M/U decision, BPMN Lite, role pressure, system shape, and next track recommendation."
       },
       {
         name: "templates/maps-scaffold-template.md",
@@ -899,10 +936,10 @@ window.MAPS_SITE = {
   },
   phaseResources: {
     "0": {
-      skills: ["/foundation", "/scaffold", "phase-alignment"],
-      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
-      tools: ["Python", "GitHub CLI", "Git", "Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting"],
-      templates: ["templates/project-foundation.md", "templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
+      skills: ["/foundation", "/shape", "/scaffold", "phase-alignment"],
+      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      tools: ["Python", "GitHub CLI", "Git", "Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite", "BPMN Lite", "Role-pressure checks"],
+      templates: ["templates/project-foundation.md", "templates/system-shape.md", "templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],

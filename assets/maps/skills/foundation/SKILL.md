@@ -22,12 +22,14 @@ Use `/foundation` at M0 to create the project foundation before selecting a syst
    - `memory/glossary.md`
    - `memory/entity-map.md`
 3. Complete `templates/project-foundation.md`.
-4. Log known evidence, assumptions, decisions, open questions, and source gaps.
-5. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
-6. Decide the next path:
-   - MAPS when the outcome needs a coordinated multi-agent system.
-   - APS when the outcome can start with one agent or one capability.
-   - Both when a multi-agent system needs one agent built immediately.
+4. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
+5. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
+6. Log known evidence, assumptions, decisions, open questions, and source gaps.
+7. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
+8. Prepare the M1 handoff:
+   - If the system shape is unclear, recommend Scope First.
+   - If one coherent agent can own the outcome, recommend Single-Agent / APS.
+   - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
 
 ## Output
 
@@ -35,5 +37,7 @@ Use `/foundation` at M0 to create the project foundation before selecting a syst
 - Created notes, sources, and memory scaffold
 - Initial source inventory
 - Initial evidence index
+- EventStorming Lite notes
+- Service Blueprint Lite notes
 - Initial RAG-readiness plan
-- MAPS, APS, or combined next-step recommendation
+- M1 handoff recommendation: Scope First, Single-Agent / APS, or Multi-Agent / MAPS
