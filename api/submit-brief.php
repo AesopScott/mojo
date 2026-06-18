@@ -79,8 +79,8 @@ $contactName        = clean($data['contactName'] ?? '');
 $contactEmail       = filter_var(trim($data['contactEmail'] ?? ''), FILTER_VALIDATE_EMAIL);
 $problemDescription = clean($data['problemDescription'] ?? '');
 $currentTools       = clean($data['currentTools'] ?? '');
-$builderPriority    = clean($data['builderPriority'] ?? '');
-$interviewCount     = clean($data['interviewCount'] ?? '');
+$quoteStatus        = clean($data['quoteStatus'] ?? $data['builderPriority'] ?? '');
+$teachingPermission = clean($data['teachingPermission'] ?? $data['interviewCount'] ?? '');
 $timeline           = clean($data['timeline'] ?? '');
 $budget             = clean($data['budget'] ?? '');
 $anythingElse       = clean($data['anythingElse'] ?? '');
@@ -108,8 +108,8 @@ $body .= "Contact name:    {$contactName}\n";
 $body .= "Contact email:   {$contactEmail}\n";
 $body .= "Timeline:        " . ($timeline ?: '(not specified)') . "\n";
 $body .= "Budget:          " . ($budget ?: '(not specified)') . "\n\n";
-$body .= "Builder priority: " . ($builderPriority ?: '(not specified)') . "\n";
-$body .= "Interview count:  " . ($interviewCount ?: '(not specified)') . "\n\n";
+$body .= "Outside quote status: " . ($quoteStatus ?: '(not specified)') . "\n";
+$body .= "Teaching permission:  " . ($teachingPermission ?: '(not specified)') . "\n\n";
 $body .= "PROBLEM DESCRIPTION\n";
 $body .= str_repeat('─', 56) . "\n";
 $body .= $problemDescription . "\n\n";
@@ -151,11 +151,11 @@ if (!$sent) {
 }
 
 // ── Send auto-reply to submitter ─────────────────────────────────────────────
-$replySubject = 'We received your AI builder intake — Mojo AI Studio';
+$replySubject = 'We received your Teaching AI Agency quote — Mojo AI Studio';
 $replyBody    = "Hi {$contactName},\n\n";
-$replyBody   .= "Thanks for submitting an AI builder intake to Mojo AI Studio.\n\n";
+$replyBody   .= "Thanks for submitting a Teaching AI Agency build quote to Mojo AI Studio.\n\n";
 $replyBody   .= "We've received your intake for \"{$projectName}\" and will review it ";
-$replyBody   .= "for builder matching within two business days.\n\n";
+$replyBody   .= "for quote fit, teaching permission, and resale licensing within two business days.\n\n";
 $replyBody   .= "If you have anything to add in the meantime, just reply to this email.\n\n";
 $replyBody   .= "— Mojo AI Studio\n";
 $replyBody   .= "https://MojoAiStudio.com\n";

@@ -6,9 +6,9 @@
     <meta name="robots" content="noindex, follow" />
     <meta
       name="description"
-      content="Submit one AI product intake to Mojo AI Studio and get matched with curated AI builders you can interview before choosing a team."
+      content="Submit your AI build quote or project brief to Mojo AI Studio's Teaching AI Agency."
     />
-    <title>Mojo AI Studio | AI Builder Intake</title>
+    <title>Mojo AI Studio | Teaching Build Intake</title>
     <link rel="stylesheet" href="../../styles/shared.css?v=__CACHE_BUST__" />
     <style>
       .brief-form-section {
@@ -103,12 +103,12 @@
 
     <main>
       <section class="section brief-form-section">
-        <p class="kicker">AI builder intake</p>
-        <h1>Tell us what you want built.</h1>
+        <p class="kicker">Teaching build intake</p>
+        <h1>Bring us your build quote.</h1>
         <p>
-          Complete one intake and Mojo will use it to match your project with AI developers from
-          our builder network. You can interview the builders you like and choose the team that
-          feels right before you commit.
+          Tell us what you want built and what another team quoted. For selected projects,
+          Mojo may do the work for 70% off when the process can teach others and the finished
+          tool is open licensed for resale.
         </p>
 
         <form
@@ -152,14 +152,14 @@
           </div>
 
           <div class="field">
-            <label for="problem-description">What do you want the AI product to do?</label>
+            <label for="problem-description">What do you want built, and what quote are we comparing against?</label>
             <textarea
               id="problem-description"
               name="problemDescription"
               placeholder="Describe the workflow, user, pain point, and what a good outcome looks like..."
               required
             ></textarea>
-            <span class="hint">Be as specific as you can — the more context you give, the better we can match you with the right builders.</span>
+            <span class="hint">Include the quoted price, scope, timeline, and anything the other team promised.</span>
           </div>
 
           <div class="field">
@@ -173,26 +173,25 @@
           </div>
 
           <div class="field">
-            <label for="builder-priority">What matters most in the builder you choose?</label>
-            <select id="builder-priority" name="builderPriority">
-              <option value="">Select a priority</option>
-              <option value="speed">Speed to prototype</option>
-              <option value="technical-depth">Deep technical architecture</option>
-              <option value="product-strategy">Product strategy and UX thinking</option>
-              <option value="industry-experience">Relevant industry experience</option>
-              <option value="communication">Communication and project management</option>
-              <option value="unsure">Not sure yet</option>
+            <label for="builder-priority">Do you already have an outside build quote?</label>
+            <select id="builder-priority" name="quoteStatus">
+              <option value="">Select an answer</option>
+              <option value="have-written-quote">Yes, I have a written quote</option>
+              <option value="verbal-estimate">Yes, I have a verbal estimate</option>
+              <option value="getting-quotes">I am still getting quotes</option>
+              <option value="no-quote">No quote yet</option>
+              <option value="unsure">Not sure</option>
             </select>
           </div>
 
           <div class="field">
-            <label for="interview-count">How many matched builders would you like to interview?</label>
-            <select id="interview-count" name="interviewCount">
-              <option value="">Select a preference</option>
-              <option value="1-2">1-2 strong matches</option>
-              <option value="3-5">3-5 builders</option>
-              <option value="as-many-as-fit">As many qualified builders as fit</option>
-              <option value="recommend">Let Mojo recommend the shortlist</option>
+            <label for="interview-count">Can Mojo use the build process for teaching?</label>
+            <select id="interview-count" name="teachingPermission">
+              <option value="">Select an answer</option>
+              <option value="yes-public-lessons">Yes, public lessons are okay</option>
+              <option value="yes-anonymized">Yes, but anonymized</option>
+              <option value="limited-review">Maybe, I need to review what is shared</option>
+              <option value="private-only">No, this needs to stay private</option>
             </select>
           </div>
 
@@ -229,8 +228,8 @@
           </div>
 
           <div class="form-submit">
-            <button class="button dark" type="submit">Submit intake →</button>
-            <p class="form-note">We'll respond within two business days with next steps for matching and builder interviews.</p>
+            <button class="button dark" type="submit">Submit quote →</button>
+            <p class="form-note">We'll respond within two business days about fit, discount, teaching boundaries, and resale licensing.</p>
           </div>
         </form>
       </section>
@@ -242,10 +241,10 @@
           <span class="brand-mark">M</span>
           <span>Mojo AI Studio</span>
         </a>
-        <p>Brokered AI product development for practical workflows.</p>
+        <p>Teaching AI agency for practical product builds.</p>
       </div>
       <div>
-        <b>Development</b>
+        <b>Request</b>
         <a href="/request/">How it works</a>
         <a href="/request/pages/brief.html">Start your intake</a>
         <a href="mailto:admin@MojoAiStudio.com">Contact</a>

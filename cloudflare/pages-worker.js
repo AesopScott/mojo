@@ -506,8 +506,8 @@ async function handleSubmitBrief(request, env) {
     contactEmail: email,
     problemDescription: String(data.problemDescription || "").trim(),
     currentTools: String(data.currentTools || "").trim(),
-    builderPriority: String(data.builderPriority || "").trim(),
-    interviewCount: String(data.interviewCount || "").trim(),
+    quoteStatus: String(data.quoteStatus || data.builderPriority || "").trim(),
+    teachingPermission: String(data.teachingPermission || data.interviewCount || "").trim(),
     timeline: String(data.timeline || "").trim(),
     budget: String(data.budget || "").trim(),
     anythingElse: String(data.anythingElse || "").trim(),
@@ -520,12 +520,12 @@ async function handleSubmitBrief(request, env) {
     ["Contact email", record.contactEmail],
     ["Timeline", record.timeline || "(not specified)"],
     ["Budget", record.budget || "(not specified)"],
-    ["Builder priority", record.builderPriority || "(not specified)"],
-    ["Interview count", record.interviewCount || "(not specified)"],
+    ["Outside quote status", record.quoteStatus || "(not specified)"],
+    ["Teaching permission", record.teachingPermission || "(not specified)"],
     ["Current tools", record.currentTools || "(not specified)"],
   ];
 
-  const adminHtml = `<p>New AI builder intake submitted via MojoAiStudio.com.</p>
+  const adminHtml = `<p>New Teaching AI Agency quote intake submitted via MojoAiStudio.com.</p>
 <table cellpadding="6" cellspacing="0" style="border-collapse:collapse">${rows.map(([label, value]) => `<tr><th align="left">${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join("")}</table>
 <h3>Product request</h3>
 <p>${escapeHtml(record.problemDescription).replace(/\n/g, "<br>")}</p>
@@ -533,8 +533,8 @@ ${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingEl
 <p>Reply to: <a href="mailto:${escapeHtml(record.contactEmail)}">${escapeHtml(record.contactEmail)}</a></p>`;
 
   const submitterHtml = `<p>Hi ${escapeHtml(record.contactName)},</p>
-<p>Thanks for submitting an AI builder intake to Mojo AI Studio.</p>
-<p>We've received your intake for <strong>${escapeHtml(record.projectName)}</strong> and will review it for builder matching within two business days.</p>
+<p>Thanks for submitting a Teaching AI Agency build quote to Mojo AI Studio.</p>
+<p>We've received your intake for <strong>${escapeHtml(record.projectName)}</strong> and will review the quote, teaching fit, and resale licensing path within two business days.</p>
 <p>If you have anything to add in the meantime, just reply to this email.</p>
 <p>- Mojo AI Studio<br><a href="https://MojoAiStudio.com">MojoAiStudio.com</a></p>`;
 
@@ -548,7 +548,7 @@ ${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingEl
       from: "Mojo AI Studio <noreply@mojoaistudio.com>",
       to: [adminEmail],
       reply_to: email,
-      subject: `[Mojo Intake] ${record.projectName} - ${record.contactName}`,
+      subject: `[Mojo Teaching Build] ${record.projectName} - ${record.contactName}`,
       html: adminHtml,
     }),
   });
@@ -569,7 +569,7 @@ ${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingEl
       from: "Mojo AI Studio <noreply@mojoaistudio.com>",
       to: [email],
       reply_to: adminEmail,
-      subject: "We received your AI builder intake - Mojo AI Studio",
+      subject: "We received your Teaching AI Agency quote - Mojo AI Studio",
       html: submitterHtml,
     }),
   });

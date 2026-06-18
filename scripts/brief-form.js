@@ -1,5 +1,5 @@
 /**
- * brief-form.js — Client-side handler for the AI builder intake form.
+ * brief-form.js — Client-side handler for the teaching build intake form.
  *
  * Submits form data as JSON to /api/submit-brief.
  * On success, redirects to the confirmation page.
