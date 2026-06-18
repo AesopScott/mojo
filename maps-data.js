@@ -130,7 +130,7 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, and RAG-readiness."
+        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, and remembered notes/RAG locations."
       },
       {
         name: "/shape",

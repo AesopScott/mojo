@@ -51,6 +51,8 @@ Project Intent + Scaffolding Structure, Kickoff.
 Create or confirm:
 
 ```text
+.maps/
+  foundation-preferences.json
 notes/
   daily/
   interviews/
@@ -66,6 +68,17 @@ memory/
   glossary.md
   entity-map.md
 ```
+
+## Remembered Foundation Preferences
+
+- Preference source:
+- Notes root:
+- Sources root:
+- Memory root:
+- RAG provider:
+- RAG location:
+- Global default used?:
+- Updated `.maps/foundation-preferences.json`?:
 
 ## Evidence Index
 
