@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve Agent"
+  short_description: "Turn observations and failures into an improvement backlog."
+  default_prompt: "Use improve-agent to improve an agent from evidence."

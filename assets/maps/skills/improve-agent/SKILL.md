@@ -1,63 +1,53 @@
 ---
 name: improve-agent
-description: Run MAPS Phase 8 Improve. Use when Codex needs to review observation evidence, eval failures, regressions, incidents, support notes, user feedback, cost/latency/reliability signals, classify improvement work, route items to MAPS phases, prioritize and split backlog items, define proof, and produce improvement-review.md and improvement-backlog.md.
+description: Create the MAPS Improve phase artifact for an agent or multi-agent system. Use when turning eval results, traces, failures, incidents, user feedback, and observations into prioritized prompt, tool, memory, policy, design, and eval improvements.
 ---
 
 # Improve Agent
 
-Use this skill after Phase 7 has produced `agents/{agent-handle}/observation-log.md` and before the next MAPS iteration starts.
+## Overview
 
-This is the base Improve skill. Do not create a plus-plus wrapper unless a specific external capability is being merged into the process.
+Use this skill to turn evidence into the next iteration of an agent system.
 
-## Input
+## Project foundation updates
 
-- `agents/{agent-handle}/observation-plan.md`
-- `agents/{agent-handle}/observation-log.md`
-- `agents/{agent-handle}/eval-report.md`
-- `agents/{agent-handle}/deployment-record.md`
-- Incident notes, support notes, user feedback, cost/latency/reliability signals, and existing backlog items
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /improve-agent --phase A8 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
 
 ## Workflow
 
-1. Review observation evidence.
-2. Review eval failures and regressions.
-3. Review incidents and support notes.
-4. Review user feedback.
-5. Review cost, latency, and reliability signals.
-6. Classify each candidate improvement:
-   - behavior
-   - prompt/design
-   - tool
-   - permission
-   - memory
-   - runtime config
-   - eval coverage
-   - deployment
-   - observability
-   - cost
-   - reliability
-   - safety
-   - UX
-7. Route each item to the right MAPS phase.
-8. Prioritize by impact, safety, frequency, cost, dependency, and effort.
-9. Split large improvements into smaller backlog items.
-10. Define proof required for each item.
-11. Decide what enters the next iteration.
-12. Decide what stays deferred.
-13. Produce or update `agents/{agent-handle}/improvement-review.md`.
-14. Produce or update `agents/{agent-handle}/improvement-backlog.md`.
-
-## Rules
-
-- Do not create improvement items without evidence.
-- Do not send every item straight to Build. Route the work to the phase that owns the root cause.
-- Split broad items until the next slice can be proved independently.
-- Keep deferred work visible with a reason.
-- Record the proof required before the item is allowed back into implementation.
+1. Gather eval failures, traces, incidents, and user feedback.
+2. Cluster problems by root cause.
+3. Decide whether each fix belongs in prompts, tools, memory, policy, design, or evals.
+4. Prioritize by impact, effort, and risk.
+5. Add or update regression coverage.
+6. Record the next experiment.
+7. Feed lessons back into earlier MAPS phases.
 
 ## Output
 
-- `agents/{agent-handle}/improvement-review.md`
-- `agents/{agent-handle}/improvement-backlog.md`
-- Iteration decision: next iteration, defer, monitor, rollback/pause, or no action
-- MAPS handoff notes for the next phase
+Return:
+
+- Improvement backlog
+- Root-cause notes
+- Proposed changes
+- Eval coverage updates
+- Next experiment
+
+Use `templates/improvement-backlog.md` from the MAPS repo when working inside this repository.
+
+## Done Criteria
+
+- Improvements are evidence-backed.
+- Regression coverage is considered.
+- Priorities are clear.
+- Earlier phase docs are updated when needed.

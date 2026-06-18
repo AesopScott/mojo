@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design Agent"
+  short_description: "Research comparable agents, recommend a design, proof plan, and overrides."
+  default_prompt: "Use design-agent to run Research and Recommend from the agent brief, then produce the agent design with test-first proof requirements."

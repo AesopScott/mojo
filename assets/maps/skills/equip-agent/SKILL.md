@@ -1,73 +1,53 @@
 ---
 name: equip-agent
-description: Run Research and Recommend for Phase 4, then create the capability map for tools, permissions, memory, connectors, runtime settings, operating limits, and fallback behavior.
+description: Create the MAPS Equip phase artifact for an agent or multi-agent system. Use when mapping tools, APIs, MCP servers, data sources, retrieval, memory, credentials, permissions, audit needs, and integration risks.
 ---
 
 # Equip Agent
 
-Use this skill after Phase 3 has produced a working agent and before Phase 5 evaluates reliability and safety.
+## Overview
 
-This skill must not become a blank questionnaire. It should research and recommend the first capability map, then ask the user to accept or override the specific recommendations.
+Use this skill to connect an agent to the capabilities it needs while keeping scope and permissions intentional.
 
-## Input
+## Project foundation updates
 
-- `agents/{agent-handle}/agent-design.md`
-- `agents/{agent-handle}/agent-build.md`
-- Working agent code, runtime profile, or runtime adapter
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /equip-agent --phase A4 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
 
 ## Workflow
 
-1. Read the agent design, build artifact, target runtime, runtime profile or adapter, and existing code/config.
-2. Restate the agent's job, first working loop, runtime target, and authority boundary.
-3. Research comparable capability patterns, tool integrations, connector models, memory/retrieval approaches, permission patterns, and runtime configuration guidance.
-4. Recommend the capability map:
-   - tools and connectors
-   - MCP servers or native integrations
-   - browser, repo, mail, chat, drive, database, file, and API access
-   - short-term memory, long-term memory, retrieval, retention, and delete behavior
-   - runtime permissions, sandbox settings, secret storage, and environment variables
-   - rate limits, budgets, scopes, and approval gates
-   - fallback behavior for each tool, connector, memory, or runtime failure
-   - forbidden capabilities
-5. For each recommendation, record reasoning, assumptions, confidence, and risk.
-6. Ask the user to accept the recommended capability map or override only the parts that are wrong, risky, missing, or too broad.
-7. Apply user overrides.
-8. Produce or update the capability map.
-
-## Capability Map Must Answer
-
-- What tools does this agent have?
-- What can each tool do?
-- What permissions does each tool require?
-- What data can the agent read/write?
-- What memory does it use?
-- What runtime or adapter settings are required?
-- Which capabilities need human approval?
-- Which capabilities are forbidden?
-- What happens when a tool fails?
-
-## Recommendation Rules
-
-- Prefer least privilege over broad access.
-- Recommend read-only access before write access unless the working loop requires writes.
-- Recommend sandbox or test credentials before production credentials.
-- Recommend `.env`, `.env.local`, `.dev.vars`, or the runtime's local equivalent only for local development and sandbox runs.
-- Recommend platform runtime secrets for deployed agents, such as Cloudflare Workers/Pages secrets or the equivalent secret system in the selected host.
-- Recommend CI/CD encrypted secrets for deploy-time credentials and pipeline tokens, not as the only production runtime secret store when the host supports runtime secrets.
-- Recommend a managed secret manager when secrets need audit history, rotation, multi-environment sharing, or central access control.
-- Recommend connector-managed OAuth storage or an encrypted backend token store for Gmail, Slack, Drive, GitHub, and similar delegated-access connectors.
-- Recommend browser-exposed keys only when the provider explicitly supports public client keys, and require domain, API, scope, quota, and environment restrictions.
-- Always cover these runtime config controls explicitly: scope by environment, limit blast radius, and plan rotation.
-- Recommend explicit human approval for money movement, external messages, publishing, deletion, production writes, sensitive data access, and irreversible actions.
-- Prefer MCP servers or connector standards when they reduce custom integration work without weakening security.
-- Do not invent a tool requirement if the Phase 3 build does not need it.
-- If a capability is likely needed later but not needed for the current working loop, mark it as deferred.
+1. List every capability required by the workflow.
+2. Map each capability to a tool, API, data source, or human step.
+3. Define required permissions and identity boundaries.
+4. Identify context sources and memory rules.
+5. Specify error handling for failed or unsafe tool calls.
+6. Note audit, privacy, and security requirements.
+7. Produce a capability map.
 
 ## Output
 
-- `agents/{agent-handle}/capability-map.md`
-- Recommended capability map with user overrides
-- Tool and connector inventory
-- Permission and data-access boundaries
-- Memory and retrieval configuration
-- Runtime settings and fallback behavior
+Return:
+
+- Tool map
+- Context sources
+- Memory policy
+- Audit requirements
+- Security notes
+
+Use `templates/tool-map.md` from the MAPS repo when working inside this repository.
+
+## Done Criteria
+
+- Every tool has a reason.
+- Permissions are least-privilege.
+- Context and memory boundaries are clear.
+- Failure behavior is specified.

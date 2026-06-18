@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scaffold"
+  short_description: "Build a MAPS repository scaffold."
+  default_prompt: "Use scaffold to create a MAPS repo structure with phase docs, skills, templates, catalogs, and docs."

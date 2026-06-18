@@ -16,6 +16,20 @@ Use this skill after M7 Orchestration Build exists and before M9 System Evaluate
 - Existing Phase 1 and Phase 2 APS artifacts when the project already has agent briefs or designs
 - Brand, design-system, accessibility, compliance, or platform constraints
 
+## Project foundation updates
+
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /design-experience --phase M8/A2 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
+
 ## Workflow
 
 1. Restate the product promise, target user, trust boundary, and first useful user journey.

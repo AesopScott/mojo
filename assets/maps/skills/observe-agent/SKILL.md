@@ -1,66 +1,53 @@
 ---
 name: observe-agent
-description: Run MAPS Phase 7 Observe for a deployed or packaged agent. Use when Codex needs to create an observation plan, inspect runtime traces/logs/metrics/feedback, define alerts and incident triggers, compare production behavior to eval evidence, or produce observation-plan.md and observation-log.md before Phase 8 Improve.
+description: Create the MAPS Observe phase artifact for an agent or multi-agent system. Use when designing telemetry, traces, dashboards, quality signals, cost and latency monitoring, drift review, failure logs, and operator review loops.
 ---
 
 # Observe Agent
 
-Use this skill after Phase 6 has produced `agents/{agent-handle}/deployment-record.md` and before Phase 8 Improve.
+## Overview
 
-This is the base Observe skill. It is runtime-neutral. Use it to instrument, monitor, review, and convert production evidence into improvement work.
+Use this skill to make production agent behavior inspectable and improvable.
 
-## Input
+## Project foundation updates
 
-- `agents/{agent-handle}/agent-brief.md`
-- `agents/{agent-handle}/agent-design.md`
-- `agents/{agent-handle}/capability-map.md`
-- `agents/{agent-handle}/eval-suite.md`
-- `agents/{agent-handle}/eval-report.md`
-- `agents/{agent-handle}/deployment-record.md`
-- Production URL, runtime target, release gate, smoke test, rollback trigger, and known risks
-- Available trace, log, metric, alert, feedback, incident, and support systems
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /observe-agent --phase A7 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
 
 ## Workflow
 
-1. Read the deployment record first. Confirm whether the agent is live, package-only, or specification-only.
-2. Restate the production surface, runtime, release gate, rollback trigger, eval baselines, capability boundaries, and known risks.
-3. Research observability references for the chosen runtime and instrumentation stack before recommending the observation plan.
-4. Recommend the observation plan before asking broad questions:
-   - traces and run history
-   - logs and runtime errors
-   - metrics, latency, cost, token use, rate limits, and queue health
-   - tool calls, connector calls, retries, fallbacks, approvals, and escalations
-   - quality signals, user feedback, annotation queues, and eval drift
-   - safety and boundary signals
-   - alert thresholds, incident triggers, owners, cadence, and rollback criteria
-   - Phase 8 improvement handoff
-5. Ask the user to accept the recommended observation plan or override only the parts that are wrong, unavailable, too expensive, or too noisy.
-6. Produce or update `agents/{agent-handle}/observation-plan.md`.
-7. If runtime evidence is available, inspect it and produce or update `agents/{agent-handle}/observation-log.md`.
-8. If runtime evidence is missing, record exact instrumentation steps, missing access, missing secrets, missing dashboards, and manual checks needed to observe later.
-9. Convert confirmed observations into Phase 8 improvement backlog items with evidence, priority, dependencies, proof required, and target phase.
-10. Recommend an observation gate: continue, monitor closely, rollback, pause, or improve.
-
-## Observation Must Cover
-
-- Agent work: runs, traces, tool calls, connector calls, retries, approvals, fallbacks, final outputs, and escalation decisions.
-- Operating health: latency, cost, token use, uptime, queue depth, timeouts, rate limits, failed jobs, and stuck runs.
-- Quality: user feedback, recurring failures, bad tool choices, incomplete tasks, eval drift, and regression patterns.
-- Safety and boundaries: denied tool calls, permission violations, approval gates, budget limits, unexpected data access, unsafe requests, and fallback behavior.
-- Improvement evidence: traces, logs, metrics, incidents, eval misses, user feedback, support notes, and review decisions that can justify Phase 8 backlog items.
-
-## Runtime Reference Guidance
-
-- For LangSmith, use production traces, runs, feedback, annotations, datasets, experiments, and monitoring views.
-- For Phoenix, use traces, datasets, experiments, LLM/RAG evals, OpenInference instrumentation, and OpenTelemetry-compatible exports.
-- For Langfuse, use traces, sessions, scores, datasets, metrics, prompt/version tracking, and feedback capture.
-- For OpenTelemetry, use GenAI semantic conventions where available so traces and metrics stay portable across vendors.
-- For OpenAI Agents SDK, capture agent spans, tool calls, handoffs, guardrails, custom spans, and trace IDs.
-- For Cloudflare runtimes, capture logs, metrics, traces, analytics, errors, tail output, and runtime-specific dashboards.
+1. Identify what operators need to know after deployment.
+2. Map traces, tool calls, cost, latency, and quality signals.
+3. Define failure and escalation review.
+4. Define drift, privacy, and policy monitoring.
+5. Set a review cadence and ownership.
+6. Convert observations into improvement candidates.
+7. Produce an observation report or plan.
 
 ## Output
 
-- `agents/{agent-handle}/observation-plan.md`
-- `agents/{agent-handle}/observation-log.md`
-- Observation gate decision: continue, monitor closely, rollback, pause, or improve
-- Phase 8 improvement backlog entries or handoff notes
+Return:
+
+- Quality signals
+- Cost and latency signals
+- Tool-use review
+- Failure and escalation notes
+- Candidate improvements
+
+Use `templates/observation-report.md` from the MAPS repo when working inside this repository.
+
+## Done Criteria
+
+- Behavior can be inspected.
+- Failures are captured.
+- Costs and quality are visible.
+- Evidence flows to Improve.

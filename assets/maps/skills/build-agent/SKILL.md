@@ -1,31 +1,50 @@
 ---
 name: build-agent
-description: Base MAPS Build skill. Turn an approved agent design into a working agent implementation with implementation notes and verification evidence.
+description: Implement the MAPS Build phase for an agent or multi-agent system. Use when turning a design into a runnable agent loop, prompts, state, routing, orchestration, project files, local run commands, and basic tests.
 ---
 
 # Build Agent
 
-This is the base Phase 3 Build skill. It is intentionally smaller than `/build-agent++` so teams can adapt it to their own implementation workflow.
+## Overview
 
-## Input
+Use this skill to implement the smallest useful agent that matches the design.
 
-- `agents/{agent-handle}/agent-design.md`
-- `agents/{agent-handle}/agent-backlog.md` when available
-- Approved Build gate from Phase 2
+## Project foundation updates
+
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /build-agent --phase A3 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
 
 ## Workflow
 
-1. Confirm the design is approved for Build.
-2. Read the backlog when available and select the highest-priority unblocked item.
-3. If the selected item is too large, split it into smaller backlog items before coding.
-4. Identify the smallest useful working agent slice.
-5. Implement the slice using the selected runtime, framework, or project conventions.
-6. Run the relevant checks.
-7. Record what changed, what passed, which backlog item moved, and what remains.
-8. Repeat until the first working agent exists.
+1. Read the project structure and existing conventions first.
+2. Identify the minimal runnable agent path.
+3. Implement prompts, state, routing, and orchestration.
+4. Add tool stubs or interfaces needed by the design.
+5. Add basic verification for the happy path.
+6. Document the local run command.
+7. Record deferred risks for Equip or Evaluate.
 
 ## Output
 
-- Working agent code or configuration
-- `agents/{agent-handle}/agent-build.md`
-- Build notes for Equip and Evaluate
+Return:
+
+- Files changed
+- How to run locally
+- What was verified
+- What remains for Equip, Evaluate, or Deploy
+
+## Done Criteria
+
+- The agent runs.
+- The implementation matches the design.
+- Basic behavior is verified.
+- Known gaps are explicit.

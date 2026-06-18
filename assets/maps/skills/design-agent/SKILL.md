@@ -1,42 +1,99 @@
 ---
 name: design-agent
-description: Run Research and Recommend, then create the Phase 2 agent design and a dependency-aware prioritized build backlog. Use when Codex needs to turn an agent brief into design decisions, runtime/adapter requirements, proof gates, and backlog items before Phase 3 Build begins.
+description: Create the MAPS Design phase artifact for an agent or multi-agent system. Use when defining roles, workflows, handoffs, memory, context, guardrails, approvals, escalation paths, test-first proof requirements, and system boundaries from an agent brief.
 ---
 
 # Design Agent
 
-Use this skill after an agent brief exists and before implementation begins.
+## Overview
 
-## Input
+Use this skill to turn an agent brief into a practical system design.
 
-- `agents/{agent-handle}/agent-brief.md`
+Default to Research and Recommend (R&R): research comparable agents or similar implementations first, recommend a design answer for every major design question, then ask the user to accept or override the recommendations. Do not begin by asking the user a long list of blank-slate questions.
+
+## Research And Recommend
+
+R&R means the agent does the first pass of design judgment.
+
+1. Read `agents/{agent-handle}/agent-brief.md`.
+2. Identify the agent type, such as search agent, build agent, calendar integration agent, support agent, research agent, workflow agent, or coding agent.
+3. Research comparable agents, reference architectures, product patterns, open-source implementations, platform examples, and design guidance. Use current web or repository research when available.
+4. Analyze what the comparable examples suggest about workflow, tools, memory, controls, approvals, failures, observability, test strategy, acceptance scenarios, and user experience.
+5. Produce a recommendation for every design question in this skill.
+6. Present the recommendations with the reasoning and any sources used.
+7. Ask the user to override only the recommendations they disagree with or want to sharpen.
+
+If research access is unavailable, state that limitation and use known patterns from the brief and MAPS catalogs as the basis for the recommendations.
+
+## Project foundation updates
+
+At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+
+When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+
+At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+
+```bash
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /design-agent --phase A2 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+```
+
+If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
 
 ## Workflow
 
-1. Restate the brief and authority boundary.
-2. Research comparable agents, frameworks, tools, and implementation patterns.
-3. Recommend operating model, workflow, memory, tools, approvals, failures, and observability.
-4. Recommend the backlog before asking broad questions:
-   - epics or project-sized work items
-   - thin build slices
-   - dependencies and sequencing constraints
-   - priority tier or order
-   - proof/eval required for each item
-   - runtime adapter/profile work
-   - deferred work and explicit non-goals
-5. Ask the user to accept or override only the recommendations that need correction.
-6. Define the proof plan, backlog, and Build gate.
-
-## Backlog Rules
-
-- Break large projects into backlog items before Phase 3 Build begins.
-- Prefer small vertical slices that can be built, tested, and reviewed independently.
-- Record dependencies so Build does not start blocked work before prerequisite work is complete.
-- Prioritize by user value, risk reduction, dependency order, safety, and proof needed.
-- Mark the first build slice clearly.
-- Keep improvement ideas that do not belong in the first build as deferred backlog items for Phase 8.
+1. Restate the agent goal and success criteria from the agent brief.
+2. Run R&R research for comparable agents or similar implementations.
+3. Summarize the patterns, tradeoffs, and risks found during research.
+4. Recommend whether the design should be single-agent, tool-using agent, supervised agent, or part of a multi-agent system.
+5. Recommend each role, responsibility, input, output, and handoff.
+6. Recommend workflow states, decision points, stopping conditions, and failure paths.
+7. Recommend memory, context, retrieval boundaries, and data retention.
+8. Recommend tools, integrations, permissions, and constraints.
+9. Recommend guardrails, human approval gates, escalation paths, and forbidden paths.
+10. Recommend observability needs and evaluation implications.
+11. Recommend the test-first proof plan: test strategy, acceptance scenarios, eval shape, unit/integration/e2e balance, mock vs real tool policy, failure cases, regression gates, and what must be proven before Phase 3 Build starts.
+12. Ask the user to accept or override the recommendations.
+13. Produce or update `agents/{agent-handle}/agent-design.md`.
 
 ## Output
 
-- `agents/{agent-handle}/agent-design.md`
-- `agents/{agent-handle}/agent-backlog.md`
+Create or update `agents/{agent-handle}/agent-design.md` using `templates/workflow-spec.md` as the starting structure.
+
+The completed file contains:
+
+- System goal
+- Research summary
+- Comparable agents or patterns reviewed
+- Recommendation table
+- Agent roles
+- Workflow
+- Decision points
+- State and memory
+- Tools and integrations
+- Guardrails
+- Human approval gates
+- Handoffs
+- Failure modes
+- Observability needs
+- Test strategy
+- Acceptance scenarios
+- Eval shape
+- Unit, integration, and e2e balance
+- Mock vs real tool policy
+- Failure cases
+- Regression gates
+- Proof required before Phase 3 Build
+- Open questions
+
+Use `templates/workflow-spec.md` from the MAPS repo when working inside this repository.
+
+## Done Criteria
+
+- Every role has a purpose.
+- Handoffs and approvals are explicit.
+- Risks have controls.
+- Recommendations have reasoning.
+- User overrides are captured.
+- Test-first proof requirements are explicit.
+- The design names what must be proven before Phase 3 Build starts.
+- The design can be built and evaluated.

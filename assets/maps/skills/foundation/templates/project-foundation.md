@@ -123,7 +123,7 @@ memory/
 
 ## Open Questions
 
-- 
+-
 
 ## RAG Readiness
 
