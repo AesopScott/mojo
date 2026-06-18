@@ -9,6 +9,7 @@
 | 1 | `/define-agent` | Create the agent brief. |
 | 2 | `/design-agent` | Create the agent design through Research and Recommend, then turn it into a prioritized dependency-aware backlog. |
 | M8 / optional A2 | `/design-experience` | Create the product experience design, journeys, surfaces, IA, interaction states, accessibility requirements, and APS handoffs. |
+| M8 / optional A2 | `/design-experience++` | Wrap Experience Design with website/product UI references, component patterns, responsive layout, accessibility primitives, and service-design reasoning. |
 | 3 | `/build-agent` | Base Build skill. |
 | 3 | `/build-agent++` | Build with incremental implementation and TDD. |
 | 4 | `/equip-agent` | Create the capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks. |

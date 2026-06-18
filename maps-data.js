@@ -169,6 +169,12 @@ window.MAPS_SITE = {
         note: "Creates the M8 experience design artifact for journeys, surfaces, IA, interaction states, visual/tone standards, accessibility, and agent visibility."
       },
       {
+        name: "/design-experience++",
+        url: "assets/maps/skills/design-experience-plus-plus/SKILL.md",
+        download: true,
+        note: "Wraps M8 Experience Design with website/product UI references, shadcn/ui composition, Radix accessibility primitives, NN/g service-design reasoning, responsive layout, and frontend handoffs."
+      },
+      {
         name: "/build-agent",
         url: "assets/maps/skills/build-agent/SKILL.md",
         download: true,
@@ -992,9 +998,9 @@ window.MAPS_SITE = {
       templates: ["templates/workflow-spec.md", "templates/agent-backlog.md"]
     },
     "2a": {
-      skills: ["/design-experience"],
-      repos: ["AesopScott/maps", "shadcn-ui/ui", "radix-ui/primitives", "tailwindlabs/headlessui", "mui/material-ui", "ant-design/ant-design", "chakra-ui/chakra-ui", "mantinedev/mantine", "heroui-inc/heroui", "adobe/react-spectrum", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui", "open-webui/open-webui", "lobehub/lobehub", "mckaywrigley/chatbot-ui", "vercel/chatbot", "vercel/ai", "Chainlit/chainlit", "gradio-app/gradio", "streamlit/streamlit"],
-      tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "UI design system references", "Agent interaction surface references"],
+      skills: ["/design-experience++", "/design-experience"],
+      repos: ["AesopScott/maps", "shadcn-ui/ui", "radix-ui/primitives", "NN/g Service Blueprints", "tailwindlabs/headlessui", "mui/material-ui", "ant-design/ant-design", "chakra-ui/chakra-ui", "mantinedev/mantine", "heroui-inc/heroui", "adobe/react-spectrum", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui", "open-webui/open-webui", "lobehub/lobehub", "mckaywrigley/chatbot-ui", "vercel/chatbot", "vercel/ai", "Chainlit/chainlit", "gradio-app/gradio", "streamlit/streamlit"],
+      tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "UI design system references", "Agent interaction surface references", "Responsive website design", "Component pattern selection"],
       templates: ["templates/experience-design.md"]
     },
     "3": {
