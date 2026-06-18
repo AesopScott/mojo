@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MAPS References | Mojo AI Studio</title>
-    <meta name="description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
-    <link rel="canonical" href="https://mojoaistudio.com/references.html">
+    <title>MAPS M0: Project Foundation | Mojo AI Studio</title>
+    <meta name="description" content="M0 Project Foundation establishes project intent, notes scaffold, evidence, source inventory, assumptions, decisions, and RAG readiness.">
+    <link rel="canonical" href="https://mojoaistudio.com/m0.html">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
@@ -14,9 +14,9 @@
     <meta name="theme-color" content="#0f0f1a">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Mojo AI Studio">
-    <meta property="og:url" content="https://mojoaistudio.com/references.html">
-    <meta property="og:title" content="MAPS References">
-    <meta property="og:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta property="og:url" content="https://mojoaistudio.com/m0.html">
+    <meta property="og:title" content="MAPS M0: Project Foundation">
+    <meta property="og:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
     <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:type" content="image/png">
@@ -24,15 +24,15 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MAPS References">
-    <meta name="twitter:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta name="twitter:title" content="MAPS M0: Project Foundation">
+    <meta name="twitter:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=foundation-kickoff">
     <script src="maps-data.js?v=m0-m1-pages" defer></script>
     <script src="maps-page.js?v=aps-source" defer></script>
   </head>
-  <body class="maps-page">
+  <body class="maps-page" data-maps-phase="m0">
     <div class="maps-shell">
       <header class="maps-topbar">
         <nav class="maps-nav" aria-label="MAPS navigation">
@@ -78,61 +78,95 @@
                 </div>
               </div>
             </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#output">Output</a>
+              <a href="#methods">Methods</a>
+              <a href="#resources">Resources</a>
+            </div>
           </div>
         </nav>
       </header>
 
-      <section class="maps-hero maps-hero-wide">
+      <section class="maps-hero">
         <div>
-          <p class="maps-eyebrow">MAPS references</p>
-          <h1>Every documented MAPS resource, grouped by phase.</h1>
+          <p class="maps-eyebrow">M0</p>
+          <p class="maps-kickoff-line">Project Intent + Scaffolding Structure, Kickoff.</p>
+          <h1>Project Foundation</h1>
           <p>
-            This page collects the skills, repos, tools, and templates that have been attached to the MAPS program so far. Phase pages still show their local Resources section; this page is the full program catalog.
-          </p>
-          <p class="maps-commitment-note">
-            The single-agentic pipeline references exist now, and M8 Experience Design is available as a concrete multi-agent phase page. The remaining multi-agent pipeline pages are still under development.
+            M0 starts the project brain: intent, notes, sources, evidence,
+            assumptions, decisions, and retrieval-ready context before system
+            shape or agent design begins.
           </p>
           <div class="maps-actions">
-            <a class="maps-button primary" href="#all-references">Browse all references</a>
-            <a class="maps-button" href="maps.html">Back to overview</a>
+            <a class="maps-button primary" href="#methods">Start foundation</a>
+            <a class="maps-button" href="m1.html">Continue to M1 System Shape</a>
           </div>
         </div>
+
+        <aside class="maps-card">
+          <h2>Build navigation</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="m0"></div>
+        </aside>
       </section>
 
       <main class="maps-main">
-        <section class="maps-section">
+        <section id="output" class="maps-section">
           <div class="maps-section-header">
-            <h2>Catalog shape</h2>
-            <p>
-              Each phase is grouped into the same four buckets: skills, repos, tools, and templates.
-            </p>
+            <h2>M0 output</h2>
+            <p>The required artifact is `project-foundation.md`, backed by a notes, sources, and memory scaffold.</p>
           </div>
-
           <div class="maps-grid">
             <article class="maps-panel">
-              <h3>Skills</h3>
-              <p>Downloadable `SKILL.md` workflows used to execute or wrap a MAPS phase.</p>
+              <h3>Skill</h3>
+              <p><a href="assets/maps/skills/foundation/SKILL.md" download><strong>/foundation</strong></a> runs the Project Foundation kickoff.</p>
             </article>
             <article class="maps-panel">
-              <h3>Repos</h3>
-              <p>Reference implementations, SDKs, catalogs, templates, and open-source projects that informed the phase.</p>
+              <h3>Template</h3>
+              <p><a href="assets/maps/templates/project-foundation.md" download><strong>templates/project-foundation.md</strong></a> captures the foundation artifact.</p>
             </article>
             <article class="maps-panel">
-              <h3>Tools and templates</h3>
-              <p>Operational tools, external references, and downloadable artifact templates used by builders.</p>
+              <h3>Primary handoff</h3>
+              <p>M1 System Shape receives the foundation, source inventory, EventStorming Lite notes, and M1 handoff questions.</p>
             </article>
           </div>
         </section>
 
-        <section id="all-references" class="maps-section">
+        <section id="methods" class="maps-section">
           <div class="maps-section-header">
-            <h2>All references</h2>
-            <p>
-              The list below is generated from the shared MAPS catalog data so phase pages and this reference page stay aligned.
-            </p>
+            <h2>Foundation methods</h2>
+            <p>M0 keeps product intent and project memory together so the system decision is evidence-backed.</p>
           </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Notes scaffold</h3>
+              <p>Create daily, interview, research, decision, source, and memory folders before synthesis starts.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>EventStorming Lite</h3>
+              <p>Capture domain events, triggers, actors, policies, systems, pain points, and open questions.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Service Blueprint Lite</h3>
+              <p>Separate customer/operator actions, visible system behavior, backstage work, evidence, and failure points.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>RAG readiness</h3>
+              <p>Define source types, metadata, privacy limits, citation requirements, freshness rules, and exclusions.</p>
+            </article>
+          </div>
+        </section>
 
-          <div class="maps-reference-phase-list" data-maps-reference-phases></div>
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>M0 resources</h2>
+            <p>Project Foundation depends on notes, research, source, service-design, and retrieval references.</p>
+          </div>
+          <div class="maps-resource-grid">
+            <article class="maps-panel"><h3>Skills</h3><ul data-maps-skills></ul></article>
+            <article class="maps-panel"><h3>Repos</h3><ul data-maps-repos></ul></article>
+            <article class="maps-panel"><h3>Tools</h3><ul data-maps-tools></ul></article>
+            <article class="maps-panel"><h3>Templates</h3><ul data-maps-templates></ul></article>
+          </div>
         </section>
       </main>
     </div>

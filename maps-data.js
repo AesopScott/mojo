@@ -1,6 +1,22 @@
 window.MAPS_SITE = {
   phases: [
     {
+      number: "m0",
+      file: "m0.html",
+      label: "M0",
+      title: "Project Foundation",
+      output: "Intent, notes scaffold, evidence, sources, and RAG readiness",
+      status: "available"
+    },
+    {
+      number: "m1",
+      file: "m1.html",
+      label: "M1",
+      title: "System Shape",
+      output: "S/M/U track decision before roster or APS entry",
+      status: "available"
+    },
+    {
       number: "0",
       file: "0.html",
       label: "Phase 0",
@@ -945,11 +961,23 @@ window.MAPS_SITE = {
     ]
   },
   phaseResources: {
-    "0": {
-      skills: ["/foundation", "/shape", "/scaffold", "phase-alignment"],
+    "m0": {
+      skills: ["/foundation"],
       repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
-      tools: ["Python", "GitHub CLI", "Git", "Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite", "BPMN Lite", "Role-pressure checks"],
-      templates: ["templates/project-foundation.md", "templates/system-shape.md", "templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
+      tools: ["Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
+      templates: ["templates/project-foundation.md"]
+    },
+    "m1": {
+      skills: ["/shape"],
+      repos: ["AesopScott/maps", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph"],
+      tools: ["BPMN Lite", "Role-pressure checks", "Service blueprinting", "Agent handoff mapping"],
+      templates: ["templates/system-shape.md"]
+    },
+    "0": {
+      skills: ["/scaffold", "phase-alignment"],
+      repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      tools: ["Python", "GitHub CLI", "Git"],
+      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],

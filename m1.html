@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MAPS References | Mojo AI Studio</title>
-    <meta name="description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
-    <link rel="canonical" href="https://mojoaistudio.com/references.html">
+    <title>MAPS M1: System Shape | Mojo AI Studio</title>
+    <meta name="description" content="M1 System Shape scopes the workflow and chooses Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS before roster or implementation work.">
+    <link rel="canonical" href="https://mojoaistudio.com/m1.html">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
@@ -14,9 +14,9 @@
     <meta name="theme-color" content="#0f0f1a">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Mojo AI Studio">
-    <meta property="og:url" content="https://mojoaistudio.com/references.html">
-    <meta property="og:title" content="MAPS References">
-    <meta property="og:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta property="og:url" content="https://mojoaistudio.com/m1.html">
+    <meta property="og:title" content="MAPS M1: System Shape">
+    <meta property="og:description" content="Choose Scope First, Single-Agent / APS, or Multi-Agent / MAPS before roster or implementation work.">
     <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:type" content="image/png">
@@ -24,15 +24,15 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MAPS References">
-    <meta name="twitter:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta name="twitter:title" content="MAPS M1: System Shape">
+    <meta name="twitter:description" content="Choose Scope First, Single-Agent / APS, or Multi-Agent / MAPS before roster or implementation work.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="maps.css?v=foundation-kickoff">
     <script src="maps-data.js?v=m0-m1-pages" defer></script>
     <script src="maps-page.js?v=aps-source" defer></script>
   </head>
-  <body class="maps-page">
+  <body class="maps-page" data-maps-phase="m1">
     <div class="maps-shell">
       <header class="maps-topbar">
         <nav class="maps-nav" aria-label="MAPS navigation">
@@ -78,61 +78,91 @@
                 </div>
               </div>
             </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#output">Output</a>
+              <a href="#decision">Decision</a>
+              <a href="#resources">Resources</a>
+            </div>
           </div>
         </nav>
       </header>
 
-      <section class="maps-hero maps-hero-wide">
+      <section class="maps-hero">
         <div>
-          <p class="maps-eyebrow">MAPS references</p>
-          <h1>Every documented MAPS resource, grouped by phase.</h1>
+          <p class="maps-eyebrow">M1</p>
+          <h1>System Shape</h1>
           <p>
-            This page collects the skills, repos, tools, and templates that have been attached to the MAPS program so far. Phase pages still show their local Resources section; this page is the full program catalog.
-          </p>
-          <p class="maps-commitment-note">
-            The single-agentic pipeline references exist now, and M8 Experience Design is available as a concrete multi-agent phase page. The remaining multi-agent pipeline pages are still under development.
+            M1 scopes the workflow enough to choose the track: Unknown / Scope
+            First, Single-Agent / APS, or Multi-Agent / MAPS. It protects the
+            project from premature overbuilding.
           </p>
           <div class="maps-actions">
-            <a class="maps-button primary" href="#all-references">Browse all references</a>
-            <a class="maps-button" href="maps.html">Back to overview</a>
+            <a class="maps-button primary" href="#decision">Shape the system</a>
+            <a class="maps-button" href="m0.html">Back to M0 Foundation</a>
+            <a class="maps-button" href="0.html">Enter A0 if APS</a>
           </div>
         </div>
+
+        <aside class="maps-card">
+          <h2>Build navigation</h2>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="m1"></div>
+        </aside>
       </section>
 
       <main class="maps-main">
-        <section class="maps-section">
+        <section id="output" class="maps-section">
           <div class="maps-section-header">
-            <h2>Catalog shape</h2>
-            <p>
-              Each phase is grouped into the same four buckets: skills, repos, tools, and templates.
-            </p>
+            <h2>M1 output</h2>
+            <p>The required artifact is `system-shape.md`, including the S/M/U decision and next-track recommendation.</p>
           </div>
-
           <div class="maps-grid">
             <article class="maps-panel">
-              <h3>Skills</h3>
-              <p>Downloadable `SKILL.md` workflows used to execute or wrap a MAPS phase.</p>
+              <h3>Skill</h3>
+              <p><a href="assets/maps/skills/shape/SKILL.md" download><strong>/shape</strong></a> runs the M1 decision workflow.</p>
             </article>
             <article class="maps-panel">
-              <h3>Repos</h3>
-              <p>Reference implementations, SDKs, catalogs, templates, and open-source projects that informed the phase.</p>
+              <h3>Template</h3>
+              <p><a href="assets/maps/templates/system-shape.md" download><strong>templates/system-shape.md</strong></a> captures the track decision.</p>
             </article>
             <article class="maps-panel">
-              <h3>Tools and templates</h3>
-              <p>Operational tools, external references, and downloadable artifact templates used by builders.</p>
+              <h3>Primary handoff</h3>
+              <p>If S, enter APS. If M, continue to M2 Roster. If U, keep scoping until the operating model is visible.</p>
             </article>
           </div>
         </section>
 
-        <section id="all-references" class="maps-section">
+        <section id="decision" class="maps-section">
           <div class="maps-section-header">
-            <h2>All references</h2>
-            <p>
-              The list below is generated from the shared MAPS catalog data so phase pages and this reference page stay aligned.
-            </p>
+            <h2>S/M/U decision</h2>
+            <p>Start with uncertainty when the developer does not know the answer yet.</p>
           </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Unknown / Scope First</h3>
+              <p>Use when workflow, actors, data, approvals, handoffs, risks, or failure modes are not clear enough yet.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Single-Agent / APS</h3>
+              <p>Use when one coherent agent can own the outcome with one tool/memory context and low handoff burden.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Multi-Agent / MAPS</h3>
+              <p>Use when distinct roles, tools, permissions, memory, review, escalation, or parallel work are justified.</p>
+            </article>
+          </div>
+        </section>
 
-          <div class="maps-reference-phase-list" data-maps-reference-phases></div>
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>M1 resources</h2>
+            <p>System Shape depends on workflow mapping, role-pressure checks, and handoff/orchestration references.</p>
+          </div>
+          <div class="maps-resource-grid">
+            <article class="maps-panel"><h3>Skills</h3><ul data-maps-skills></ul></article>
+            <article class="maps-panel"><h3>Repos</h3><ul data-maps-repos></ul></article>
+            <article class="maps-panel"><h3>Tools</h3><ul data-maps-tools></ul></article>
+            <article class="maps-panel"><h3>Templates</h3><ul data-maps-templates></ul></article>
+          </div>
         </section>
       </main>
     </div>
