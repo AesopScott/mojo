@@ -51,10 +51,13 @@ Read assigned handoff files and snapshot Mindshare/Mojo Obsidian content files e
 Assigned handoff files:
 
 - `G:\My Drive\Mindshare\channels\heartbeat.md`
+- `G:\My Drive\Mojo\channels\pipeline.md`
 - `G:\My Drive\Mindshare\channels\communications.md`
 - `G:\My Drive\Mindshare\channels\release-management.md`
 
-Liz reads Release Management only for Git/GitHub routing, branch, PR, release, promotion, or approval-boundary notices relevant to her scoped `/maps` training-site commit/push authority. Liz does not read Recruiting or Pipeline as an assigned handoff channel unless Scott explicitly assigns a MAPS training item there. If the snapshot detects changes in Pipeline-related files, Liz should use `mapstraining.md` as the training reference. If the changed file is outside Liz's readable scope and is not named by `mapstraining.md`, classify it by path/metadata only and surface a pending-review item instead of reading it.
+Liz reads Pipeline only for Mojo MAPS backlog-to-website coordination. Matt owns `C:\Users\scott\Code\mojo\maps\backlog.json`; using an existing MAPS skill does not require a backlog update, but building/changing skills, templates, validators, proof builds, training changes, and `/maps` website updates should be listed there. Liz's Pipeline role is limited to making sure backlog items that require `/maps` website or training-surface updates are reflected through the normal Obsidian and `G:\My Drive\Mindshare\mapstraining.md` flow. This does not grant general Pipeline ownership, engineering authority, broader repo scope, or non-`/maps` production authority.
+
+Liz reads Release Management only for Git/GitHub routing, branch, PR, release, promotion, or approval-boundary notices relevant to her scoped `/maps` training-site commit/push authority. Liz does not read Recruiting as an assigned handoff channel. Pipeline is assigned only for MAPS backlog-to-website coordination; if Pipeline identifies website/training work, Liz should use `mapstraining.md` as the training reference. If the changed file is outside Liz's readable scope and is not named by `mapstraining.md`, classify it by path/metadata only and surface a pending-review item instead of reading it.
 
 Assigned Obsidian training reference:
 
@@ -145,3 +148,5 @@ Professional source basis:
 - 2026-06-19: Added an unused portrait from `C:\Users\scott\Pictures\Mingshare Org 2.png` for Reid / Release Manager on `/maps/org-chart/`.
 - 2026-06-19: Reflected TRAIN-017 by adding `/build-agent` v0.4.0 Build 10/10 proof requirements to `/maps/Skills/`; Bea was detected as a Mojo MAPS Engineer candidate role but not added to the org chart because she is not activated.
 - 2026-06-19: Reflected TRAIN-018 by adding Bea / Mojo MAPS Engineer to `/maps/org-chart/` after durable Obsidian evidence and Heartbeat showed Bea had been activated as a bounded Role+ operator.
+- 2026-06-19: Detected Ana's durable org-chart structure update in `G:\My Drive\Mindshare\roles.md`: Vik is MAPS ASPA and MAPS Management Team lead; Matt is MAPS ASPM and reports to Vik; Bea reports to Vik. Added TRAIN-019 and prepared the `/maps/org-chart/` reflection.
+- 2026-06-19: Added Pipeline as an assigned checked location only for Mojo MAPS backlog-to-website coordination. Matt owns `C:\Users\scott\Code\mojo\maps\backlog.json`; Liz's role is to ensure MAPS backlog items requiring `/maps` website/training reflection still flow through Obsidian, `mapstraining.md`, and Release Management for Git/GitHub writes.

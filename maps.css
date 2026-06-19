@@ -37,6 +37,12 @@ body.maps-page {
   backdrop-filter: blur(18px);
 }
 
+@media (min-width: 641px) {
+  .maps-topbar {
+    min-height: 150px;
+  }
+}
+
 .maps-nav {
   display: flex;
   align-items: center;
@@ -218,7 +224,8 @@ body.maps-page {
   bottom: var(--maps-source-button-bottom, 24px);
   left: var(--maps-source-button-left, auto);
   z-index: 20;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
   max-width: min(360px, calc(100vw - 32px));
 }
@@ -903,6 +910,7 @@ body.maps-page {
 
 .maps-section {
   padding: 44px 0;
+  scroll-margin-top: 180px;
 }
 
 .maps-section-header {

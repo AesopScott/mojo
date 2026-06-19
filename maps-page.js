@@ -91,7 +91,7 @@
     group.className = "maps-source-actions";
     group.dataset.mapsSourceButton = "true";
 
-    buttons.forEach(({ skill, label }) => {
+    buttons.forEach(({ skill, label }, index) => {
       const button = document.createElement("a");
       button.href = skill.url;
       if (skill.download) {
@@ -101,6 +101,9 @@
         button.rel = "noopener noreferrer";
       }
       button.className = "maps-source-button";
+      if (index === 0) {
+        button.dataset.mapsPrimarySourceButton = "true";
+      }
       button.textContent = label;
       group.appendChild(button);
     });
@@ -199,6 +202,7 @@
 
   function positionMapsSourceButton() {
     const button = document.querySelector(".maps-source-actions");
+    const primaryButton = button?.querySelector("[data-maps-primary-source-button]") || button;
     const topbar = document.querySelector(".maps-topbar");
     const agentsLink = document.querySelector('.maps-links > a[href="/maps/Agents/"], .maps-links > a[href="agents.html"]');
     const multiAgent = document.querySelector(".maps-pipeline-group.multi-agent");
@@ -215,7 +219,7 @@
       return;
     }
 
-    const buttonRect = button.getBoundingClientRect();
+    const buttonRect = primaryButton.getBoundingClientRect();
     const topbarRect = topbar.getBoundingClientRect();
     const agentsRect = agentsLink?.getBoundingClientRect();
     const multiRect = multiAgent?.getBoundingClientRect();
