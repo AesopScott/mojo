@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.3.0.
+Current version: 0.4.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.4.0 - Added first-person role voice requirements and role activation instructions.
 - 2026-06-19 - v0.3.0 - Added the role engagement taxonomy and implementation mapping.
 - 2026-06-19 - v0.2.0 - Added the role authority taxonomy and special authority declaration options.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
@@ -67,6 +68,7 @@ External research is mandatory and heavily weighted. Do not produce the recommen
 8. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
 9. Recommend the rest of the role contract:
    - role type and mode
+   - first-person role voice: how the role speaks as itself, not as Claude, Codex, or an outside narrator
    - engagement type: how the role participates and when it activates
    - advisory behavior
    - workflow ownership
@@ -107,7 +109,14 @@ If the user is still scoping, offer three role modes:
    - Loop-backed when the role must monitor, plan, act, observe, update memory, and repeat.
    - Agentic when the role needs goal pursuit, tools, policy, state, memory, evals, and escalation.
 6. Define the role charter: mandate, customers, decisions, non-decisions, responsibilities, and evidence.
-7. Define engagement explicitly:
+7. Define first-person role voice:
+   - first-person identity statement: how the role introduces itself as "I"
+   - voice and tone: how the role sounds when advising, challenging, coordinating, escalating, or reporting
+   - role point of view: what the role optimizes for, notices, questions, and protects
+   - prohibited narrator language: the role must not say it is Claude, Codex, ChatGPT, an AI assistant, or "the role"; it speaks as the role unless a system or safety boundary requires otherwise
+   - activation phrase or header: the concise marker used when the role is intentionally speaking
+   - boundary disclosure: how the role names limits without breaking character, such as "I can recommend this, but I need approval before acting"
+8. Define engagement explicitly:
    - primary engagement: passive reference, advisory, review gate, workflow owner, operator, autonomous loop, or escalation authority
    - secondary engagements
    - trigger and activation condition
@@ -116,7 +125,7 @@ If the user is still scoping, offer three role modes:
    - expected implementation form from `references/role-engagement-taxonomy.md`
    - human involvement and handoff expectations
    - deactivation or stop condition
-8. Define the operating loop if needed:
+9. Define the operating loop if needed:
    - trigger
    - context intake
    - plan
@@ -126,7 +135,7 @@ If the user is still scoping, offer three role modes:
    - memory update
    - escalation
    - review cadence
-9. Define role memory:
+10. Define role memory:
    - durable facts
    - working notes
    - source evidence
@@ -135,15 +144,15 @@ If the user is still scoping, offer three role modes:
    - relationship context
    - performance history
    - privacy and retention limits
-10. Define interfaces:
+11. Define interfaces:
    - human asks
    - agent-to-agent handoffs
    - input schemas
    - output formats
    - approval checkpoints
    - status updates
-11. Define tools, permissions, and constraints.
-12. Define authority explicitly:
+12. Define tools, permissions, and constraints.
+13. Define authority explicitly:
    - taxonomy level: none, observe, advise, recommend, draft, coordinate, execute-with-approval, execute-within-policy, approve, veto, autonomous-within-bounds, emergency-only, or owner
    - authority domains: advice, artifacts, workflow, tools, memory/RAG, data, external communication, money/commitments, policy/governance, people/roles, deployment/production, escalation
    - decision rights
@@ -152,14 +161,14 @@ If the user is still scoping, offer three role modes:
    - forbidden decisions and actions
    - special declarations from `references/role-authority-taxonomy.md`
    - revocation or rollback path
-13. Define learning and growth:
+14. Define learning and growth:
    - what the role should learn from each run
    - where learned responsibilities and capabilities are proposed
    - what evidence is required before the role gains new responsibility
    - who approves expanded authority
    - how role changes are written to notes, RAG, memory, and the role artifact
    - how stale or harmful responsibilities are retired
-14. Recommend the implementation form:
+15. Recommend the implementation form:
    - Skill when the role is mainly a reusable expert procedure invoked by a user or agent.
    - Script when the role performs a deterministic transformation, extraction, sync, or setup task.
    - Hook when the role should run automatically at session start, prompt submit, file change, commit, deploy, or another lifecycle event.
@@ -168,19 +177,19 @@ If the user is still scoping, offer three role modes:
    - Workflow/runbook when humans and agents share staged work, approvals, or handoffs.
    - MCP/tool integration when the role needs controlled access to external systems.
    - Dashboard/report when the role primarily makes state visible for review.
-15. Define proof:
+16. Define proof:
    - role scenarios
    - acceptance tests
    - eval rubrics
    - failure modes
    - review evidence
-16. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
-17. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-18. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
-19. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
-20. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
-21. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-22. Run the shared MAPS memory helper for `/role`.
+17. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
+18. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+19. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+20. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+21. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
+22. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+23. Run the shared MAPS memory helper for `/role`.
 
 ## Completion report
 
@@ -209,6 +218,7 @@ The completed role artifact must include:
 
 - Role name and root organization
 - Role type and role mode
+- First-person role voice, activation marker, point of view, and prohibited narrator language
 - Role engagement type, trigger, cadence, participation depth, and implementation mapping
 - User's role description
 - Research summary and recommendation rationale

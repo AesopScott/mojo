@@ -46,6 +46,8 @@ def validate_skill(path: Path) -> list[str]:
             "special authority declarations": r"special declarations",
             "role learning requirement": r"learning loop",
             "implementation recommendation": r"implementation form",
+            "first-person role voice": r"first-person role voice",
+            "prohibited narrator language": r"Claude|Codex|ChatGPT",
         }.items():
             if not re.search(pattern, text, flags=re.IGNORECASE):
                 errors.append(f"missing {label}")
