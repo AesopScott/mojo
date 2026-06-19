@@ -95,52 +95,37 @@ body.maps-page {
 
 .maps-links a,
 .maps-inline-links a,
-.maps-dropdown summary {
+.maps-nav-dropdown-label {
   padding: 8px 10px;
+  border: 0;
   border-radius: 7px;
   color: var(--maps-muted);
+  background: transparent;
+  font: inherit;
   font-size: 14px;
+  line-height: inherit;
   text-decoration: none;
 }
 
 .maps-links a:hover,
 .maps-inline-links a:hover,
-.maps-dropdown summary:hover {
+.maps-nav-dropdown-label:hover,
+.maps-nav-dropdown:focus-within .maps-nav-dropdown-label {
   color: var(--maps-ink);
   background: var(--maps-soft);
 }
 
-.maps-dropdown {
+.maps-nav-dropdown {
   position: relative;
 }
 
-.maps-dropdown summary {
+.maps-nav-dropdown-label {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   min-height: 38px;
-  list-style: none;
   cursor: pointer;
-  font-weight: 760;
-}
-
-.maps-dropdown summary::-webkit-details-marker {
-  display: none;
-}
-
-.maps-dropdown summary::after {
-  content: "";
-  width: 0;
-  height: 0;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-  border-top: 5px solid currentColor;
-  opacity: 0.72;
-}
-
-.maps-dropdown[open] summary {
-  color: var(--maps-ink);
-  background: var(--maps-soft);
+  font-weight: 400;
 }
 
 .maps-dropdown-menu {
@@ -158,6 +143,18 @@ body.maps-page {
   border-radius: 8px;
   background: #fff;
   box-shadow: var(--maps-shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+}
+
+.maps-nav-dropdown:hover .maps-dropdown-menu,
+.maps-nav-dropdown:focus-within .maps-dropdown-menu,
+.maps-nav-dropdown.open .maps-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
 .maps-dropdown-menu a,
@@ -183,20 +180,20 @@ body.maps-page {
   background: var(--maps-orange);
 }
 
-.maps-dropdown.agentic .maps-dropdown-menu a:hover {
+.maps-nav-dropdown.agentic .maps-dropdown-menu a:hover {
   background: var(--maps-teal);
 }
 
-.maps-dropdown.multi-agent .maps-dropdown-menu a:hover {
+.maps-nav-dropdown.multi-agent .maps-dropdown-menu a:hover {
   background: var(--maps-blue);
 }
 
-.maps-dropdown.org-chart .maps-dropdown-menu a:hover {
+.maps-nav-dropdown.org-chart .maps-dropdown-menu a:hover {
   background: var(--maps-orange);
 }
 
-.maps-dropdown .maps-dropdown-menu a.current,
-.maps-dropdown .maps-dropdown-menu a.current:hover {
+.maps-nav-dropdown .maps-dropdown-menu a.current,
+.maps-nav-dropdown .maps-dropdown-menu a.current:hover {
   color: #fff;
   background: var(--maps-orange);
 }
@@ -216,8 +213,10 @@ body.maps-page {
 .maps-source-button {
   display: inline-flex;
   position: fixed;
-  top: var(--maps-source-button-top, 112px);
-  left: var(--maps-source-button-left, 96px);
+  top: var(--maps-source-button-top, auto);
+  right: var(--maps-source-button-right, 24px);
+  bottom: var(--maps-source-button-bottom, 24px);
+  left: var(--maps-source-button-left, auto);
   z-index: 20;
   align-items: center;
   justify-content: center;

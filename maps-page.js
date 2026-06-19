@@ -38,6 +38,7 @@
     document.querySelectorAll(`.maps-dropdown-menu a[href="${phase.file}"]`).forEach((link) => {
       link.classList.add("current");
       link.setAttribute("aria-current", "page");
+      link.closest(".maps-nav-dropdown")?.querySelector(".maps-nav-dropdown-label")?.setAttribute("aria-expanded", "false");
     });
   }
 
@@ -90,6 +91,46 @@
     button.textContent = "Open MAPS source";
     document.body.appendChild(button);
     positionMapsSourceButton();
+  }
+
+  function setupDropdownMenus() {
+    document.querySelectorAll(".maps-nav-dropdown").forEach((dropdown) => {
+      const button = dropdown.querySelector(".maps-nav-dropdown-label");
+      if (!button) {
+        return;
+      }
+
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        const willOpen = !dropdown.classList.contains("open");
+        document.querySelectorAll(".maps-nav-dropdown.open").forEach((item) => {
+          item.classList.remove("open");
+          item.querySelector(".maps-nav-dropdown-label")?.setAttribute("aria-expanded", "false");
+        });
+        dropdown.classList.toggle("open", willOpen);
+        button.setAttribute("aria-expanded", willOpen ? "true" : "false");
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest(".maps-nav-dropdown")) {
+        return;
+      }
+      document.querySelectorAll(".maps-nav-dropdown.open").forEach((dropdown) => {
+        dropdown.classList.remove("open");
+        dropdown.querySelector(".maps-nav-dropdown-label")?.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") {
+        return;
+      }
+      document.querySelectorAll(".maps-nav-dropdown.open").forEach((dropdown) => {
+        dropdown.classList.remove("open");
+        dropdown.querySelector(".maps-nav-dropdown-label")?.setAttribute("aria-expanded", "false");
+      });
+    });
   }
 
   function balancePipelineRows() {
@@ -153,6 +194,8 @@
     if (window.matchMedia("(max-width: 640px)").matches) {
       document.documentElement.style.removeProperty("--maps-source-button-left");
       document.documentElement.style.removeProperty("--maps-source-button-top");
+      document.documentElement.style.removeProperty("--maps-source-button-right");
+      document.documentElement.style.removeProperty("--maps-source-button-bottom");
       return;
     }
 
@@ -161,6 +204,14 @@
     const agentsRect = agentsLink?.getBoundingClientRect();
     const multiRect = multiAgent?.getBoundingClientRect();
     const agenticRect = agentic?.getBoundingClientRect();
+
+    if (!agentsRect || !multiRect || !agenticRect) {
+      document.documentElement.style.removeProperty("--maps-source-button-left");
+      document.documentElement.style.removeProperty("--maps-source-button-top");
+      document.documentElement.style.removeProperty("--maps-source-button-right");
+      document.documentElement.style.removeProperty("--maps-source-button-bottom");
+      return;
+    }
 
     const desiredCenterX = agentsRect ? agentsRect.left + agentsRect.width / 2 : topbarRect.left + 176;
     const desiredCenterY = multiRect && agenticRect
@@ -172,6 +223,8 @@
 
     document.documentElement.style.setProperty("--maps-source-button-left", `${Math.round(left)}px`);
     document.documentElement.style.setProperty("--maps-source-button-top", `${Math.round(top)}px`);
+    document.documentElement.style.setProperty("--maps-source-button-right", "auto");
+    document.documentElement.style.setProperty("--maps-source-button-bottom", "auto");
   }
 
   function renderResourceGroup(selector, items) {
@@ -282,6 +335,7 @@
   }
 
   highlightCurrentPipelinePhase();
+  setupDropdownMenus();
   renderLabPills();
   renderMapsSourceButton();
   renderPhaseNav();
