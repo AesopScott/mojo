@@ -10,8 +10,23 @@ Project Intent + Scaffolding Structure, Kickoff.
 - Owner:
 - Repository:
 - Date:
+- Project type: MAPS framework / APS project / downstream product or organization
 - Primary customer or operator:
 - Desired outcome:
+
+## M0 Preflight Decisions
+
+| Decision | Answer | Confirmed by | Notes |
+|---|---|---|---|
+| Project identity and type |  |  |  |
+| Project intent |  |  |  |
+| Primary customer/operator |  |  |  |
+| Reuse remembered defaults? |  |  |  |
+| Notes root |  |  |  |
+| Sources root |  |  |  |
+| Memory root |  |  |  |
+| RAG provider/location/index |  |  |  |
+| Update global living template? |  |  |  |
 
 ## Customer Story
 

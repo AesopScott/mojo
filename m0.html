@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MAPS M0: Project Foundation | Mojo AI Studio</title>
-    <meta name="description" content="M0 Project Foundation establishes project intent, notes scaffold, evidence, source inventory, persistent memory, run notes, and RAG readiness.">
+    <meta name="description" content="M0 Project Foundation establishes project intent, required preflight decisions, notes scaffold, source inventory, persistent memory, run notes, and RAG readiness.">
     <link rel="canonical" href="https://mojoaistudio.com/m0.html">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
@@ -28,8 +28,8 @@
     <meta name="twitter:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="maps.css?v=maps-memory-helper">
-    <script src="maps-data.js?v=maps-memory-helper" defer></script>
+    <link rel="stylesheet" href="maps.css?v=foundation-preflight-wipe">
+    <script src="maps-data.js?v=foundation-preflight-wipe" defer></script>
     <script src="maps-page.js?v=aps-source" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="m0">
@@ -94,9 +94,10 @@
           <p class="maps-kickoff-line">Project Intent + Scaffolding Structure, Kickoff.</p>
           <h1>Project Foundation</h1>
           <p>
-            M0 starts the project brain: intent, notes, sources, evidence,
-            assumptions, decisions, per-skill run notes, and retrieval-ready
-            context before system shape or agent design begins.
+            M0 starts the project brain with an explicit preflight: intent,
+            operator, notes, sources, memory, RAG, evidence, assumptions,
+            decisions, per-skill run notes, and retrieval-ready context before
+            system shape or agent design begins.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#methods">Start foundation</a>
@@ -124,6 +125,35 @@
               <h3>Primary handoff</h3>
               <p>M1 System Shape receives the foundation, source inventory, EventStorming Lite notes, and M1 handoff questions.</p>
             </article>
+            <article class="maps-panel">
+              <h3>Reset path</h3>
+              <p><strong>/foundation --wipe</strong> previews the foundation scaffold cleanup, then removes confirmed MAPS-created artifacts so the phase can restart cleanly.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Required preflight</h2>
+            <p>M0 now asks before it writes. The skill must confirm the foundation decisions instead of inferring them from the repo.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Identity</h3>
+              <p>Confirm project name, owner, type, concrete intent, and primary customer or operator.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Memory</h3>
+              <p>Confirm whether to reuse defaults, where notes live, where sources live, and where durable memory lives.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Retrieval</h3>
+              <p>Confirm RAG provider, location, and index path, or explicitly choose none yet.</p>
+            </article>
+          </div>
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project . --confirm</code></pre>
           </div>
         </section>
 

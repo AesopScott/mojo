@@ -268,6 +268,113 @@ def promote_template(args: argparse.Namespace) -> int:
     return 0
 
 
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def scaffold_paths(project: Path, foundation_file: str) -> tuple[list[Path], list[Path]]:
+    prefs = load_json(preference_path(project)) or DEFAULT_PREFS
+    notes = Path(prefs.get("notesRoot") or "notes")
+    sources = Path(prefs.get("sourcesRoot") or "sources")
+    memory = Path(prefs.get("memoryRoot") or "memory")
+    rag_location = Path(prefs.get("rag", {}).get("location") or "__maps_no_rag__")
+
+    def under_project(value: Path) -> Path:
+        return value if value.is_absolute() else project / value
+
+    notes_root = under_project(notes)
+    sources_root = under_project(sources)
+    memory_root = under_project(memory)
+    rag_root = under_project(rag_location)
+
+    files = [
+        foundation_path(project, foundation_file),
+        preference_path(project),
+        project / ".maps" / "rag-updates.json",
+        notes_root / "maps-runs" / "foundation.md",
+        sources_root / "links.md",
+        memory_root / "project-context.md",
+        memory_root / "glossary.md",
+        memory_root / "entity-map.md",
+    ]
+    if prefs.get("rag", {}).get("location"):
+        files.append(rag_root / "maps-runs" / "foundation.md")
+
+    dirs = [
+        notes_root / "maps-runs",
+        notes_root / "daily",
+        notes_root / "interviews",
+        notes_root / "research",
+        notes_root / "decisions",
+        sources_root / "docs",
+        sources_root / "transcripts",
+        sources_root / "screenshots",
+        memory_root,
+        sources_root,
+        notes_root,
+        project / ".maps",
+    ]
+    if prefs.get("rag", {}).get("location"):
+        dirs.extend([rag_root / "maps-runs", rag_root])
+    return files, dirs
+
+
+def remove_empty_dir(path: Path, force: bool) -> str:
+    if not path.exists():
+        return "missing"
+    if not path.is_dir():
+        return "not-directory"
+    if force:
+        shutil.rmtree(path)
+        return "removed-force"
+    try:
+        path.rmdir()
+        return "removed-empty"
+    except OSError:
+        return "kept-nonempty"
+
+
+def wipe(args: argparse.Namespace) -> int:
+    project = Path(args.project).resolve()
+    files, dirs = scaffold_paths(project, args.foundation_file)
+    actions: list[dict[str, str]] = []
+
+    for path in files:
+        resolved = path.resolve()
+        if not is_relative_to(resolved, project):
+            actions.append({"path": str(path), "type": "file", "action": "skip-outside-project"})
+            continue
+        if not path.exists():
+            actions.append({"path": str(path), "type": "file", "action": "missing"})
+            continue
+        if args.confirm:
+            path.unlink()
+            actions.append({"path": str(path), "type": "file", "action": "removed"})
+        else:
+            actions.append({"path": str(path), "type": "file", "action": "would-remove"})
+
+    for path in dirs:
+        resolved = path.resolve()
+        if not is_relative_to(resolved, project):
+            actions.append({"path": str(path), "type": "directory", "action": "skip-outside-project"})
+            continue
+        if args.confirm:
+            action = remove_empty_dir(path, args.force)
+            actions.append({"path": str(path), "type": "directory", "action": action})
+        else:
+            action = "would-remove-force" if args.force else "would-remove-if-empty"
+            if not path.exists():
+                action = "missing"
+            actions.append({"path": str(path), "type": "directory", "action": action})
+
+    print(json.dumps({"confirmed": args.confirm, "force": args.force, "project": str(project), "actions": actions}, indent=2, sort_keys=True))
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Read or write MAPS foundation preferences.")
     subparsers = parser.add_subparsers(required=True)
@@ -310,6 +417,13 @@ def main() -> int:
     promote_parser.add_argument("--project", default=".", help="Project directory.")
     promote_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
     promote_parser.set_defaults(func=promote_template)
+
+    wipe_parser = subparsers.add_parser("wipe", help="Preview or remove MAPS foundation artifacts from a project.")
+    wipe_parser.add_argument("--project", default=".", help="Project directory.")
+    wipe_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
+    wipe_parser.add_argument("--confirm", action="store_true", help="Actually remove the previewed files.")
+    wipe_parser.add_argument("--force", action="store_true", help="Also remove non-empty scaffold directories inside the project.")
+    wipe_parser.set_defaults(func=wipe)
 
     args = parser.parse_args()
     return args.func(args)

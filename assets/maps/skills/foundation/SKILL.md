@@ -5,7 +5,23 @@ description: Start M0 Project Foundation for a MAPS project. Use when kicking of
 
 # Foundation
 
-Use `/foundation` at M0 to create the project foundation before selecting a system shape, roster, or individual agent build path.
+Use `/foundation` at M0 to create the project foundation before selecting a system shape, roster, or individual agent build path. Use `/foundation --wipe` to remove the current project's foundation scaffold before starting over.
+
+## Wipe mode
+
+If the user invokes `/foundation --wipe`, do not create or rewrite foundation artifacts. Run the wipe preview first:
+
+```bash
+python scripts/remember_foundation.py wipe --project .
+```
+
+Show the user what would be removed. Only delete files when the user confirms, then run:
+
+```bash
+python scripts/remember_foundation.py wipe --project . --confirm
+```
+
+The wipe command removes MAPS foundation artifacts and known scaffold files inside the project: `project-foundation.md`, `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, `notes/maps-runs/foundation.md`, `sources/links.md`, and the initial memory files. It removes empty scaffold directories. It does not remove non-empty notes, sources, memory, or RAG directories unless `--force` is explicitly used after user confirmation.
 
 ## Self-learning preferences
 
@@ -26,6 +42,7 @@ python scripts/remember_foundation.py remember --project . --notes-root notes --
 python scripts/remember_foundation.py apply --project . --foundation-file project-foundation.md
 python scripts/remember_foundation.py stamp-run --project . --skill /foundation --phase M0 --output project-foundation.md --memory-updates "Updated memory contract"
 python scripts/remember_foundation.py promote-template --project . --foundation-file project-foundation.md
+python scripts/remember_foundation.py wipe --project .
 ```
 
 Use `scripts/maps_memory.py` for the shared per-skill runtime memory behavior:
@@ -41,9 +58,26 @@ The preference file is project memory, not a generated artifact to ignore. Commi
 
 ## Workflow
 
-1. Name the project and the customer or operator outcome.
-2. Load remembered foundation preferences and ask whether to reuse or revise them.
-3. Create the working knowledge scaffold using remembered or newly selected locations:
+Before writing any files, run a required M0 preflight interview. Do not infer these answers from repository files unless the user explicitly asks you to inspect the repo and infer a draft. If the user provided some answers in the prompt, restate them and ask only for the missing decisions.
+
+Required preflight decisions:
+
+- Project identity: name, owner, and whether this is the MAPS framework itself, an APS/single-agent project, or a downstream product/org using MAPS.
+- Project intent: the concrete product, organization, service, or agent system being founded.
+- Primary customer/operator: who will use or operate the system.
+- Reuse policy: whether to reuse remembered/global foundation defaults or revise them for this project.
+- Notes root: where human-readable working notes should live.
+- Sources root: where source evidence, links, transcripts, screenshots, and docs should live.
+- Memory root: where durable project memory should live.
+- RAG configuration: provider, location, index path, or an explicit "none yet".
+- Global template policy: whether this project's answers should update the living global template for future projects.
+
+If any required preflight decision is missing or ambiguous, ask the user before creating or updating `project-foundation.md`.
+
+1. Complete the required M0 preflight interview.
+2. Name the project and the customer or operator outcome from confirmed answers.
+3. Load remembered foundation preferences and apply only the defaults the user confirmed.
+4. Create the working knowledge scaffold using confirmed locations:
    - `notes/daily/`
    - `notes/interviews/`
    - `notes/research/`
@@ -54,17 +88,17 @@ The preference file is project memory, not a generated artifact to ignore. Commi
    - `memory/project-context.md`
    - `memory/glossary.md`
    - `memory/entity-map.md`
-4. Complete `templates/project-foundation.md`.
-5. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
-6. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
-7. Log known evidence, assumptions, decisions, open questions, and source gaps.
-8. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
-9. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
-10. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
-11. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
-12. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
-13. Promote the updated `project-foundation.md` to the living global template when those choices should seed the next project.
-14. Prepare the M1 handoff:
+5. Complete `templates/project-foundation.md`.
+6. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
+7. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
+8. Log known evidence, assumptions, decisions, open questions, and source gaps.
+9. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
+10. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
+11. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
+12. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
+13. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
+14. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
+15. Prepare the M1 handoff:
    - If the system shape is unclear, recommend Scope First.
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.

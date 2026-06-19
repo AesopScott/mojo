@@ -130,7 +130,7 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, and remembered notes/RAG locations."
+        note: "Starts M0 Project Foundation with required preflight decisions, project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
       },
       {
         name: "/shape",
@@ -854,7 +854,7 @@ window.MAPS_SITE = {
         name: "templates/project-foundation.md",
         url: "assets/maps/templates/project-foundation.md",
         download: true,
-        note: "Captures M0 Project Foundation: intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
+        note: "Captures M0 Project Foundation: preflight decisions, intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
       },
       {
         name: "templates/system-shape.md",
