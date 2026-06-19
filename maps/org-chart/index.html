@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="Role agents for running an AI agency organization, adaptable to any organization.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=maps-tech-data-1">
+    <link rel="stylesheet" href="/maps.css?v=org-legend-taxonomy-1">
     <script src="/maps-data.js?v=maps-plus-org-link" defer></script>
-    <script src="/maps-page.js?v=maps-tech-data-1" defer></script>
+    <script src="/maps-page.js?v=org-legend-taxonomy-1" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -117,7 +117,7 @@
         <section id="legend" class="maps-section">
           <div class="maps-section-header">
             <h2>Legend</h2>
-            <p>Use color to track whether an item is missing, a role, or an agent. Green agent names link to an agent profile where runtime controls can be reviewed. MAPS-proprietary roles are roles that belong to the MAPS operating model itself, including architecture, program cadence, recruiting, communications governance, role handoffs, phase routing, and training coordination.</p>
+            <p>Use color to track role operating state. Red items do not exist yet. Blue items are active operators. Green items coordinate across roles, channels, or process lanes. Gold is reserved for approved executor agents with runtime proof and bounded autonomous authority.</p>
           </div>
           <div class="maps-org-legend" aria-label="Role maturity legend">
             <article>
@@ -126,11 +126,15 @@
             </article>
             <article>
               <span class="maps-role-status role">Blue</span>
-              <p>Role exists.</p>
+              <p>Operator: activated role with bounded monitoring or action authority.</p>
             </article>
             <article>
-              <span class="maps-role-status agent">Green</span>
-              <p>Role has become an agent; profile controls are available.</p>
+              <span class="maps-role-status coordinator">Green</span>
+              <p>Coordinator: operator with cross-role, cross-channel, or process coordination authority.</p>
+            </article>
+            <article>
+              <span class="maps-role-status executor">Gold</span>
+              <p>Executor: approved agent runtime with tools, state, eval proof, audit trail, and escalation boundaries.</p>
             </article>
           </div>
         </section>
@@ -139,7 +143,7 @@
           <div class="maps-section-header">
             <h2>Typical company org chart</h2>
             <p>
-              All names start red. When Ana creates a role contract, the item becomes blue. When the role completes agent definition/design/build approval, it becomes green and links to its agent profile.
+              All names start red. Activated operators turn blue. Roles with approved coordination authority turn green. Executor agents turn gold only after runtime proof and explicit approval.
             </p>
           </div>
 
@@ -233,7 +237,7 @@
                   <li>
                     <span class="maps-role-name missing">People Operations</span>
                     <ul>
-                      <li><a class="maps-role-name agent maps-role-person" href="/maps/org-chart/agents/ana-recruiter/"><img class="maps-role-avatar" src="/assets/maps/team/ana.webp" alt="Ana portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Ana</span><span class="maps-role-person-title">Recruiter</span></span></a></li>
+                      <li><a class="maps-role-name coordinator maps-role-person" href="/maps/org-chart/agents/ana-recruiter/"><img class="maps-role-avatar" src="/assets/maps/team/ana.webp" alt="Ana portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Ana</span><span class="maps-role-person-title">Recruiter</span></span></a></li>
                       <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/mae.webp" alt="Mae portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Mae</span><span class="maps-role-person-title">Communications Director</span></span></span></li>
                     </ul>
                   </li>
@@ -249,7 +253,7 @@
         <section id="role-next" class="maps-section">
           <div class="maps-section-header">
             <h2>How this becomes MAPS work</h2>
-            <p>Each blue role can be qualified by Ana and reviewed by Vik. When it becomes a green agent, its profile exposes activation, autonomy, authority, tool, hook, and memory controls.</p>
+            <p>Each blue operator can be qualified by Ana and reviewed by Vik. Green coordinators carry approved cross-role or process authority. Gold executors expose activation, autonomy, authority, tool, hook, memory, and evaluation controls.</p>
           </div>
           <div class="maps-grid">
             <article class="maps-panel">
@@ -262,7 +266,7 @@
             </article>
             <article class="maps-panel">
               <h3>Agent profile</h3>
-              <p>Once a role becomes a green agent, use the profile page to review activation, autonomy, authority, tools, hooks, memory, and next MAPS phase.</p>
+              <p>Once a role becomes a gold executor, use the profile page to review activation, autonomy, authority, tools, hooks, memory, eval proof, and next MAPS phase.</p>
             </article>
             <article class="maps-panel">
               <h3>Role handoff</h3>

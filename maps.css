@@ -1563,15 +1563,28 @@ body.maps-page {
 
 .maps-role-status.mature,
 .maps-role-status.agent,
+.maps-role-status.coordinator,
 .maps-role-name.mature,
-.maps-role-name.agent {
+.maps-role-name.agent,
+.maps-role-name.coordinator {
   color: #1f7a4d;
 }
 
 .maps-role-status.mature,
-.maps-role-status.agent {
+.maps-role-status.agent,
+.maps-role-status.coordinator {
   color: #fff;
   background: #1f7a4d;
+}
+
+.maps-role-status.executor,
+.maps-role-name.executor {
+  color: var(--maps-gold);
+}
+
+.maps-role-status.executor {
+  color: #fff;
+  background: var(--maps-gold);
 }
 
 a.maps-role-name {
