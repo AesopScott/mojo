@@ -224,6 +224,10 @@
               <p>Role-to-agent design creates the design contract, runtime contract, build backlog, proof plan, and build gate. Full implementation still belongs to <code>/build-agent</code>, with Equip and Evaluate evidence required before operational confidence.</p>
             </article>
             <article class="maps-panel">
+              <h3>Build Agent v0.4.0</h3>
+              <p><code>/build-agent</code> now requires Build 10/10 proof for role-to-agent work: runnable command evidence, missing profile/design fail-closed tests, stricter-profile conflict tests, profile-denied behavior tests, audit/state/log artifacts, runtime-adapter proof timing, and Equip/Evaluate handoffs.</p>
+            </article>
+            <article class="maps-panel">
               <h3>Evaluate proof mode</h3>
               <p><code>/evaluate-agent</code> must distinguish specification-mode proof from executable proof. A specification-mode pass can confirm profile and design readiness, but implemented Agent status still requires Build, Equip, and Evaluate evidence for runnable loop, tool wiring, and runtime behavior.</p>
             </article>
@@ -315,6 +319,10 @@
                 <tr>
                   <td>Proof mode boundary</td>
                   <td>Specification-mode evaluation cannot be mistaken for implemented Agent runtime confidence.</td>
+                </tr>
+                <tr>
+                  <td>Build 10/10 proof</td>
+                  <td>Role-to-agent builds need runnable command evidence, fail-closed contract tests, conflict tests, denied-behavior tests, audit artifacts, runtime-adapter proof timing, and Equip/Evaluate handoffs.</td>
                 </tr>
                 <tr>
                   <td>Memory helper wiring</td>
