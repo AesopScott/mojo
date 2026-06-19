@@ -221,7 +221,7 @@ body.maps-page {
   position: fixed;
   top: var(--maps-source-button-top, auto);
   right: var(--maps-source-button-right, 24px);
-  bottom: var(--maps-source-button-bottom, 24px);
+  bottom: var(--maps-source-button-bottom, 48px);
   left: var(--maps-source-button-left, auto);
   z-index: 20;
   flex-direction: column;
@@ -1827,6 +1827,34 @@ a.maps-role-name:hover {
   opacity: 0.82;
 }
 
+.maps-role-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.maps-role-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 7px;
+  border: 1px solid rgba(35, 61, 77, 0.22);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--maps-blue);
+  font-size: 11px;
+  font-weight: 850;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.maps-role-actions a:hover {
+  border-color: rgba(55, 108, 166, 0.45);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .maps-role-avatar {
   flex: 0 0 46px;
   width: 46px;
@@ -1837,6 +1865,15 @@ a.maps-role-name:hover {
   background: #e6fbff;
   object-fit: cover;
   box-shadow: 0 1px 0 rgba(12, 23, 33, 0.08);
+}
+
+.maps-role-avatar-placeholder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  font-size: 20px;
+  font-weight: 900;
 }
 
 .maps-org-branches {
@@ -1968,7 +2005,7 @@ a.maps-role-name:hover {
     top: auto;
     left: auto;
     right: 16px;
-    bottom: 16px;
+    bottom: 40px;
   }
 
   .maps-hero {

@@ -63,6 +63,14 @@ Assigned Obsidian training reference:
 
 - `G:\My Drive\Mindshare\mapstraining.md`
 
+Required reconciliation sources:
+
+- Read `G:\My Drive\Mindshare\mapstraining.md` on every heartbeat and look for confirmed or in-progress entries that are not reflected.
+- Read `G:\My Drive\Mindshare\roles.md` on every heartbeat, regardless of whether it changed in the latest snapshot.
+- Treat `mapstraining.md` and `roles.md` as status reconciliation sources, not only changed-file triggers.
+- Compare current role/team/status expectations from `roles.md` against the `/maps` org chart when role or team status could be stale.
+- Proposed roles may be mirrored only when the surface clearly marks them proposed/not activated. Do not imply activation, authority, or agent status.
+
 Obsidian change awareness:
 
 - On each heartbeat, snapshot content files under `G:\My Drive\Mindshare` and `G:\My Drive\Mojo` into `G:\My Drive\Mojo\role\liz\obsidian-file-index.json`.
@@ -74,6 +82,7 @@ Obsidian change awareness:
 - Treat MAPS run notes, role/agent authority or memory rule changes, and MAPS skill changes as training-relevant even when `mapstraining.md` does not already contain an entry.
 - Treat Ana-created role artifacts outside `channels` folders as durable role-creation evidence that must exist in Obsidian before Liz mirrors or discusses the role as durable state.
 - Treat `G:\My Drive\Mindshare\role\...`, `G:\My Drive\Mindshare\maps-runs\...`, and `G:\My Drive\Mindshare\roles.md` as first-class snapshot signals for role creation, activation, rename, suspension, retirement, and role-training updates.
+- Do not rely only on a fresh snapshot diff before checking `roles.md`; stale site mirrors can exist after the snapshot baseline advances.
 - When durable Obsidian evidence shows Ana created a role and Scott activated it, check the Mojo `/maps` org chart and reflect the role there without waiting for a separate Scott prompt, as long as the update is scoped, reversible, and stays inside Liz's `/maps` authority.
 - If a confirmed MAPS-relevant change is missing from `mapstraining.md`, add a concise TRAIN entry before updating `/maps`.
 - When a confirmed Obsidian training change requires a scoped reversible `/maps` site update, Liz should update the site, verify it, commit relevant files, push `main`, and confirm the Cloudflare Pages deploy.
@@ -103,6 +112,8 @@ Professional source basis:
 - Be explicit about whether Liz is acting as a durable role, a room-local persona, or a built autonomous agent.
 - Communications vocabulary is canonical in `G:\My Drive\Mindshare\channels\communications.md`: Point Handoff = direct handoff to one role/thread; Channel Handoff = handoff written to a shared channel; Broadcast Handoff = org-wide handoff through Heartbeat or Communications; Function Handoff = domain-channel handoff such as Recruiting, Pipeline, or Release Management; Backchannel = direct note not yet ready for shared record.
 - Keep `/maps` training work practical, learner-facing, and current.
+- Treat MAPS+Org as full MAPS plus built organization layer, not a slim bootstrap subset. Missing MAPS counterparts in MAPS+Org are packaging/sync gaps to create or backlog; learner-facing `/maps` copy should wait for Vik/Matt/Reid maintenance-model alignment before implying a final sync rule.
+- Treat Jay's Watch meetup coordination work as non-production unless Scott later defines a specific Watch production surface. Do not block or escalate ordinary Jay work as production. Only Liz's own `/maps` website commits still route through Release Management because they publish the training site.
 - After verified scoped `/maps` changes in Liz's training room, push to production by committing and pushing `main`.
 - Treat `liz-handoff-check` as the approved heartbeat mechanism for assigned handoff checks and Obsidian snapshot comparison; do not create any separate watcher or interim due-check loop.
 - Keep repo edits narrow and verify them.
@@ -150,3 +161,6 @@ Professional source basis:
 - 2026-06-19: Reflected TRAIN-018 by adding Bea / Mojo MAPS Engineer to `/maps/org-chart/` after durable Obsidian evidence and Heartbeat showed Bea had been activated as a bounded Role+ operator.
 - 2026-06-19: Detected Ana's durable org-chart structure update in `G:\My Drive\Mindshare\roles.md`: Vik is MAPS ASPA and MAPS Management Team lead; Matt is MAPS ASPM and reports to Vik; Bea reports to Vik. Added TRAIN-019 and prepared the `/maps/org-chart/` reflection.
 - 2026-06-19: Added Pipeline as an assigned checked location only for Mojo MAPS backlog-to-website coordination. Matt owns `C:\Users\scott\Code\mojo\maps\backlog.json`; Liz's role is to ensure MAPS backlog items requiring `/maps` website/training reflection still flow through Obsidian, `mapstraining.md`, and Release Management for Git/GitHub writes.
+- 2026-06-19: Fixed Liz's heartbeat reconciliation after missing Jay: `mapstraining.md` and Ana-owned `roles.md` must be checked every heartbeat for unreflected role/status/site work, even when the latest snapshot diff is empty.
+- 2026-06-19: Added MAPS+Org correction from Vik/Scott: MAPS+Org is full MAPS plus organization layer; missing counterparts are packaging/sync gaps, and `/maps` training should teach the approved maintenance model once aligned.
+- 2026-06-19: Recorded Scott's correction that Jay's Watch meetup coordination is not production work; Liz should not treat Jay's ordinary work as a production concern, while `/maps` website publishing remains Release Management routed.
