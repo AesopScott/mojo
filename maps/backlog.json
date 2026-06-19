@@ -4,7 +4,7 @@
   "owner": "Matt",
   "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
   "created_at": "2026-06-19",
-  "updated_at": "2026-06-19T20:57:24Z",
+  "updated_at": "2026-06-19T21:15:00Z",
   "source_channels": [
     "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
     "G:\\My Drive\\Mojo\\channels\\pipeline.md",
@@ -257,6 +257,50 @@
           "status": "passed",
           "verified_on": "2026-06-19",
           "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "MAPS-008",
+      "title": "Add ASPA autonomy contract proof to role-to-agent build",
+      "description": "Update the ASPA proof build so full bounded autonomy is represented by an explicit draft contract while autonomous activation remains blocked until approval, Equip, Evaluate, Deploy, Observe, and rollback proof exist.",
+      "category": "Build Proof",
+      "priority": 92,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Vik",
+      "implementation_owner": "Vik",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-003",
+        "MAPS-007"
+      ],
+      "source": "Scott correction in Vik channel that ASPA should not stay non-autonomous and should move toward a full autonomy contract.",
+      "counterpart_status": "ASPA proof artifacts are Mojo-specific under C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa; no MAPS+Org counterpart exists for this local agent proof build.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Autonomy contract source exists",
+          "expectedBehavior": "agents/vik-aspa/autonomy-contract.md exists, names draft-not-approved status, not-active activation, delegated goal, allowed triggers/actions after approval, approval gates, stop conditions, eval requirements, and rollback requirements.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"Contract status: draft-not-approved|Activation status: not active|full bounded autonomy contract|Evaluation Requirements|Deploy And Rollback Requirements\" agents/vik-aspa/autonomy-contract.md",
+          "expectedPassingEvidence": "Targeted search finds the required autonomy contract sections and status lines.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted search confirmed autonomy contract status, activation blocker, target contract level, evaluation requirements, and rollback requirements."
+        },
+        {
+          "number": 2,
+          "title": "Build harness enforces autonomy contract",
+          "expectedBehavior": "ASPA runtime loads the autonomy contract as a required control artifact and fails closed when it is missing.",
+          "proofType": "command",
+          "exactCommand": "python -m unittest agents.vik-aspa.tests.test_aspa_runtime",
+          "expectedPassingEvidence": "Unit suite exits 0 and includes missing autonomy contract fail-closed coverage.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m unittest agents.vik-aspa.tests.test_aspa_runtime exited 0 with 14 tests passing."
         }
       ]
     }

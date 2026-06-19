@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-06-19T21:20:26.347741+00:00",
+  "agent": "vik-aspa",
+  "runtime_target": "undecided",
+  "runtime_adapter": "deferred until runtime selection",
+  "decision": {
+    "status": "blocked",
+    "category": "autonomous_runtime",
+    "message": "Autonomy contract is draft-not-approved and activation status is not active. Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.",
+    "needs_approval": true,
+    "sources": [
+      "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\role-agent.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-profile.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-design.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-backlog.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\autonomy-contract.md"
+    ]
+  }
+}
