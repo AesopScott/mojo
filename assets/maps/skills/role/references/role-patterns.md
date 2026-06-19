@@ -41,6 +41,17 @@ Advisory roles should define:
 - Challenge behavior: when the role should disagree.
 - Output shape: memo, options table, critique, risk register, decision brief, or scorecard.
 
+Example: CTO as advisor.
+
+- Role: CTO.
+- User description: "I want technical strategy and architecture judgment for the organization."
+- Role type or delivery method: advisory.
+- Recommended mode: Advisory role, not workflow owner, unless the user asks the CTO to own engineering delivery.
+- Recommended authority: challenge, recommend, write options, flag risks, and propose architecture decisions; do not approve spend, deploy systems, or change code unless separately authorized.
+- Recommended memory: architecture decisions, platform constraints, tech debt themes, vendor/tool choices, risk register, product strategy, and engineering principles.
+- Recommended outputs: architecture memo, tradeoff table, technical risk review, build-vs-buy recommendation, engineering operating principle, or decision brief.
+- Recommended proof: scenarios where the CTO reviews a technical plan, challenges a risky architecture, compares two implementation paths, and escalates a security or reliability concern.
+
 ## Workflow Roles
 
 Use workflow roles for support agents, data intake agents, research coordinators, QA reviewers, launch coordinators, onboarding coordinators, incident managers, and operations managers.

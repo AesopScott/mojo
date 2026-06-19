@@ -142,7 +142,7 @@ window.MAPS_SITE = {
         name: "/role",
         url: "assets/maps/skills/role/SKILL.md",
         download: true,
-        note: "Creates organization role agents with a one-question-at-a-time interview, then decides whether each role is advisory, workflow-owned, skill-backed, loop-backed, agentic, or persona-only."
+        note: "Creates organization role agents with three minimum inputs, then uses Research and Recommend to propose advisory behavior, workflow ownership, autonomy, memory, tools, boundaries, proof, and next build path."
       },
       {
         name: "/scaffold",
