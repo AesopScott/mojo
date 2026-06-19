@@ -253,9 +253,9 @@ window.MAPS_SITE = {
         note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
       },
       {
-        name: "/aps",
+        name: "/maps",
         url: "https://github.com/AesopScott/maps",
-        note: "Source repository for the APS pipeline skillset. This will evolve into the full /maps skill."
+        note: "Source repository for the MAPS program and plugin, including skills, templates, global install definitions, catalogs, and rule contracts."
       }
     ],
     repos: [
@@ -682,6 +682,16 @@ window.MAPS_SITE = {
         name: "MAPS skill contract validator",
         url: "assets/maps/scripts/validate_maps_skills.py",
         note: "Validates that MAPS skills preserve versioning, changelog entries, output contracts, completion reporting, one-question interviews, and memory-helper wiring before publish."
+      },
+      {
+        name: "MAPS global install catalog",
+        url: "assets/maps/catalogs/global-installs.md",
+        note: "Defines global repos, plugins, hooks, vaults, context packets, and helper layers available to the MAPS program/plugin."
+      },
+      {
+        name: "MAPS skill rule catalog",
+        url: "assets/maps/catalogs/skill-rules.md",
+        note: "Defines MAPS skill rules and the source files, helpers, templates, or validators that implement each rule."
       },
       {
         name: "Agent Skills",

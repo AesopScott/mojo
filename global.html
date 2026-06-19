@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="Global repos, plugins, hooks, and runtime helpers available across MAPS projects.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="maps.css?v=topnav-plain-links">
-    <script src="maps-data.js?v=global-installs" defer></script>
-    <script src="maps-page.js?v=global-installs" defer></script>
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -100,11 +100,11 @@
             developer can tell what is local to a repo and what is active across sessions.
           </p>
           <p class="maps-commitment-note">
-            This page is the living inventory for global capabilities. It starts with Obsidianify and Caveman, and can grow as more global tools are installed.
+            This page explains the living inventory, but the MAPS source contract lives in <code>catalogs/global-installs.md</code> inside the MAPS repo/plugin.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#installed">View global installs</a>
-            <a class="maps-button" href="skills.html">Review MAPS skills</a>
+            <a class="maps-button" href="assets/maps/catalogs/global-installs.md" download>Open source catalog</a>
           </div>
         </div>
       </section>
@@ -123,6 +123,10 @@
             <article class="maps-panel">
               <h3>Disclosure</h3>
               <p>Document what is installed, what it changes, where it stores state, and when it activates.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Source contract</h3>
+              <p><a href="assets/maps/catalogs/global-installs.md" download><strong>catalogs/global-installs.md</strong></a> is the MAPS plugin definition for global installs.</p>
             </article>
             <article class="maps-panel">
               <h3>Separation</h3>
@@ -205,6 +209,10 @@
             <article class="maps-panel">
               <h3>Rule</h3>
               <p>If a global install changes session behavior, document it here before relying on it in a MAPS skill or classroom workflow.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Plugin source</h3>
+              <p>Update <code>catalogs/global-installs.md</code> in <a href="https://github.com/AesopScott/maps" target="_blank" rel="noopener noreferrer">AesopScott/maps</a>, then update this page from that source.</p>
             </article>
           </div>
         </section>

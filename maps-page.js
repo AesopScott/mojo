@@ -63,13 +63,13 @@
     });
   }
 
-  function renderApsDownloadButton() {
-    const skill = site.resources.skills.find((item) => item.name === "/aps");
+  function renderMapsSourceButton() {
+    const skill = site.resources.skills.find((item) => item.name === "/maps");
     if (!skill?.url) {
       return;
     }
 
-    if (document.querySelector("[data-aps-download-button]")) {
+    if (document.querySelector("[data-maps-source-button]")) {
       return;
     }
 
@@ -81,11 +81,11 @@
       button.target = "_blank";
       button.rel = "noopener noreferrer";
     }
-    button.className = "maps-aps-download-button";
-    button.dataset.apsDownloadButton = "true";
-    button.textContent = "Open /aps source";
+    button.className = "maps-source-button";
+    button.dataset.mapsSourceButton = "true";
+    button.textContent = "Open MAPS source";
     document.body.appendChild(button);
-    positionApsDownloadButton();
+    positionMapsSourceButton();
   }
 
   function balancePipelineRows() {
@@ -136,8 +136,8 @@
     });
   }
 
-  function positionApsDownloadButton() {
-    const button = document.querySelector(".maps-aps-download-button");
+  function positionMapsSourceButton() {
+    const button = document.querySelector(".maps-source-button");
     const topbar = document.querySelector(".maps-topbar");
     const agentsLink = document.querySelector('.maps-links > a[href="agents.html"]');
     const multiAgent = document.querySelector(".maps-pipeline-group.multi-agent");
@@ -147,8 +147,8 @@
     }
 
     if (window.matchMedia("(max-width: 640px)").matches) {
-      document.documentElement.style.removeProperty("--maps-aps-button-left");
-      document.documentElement.style.removeProperty("--maps-aps-button-top");
+      document.documentElement.style.removeProperty("--maps-source-button-left");
+      document.documentElement.style.removeProperty("--maps-source-button-top");
       return;
     }
 
@@ -166,8 +166,8 @@
     const left = Math.max(16, Math.min(window.innerWidth - buttonRect.width - 16, desiredCenterX - buttonRect.width / 2));
     const top = Math.max(16, desiredCenterY - buttonRect.height / 2);
 
-    document.documentElement.style.setProperty("--maps-aps-button-left", `${Math.round(left)}px`);
-    document.documentElement.style.setProperty("--maps-aps-button-top", `${Math.round(top)}px`);
+    document.documentElement.style.setProperty("--maps-source-button-left", `${Math.round(left)}px`);
+    document.documentElement.style.setProperty("--maps-source-button-top", `${Math.round(top)}px`);
   }
 
   function renderResourceGroup(selector, items) {
@@ -279,20 +279,20 @@
 
   highlightCurrentPipelinePhase();
   renderLabPills();
-  renderApsDownloadButton();
+  renderMapsSourceButton();
   renderPhaseNav();
   renderResources();
   renderReferencePhases();
   requestAnimationFrame(() => {
     balancePipelineRows();
-    positionApsDownloadButton();
+    positionMapsSourceButton();
   });
   window.addEventListener("resize", () => {
     balancePipelineRows();
-    positionApsDownloadButton();
+    positionMapsSourceButton();
   });
   window.addEventListener("load", () => {
     balancePipelineRows();
-    positionApsDownloadButton();
+    positionMapsSourceButton();
   });
 })();

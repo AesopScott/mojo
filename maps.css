@@ -115,11 +115,11 @@ body.maps-page {
   box-shadow: none;
 }
 
-.maps-aps-download-button {
+.maps-source-button {
   display: inline-flex;
   position: fixed;
-  top: var(--maps-aps-button-top, 112px);
-  left: var(--maps-aps-button-left, 96px);
+  top: var(--maps-source-button-top, 112px);
+  left: var(--maps-source-button-left, 96px);
   z-index: 20;
   align-items: center;
   justify-content: center;
@@ -137,7 +137,7 @@ body.maps-page {
     0 18px 44px rgba(23, 33, 31, 0.18);
 }
 
-.maps-aps-download-button:hover {
+.maps-source-button:hover {
   color: #fff;
   background: var(--maps-orange);
 }
@@ -1310,7 +1310,7 @@ body.maps-page {
     justify-content: flex-start;
   }
 
-  .maps-aps-download-button {
+  .maps-source-button {
     top: auto;
     left: auto;
     right: 16px;
