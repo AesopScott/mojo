@@ -34,6 +34,7 @@ Project Intent + Scaffolding Structure, Kickoff.
 | Project identity and type |  |  |  |
 | Project intent |  |  |  |
 | Primary customer/operator |  |  |  |
+| Agentic Systems Program Manager needed? |  |  |  |
 | Git initialized or allowed? |  |  |  |
 | Git remote exists or should be created? |  |  |  |
 | Env/secrets scaffold needed? |  |  |  |
@@ -72,6 +73,21 @@ Project Intent + Scaffolding Structure, Kickoff.
 - Business or mission value:
 - Why agents are appropriate:
 - Why multiple agents may be needed:
+
+## Agentic Systems Program Manager
+
+M0 defines whether this project needs an Agentic Systems Program Manager role. Use the full role name first; use ASPM only as shorthand after the role is defined.
+
+| Item | Decision | Notes |
+|---|---|---|
+| Agentic Systems Program Manager needed? | yes / no / later |  |
+| Role status | create now / reference existing / defer |  |
+| Engagement type | advisory / workflow owner / review gate / operator / autonomous loop |  |
+| Authority boundary | recommend / approve / block / execute / escalate |  |
+| Memory/RAG responsibility | none / advise / maintain contract / approve writes / trigger sync |  |
+| Phase-boundary responsibility | advise / own / review only |  |
+| Next-skill routing responsibility | advise / own / review only |  |
+| `/role` handoff needed? | yes / no |  |
 
 ## Scaffold
 

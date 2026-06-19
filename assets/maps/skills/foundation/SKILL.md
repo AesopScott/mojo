@@ -119,6 +119,7 @@ Required preflight decisions:
 - Project identity: name, owner, and whether this is the MAPS framework itself, an APS/single-agent project, or a downstream product/org using MAPS.
 - Project intent: the concrete product, organization, service, or agent system being founded.
 - Primary customer/operator: who will use or operate the system.
+- Agentic Systems Program Manager role: whether the project should create or reference this role in M0 to guide MAPS phase boundaries, scope discipline, memory/RAG decisions, and next-skill routing.
 - Git readiness: whether a Git repo already exists, whether M0 may initialize one if missing, whether Git is available, whether an `origin` remote exists, and whether M0 should connect or create the remote if it does not.
 - Env/secrets readiness: whether to create `.env.example`, whether a local ignored `.env.local` is wanted, and where real secrets should live.
 - Global template policy: whether this project's answers should update the living global template for future projects.
@@ -171,17 +172,23 @@ If `project-foundation.md` or `.maps/foundation-preferences.json` already exists
    - `memory/project-context.md`
    - `memory/glossary.md`
    - `memory/entity-map.md`
-9. Complete `templates/project-foundation.md`.
-10. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
-11. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
-12. Log known evidence, assumptions, decisions, open questions, and source gaps.
-13. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
-14. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
-15. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
-16. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
-17. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
-18. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
-19. Prepare the M1 handoff:
+9. Define the Agentic Systems Program Manager section:
+   - If the project needs MAPS phase ownership, create or reference an Agentic Systems Program Manager role in M0.
+   - Spell out Agentic Systems Program Manager first; use ASPM sparingly after that.
+   - Record whether the role is advisory, workflow-owning, review-gating, or operational.
+   - Record its authority boundaries, memory/RAG responsibilities, and next-skill routing responsibility.
+   - If the role should be built as a role agent, hand off to `/role` after M0 records the need.
+10. Complete `templates/project-foundation.md`.
+11. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
+12. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
+13. Log known evidence, assumptions, decisions, open questions, and source gaps.
+14. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
+15. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
+16. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
+17. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
+18. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
+19. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
+20. Prepare the M1 handoff:
    - If the system shape is unclear, recommend Scope First.
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
@@ -229,6 +236,7 @@ The completed `project-foundation.md` must include:
 - Source inventory
 - Git readiness, repository status, and remote status
 - Env/secrets scaffold and secret-handling rules
+- Agentic Systems Program Manager: need, status, authority, and M1 guidance handoff
 - Assumptions
 - Decisions
 - Open questions

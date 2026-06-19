@@ -18,6 +18,7 @@ The website may explain these rules, but this file is the source-level contract 
 | Git and remote readiness | M0 checks local Git, remote repo status, env/secrets scaffold, and incremental missing setup. | `/foundation`; `skills/foundation/scripts/remember_foundation.py`; `templates/project-foundation.md`. | Foundation smoke tests and skill validation. |
 | Global install disclosure | Global installs used by MAPS must be defined in `catalogs/global-installs.md`. | `catalogs/global-installs.md`; Global website page; M0 foundation notes when a project depends on one. | Manual review until a catalog validator exists. |
 | Role authority and engagement | Role skills define authority boundaries, engagement type, learning loop, and implementation form. | `/role`; `skills/role/references/role-authority-taxonomy.md`; `skills/role/references/role-engagement-taxonomy.md`. | Role skill contract and manual review. |
+| Agentic Systems Program Manager role | M0 may create or reference an Agentic Systems Program Manager role for MAPS phase-boundary, scope, memory/RAG, and next-skill guidance. M1 may use ASPM guidance as a reference only after M0 defines or references the role. Spell out the role name first; use ASPM sparingly after that. | `/foundation`, M0 page, `templates/project-foundation.md`, `/role`, `/shape`, and project role artifacts. | Validator checks M1 for ASPM guidance language. |
 
 ## Implementation Forms
 

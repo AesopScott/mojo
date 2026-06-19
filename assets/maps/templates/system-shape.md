@@ -36,9 +36,9 @@ Contrary signals:
 
 What would change the decision:
 
-## Pipeline Owner Guidance
+## Agentic Systems Program Manager Guidance
 
-Pipeline/program-manager guidance:
+M0-defined ASPM guidance:
 
 Phase-boundary risk:
 

@@ -54,7 +54,7 @@ def validate_skill(path: Path) -> list[str]:
         for label, pattern in {
             "shape research and recommend": r"Research and Recommend",
             "shape research sources": r"shape-research-sources\.md",
-            "pipeline owner guidance": r"pipeline owner guidance|Pipeline Owner Guidance",
+            "ASPM guidance": r"Agentic Systems Program Manager guidance|ASPM guidance",
         }.items():
             if not re.search(pattern, text, flags=re.IGNORECASE):
                 errors.append(f"missing {label}")
