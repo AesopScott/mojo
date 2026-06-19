@@ -1,25 +1,27 @@
 # ASPA Autonomy Contract
 
-Template version: 0.3.0.
+Template version: 0.4.0.
 
 ## Changelog
 
 - 2026-06-19 - v0.1.0 - Created draft full autonomy contract for ASPA build gating; activation remains blocked.
 - 2026-06-19 - v0.2.0 - Added Scott's first input-led automation-purpose answer for pipeline development across multi-agent and single-agent work.
 - 2026-06-19 - v0.3.0 - Reset the contract to an input-led worksheet after Scott rejected inferred automation authority and required one question at a time with R&R captured before build.
+- 2026-06-19 - v0.4.0 - Paused ASPA Agent promotion after guardrail failures; no further autonomy-contract interview or promotion work should continue until guardrails and eval proof are strengthened.
 
 ## Status
 
 - Contract status: input-interview-in-progress
 - Activation status: not active
 - Approval status: not approved
+- Promotion status: paused
 - Owner and final approver: Scott
 - Source role: `roles/vik/role-agent.md`
 - Agent profile: `agents/vik-aspa/agent-profile.md`
 - Agent design: `agents/vik-aspa/agent-design.md`
 - Build plan: `agents/vik-aspa/agent-build-plan.md`
 
-This worksheet is not an operating contract and does not authorize autonomous action. It exists to collect Scott's contract inputs one question at a time before Build, Equip, Evaluate, Deploy, Observe, or activation can treat autonomy as approved.
+This worksheet is not an operating contract and does not authorize autonomous action. Agent promotion is paused; no further autonomy-contract interview, Build, Equip, Evaluate, Deploy, Observe, or activation work may treat autonomy as approved until Scott resumes promotion after guardrail hardening and eval proof.
 
 ## Contract Map
 
@@ -77,7 +79,7 @@ The current `/build-agent` pass may keep local contract loading and denied-auton
 
 ## Next Required Question
 
-Who owns what in this automation: what should ASPA own, and what must remain with Scott, Matt, Bea, Reid, Mae, or another role?
+Paused. Do not ask the next autonomy-contract question until Scott resumes agent promotion after additional guardrails and evaluation proof.
 
 ## Non-Authorization
 
