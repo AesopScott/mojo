@@ -35,6 +35,7 @@ Project Intent + Scaffolding Structure, Kickoff.
 | Project intent |  |  |  |
 | Primary customer/operator |  |  |  |
 | Git initialized or allowed? |  |  |  |
+| Git remote exists or should be created? |  |  |  |
 | Env/secrets scaffold needed? |  |  |  |
 | Local env file approved? |  |  |  |
 | Update global living template? |  |  |  |
@@ -104,6 +105,7 @@ memory/
 | Item | Status | Notes |
 |---|---|---|
 | Git repository | not checked / already initialized / initialized by M0 / skipped / blocked |  |
+| Git remote | not checked / origin present / connected existing remote / created remote repo / intentionally local / blocked |  |
 | `.gitignore` env rules | not checked / present / added by M0 / blocked |  |
 | `.env.example` | not checked / present / created by M0 / blocked | Placeholder keys only; no real secrets. |
 | `.env.local` | not requested / present / created by M0 / skipped | Ignored local developer secrets file; create only with confirmation. |
@@ -124,6 +126,7 @@ Secret handling rules:
 | `.maps/foundation-preferences.json` |  |  |  |
 | `.maps/rag-updates.json` |  |  |  |
 | Git repository |  |  |  |
+| Git remote |  |  |  |
 | `.gitignore` env rules |  |  |  |
 | `.env.example` |  |  |  |
 | Notes scaffold |  |  |  |

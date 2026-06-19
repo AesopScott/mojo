@@ -236,6 +236,7 @@ def git_and_secrets_section() -> str:
     return """| Item | Status | Notes |
 |---|---|---|
 | Git repository | not checked / already initialized / initialized by M0 / skipped / blocked |  |
+| Git remote | not checked / origin present / connected existing remote / created remote repo / intentionally local / blocked |  |
 | `.gitignore` env rules | not checked / present / added by M0 / blocked |  |
 | `.env.example` | not checked / present / created by M0 / blocked | Placeholder keys only; no real secrets. |
 | `.env.local` | not requested / present / created by M0 / skipped | Ignored local developer secrets file; create only with confirmation. |
@@ -256,6 +257,7 @@ def incremental_foundation_audit_section() -> str:
 | `.maps/foundation-preferences.json` |  |  |  |
 | `.maps/rag-updates.json` |  |  |  |
 | Git repository |  |  |  |
+| Git remote |  |  |  |
 | `.gitignore` env rules |  |  |  |
 | `.env.example` |  |  |  |
 | Notes scaffold |  |  |  |
@@ -453,10 +455,25 @@ def scaffold_paths(project: Path, foundation_file: str) -> tuple[list[Path], lis
 def git_status(project: Path) -> dict[str, Any]:
     git_dir = project / ".git"
     git_available = shutil.which("git") is not None
+    remotes: dict[str, str] = {}
+    remote_error = ""
+    if git_available and git_dir.exists():
+        result = subprocess.run(["git", "remote", "-v"], cwd=project, capture_output=True, text=True)
+        if result.returncode == 0:
+            for line in result.stdout.splitlines():
+                parts = line.split()
+                if len(parts) >= 2:
+                    remotes.setdefault(parts[0], parts[1])
+        else:
+            remote_error = result.stderr.strip()
     return {
         "gitAvailable": git_available,
         "isRepository": git_dir.exists(),
         "gitDir": str(git_dir),
+        "hasRemote": bool(remotes),
+        "origin": remotes.get("origin", ""),
+        "remotes": remotes,
+        "remoteError": remote_error,
     }
 
 
@@ -561,6 +578,40 @@ def scaffold(args: argparse.Namespace) -> int:
     else:
         subprocess.run(["git", "init"], cwd=project, check=True, capture_output=True, text=True)
         actions.append({"path": str(project / ".git"), "type": "git", "action": "initialized"})
+        git = git_status(project)
+
+    if args.remote_url:
+        git = git_status(project)
+        if not git["isRepository"]:
+            actions.append({"path": args.remote_url, "type": "git-remote", "action": "no-local-repo"})
+        elif git["origin"]:
+            actions.append({"path": git["origin"], "type": "git-remote", "action": "origin-exists"})
+        elif args.dry_run:
+            actions.append({"path": args.remote_url, "type": "git-remote", "action": "would-add-origin"})
+        else:
+            subprocess.run(["git", "remote", "add", "origin", args.remote_url], cwd=project, check=True, capture_output=True, text=True)
+            actions.append({"path": args.remote_url, "type": "git-remote", "action": "added-origin"})
+
+    if args.github_repo:
+        git = git_status(project)
+        gh_available = shutil.which("gh") is not None
+        if not git["isRepository"]:
+            actions.append({"path": args.github_repo, "type": "github-remote", "action": "no-local-repo"})
+        elif git["origin"]:
+            actions.append({"path": git["origin"], "type": "github-remote", "action": "origin-exists"})
+        elif not gh_available:
+            actions.append({"path": args.github_repo, "type": "github-remote", "action": "gh-not-available"})
+        elif args.dry_run:
+            actions.append({"path": args.github_repo, "type": "github-remote", "action": f"would-create-{args.github_visibility}"})
+        else:
+            subprocess.run(
+                ["gh", "repo", "create", args.github_repo, f"--{args.github_visibility}", "--source", str(project), "--remote", "origin"],
+                cwd=project,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            actions.append({"path": args.github_repo, "type": "github-remote", "action": f"created-{args.github_visibility}"})
 
     print(json.dumps({"project": str(project), "dryRun": args.dry_run, "actions": actions}, indent=2, sort_keys=True))
     return 0
@@ -662,6 +713,9 @@ def main() -> int:
     scaffold_parser.add_argument("--project", default=".", help="Project directory.")
     scaffold_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
     scaffold_parser.add_argument("--init-git", action="store_true", help="Initialize git if .git is missing and git is available.")
+    scaffold_parser.add_argument("--remote-url", default="", help="Add this URL as origin when the local repo has no origin remote.")
+    scaffold_parser.add_argument("--github-repo", default="", help="Create this GitHub repo with gh and add it as origin when no origin exists, such as owner/name.")
+    scaffold_parser.add_argument("--github-visibility", choices=["private", "public"], default="private", help="Visibility to use with --github-repo.")
     scaffold_parser.add_argument("--include-local-env", action="store_true", help="Create an empty ignored .env.local file when missing.")
     scaffold_parser.add_argument("--dry-run", action="store_true", help="Preview missing scaffold items without writing.")
     scaffold_parser.set_defaults(func=scaffold)

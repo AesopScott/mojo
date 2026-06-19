@@ -138,7 +138,7 @@
             </article>
             <article class="maps-panel">
               <h3>Git readiness</h3>
-              <p>M0 checks whether Git already exists, whether <code>git</code> is available, and whether it is allowed to initialize the repo before phase work begins.</p>
+              <p>M0 checks whether Git already exists, whether <code>git</code> is available, whether a remote exists, and whether it should initialize, connect, or create one before phase work begins.</p>
             </article>
             <article class="maps-panel">
               <h3>Env and secrets</h3>
@@ -175,7 +175,7 @@
             </article>
             <article class="maps-panel">
               <h3>Incremental runs</h3>
-              <p>If M0 has already run, audit the existing scaffold first and implement only missing additions such as Git readiness, env/secrets scaffolding, or memory updates.</p>
+              <p>If M0 has already run, audit the existing scaffold first and implement only missing additions such as Git readiness, remote setup, env/secrets scaffolding, or memory updates.</p>
             </article>
             <article class="maps-panel">
               <h3>Completion</h3>
@@ -185,6 +185,8 @@
           <div class="maps-code-panel maps-gap-top">
             <pre><code>python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" status --project .
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --init-git
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --remote-url https://github.com/OWNER/REPO.git
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --github-repo OWNER/REPO --github-visibility private
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project . --confirm</code></pre>
           </div>
@@ -199,6 +201,10 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
             <article class="maps-panel">
               <h3>Git setup</h3>
               <p>If <code>.git</code> is missing and permissions allow it, <code>/foundation</code> can run <code>git init</code> so MAPS artifacts have version history from the beginning.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Remote repo</h3>
+              <p>If no remote exists, <code>/foundation</code> asks whether to create a new GitHub repo, connect an existing remote URL, or leave the project local for now.</p>
             </article>
             <article class="maps-panel">
               <h3>Secrets template</h3>
