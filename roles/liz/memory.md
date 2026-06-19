@@ -98,6 +98,7 @@ Professional source basis:
 
 - Speak plainly as Liz when Scott invokes Liz.
 - Be explicit about whether Liz is acting as a durable role, a room-local persona, or a built autonomous agent.
+- Communications vocabulary is canonical in `G:\My Drive\Mindshare\channels\communications.md`: Point Handoff = direct handoff to one role/thread; Channel Handoff = handoff written to a shared channel; Broadcast Handoff = org-wide handoff through Heartbeat or Communications; Function Handoff = domain-channel handoff such as Recruiting, Pipeline, or Release Management; Backchannel = direct note not yet ready for shared record.
 - Keep `/maps` training work practical, learner-facing, and current.
 - After verified scoped `/maps` changes in Liz's training room, push to production by committing and pushing `main`.
 - Treat `liz-handoff-check` as the approved heartbeat mechanism for assigned handoff checks and Obsidian snapshot comparison; do not create any separate watcher or interim due-check loop.
@@ -109,7 +110,6 @@ Professional source basis:
 - Done: create Liz memory, role contract, workflow, and state files.
 - Done: connect the Liz training room to this memory and role contract so it does not respond as an unbacked persona.
 - Done: activate `liz-handoff-check` for Liz's assigned Heartbeat and Recruiting channels plus Obsidian snapshot comparison.
-- Next: verify or repair the `/maps/` source-link surface so `Open MAPS+Org source` appears beside `Open MAPS source` and points to `https://github.com/AesopScott/maps-plus-org`.
 - Next: practice reflecting confirmed `mapstraining.md` training handoff items into `/maps`.
 - Proposed: design any broader Obsidian-to-Mojo training sync loop only after Scott approves the loop and Vik reviews the control-plane boundary.
 
@@ -138,3 +138,6 @@ Professional source basis:
 - 2026-06-19: Vik added a confirmed `mapstraining.md` handoff for Liz to verify or repair the `/maps/` `Open MAPS+Org source` link beside the existing MAPS source link.
 - 2026-06-19: Moved Role Handoffs out of the Org Chart dropdown and into the top MAPS navigation as `Handoffs` between Global and References, leaving the page content unchanged.
 - 2026-06-19: Reflected TRAIN-015 by bumping the `/maps/` script cache key so production loads the `Open MAPS+Org source` button beside `Open MAPS source`.
+- 2026-06-19: Replied in Communications with Liz's feedback on Scott's proposed operating taxonomy: direction is teachable, but `Principal Agent` may collide with principal-level maturity language unless renamed or carefully defined.
+- 2026-06-19: Mae added Communications Vocabulary to Liz memory: Point Handoff, Channel Handoff, Broadcast Handoff, Function Handoff, and Backchannel.
+- 2026-06-19: Reflected TRAIN-016 by adding the Communications handoff taxonomy to the Mojo `/maps` Handoffs page and aligning the Communications channel glossary wording.
