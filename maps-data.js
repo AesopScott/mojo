@@ -2,7 +2,7 @@ window.MAPS_SITE = {
   phases: [
     {
       number: "m0",
-      file: "m0.html",
+      file: "/maps/multi-agent-pipeline/M0/",
       label: "M0",
       title: "Project Foundation",
       output: "Intent, notes scaffold, evidence, sources, and RAG readiness",
@@ -10,7 +10,7 @@ window.MAPS_SITE = {
     },
     {
       number: "m1",
-      file: "m1.html",
+      file: "/maps/multi-agent-pipeline/M1/",
       label: "M1",
       title: "System Shape",
       output: "S/M/U track decision before roster or APS entry",
@@ -18,7 +18,7 @@ window.MAPS_SITE = {
     },
     {
       number: "0",
-      file: "0.html",
+      file: "/maps/agentic-pipeline/A0/",
       label: "Phase 0",
       title: "Phase Alignment",
       output: "Scaffold and structure",
@@ -26,7 +26,7 @@ window.MAPS_SITE = {
     },
     {
       number: "1",
-      file: "1.html",
+      file: "/maps/agentic-pipeline/A1/",
       label: "Phase 1",
       title: "Define",
       output: "Agent brief",
@@ -34,7 +34,7 @@ window.MAPS_SITE = {
     },
     {
       number: "2",
-      file: "2.html",
+      file: "/maps/agentic-pipeline/A2/",
       label: "Phase 2",
       title: "Design",
       output: "Agent design",
@@ -42,7 +42,7 @@ window.MAPS_SITE = {
     },
     {
       number: "2a",
-      file: "m8.html",
+      file: "/maps/multi-agent-pipeline/M8/",
       label: "M8 / Optional A2",
       title: "Experience Design",
       output: "After M7 orchestration, or before A3 build when there is no M layer",
@@ -50,7 +50,7 @@ window.MAPS_SITE = {
     },
     {
       number: "3",
-      file: "3.html",
+      file: "/maps/agentic-pipeline/A3/",
       label: "Phase 3",
       title: "Build",
       output: "Working agent",
@@ -58,7 +58,7 @@ window.MAPS_SITE = {
     },
     {
       number: "4",
-      file: "4.html",
+      file: "/maps/agentic-pipeline/A4/",
       label: "Phase 4",
       title: "Equip",
       output: "Capability map",
@@ -66,7 +66,7 @@ window.MAPS_SITE = {
     },
     {
       number: "5",
-      file: "5.html",
+      file: "/maps/agentic-pipeline/A5/",
       label: "Phase 5",
       title: "Evaluate",
       output: "Eval suite",
@@ -74,7 +74,7 @@ window.MAPS_SITE = {
     },
     {
       number: "6",
-      file: "6.html",
+      file: "/maps/agentic-pipeline/A6/",
       label: "Phase 6",
       title: "Deploy",
       output: "Release plan",
@@ -82,7 +82,7 @@ window.MAPS_SITE = {
     },
     {
       number: "7",
-      file: "7.html",
+      file: "/maps/agentic-pipeline/A7/",
       label: "Phase 7",
       title: "Observe",
       output: "Observation plan",
@@ -90,7 +90,7 @@ window.MAPS_SITE = {
     },
     {
       number: "8",
-      file: "8.html",
+      file: "/maps/agentic-pipeline/A8/",
       label: "Phase 8",
       title: "Improve",
       output: "Improvement backlog",
@@ -98,7 +98,7 @@ window.MAPS_SITE = {
     },
     {
       number: "lab1",
-      file: "lab-research-agent.html",
+      file: "/maps/agentic-pipeline/lab-research-agent/",
       label: "Lab 1",
       title: "Research Agent",
       output: "Class lab",
@@ -107,7 +107,7 @@ window.MAPS_SITE = {
     },
     {
       number: "lab2",
-      file: "lab-data-agent.html",
+      file: "/maps/agentic-pipeline/lab-data-agent/",
       label: "Lab 2",
       title: "Data Agent",
       output: "Class lab",
@@ -116,7 +116,7 @@ window.MAPS_SITE = {
     },
     {
       number: "lab3",
-      file: "lab-support-agent.html",
+      file: "/maps/agentic-pipeline/lab-support-agent/",
       label: "Lab 3",
       title: "Support Agent",
       output: "Class lab",
@@ -128,127 +128,127 @@ window.MAPS_SITE = {
     skills: [
       {
         name: "/foundation",
-        url: "assets/maps/skills/foundation/SKILL.md",
+        url: "/assets/maps/skills/foundation/SKILL.md",
         download: true,
         note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes scaffold, Git and remote readiness, env/secrets scaffold, incremental foundation audits, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, maps-run helper notes named [project]-[skill]-helper-notes, role-[role-name] notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
       },
       {
         name: "/shape",
-        url: "assets/maps/skills/shape/SKILL.md",
+        url: "/assets/maps/skills/shape/SKILL.md",
         download: true,
         note: "Runs M1 System Shape with the initial S/M/U question, then uses Research and Recommend plus M0-defined ASPM guidance when available to choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
       },
       {
         name: "/role",
-        url: "assets/maps/skills/role/SKILL.md",
+        url: "/assets/maps/skills/role/SKILL.md",
         download: true,
         note: "Creates organization role agents with three minimum inputs, then uses mandatory external Research and Recommend to propose engagement type, advisory behavior, workflow ownership, authority taxonomy, special authority declarations, autonomy, memory, tools, boundaries, proof, and the implementation form."
       },
       {
         name: "/scaffold",
-        url: "assets/maps/skills/scaffold/SKILL.md",
+        url: "/assets/maps/skills/scaffold/SKILL.md",
         download: true,
         note: "Creates the MAPS repository structure, phase docs, phase skills, templates, catalogs, project page, README, license, and gitignore."
       },
       {
         name: "phase-alignment",
-        url: "assets/maps/skills/phase-alignment/SKILL.md",
+        url: "/assets/maps/skills/phase-alignment/SKILL.md",
         download: true,
         note: "Captures lifecycle names, boundaries, scaffolding decisions, and open questions."
       },
       {
         name: "/define-agent",
-        url: "assets/maps/skills/define-agent/SKILL.md",
+        url: "/assets/maps/skills/define-agent/SKILL.md",
         download: true,
         note: "Creates agents/{agent-handle}/agent-brief.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
       },
       {
         name: "/design-agent",
-        url: "assets/maps/skills/design-agent/SKILL.md",
+        url: "/assets/maps/skills/design-agent/SKILL.md",
         download: true,
         note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md and agents/{agent-handle}/agent-backlog.md."
       },
       {
         name: "/design-experience",
-        url: "assets/maps/skills/design-experience/SKILL.md",
+        url: "/assets/maps/skills/design-experience/SKILL.md",
         download: true,
         note: "Creates the M8 experience design artifact for journeys, surfaces, IA, interaction states, visual/tone standards, accessibility, and agent visibility."
       },
       {
         name: "/design-experience++",
-        url: "assets/maps/skills/design-experience-plus-plus/SKILL.md",
+        url: "/assets/maps/skills/design-experience-plus-plus/SKILL.md",
         download: true,
         note: "Wraps M8 Experience Design with website/product UI references, shadcn/ui composition, Radix accessibility primitives, NN/g service-design reasoning, responsive layout, and frontend handoffs."
       },
       {
         name: "/build-agent",
-        url: "assets/maps/skills/build-agent/SKILL.md",
+        url: "/assets/maps/skills/build-agent/SKILL.md",
         download: true,
         note: "Base Phase 3 Build skill for turning an approved agent design into a working agent implementation."
       },
       {
         name: "/build-agent++",
-        url: "assets/maps/skills/build-agent-plus-plus/SKILL.md",
+        url: "/assets/maps/skills/build-agent-plus-plus/SKILL.md",
         download: true,
         note: "MAPS Build skill that merges base /build-agent, incremental implementation, and test-driven development."
       },
       {
         name: "/equip-agent",
-        url: "assets/maps/skills/equip-agent/SKILL.md",
+        url: "/assets/maps/skills/equip-agent/SKILL.md",
         download: true,
         note: "Runs Research and Recommend, then creates the Phase 4 capability map for tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
       },
       {
         name: "/evaluate-agent",
-        url: "assets/maps/skills/evaluate-agent/SKILL.md",
+        url: "/assets/maps/skills/evaluate-agent/SKILL.md",
         download: true,
         note: "Base Phase 5 Evaluate skill for eval suites, execution modes, evidence, release gates, and Deploy/Observe handoff."
       },
       {
         name: "/evaluate-agent++",
-        url: "assets/maps/skills/evaluate-agent-plus-plus/SKILL.md",
+        url: "/assets/maps/skills/evaluate-agent-plus-plus/SKILL.md",
         download: true,
         note: "Wraps base Evaluate with LangSmith, Inspect AI, and Phoenix to create eval suites, trace-backed reports, release gates, and Observe handoff."
       },
       {
         name: "/deploy-agent",
-        url: "assets/maps/skills/deploy-agent/SKILL.md",
+        url: "/assets/maps/skills/deploy-agent/SKILL.md",
         download: true,
         note: "Base Phase 6 Deploy skill for target runtime, package artifact, runtime metadata, deploy commands, secrets/config handoff, preflight, smoke test, release evidence, rollback, and deployment record."
       },
       {
         name: "/deploy-agent++",
-        url: "assets/maps/skills/deploy-agent-plus-plus/SKILL.md",
+        url: "/assets/maps/skills/deploy-agent-plus-plus/SKILL.md",
         download: true,
         note: "Wraps /deploy-agent with GitHub Actions environments and Cloudflare deployment automation so GitHub can deploy Pages, Workers, and Cloudflare Agents projects."
       },
       {
         name: "/observe-agent",
-        url: "assets/maps/skills/observe-agent/SKILL.md",
+        url: "/assets/maps/skills/observe-agent/SKILL.md",
         download: true,
         note: "Base Phase 7 Observe skill for traces, logs, metrics, feedback, incidents, review cadence, alert triggers, and Phase 8 improvement handoff."
       },
       {
         name: "/observe-agent+smith",
-        url: "assets/maps/skills/observe-agent-smith/SKILL.md",
+        url: "/assets/maps/skills/observe-agent-smith/SKILL.md",
         download: true,
         note: "Wraps base Observe with LangSmith traces, runs, datasets, feedback, annotations, experiments, and eval-to-observe continuity."
       },
       {
         name: "/observe-agent+fuse",
-        url: "assets/maps/skills/observe-agent-fuse/SKILL.md",
+        url: "/assets/maps/skills/observe-agent-fuse/SKILL.md",
         download: true,
         note: "Wraps base Observe with Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability."
       },
       {
         name: "/observe-agent+phoenix",
-        url: "assets/maps/skills/observe-agent-phoenix/SKILL.md",
+        url: "/assets/maps/skills/observe-agent-phoenix/SKILL.md",
         download: true,
         note: "Wraps base Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis."
       },
       {
         name: "/improve-agent",
-        url: "assets/maps/skills/improve-agent/SKILL.md",
+        url: "/assets/maps/skills/improve-agent/SKILL.md",
         download: true,
         note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
       },
@@ -680,17 +680,17 @@ window.MAPS_SITE = {
       },
       {
         name: "MAPS skill contract validator",
-        url: "assets/maps/scripts/validate_maps_skills.py",
+        url: "/assets/maps/scripts/validate_maps_skills.py",
         note: "Validates that MAPS skills preserve versioning, changelog entries, output contracts, completion reporting, one-question interviews, and memory-helper wiring before publish."
       },
       {
         name: "MAPS global install catalog",
-        url: "assets/maps/catalogs/global-installs.md",
+        url: "/assets/maps/catalogs/global-installs.md",
         note: "Defines global repos, plugins, hooks, vaults, context packets, and helper layers available to the MAPS program/plugin."
       },
       {
         name: "MAPS skill rule catalog",
-        url: "assets/maps/catalogs/skill-rules.md",
+        url: "/assets/maps/catalogs/skill-rules.md",
         note: "Defines MAPS skill rules and the source files, helpers, templates, or validators that implement each rule."
       },
       {
@@ -878,115 +878,115 @@ window.MAPS_SITE = {
     templates: [
       {
         name: "templates/project-foundation.md",
-        url: "assets/maps/templates/project-foundation.md",
+        url: "/assets/maps/templates/project-foundation.md",
         download: true,
         note: "Captures M0 Project Foundation: preflight decisions, intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
       },
       {
         name: "templates/system-shape.md",
-        url: "assets/maps/templates/system-shape.md",
+        url: "/assets/maps/templates/system-shape.md",
         download: true,
         note: "Captures M1 System Shape: research sources, recommendation rationale, M0-defined ASPM guidance when available, S/M/U decision, BPMN Lite, role pressure, system shape, and next track recommendation."
       },
       {
         name: "templates/maps-scaffold-template.md",
-        url: "assets/maps/templates/maps-scaffold-template.md",
+        url: "/assets/maps/templates/maps-scaffold-template.md",
         download: true,
         note: "Defines the repeatable MAPS repository structure that /scaffold instantiates."
       },
       {
         name: "templates/phase-alignment-brief.md",
-        url: "assets/maps/templates/phase-alignment-brief.md",
+        url: "/assets/maps/templates/phase-alignment-brief.md",
         download: true,
         note: "Captures Phase 0 structure decisions."
       },
       {
         name: "templates/agent-definition-template.md",
-        url: "assets/maps/templates/agent-definition-template.md",
+        url: "/assets/maps/templates/agent-definition-template.md",
         download: true,
         note: "Captures the Phase 1 Define artifact."
       },
       {
         name: "templates/workflow-spec.md",
-        url: "assets/maps/templates/workflow-spec.md",
+        url: "/assets/maps/templates/workflow-spec.md",
         download: true,
         note: "Captures the Phase 2 Design artifact."
       },
       {
         name: "templates/experience-design.md",
-        url: "assets/maps/templates/experience-design.md",
+        url: "/assets/maps/templates/experience-design.md",
         download: true,
         note: "Captures the M8 product experience, journeys, surfaces, IA, visual/tone standards, accessibility, states, and APS handoffs."
       },
       {
         name: "templates/agent-backlog.md",
-        url: "assets/maps/templates/agent-backlog.md",
+        url: "/assets/maps/templates/agent-backlog.md",
         download: true,
         note: "Captures prioritized build slices, dependencies, proof, runtime impact, status, and deferred improvements."
       },
       {
         name: "templates/agent-build-plan.md",
-        url: "assets/maps/templates/agent-build-plan.md",
+        url: "/assets/maps/templates/agent-build-plan.md",
         download: true,
         note: "Captures the Phase 3 Build slices, proof, evidence, and handoff notes."
       },
       {
         name: "templates/build-log.md",
-        url: "assets/maps/templates/build-log.md",
+        url: "/assets/maps/templates/build-log.md",
         download: true,
         note: "Records implementation evidence, checks, decisions, blockers, and next-phase notes."
       },
       {
         name: "templates/capability-map.md",
-        url: "assets/maps/templates/capability-map.md",
+        url: "/assets/maps/templates/capability-map.md",
         download: true,
         note: "Captures Phase 4 tools, permissions, memory, connectors, runtime settings, limits, and fallbacks."
       },
       {
         name: "templates/eval-suite.md",
-        url: "assets/maps/templates/eval-suite.md",
+        url: "/assets/maps/templates/eval-suite.md",
         download: true,
         note: "Captures Phase 5 eval coverage, wrapper components, harness choices, and release gates."
       },
       {
         name: "templates/eval-report.md",
-        url: "assets/maps/templates/eval-report.md",
+        url: "/assets/maps/templates/eval-report.md",
         download: true,
         note: "Captures Phase 5 eval results, evidence links, failures, release decision, and Observe handoff."
       },
       {
         name: "templates/deploy-plan.md",
-        url: "assets/maps/templates/deploy-plan.md",
+        url: "/assets/maps/templates/deploy-plan.md",
         download: true,
         note: "Captures Phase 6 release path, runtime package, secrets/config handoff, preflight, smoke test, and rollback plan."
       },
       {
         name: "templates/deployment-record.md",
-        url: "assets/maps/templates/deployment-record.md",
+        url: "/assets/maps/templates/deployment-record.md",
         download: true,
         note: "Captures Phase 6 deployment evidence, GitHub/Cloudflare run details, smoke results, rollback readiness, and Observe handoff."
       },
       {
         name: "templates/observation-plan.md",
-        url: "assets/maps/templates/observation-plan.md",
+        url: "/assets/maps/templates/observation-plan.md",
         download: true,
         note: "Captures Phase 7 runtime evidence sources, signals, thresholds, owners, alert triggers, and improvement handoff rules."
       },
       {
         name: "templates/observation-log.md",
-        url: "assets/maps/templates/observation-log.md",
+        url: "/assets/maps/templates/observation-log.md",
         download: true,
         note: "Captures Phase 7 observed evidence, findings, review decisions, and Phase 8 improvement backlog handoff."
       },
       {
         name: "templates/improvement-backlog.md",
-        url: "assets/maps/templates/improvement-backlog.md",
+        url: "/assets/maps/templates/improvement-backlog.md",
         download: true,
         note: "Captures Phase 8 improvement items from observations, eval failures, incidents, user feedback, dependencies, priorities, and next improvement slices."
       },
       {
         name: "templates/improvement-review.md",
-        url: "assets/maps/templates/improvement-review.md",
+        url: "/assets/maps/templates/improvement-review.md",
         download: true,
         note: "Captures Phase 8 evidence review, classification, routing, prioritization, iteration decisions, and MAPS handoff."
       }

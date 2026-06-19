@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 1: Define | Mojo AI Studio</title>
+    <meta name="description" content="Phase 1 of MAPS defines the agent job, user, authorization level, boundaries, success criteria, failure criteria, escalation points, risks, and assumptions.">
+    <link rel="canonical" href="https://mojoaistudio.com/maps/agentic-pipeline/A1/">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/maps/agentic-pipeline/A1/">
+    <meta property="og:title" content="MAPS Phase 1: Define">
+    <meta property="og:description" content="Define the agent job, user, outcome, authorization level, boundaries, success criteria, and escalation points.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Phase 1: Define">
+    <meta name="twitter:description" content="Define the agent job, user, outcome, authorization level, boundaries, success criteria, and escalation points.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="/maps.css?v=maps-program-contract">
+    <script src="/maps-data.js?v=maps-program-contract" defer></script>
+    <script src="/maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="1">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="/maps/">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="/maps/Overview/">Overview</a>
+              <a href="/maps/Agents/">Agents</a>
+              <a href="/maps/Global/">Global</a>
+              <a href="/maps/References/">References</a>
+              <details class="maps-dropdown agentic">
+                <summary>Agentic Pipeline</summary>
+                <div class="maps-dropdown-menu">
+                  <a href="/maps/agentic-pipeline/A0/">A0 Phase Alignment</a>
+                  <a href="/maps/agentic-pipeline/A1/">A1 Define</a>
+                  <a href="/maps/agentic-pipeline/A2/">A2 Design</a>
+                  <a href="/maps/agentic-pipeline/A2-experience-design/">A2 Experience Design</a>
+                  <a href="/maps/agentic-pipeline/A3/">A3 Build</a>
+                  <a href="/maps/agentic-pipeline/A4/">A4 Equip</a>
+                  <a href="/maps/agentic-pipeline/A5/">A5 Evaluate</a>
+                  <a href="/maps/agentic-pipeline/A6/">A6 Deploy</a>
+                  <a href="/maps/agentic-pipeline/A7/">A7 Observe</a>
+                  <a href="/maps/agentic-pipeline/A8/">A8 Improve</a>
+                  <a href="/maps/agentic-pipeline/lab-research-agent/">Lab 1 Research Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-data-agent/">Lab 2 Data Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-support-agent/">Lab 3 Support Agent</a>
+                </div>
+              </details>
+              <details class="maps-dropdown multi-agent">
+                <summary>Multi-Agent Pipeline</summary>
+                <div class="maps-dropdown-menu">
+                  <a href="/maps/multi-agent-pipeline/M0/">M0 Project Foundation</a>
+                  <a href="/maps/multi-agent-pipeline/M1/">M1 System Shape</a>
+                  <span>M2 Roster</span>
+                  <span>M3 Contracts</span>
+                  <span>M4 Coordination</span>
+                  <span>M5 Agent Buildout</span>
+                  <span>M6 Capabilities</span>
+                  <span>M7 Orchestration</span>
+                  <a href="/maps/multi-agent-pipeline/M8/">M8 Experience Design</a>
+                  <span>M9 Evaluate</span>
+                  <span>M10 Deploy/Observe</span>
+                  <span>M11 Improve</span>
+                </div>
+              </details>
+              <details class="maps-dropdown org-chart">
+                <summary>Org Chart</summary>
+                <div class="maps-dropdown-menu">
+                  <a href="/maps/org-chart/O0/">O0 Org Foundation</a>
+                  <span>O1 Roles</span>
+                  <span>O2 Responsibilities</span>
+                  <span>O3 Authority</span>
+                  <span>O4 Operating Cadence</span>
+                </div>
+              </details>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 1</p>
+          <h1>Define</h1>
+          <p>
+            Define turns an agent idea into a usable brief. The brief identifies the
+            agent job, user or operator, desired outcome, authorization level, boundaries,
+            success criteria, failure criteria, escalation points, risks, and assumptions.
+            This is APS work inside the larger MAPS scaffold.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#brief">Build the brief</a>
+            <a class="maps-button" href="#alternatives">View references</a>
+            <a class="maps-button" href="/maps/agentic-pipeline/A0/">Back to Phase 0</a>
+          </div>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="layers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 1 is APS, not the M layer</h2>
+            <p>
+              The multi-agent project layer decides which agents are needed. Phase 1 defines one of those agents.
+            </p>
+          </div>
+
+          <div class="maps-layer-board">
+            <article class="maps-layer-card outer">
+              <div>
+                <p class="maps-layer-kicker">M layer</p>
+                <h3>Multi-agent project scaffold</h3>
+                <p>
+                  Overall outcome, agent list, role split, handoffs, shared state,
+                  integration, and system-level proof.
+                </p>
+              </div>
+              <span>System layer</span>
+            </article>
+            <article class="maps-layer-card active">
+              <div>
+                <p class="maps-layer-kicker">APS layer</p>
+                <h3>Agent Pipeline Skills</h3>
+                <p>
+                  The current Define phase creates a clear brief for one agent
+                  before it moves to design and build.
+                </p>
+              </div>
+              <span>Agent layer</span>
+            </article>
+          </div>
+        </section>
+
+        <section id="brief" class="maps-section">
+          <div class="maps-section-header">
+            <h2>The agent brief is the contract.</h2>
+            <p>
+              A strong brief makes later design and evaluation possible because it states exactly what the agent owns.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Inputs</h3>
+              <p>An agent idea, workflow need, user request, or multi-agent role candidate.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Work</h3>
+              <p>Clarify scope, non-goals, authorization, observable success, failure criteria, and human escalation points.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Output</h3>
+              <p>`agents/{agent-handle}/agent-brief.md`, created from <a href="/assets/maps/templates/agent-definition-template.md" download><code>templates/agent-definition-template.md</code></a> and ready for the Design phase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 1 output</h2>
+            <p>
+              At the end of Define, the required artifact is `agents/{agent-handle}/agent-brief.md`.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Artifact</h3>
+              <p><strong>`agents/{agent-handle}/agent-brief.md`</strong>, completed from <a href="/assets/maps/templates/agent-definition-template.md" download><code>templates/agent-definition-template.md</code></a>.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Skill</h3>
+              <p><a href="/assets/maps/skills/define-agent/SKILL.md" download><strong>/define-agent</strong></a> asks the questions and produces or updates the brief.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Ready when</h3>
+              <p>The job, user, outcome, authorization boundary, scope, success criteria, failure criteria, escalation points, risks, and assumptions are explicit.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Next use</h3>
+              <p>Phase 2 Design uses `agents/{agent-handle}/agent-brief.md` to decide behavior, workflow, handoffs, controls, and tool needs.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Agent brief fields</h2>
+            <p>
+              These are the minimum fields the next phase needs.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel"><h3>Name</h3><p>Short identifier for the agent or role.</p></article>
+            <article class="maps-panel"><h3>Handle and mandate</h3><p>Stable agent handle plus the role or mandate it is expected to carry.</p></article>
+            <article class="maps-panel"><h3>User or operator</h3><p>The person or system that uses, reviews, or supervises the agent.</p></article>
+            <article class="maps-panel"><h3>Job to be done</h3><p>The specific outcome the agent is responsible for.</p></article>
+            <article class="maps-panel"><h3>Persona and tone</h3><p>Communication style for human-facing or agent-to-agent work.</p></article>
+            <article class="maps-panel"><h3>Authorization level</h3><p>What the agent may do alone, what needs approval, and what it must never do.</p></article>
+            <article class="maps-panel"><h3>Tool access requested</h3><p>Candidate tools, MCP servers, or capabilities the agent may need later.</p></article>
+            <article class="maps-panel"><h3>Boundaries</h3><p>In scope, out of scope, and unclear territory.</p></article>
+            <article class="maps-panel"><h3>Success and failure</h3><p>Observable criteria for done and explicit conditions that count as failure.</p></article>
+            <article class="maps-panel"><h3>Risks and assumptions</h3><p>What must be controlled, escalated, or proven later.</p></article>
+          </div>
+        </section>
+
+        <section id="authority" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Define the authority boundary</h2>
+            <p>
+              Authorization is part of the agent definition. Do not wait until Design to decide what the agent can do.
+            </p>
+          </div>
+
+          <div class="maps-auth-grid">
+            <article class="maps-auth-card">
+              <span>01</span>
+              <h3>Advise</h3>
+              <p>The agent can analyze, recommend, summarize, or prepare options. A human decides and acts.</p>
+            </article>
+            <article class="maps-auth-card">
+              <span>02</span>
+              <h3>Draft</h3>
+              <p>The agent can create messages, plans, code, tickets, or artifacts, but cannot publish or send them.</p>
+            </article>
+            <article class="maps-auth-card">
+              <span>03</span>
+              <h3>Act with approval</h3>
+              <p>The agent can perform approved actions after a human confirms the specific action and target.</p>
+            </article>
+            <article class="maps-auth-card">
+              <span>04</span>
+              <h3>Act autonomously</h3>
+              <p>The agent can act within explicit limits, logs its actions, and escalates when it leaves the defined lane.</p>
+            </article>
+            <article class="maps-auth-card danger">
+              <span>!</span>
+              <h3>Forbidden</h3>
+              <p>Name the actions, data, systems, costs, and decisions the agent must never touch.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Always, ask first, never</h2>
+            <p>
+              Use this split when the authorization level is too vague.
+            </p>
+          </div>
+
+          <div class="maps-rule-grid">
+            <article class="maps-rule-card allow">
+              <h3>Always allowed</h3>
+              <p>Low-risk actions the agent can perform without asking, such as analysis, summarization, or local drafting.</p>
+            </article>
+            <article class="maps-rule-card ask">
+              <h3>Ask first</h3>
+              <p>Actions that change external state, affect people, spend money, touch production data, or publish output.</p>
+            </article>
+            <article class="maps-rule-card never">
+              <h3>Never allowed</h3>
+              <p>Actions, data, systems, costs, and decisions that stay outside the agent's lane under every condition.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="alternatives" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Alternatives and references</h2>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Alternative skill library</p>
+              <h3><a href="https://github.com/TerminalSkills/skills" target="_blank" rel="noopener noreferrer">TerminalSkills/skills</a></h3>
+              <p>Large open catalog of standalone `SKILL.md` files with install paths and contribution checks.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Alternative skill library</p>
+              <h3><a href="https://github.com/tmchow/agent-skills" target="_blank" rel="noopener noreferrer">tmchow/agent-skills</a></h3>
+              <p>Cross-runtime skill examples with separate human README files, runtime lanes, and install discipline.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Skill authoring reference</p>
+              <h3><a href="https://github.com/zebbern/agent-skills-authoring" target="_blank" rel="noopener noreferrer">zebbern/agent-skills-authoring</a></h3>
+              <p>Agent-facing guidance for writing discoverable skills with frontmatter, triggers, examples, and validation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Deployable profile pattern</p>
+              <h3><a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/create-custom-agents" target="_blank" rel="noopener noreferrer">GitHub Copilot custom agents</a></h3>
+              <p>Custom `.agent.md` profiles connect name, description, prompt, tools, and MCP access.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Specification template</p>
+              <h3><a href="https://github.com/GSA-TTS/devCrew_s/blob/master/docs/templates/AI%20Agent%20Specification%20Template.md" target="_blank" rel="noopener noreferrer">GSA-TTS AI Agent Specification Template</a></h3>
+              <p>Useful source for handle, mandate, responsibilities, tool manifest, and resource permissions.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="walkthrough" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Self-guided define path</h2>
+          </div>
+
+          <div class="maps-walkthrough">
+            <article class="maps-step">
+              <span>01</span>
+              <h3>Name the job</h3>
+              <p>Write the agent's job in one direct sentence with a clear owner and outcome.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>If the sentence could describe several agents, it is still too vague.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>02</span>
+              <h3>Set authority</h3>
+              <p>Choose the highest action level the agent is allowed to take and list what needs approval.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>A reviewer should know exactly where the agent stops and where a human takes over.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>03</span>
+              <h3>Draw boundaries</h3>
+              <p>Separate in-scope work, out-of-scope work, uncertain work, and forbidden actions.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The brief should prevent the most obvious misuse before any tools are connected.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>04</span>
+              <h3>Define proof</h3>
+              <p>Write success criteria, failure criteria, escalation points, risks, and assumptions.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The next phase should be able to design evals from this definition.</p>
+              </details>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Full phase navigation</h2>
+            <p>
+              Phase 0 through Phase 4 are available now. Later APS pages stay visible and marked under construction until delivered.
+              The M layer remains available for multi-agent project structure.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase="1"></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 1 resources</h2>
+            <p>
+              <a href="/assets/maps/skills/define-agent/SKILL.md" download>`/define-agent`</a> uses <a href="/assets/maps/templates/agent-definition-template.md" download>`templates/agent-definition-template.md`</a> to produce `agents/{agent-handle}/agent-brief.md`.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

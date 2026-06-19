@@ -35,6 +35,10 @@
       link.classList.add("current");
       link.setAttribute("aria-current", "page");
     });
+    document.querySelectorAll(`.maps-dropdown-menu a[href="${phase.file}"]`).forEach((link) => {
+      link.classList.add("current");
+      link.setAttribute("aria-current", "page");
+    });
   }
 
   function renderLabPills() {
@@ -139,7 +143,7 @@
   function positionMapsSourceButton() {
     const button = document.querySelector(".maps-source-button");
     const topbar = document.querySelector(".maps-topbar");
-    const agentsLink = document.querySelector('.maps-links > a[href="agents.html"]');
+    const agentsLink = document.querySelector('.maps-links > a[href="/maps/Agents/"], .maps-links > a[href="agents.html"]');
     const multiAgent = document.querySelector(".maps-pipeline-group.multi-agent");
     const agentic = document.querySelector(".maps-pipeline-group.agentic");
     if (!button || !topbar) {
