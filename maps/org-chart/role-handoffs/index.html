@@ -142,6 +142,7 @@
               <tbody>
                 <tr><td>Heartbeat channel</td><td>Organization-wide liveness, cadence, blocker, and cross-role awareness for every active role.</td><td><code>channels/heartbeat.md</code></td></tr>
                 <tr><td>Function channel</td><td>Ongoing shared context for a recurring communication function across roles.</td><td><code>channels/pipeline.md</code></td></tr>
+                <tr><td>Release channel</td><td>Approval-aware routing for proposed Git/GitHub write actions, PR merges, releases, promotions, stale branches, dirty worktrees, and release-readiness work.</td><td><code>channels/release-management.md</code></td></tr>
                 <tr><td>Training source</td><td>Editable Obsidian handoff stream that Liz checks for confirmed MAPS training changes and reflects into the Mojo <code>/maps</code> site.</td><td><code>G:\My Drive\Mindshare\mapstraining.md</code></td></tr>
                 <tr><td>Role directory</td><td>Durable Obsidian role artifacts that prove a role was created, activated, renamed, suspended, or retired outside the channel conversation.</td><td><code>G:\My Drive\Mindshare\role\...</code></td></tr>
                 <tr><td>Run notes</td><td>MAPS run records that show completed role work, skill changes, helper output, and training-impact decisions.</td><td><code>G:\My Drive\Mindshare\maps-runs\...</code></td></tr>
@@ -169,6 +170,7 @@
                 <tr><td>Respond</td><td>If work exists, acknowledge it, act inside authority, ask one blocker question, update the relevant training surface, or route it to the correct function channel.</td></tr>
                 <tr><td>Record</td><td>Append when work is found, status changes, evidence changes, a blocker appears, or a closeout happens. Routine no-work checks do not need noisy log entries.</td></tr>
                 <tr><td>Show checked locations</td><td>When the heartbeat surfaces work, action, a blocker, an approval question, or an Obsidian training change, name every checked handoff and Obsidian location so the operator can see what triggered the response.</td></tr>
+                <tr><td>Release routing</td><td>Roles that propose or perform Git/GitHub write actions should route the repo, branch, action, risk, and approval state through Release Management before acting.</td></tr>
                 <tr><td>Guardrail</td><td>The 5-minute heartbeat does not authorize interim due-check wakeups, non-<code>/maps</code> production actions, external communication, spending, authority expansion, continuous file watchers, or autonomous runtime beyond the approved check.</td></tr>
               </tbody>
             </table>
@@ -247,6 +249,14 @@
                   <td>Recruiting Handoff</td>
                   <td>Vik, Matt, Ana</td>
                   <td>Vik, Matt, Ana</td>
+                  <td><code>active</code></td>
+                </tr>
+                <tr>
+                  <td>Release Management</td>
+                  <td><code>G:\My Drive\Mindshare\channels\release-management.md</code></td>
+                  <td>Git/GitHub write routing</td>
+                  <td>Roles proposing repo writes</td>
+                  <td>Reid, Scott</td>
                   <td><code>active</code></td>
                 </tr>
                 <tr>

@@ -131,3 +131,4 @@ Professional source basis:
 - 2026-06-19: Updated `/maps/org-chart/` with compact team portraits and added Scott / President to the left of the open Chief Executive Officer role.
 - 2026-06-19: On `liz-handoff-check`, reflected Reid / Release Manager onto `/maps/org-chart/` after assigned channels and durable Obsidian role evidence showed Reid was activated as a bounded Role+ operator.
 - 2026-06-19: On `liz-handoff-check`, reflected the Evaluate proof mode boundary onto `/maps/Skills/`: specification-mode proof can show profile/design readiness, but implemented Agent confidence still requires Build, Equip, and executable Evaluate evidence.
+- 2026-06-19: On `liz-handoff-check`, reflected Release Management routing onto `/maps/org-chart/role-handoffs/`: roles proposing Git/GitHub write actions should route repo, branch, action, risk, and approval state through Release Management before acting, without implying independent write authority.
