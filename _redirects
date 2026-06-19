@@ -2,6 +2,8 @@
 /WatchAI/* /learn/:splat 301
 /maps /maps/Overview/ 301
 /maps/ /maps/Overview/ 301
+/maps/org-chart/O0 /maps/org-chart/ 301
+/maps/org-chart/O0/ /maps/org-chart/ 301
 /m3 /m8 301
 /m3.html /m8 301
 /watch /learn/ 301
