@@ -50,6 +50,15 @@ def validate_skill(path: Path) -> list[str]:
             if not re.search(pattern, text, flags=re.IGNORECASE):
                 errors.append(f"missing {label}")
 
+    if path.parent.name == "shape":
+        for label, pattern in {
+            "shape research and recommend": r"Research and Recommend",
+            "shape research sources": r"shape-research-sources\.md",
+            "ASPM guidance": r"ASPM guidance",
+        }.items():
+            if not re.search(pattern, text, flags=re.IGNORECASE):
+                errors.append(f"missing {label}")
+
     return errors
 
 

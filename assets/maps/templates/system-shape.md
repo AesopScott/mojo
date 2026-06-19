@@ -17,7 +17,34 @@ Is this single-agent, multi-agent, or not knowable yet?
 - Single-Agent / APS:
 - Multi-Agent / MAPS:
 - Decision:
+- Confidence:
 - Rationale:
+
+## Research Sources Used
+
+| Source | What It Contributed | Recommendation Impact |
+|---|---|---|
+|  |  |  |
+
+## Recommendation Rationale
+
+External references:
+
+Project foundation:
+
+Contrary signals:
+
+What would change the decision:
+
+## ASPM Guidance
+
+Pipeline/program-manager guidance:
+
+Phase-boundary risk:
+
+Memory/RAG implication:
+
+Recommended next skill:
 
 ## BPMN Lite
 

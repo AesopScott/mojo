@@ -95,7 +95,8 @@
           <p>
             M1 scopes the workflow enough to choose the track: Unknown / Scope
             First, Single-Agent / APS, or Multi-Agent / MAPS. It protects the
-            project from premature overbuilding.
+            project from premature overbuilding by using Research and Recommend
+            plus ASPM guidance after the first S/M/U question.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#decision">Shape the system</a>
@@ -114,7 +115,7 @@
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Skill</h3>
-              <p><a href="assets/maps/skills/shape/SKILL.md" download><strong>/shape</strong></a> runs the M1 decision workflow.</p>
+              <p><a href="assets/maps/skills/shape/SKILL.md" download><strong>/shape</strong></a> asks the first S/M/U question, then uses Research and Recommend to propose the track.</p>
             </article>
             <article class="maps-panel">
               <h3>Template</h3>
@@ -123,6 +124,10 @@
             <article class="maps-panel">
               <h3>Primary handoff</h3>
               <p>If S, enter APS. If M, continue to M2 Roster. If U, keep scoping until the operating model is visible.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>ASPM guidance</h3>
+              <p>If Matt, an ASPM, or a pipeline-owner role exists, `/shape` uses that role as advisory guidance for phase boundaries, memory/RAG implications, and next-skill routing.</p>
             </article>
           </div>
         </section>
@@ -144,6 +149,10 @@
             <article class="maps-panel">
               <h3>Shape output</h3>
               <p>Record the S/M/U recommendation in `system-shape.md` and write the `/shape` run note through the shared MAPS memory helper.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Research sources</h3>
+              <p>Use workflow-shape, service-blueprint, team-topology, role-pressure, and agent-orchestration references before recommending the track.</p>
             </article>
           </div>
           <div class="maps-code-panel maps-gap-top">
@@ -174,6 +183,10 @@
             <article class="maps-panel">
               <h3>Multi-Agent / MAPS</h3>
               <p>Use when distinct roles, tools, permissions, memory, review, escalation, or parallel work are justified.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Recommendation standard</h3>
+              <p>Every M1 recommendation should include confidence, evidence, contrary signals, what would change the decision, ASPM guidance, and the next skill to run.</p>
             </article>
           </div>
         </section>

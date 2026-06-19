@@ -6,7 +6,7 @@ description: Run M1 System Shape for a MAPS project. Use after M0 Project Founda
 # Shape
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.2.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.2.0 - Added Research and Recommend guidance, ASPM advisory behavior, and source-backed track recommendations.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/shape` at M1 to discover enough of the operating model to choose the right track.
@@ -36,15 +37,35 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
-## Required interview
+## Research and Recommend
 
-Before writing `system-shape.md`, ask for any missing answers. Do not decide the track from vibes or repo structure alone.
-
-Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+Default to Research and Recommend after the first S/M/U orientation question. The user often will not know whether the system is single-agent, multi-agent, or scope-first until M1 helps them reason through the workflow.
 
 Start with:
 
 > Are we deciding between single-agent, multi-agent, or scope-first, or do you already know the track?
+
+Then ask only the next missing question needed to understand the workflow, actors, outcome, handoffs, tools, memory, approvals, and risk. Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out.
+
+After enough context exists to make a provisional track recommendation, stop interviewing and run Research and Recommend:
+
+1. Read M0 Project Foundation, source inventory, persistent memory contract, and any existing role or workflow artifacts.
+2. If an Agentic Systems Program Manager, ASPM, Matt, or pipeline owner role artifact exists, read it and use it as advisory guidance for phase boundaries, scope discipline, memory/RAG implications, and next-skill routing.
+3. Read `references/shape-research-sources.md` and select the relevant source mix.
+4. Research or cite comparable workflow-shape, role-pressure, team-design, BPMN/service-blueprint, and agent-orchestration references.
+5. Recommend the S/M/U track:
+   - Unknown / Scope First when the workflow, actors, data, handoffs, approval gates, or risk boundaries are not clear enough.
+   - Single-Agent / APS when one coherent agent can own the outcome with one main context, tool boundary, memory contract, and evaluation surface.
+   - Multi-Agent / MAPS when distinct roles, tools, permissions, memory, review, escalation, timing, or parallel work justify coordination cost.
+6. Include an ASPM guidance note explaining what a pipeline/program manager would advise: whether to slow down for scope, proceed into APS, continue to MAPS, or create role agents before roster/contracts.
+7. Present the recommendation with confidence, evidence, tradeoffs, and what would change the decision.
+8. Ask the user to accept the recommendation, revise one assumption, or mark the decision as scope-first. Ask this as one question.
+
+## Required interview
+
+Before writing `system-shape.md`, ask for any missing answers. Do not decide the track from vibes or repo structure alone.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence, but do not force every answer before recommending. Ask the next most important missing question, wait for the answer, then continue.
 
 Then ask:
 
@@ -64,22 +85,28 @@ If any of those answers are missing or ambiguous, ask before creating or updatin
 ## Workflow
 
 1. Read the M0 Project Foundation artifact and source inventory.
-2. Start with the S/M/U question:
+2. Start with the S/M/U question, then use Research and Recommend instead of making the user self-diagnose the track:
    - Unknown / Scope First when the workflow, actors, data, handoffs, or risk boundaries are not clear.
    - Single-Agent / APS when one coherent agent can own the outcome.
    - Multi-Agent / MAPS when distinct roles, tools, permissions, memory, review, escalation, or parallel work are justified.
-3. Run BPMN Lite:
+3. Apply ASPM guidance when available:
+   - protect phase boundaries
+   - avoid premature roster/contract work when scope is unclear
+   - identify when `/role` should run before deeper MAPS phases
+   - identify memory/RAG choices that affect system shape
+   - make the next skill recommendation explicit
+4. Run BPMN Lite:
    - start/end
    - tasks
    - decisions/gateways
    - handoffs/messages
    - human approvals
    - exception paths
-4. Apply role-pressure checks:
+5. Apply role-pressure checks:
    - Does role separation reduce cognitive load or add coordination cost?
    - Does each proposed role need different knowledge, tools, permissions, memory, timing, or accountability?
-5. Identify the interaction, knowledge, coordination, and risk shape.
-6. Produce `templates/system-shape.md`.
+6. Identify the interaction, knowledge, coordination, and risk shape.
+7. Produce `templates/system-shape.md`.
 
 ## Completion report
 
@@ -96,9 +123,15 @@ Report:
 If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
 ## Output
 - Completed `system-shape.md`
+- Research sources used and recommendation rationale
+- ASPM guidance note when an ASPM, Matt, or pipeline owner role is available or implied
 - Track decision: Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS
 - Rationale and evidence
 - Next-step recommendation:
   - continue scoping
   - enter APS
   - continue to M2 Roster
+
+## References
+
+Read `references/shape-research-sources.md` for every `/shape` run before making the S/M/U recommendation. It defines the source mix for workflow shape, role pressure, service design, and agent orchestration decisions.
