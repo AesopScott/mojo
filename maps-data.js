@@ -130,7 +130,7 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, helper notes named [skill]-helper-notes or [project]-[skill]-helper-notes for shared roots, role-[role-name] notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
+        note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, maps-run helper notes named [project]-[skill]-helper-notes, role-[role-name] notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
       },
       {
         name: "/shape",

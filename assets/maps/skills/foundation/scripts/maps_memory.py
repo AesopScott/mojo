@@ -103,14 +103,16 @@ def role_slug_from_output(output: str) -> str:
     return ""
 
 
-def should_prefix_project(project: Path, notes_root: Path, prefs: dict[str, Any]) -> bool:
+def should_prefix_project(project: Path, helper_note_dir: Path, prefs: dict[str, Any]) -> bool:
+    if any(slugify(part) == "maps-runs" for part in helper_note_dir.parts):
+        return True
     try:
-        notes_root.resolve().relative_to(project.resolve())
+        helper_note_dir.resolve().relative_to(project.resolve())
         return False
     except ValueError:
         pass
     slug = project_slug(project, prefs)
-    return slugify(notes_root.name) != slug
+    return slugify(helper_note_dir.name) != slug
 
 
 def note_slug(project: Path, prefs: dict[str, Any], skill: str, route: dict[str, str], output: str) -> str:
@@ -118,7 +120,7 @@ def note_slug(project: Path, prefs: dict[str, Any], skill: str, route: dict[str,
         role_slug = role_slug_from_output(output)
         return f"role-{role_slug}" if role_slug else "role-unknown"
     notes_root = configured_path(project, prefs, prefs.get("notesRoot", "notes"))
-    if should_prefix_project(project, notes_root, prefs):
+    if should_prefix_project(project, notes_root / "maps-runs", prefs):
         return f"{project_slug(project, prefs)}-{route['slug']}-helper-notes"
     return f"{route['slug']}-helper-notes"
 

@@ -210,14 +210,14 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
                   <td><code>/shape | M1 | system-shape.md</code></td>
                 </tr>
                 <tr>
-                  <td><code>&lt;notesRoot&gt;/maps-runs/&lt;skill&gt;-helper-notes.md</code></td>
-                  <td>Maintains one human-readable helper note per skill. If the notes root is shared across projects, prefix the project name.</td>
-                  <td><code>G:\My Drive\Mindshare\maps-runs\shape-helper-notes.md</code></td>
+                  <td><code>&lt;notesRoot&gt;/maps-runs/&lt;project&gt;-&lt;skill&gt;-helper-notes.md</code></td>
+                  <td>Maintains one human-readable helper note per skill with the project name visible in shared maps-run lists.</td>
+                  <td><code>G:\My Drive\Mindshare\maps-runs\mindshare-shape-helper-notes.md</code></td>
                 </tr>
                 <tr>
-                  <td><code>&lt;rag.location&gt;/maps-runs/&lt;skill&gt;-helper-notes.md</code></td>
-                  <td>Mirrors the helper note into the configured RAG location when one exists, with the same project-prefix rule.</td>
-                  <td><code>memory/rag/maps-runs/shape-helper-notes.md</code></td>
+                  <td><code>&lt;rag.location&gt;/maps-runs/&lt;project&gt;-&lt;skill&gt;-helper-notes.md</code></td>
+                  <td>Mirrors the helper note into the configured RAG location when one exists.</td>
+                  <td><code>memory/rag/maps-runs/mindshare-shape-helper-notes.md</code></td>
                 </tr>
                 <tr>
                   <td><code>&lt;notesRoot&gt;/maps-runs/role-&lt;role-name&gt;.md</code></td>
@@ -227,7 +227,7 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
                 <tr>
                   <td><code>system-shape.md</code></td>
                   <td>Remains the primary M1 deliverable artifact, separate from the helper-maintained run note.</td>
-                  <td><code>shape-helper-notes.md</code> is the run summary note.</td>
+                  <td><code>mindshare-shape-helper-notes.md</code> is the run summary note.</td>
                 </tr>
                 <tr>
                   <td><code>.maps/rag-updates.json</code></td>
