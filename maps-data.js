@@ -385,6 +385,11 @@ window.MAPS_SITE = {
         note: "M1 graph-shaped agent workflow reference for single-agent, multi-agent, supervisor, and hierarchical control flows."
       },
       {
+        name: "garrytan/gstack",
+        url: "https://github.com/garrytan/gstack",
+        note: "Highlighted /role reference for modeling software-development organizations as named SKILL.md specialists, slash-command workflows, and human-mediated role switching."
+      },
+      {
         name: "shadcn-ui/ui",
         url: "https://github.com/shadcn-ui/ui",
         note: "UI design system and copy-in component reference for polished, accessible React interfaces. Current research signal: 116,840 stars."
@@ -975,7 +980,7 @@ window.MAPS_SITE = {
   phaseResources: {
     "m0": {
       skills: ["/foundation", "/role"],
-      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
+      repos: ["AesopScott/maps", "garrytan/gstack", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
       tools: ["Markdown notes", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
     },

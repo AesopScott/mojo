@@ -69,6 +69,19 @@ Disable or rollback path:
 
 Recommend / draft / act with approval / act within policy / act autonomously.
 
+## Authority Definition
+
+| Authority Area | Allowed | Requires Approval | Forbidden | Evidence Required |
+| --- | --- | --- | --- | --- |
+| Recommendations | | | | |
+| Drafting | | | | |
+| Workflow ownership | | | | |
+| Tool use | | | | |
+| Memory or RAG writes | | | | |
+| External communication | | | | |
+| Spending or commitment | | | | |
+| Policy or governance changes | | | | |
+
 ## Decisions This Role Can Make
 
 ## Decisions This Role Cannot Make
@@ -122,6 +135,31 @@ Privacy and retention limits:
 Canonical memory location:
 
 Derived memory or RAG locations:
+
+## Learning And Growth
+
+What this role should learn from each run:
+
+Responsibility candidates to propose:
+
+Capability candidates to propose:
+
+Evidence required before responsibilities expand:
+
+Evidence required before authority expands:
+
+Who approves expanded responsibility or authority:
+
+Where role learnings are written:
+
+How stale or harmful responsibilities are retired:
+
+Review cadence for role growth:
+
+## Responsibility And Capability Evolution Log
+
+| Date | Learning | Proposed Change | Evidence | Decision | Approver |
+| --- | --- | --- | --- | --- | --- |
 
 ## Tools And Data Access
 

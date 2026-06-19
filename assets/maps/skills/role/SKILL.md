@@ -56,6 +56,8 @@ External research is mandatory and heavily weighted. Do not produce the recommen
    - tools and data access
    - boundaries and forbidden actions
    - escalation rules
+   - explicit authority: what the role can recommend, draft, act on with approval, act on independently, and never do
+   - learning loop: how the role's responsibilities, capabilities, memory, and proof standards should grow over time
    - success evidence
    - proof scenarios
    - implementation form: skill, script, hook, active process, scheduled loop, workflow/runbook, MCP/tool integration, dashboard, or human-in-the-loop operating procedure
@@ -111,7 +113,23 @@ If the user is still scoping, offer three role modes:
    - approval checkpoints
    - status updates
 10. Define tools, permissions, and constraints.
-11. Recommend the implementation form:
+11. Define authority explicitly:
+   - advisory authority
+   - drafting authority
+   - workflow ownership authority
+   - tool-use authority
+   - memory/RAG write authority
+   - approval gates
+   - forbidden decisions and actions
+   - revocation or rollback path
+12. Define learning and growth:
+   - what the role should learn from each run
+   - where learned responsibilities and capabilities are proposed
+   - what evidence is required before the role gains new responsibility
+   - who approves expanded authority
+   - how role changes are written to notes, RAG, memory, and the role artifact
+   - how stale or harmful responsibilities are retired
+13. Recommend the implementation form:
    - Skill when the role is mainly a reusable expert procedure invoked by a user or agent.
    - Script when the role performs a deterministic transformation, extraction, sync, or setup task.
    - Hook when the role should run automatically at session start, prompt submit, file change, commit, deploy, or another lifecycle event.
@@ -120,19 +138,19 @@ If the user is still scoping, offer three role modes:
    - Workflow/runbook when humans and agents share staged work, approvals, or handoffs.
    - MCP/tool integration when the role needs controlled access to external systems.
    - Dashboard/report when the role primarily makes state visible for review.
-12. Define proof:
+14. Define proof:
    - role scenarios
    - acceptance tests
    - eval rubrics
    - failure modes
    - review evidence
-13. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
-14. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-15. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
-16. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
-17. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
-18. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-19. Run the shared MAPS memory helper for `/role`.
+15. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
+16. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+17. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+18. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+19. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
+20. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+21. Run the shared MAPS memory helper for `/role`.
 
 ## Completion report
 
@@ -169,7 +187,8 @@ The completed role artifact must include:
 - Mandate and job to be done
 - Customers/operators served
 - Responsibilities and non-responsibilities
-- Authority and autonomy level
+- Authority and autonomy level, with explicit recommend/draft/act/approve/forbidden boundaries
+- Learning and growth loop for responsibilities, capabilities, memory, and authority changes
 - Inputs, outputs, handoffs, and review rhythm
 - Memory contract for this role
 - Tool and data access

@@ -70,6 +70,8 @@ Use for risk advisor, security reviewer, AI governance lead, compliance lead, pr
 
 Use for skill-backed, loop-backed, tool-using, autonomous, and human-in-the-loop roles.
 
+- **Highlighted reference: garrytan/gstack**: use as a role-specialist skill-pack reference for modeling software-development roles as named `SKILL.md` specialists, slash-command workflows, and human-mediated role switching.
+  - https://github.com/garrytan/gstack
 - OpenAI Agents SDK docs: use for agent definitions, tools, state, orchestration, handoffs, guardrails, human review, and observability.
   - https://developers.openai.com/api/docs/guides/agents
   - https://openai.github.io/openai-agents-python/agents/
