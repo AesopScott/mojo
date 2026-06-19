@@ -69,8 +69,17 @@
   }
 
   function renderMapsSourceButton() {
-    const skill = site.resources.skills.find((item) => item.name === "/maps");
-    if (!skill?.url) {
+    const buttons = [
+      { skillName: "/maps", label: "Open MAPS source" },
+      { skillName: "/maps+org", label: "Open MAPS+Org source" }
+    ]
+      .map((config) => {
+        const skill = site.resources.skills.find((item) => item.name === config.skillName);
+        return skill?.url ? { ...config, skill } : null;
+      })
+      .filter(Boolean);
+
+    if (!buttons.length) {
       return;
     }
 
@@ -78,18 +87,25 @@
       return;
     }
 
-    const button = document.createElement("a");
-    button.href = skill.url;
-    if (skill.download) {
-      button.download = "";
-    } else {
-      button.target = "_blank";
-      button.rel = "noopener noreferrer";
-    }
-    button.className = "maps-source-button";
-    button.dataset.mapsSourceButton = "true";
-    button.textContent = "Open MAPS source";
-    document.body.appendChild(button);
+    const group = document.createElement("div");
+    group.className = "maps-source-actions";
+    group.dataset.mapsSourceButton = "true";
+
+    buttons.forEach(({ skill, label }) => {
+      const button = document.createElement("a");
+      button.href = skill.url;
+      if (skill.download) {
+        button.download = "";
+      } else {
+        button.target = "_blank";
+        button.rel = "noopener noreferrer";
+      }
+      button.className = "maps-source-button";
+      button.textContent = label;
+      group.appendChild(button);
+    });
+
+    document.body.appendChild(group);
     positionMapsSourceButton();
   }
 
@@ -182,7 +198,7 @@
   }
 
   function positionMapsSourceButton() {
-    const button = document.querySelector(".maps-source-button");
+    const button = document.querySelector(".maps-source-actions");
     const topbar = document.querySelector(".maps-topbar");
     const agentsLink = document.querySelector('.maps-links > a[href="/maps/Agents/"], .maps-links > a[href="agents.html"]');
     const multiAgent = document.querySelector(".maps-pipeline-group.multi-agent");

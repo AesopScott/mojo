@@ -210,14 +210,21 @@ body.maps-page {
   box-shadow: none;
 }
 
-.maps-source-button {
-  display: inline-flex;
+.maps-source-actions {
+  display: flex;
   position: fixed;
   top: var(--maps-source-button-top, auto);
   right: var(--maps-source-button-right, 24px);
   bottom: var(--maps-source-button-bottom, 24px);
   left: var(--maps-source-button-left, auto);
   z-index: 20;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.maps-source-button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 44px;
@@ -1936,7 +1943,7 @@ a.maps-role-name:hover {
     justify-content: flex-start;
   }
 
-  .maps-source-button {
+  .maps-source-actions {
     top: auto;
     left: auto;
     right: 16px;

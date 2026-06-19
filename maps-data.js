@@ -256,6 +256,11 @@ window.MAPS_SITE = {
         name: "/maps",
         url: "https://github.com/AesopScott/maps",
         note: "Source repository for the MAPS program and plugin, including skills, templates, global install definitions, catalogs, and rule contracts."
+      },
+      {
+        name: "/maps+org",
+        url: "https://github.com/AesopScott/maps-plus-org",
+        note: "Source repository for the repo-local organization bootstrap kit: roles, channels, project-local skills, validators, automation source, and Role+ wiring."
       }
     ],
     repos: [
