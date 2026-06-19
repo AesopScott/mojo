@@ -134,18 +134,17 @@
 
         <section class="maps-section">
           <div class="maps-section-header">
-            <h2>Authorization gates</h2>
-            <p>A role may be mature and still not authorized to operate. MAPS tracks role maturity separately from permission to act.</p>
+            <h2>Role lifecycle</h2>
+            <p>A role may be professionally mature and still not be authorized to operate. MAPS tracks maturity separately from lifecycle status and authority level.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
-              <thead><tr><th>Status</th><th>Meaning</th><th>Required gate</th></tr></thead>
-              <tbody><tr><td>Proposed</td><td>Role or maturity assignment is suggested but not yet accepted.</td><td>User request or captured lab/backlog item.</td></tr>
-<tr><td>Draft authorized</td><td>Role artifact may be drafted for review.</td><td>Scott asked to draft/create or accepted draft recommendation.</td></tr>
-<tr><td>Operating authorized</td><td>Role may participate in named sessions or workflows.</td><td>Explicit approval plus loading/trigger rules.</td></tr>
-<tr><td>Agent build authorized</td><td>Role may enter MAPS implementation phases.</td><td>Explicit approval plus build criteria.</td></tr>
-<tr><td>Suspended</td><td>Role participation or authority is paused.</td><td>Scott, governance owner, incident rule, or revocation path.</td></tr>
-<tr><td>Retired</td><td>Role is no longer used.</td><td>Scott or approved governance owner.</td></tr></tbody>
+              <thead><tr><th>Status</th><th>Meaning</th><th>Profile behavior</th></tr></thead>
+              <tbody><tr><td>Unauthorized</td><td>The role idea or draft exists, but it has not been approved to operate.</td><td>Red or draft-only; no operating profile.</td></tr>
+<tr><td>Authorized role</td><td>The role is approved to participate as a role inside a named scope.</td><td>Blue; role artifact exists, but agent profile controls are not active.</td></tr>
+<tr><td>Authorized agent</td><td>The role is approved as an agent with an agent brief/profile and explicit controls.</td><td>Green; profile controls are available.</td></tr>
+<tr><td>Suspended</td><td>The role or agent is paused and should not participate until restored.</td><td>Marked suspended; controls are inactive.</td></tr>
+<tr><td>Retired</td><td>The role or agent is no longer used.</td><td>Archived; removed from active operating views.</td></tr></tbody>
             </table>
           </div>
         </section>
