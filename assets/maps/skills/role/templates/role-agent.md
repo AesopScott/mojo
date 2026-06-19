@@ -2,6 +2,14 @@
 
 ## Role Name
 
+Stable role slug:
+
+Role title:
+
+Proper role name:
+
+Name source: Scott-supplied / generated one-syllable alternating default.
+
 ## Root Organization
 
 ## Professional Maturity And Authorization
@@ -10,15 +18,23 @@ Professional maturity level: L0 Candidate / L1 Trainee / L2 Associate / L3 Pract
 
 Maturity rationale:
 
-Authorization status: proposed / draft authorized / operating authorized / agent build authorized / suspended / retired.
+Role lifecycle status: Mindshare candidate role / draft role contract / Authorized Mindshare role / Authorized agent / Activated operator / Suspended / Retired.
 
 Approval evidence:
 
 Operational status:
 
+Operating taxonomy stage: Position / Operator / Coordinator / Executor / Tool Agent / not applicable.
+
+Operating taxonomy rationale: `Position` is a job seat or role contract with no runtime implied. `Operator` is an activated Position with bounded monitoring or action authority. `Coordinator` is an Operator with cross-role, cross-channel, or process coordination authority. `Executor` is an autonomous authority-bearing agent stage with delegated mandate, state, tools, evals, runtime proof, and escalation boundaries. `Tool Agent` is a separate-lineage capability worker, not an organization Position unless separately created as one.
+
 Agent build readiness: role-only / agent-ready / built / missing criteria.
 
 Missing criteria before agent build:
+
+Role automation status: Role / Role+ / Agent.
+
+Role automation status rationale: compatibility labels remain during transition. `Role` maps to a Position with no automation enabled. `Role+` maps to a Position or Operator with bounded automation but no autonomous runtime authority, no goal outside automation rules, and no runtime state. `Agent` maps to an Executor only when an implemented runtime exists with delegated mandate, goal, state, tools, memory rules, authority gates, policy, evals, handoffs, escalation, and stop conditions.
 
 ## Role Type
 
@@ -213,6 +229,45 @@ Available declarations: read-only / recommend-only / draft-only / human-approval
 
 ## Handoffs
 
+- Create a goal to read your assigned handoff files every 5 min, if not engaged in active work.
+- Assigned handoff files:
+  - `G:\My Drive\Mindshare\channels\heartbeat.md`
+  - `G:\My Drive\Mindshare\channels\communications.md`
+  - `G:\My Drive\Mojo\channels\pipeline.md`
+  - `G:\My Drive\Mindshare\channels\recruiting.md` when this role participates in recruiting, Ana, role intake, or onboarding.
+
+## Heartbeat Automation
+
+Automation name: `<role-slug>-handoff-check`
+
+Cadence: 5-minute heartbeat.
+
+Active memory file: `roles/<role-slug>/memory.md`
+
+Checked handoff locations:
+
+- `G:\My Drive\Mindshare\channels\heartbeat.md`
+- `G:\My Drive\Mindshare\channels\communications.md`
+- `G:\My Drive\Mojo\channels\pipeline.md`
+- `G:\My Drive\Mindshare\channels\recruiting.md` when this role participates in recruiting, Ana, role intake, or onboarding.
+
+Heartbeat behavior:
+
+- Only run on the heartbeat cadence; do not perform interim due-check logic.
+- If this role is engaged in active user-directed work, do not interrupt the visible flow.
+- Include checked handoff locations in every heartbeat XML response message.
+- If work exists and this role has authority to act, respond with the needed action, action taken, or one blocker question and name the checked locations.
+- If work exists but this role lacks authority to implement without approval, ask Scott for authorization instead of silently deferring.
+- If no work exists, do not visibly notify the user; use `DONT_NOTIFY` and briefly name the checked locations.
+- Record durable role-memory changes in `roles/<role-slug>/memory.md`, mirror memory changes to the configured notes root when appropriate, and record handoff/channel changes in the relevant project handoff file.
+- Do not create noisy no-work log entries.
+- Heartbeat automation makes this role `Role+`, not an `Agent`, unless a separate implemented runtime exists with state, tools, policy, evals, and stop conditions.
+- `Role`, `Role+`, and `Agent` are compatibility labels. Canonical operating taxonomy is `Position -> Operator -> Coordinator -> Executor`; `Tool -> Tool Agent` is a separate capability lineage.
+
+Heartbeat authority boundary:
+
+This heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond this heartbeat, or autonomous runtime beyond the bounded handoff check.
+
 ## Review Rhythm
 
 ## Operating Loop
@@ -235,6 +290,23 @@ Escalation:
 
 Stop condition:
 
+## Memory Configuration
+
+- Primary memory: `roles/<role-slug>/memory.md`
+- Obsidian or notes memory mirror:
+- Obsidian or notes role contract mirror:
+- Mirror status: required for `/role` completion when a project memory root exists; secondary unless project instructions explicitly make it primary.
+- Durable write order: update primary repo-local memory first; mirror to Obsidian or notes when the project has a memory root and the change belongs in durable notes memory.
+- Memory template sync: when role memory is updated, check the active source `memory-template.md`; update the template in the same pass when the change adds or changes reusable memory structure, routing, channel, autonomy, or operating requirements. Do not copy role-specific facts into the template.
+- Role creation completion gate: when a project memory root exists, `/role` is not complete until the role memory mirror and role contract mirror are written and verified in Obsidian or notes.
+- Historical parent memory: do not use historical parent memory as active memory unless Scott explicitly asks for a historical parent update.
+- Organization roster: `G:\My Drive\Mindshare\roles.md` is for role and agent discovery only; it does not grant authority or expand assigned channels.
+- Channel map:
+  - Heartbeat: `G:\My Drive\Mindshare\channels\heartbeat.md`
+  - Communications: `G:\My Drive\Mindshare\channels\communications.md`
+  - Pipeline: `G:\My Drive\Mojo\channels\pipeline.md`
+  - Recruiting, Ana, role intake, and onboarding: `G:\My Drive\Mindshare\channels\recruiting.md`
+
 ## Memory Contract
 
 Durable facts:
@@ -255,7 +327,26 @@ Privacy and retention limits:
 
 Canonical memory location:
 
+Active project role memory file: `roles/<role-slug>/memory.md`
+
+Obsidian or notes memory mirror:
+
 Derived memory or RAG locations:
+
+Handoff check goal: Create a goal to read your assigned handoff files every 5 min, if not engaged in active work.
+
+Assigned handoff files:
+
+- `G:\My Drive\Mindshare\channels\heartbeat.md`
+- `G:\My Drive\Mindshare\channels\communications.md`
+- `G:\My Drive\Mojo\channels\pipeline.md`
+- `G:\My Drive\Mindshare\channels\recruiting.md` when this role participates in recruiting, Ana, role intake, or onboarding.
+
+Heartbeat automation: `<role-slug>-handoff-check`
+
+Heartbeat memory writes: update `roles/<role-slug>/memory.md` first; mirror to the configured notes root when appropriate.
+
+Role creation completion gate: when a project memory root exists, `/role` is not complete until the role memory mirror and role contract mirror are written and verified in Obsidian or notes.
 
 ## Learning And Growth
 
