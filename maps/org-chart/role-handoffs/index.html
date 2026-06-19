@@ -101,7 +101,7 @@
         <div>
           <p class="maps-eyebrow">Org Chart</p>
           <h1>Role Handoffs</h1>
-          <p>Role handoffs are built on durable Markdown channel files that commonly communicating roles read and write. Channels carry the ongoing conversation; handoff packets track bounded work that needs status, evidence, and closeout.</p>
+          <p>Role handoffs are built on durable Markdown channel files that commonly communicating roles read and write. Channels carry ongoing conversation, heartbeat state, role-to-role requests, and bounded handoff packets that need status, evidence, and closeout.</p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#handoff-process">View process</a>
             <a class="maps-button" href="/maps/org-chart/operating-cadence/">Back: operating cadence</a>
@@ -140,6 +140,7 @@
             <table class="maps-taxonomy-table">
               <thead><tr><th>File type</th><th>Purpose</th><th>Example</th></tr></thead>
               <tbody>
+                <tr><td>Heartbeat channel</td><td>Organization-wide liveness, cadence, blocker, and cross-role awareness for every active role.</td><td><code>channels/heartbeat.md</code></td></tr>
                 <tr><td>Function channel</td><td>Ongoing shared context for a recurring communication function across roles.</td><td><code>channels/pipeline.md</code></td></tr>
                 <tr><td>Handoff packet</td><td>Bounded work item spawned from a channel when status, acceptance, verification, and closeout must be tracked.</td><td><code>org-chart-development-2026-06-19.md</code></td></tr>
                 <tr><td>Channel template</td><td>Reusable structure for creating new function communication files.</td><td><code>role-channel-template.md</code></td></tr>
@@ -151,18 +152,19 @@
 
         <section id="handoff-process" class="maps-section">
           <div class="maps-section-header">
-            <h2>3-minute check goal</h2>
-            <p>Every active role and agent should have a standing goal to check its relevant function channels for work every 3 minutes while it is operating.</p>
+            <h2>5-minute heartbeat check</h2>
+            <p>Every active role and agent should have a standing heartbeat that checks its assigned handoff channels every 5 minutes when it is not already engaged in active user-directed work.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
               <thead><tr><th>Item</th><th>Rule</th></tr></thead>
               <tbody>
-                <tr><td>Read</td><td>Read the relevant function channel and linked active packets.</td></tr>
+                <tr><td>Read</td><td>Read the shared Heartbeat channel, the role's relevant function channels, and linked active packets.</td></tr>
                 <tr><td>Detect</td><td>Look for new requests, assigned work, blockers, review needs, decisions, escalations, and closeout tasks.</td></tr>
                 <tr><td>Respond</td><td>If work exists, acknowledge it, act inside authority, ask one blocker question, or route it to the correct function channel.</td></tr>
                 <tr><td>Record</td><td>Append when work is found, status changes, evidence changes, a blocker appears, or a closeout happens. Routine no-work checks do not need noisy log entries.</td></tr>
-                <tr><td>Guardrail</td><td>The 3-minute goal does not activate autonomous polling, production actions, external communication, spending, or authority expansion without an approved runtime and explicit permission.</td></tr>
+                <tr><td>Show checked locations</td><td>When the heartbeat surfaces work, action, a blocker, or an approval question, name the handoff locations checked so the operator can see which channel triggered the response.</td></tr>
+                <tr><td>Guardrail</td><td>The 5-minute heartbeat does not authorize interim due-check wakeups, production actions, external communication, spending, authority expansion, or autonomous runtime beyond the approved check.</td></tr>
               </tbody>
             </table>
           </div>
@@ -174,8 +176,9 @@
             <p>Use this flow whenever work needs to move from one role to another: build, review, approval, escalation, research, memory update, operations, or closeout.</p>
           </div>
           <ol class="maps-step-list">
-            <li><strong>Check cadence:</strong> Every 3 minutes while operating, the role checks relevant function channels and linked packets for work.</li>
-            <li><strong>Read channel:</strong> The acting role reads its shared channel file before responding to shared work.</li>
+            <li><strong>Check cadence:</strong> Every 5 minutes by heartbeat, the role checks assigned handoff channels only when it is not engaged in active user-directed work.</li>
+            <li><strong>Read heartbeat:</strong> The acting role reads <code>channels/heartbeat.md</code> for shared liveness, cadence, blocker, and cross-role awareness.</li>
+            <li><strong>Read function channel:</strong> The acting role reads its relevant function channel before responding to shared work.</li>
             <li><strong>Append message:</strong> The sending role appends context, request, evidence, authority boundary, and expected response.</li>
             <li><strong>Create packet when needed:</strong> If the work is bounded, risky, multi-step, or reviewable, create a handoff packet and link it from the channel.</li>
             <li><strong>Acknowledge:</strong> The receiving role appends acceptance, one clarifying question, redirect, escalation, or blocker.</li>
@@ -194,6 +197,14 @@
             <table class="maps-taxonomy-table">
               <thead><tr><th>Function</th><th>Channel file</th><th>Active handoffs</th><th>Senders</th><th>Receivers</th><th>Status</th></tr></thead>
               <tbody>
+                <tr>
+                  <td>Heartbeat</td>
+                  <td><code>channels/heartbeat.md</code></td>
+                  <td>Shared Heartbeat Channel</td>
+                  <td>All roles</td>
+                  <td>All roles</td>
+                  <td><code>active</code></td>
+                </tr>
                 <tr>
                   <td>Pipeline</td>
                   <td><code>channels/pipeline.md</code></td>
@@ -281,12 +292,21 @@
         <section class="maps-section">
           <div class="maps-section-header">
             <h2>Handoffs</h2>
-            <p>Each handoff belongs to a function channel. Pipeline is one channel; Recruiting is the next active channel.</p>
+            <p>Each handoff belongs to the shared Heartbeat channel or a function channel. Heartbeat carries liveness and cross-role awareness; Pipeline and Recruiting carry recurring work between commonly communicating roles.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
               <thead><tr><th>Function</th><th>Channel</th><th>Packet</th><th>Senders</th><th>Receivers</th><th>Status</th><th>Next move</th></tr></thead>
               <tbody>
+                <tr>
+                  <td>Heartbeat</td>
+                  <td><code>channels/heartbeat.md</code></td>
+                  <td>Shared Heartbeat Channel</td>
+                  <td>All roles</td>
+                  <td>All roles</td>
+                  <td><code>active</code></td>
+                  <td>Check every 5 minutes through approved heartbeat automation; append only meaningful liveness, blocker, cadence, automation, authority, onboarding, retirement, or cross-role state changes.</td>
+                </tr>
                 <tr>
                   <td>Pipeline</td>
                   <td><code>channels/pipeline.md</code></td>
