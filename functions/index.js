@@ -36,6 +36,7 @@ const db = admin.firestore();
 
 const POLAR_WEBHOOK_SECRET = defineSecret('POLAR_WEBHOOK_SECRET');
 const ADMIN_PAYOUT_KEY = defineSecret('ADMIN_PAYOUT_KEY');
+const SOCIAL_ADMIN_KEY = defineSecret('SOCIAL_ADMIN_KEY');
 const RESEND_API_KEY = defineSecret('RESEND_API_KEY');
 
 function setPublicCors(req, res) {
@@ -792,6 +793,21 @@ function isAuthorizedAdmin(req) {
   return Boolean(expectedKey && adminKey === expectedKey);
 }
 
+function isAuthorizedSocialAdmin(req) {
+  const adminKey = String(req.headers['x-admin-key'] || req.query?.admin_key || '').trim();
+  const expectedKey = String(SOCIAL_ADMIN_KEY.value() || '').trim();
+  return Boolean(expectedKey && adminKey === expectedKey);
+}
+
+function isPublicHttpUrl(value) {
+  try {
+    const url = new URL(String(value || '').trim());
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 function timestampMillis(value) {
   return value && typeof value.toMillis === 'function' ? value.toMillis() : null;
 }
@@ -807,6 +823,252 @@ function productPayload(doc) {
     updatedAt: undefined,
   };
 }
+
+function nullableString(value, maxLength = 2000) {
+  const text = String(value || '').trim();
+  if (!text) return null;
+  return text.slice(0, maxLength);
+}
+
+function normalizeSocialStatus(value) {
+  const status = String(value || 'draft').trim().toLowerCase();
+  return ['draft', 'scheduled', 'staged', 'posted', 'canceled'].includes(status) ? status : 'draft';
+}
+
+function normalizeSocialPlatform(value) {
+  const platform = String(value || 'x').trim().toLowerCase();
+  return ['x', 'linkedin', 'facebook', 'instagram', 'tiktok', 'youtube', 'threads', 'other'].includes(platform)
+    ? platform
+    : 'other';
+}
+
+function socialPostPayload(doc) {
+  const post = doc.data();
+  return {
+    id: doc.id,
+    ...post,
+    createdAtMillis: timestampMillis(post.createdAt),
+    updatedAtMillis: timestampMillis(post.updatedAt),
+    createdAt: undefined,
+    updatedAt: undefined,
+  };
+}
+
+function socialPostInput(body = {}) {
+  const title = nullableString(body.title, 180);
+  const text = nullableString(body.body, 12000);
+  if (!title || !text) {
+    return { error: 'Title and post text are required' };
+  }
+
+  return {
+    id: nullableString(body.id, 160),
+    title,
+    body: text,
+    platform: normalizeSocialPlatform(body.platform),
+    status: normalizeSocialStatus(body.status),
+    siteFunction: nullableString(body.siteFunction, 80) || 'general',
+    clientName: nullableString(body.clientName, 180),
+    campaign: nullableString(body.campaign, 180),
+    scheduledAtIso: nullableString(body.scheduledAtIso, 40),
+    assetUrl: nullableString(body.assetUrl, 2000),
+    postUrl: nullableString(body.postUrl, 2000),
+    notes: nullableString(body.notes, 4000),
+  };
+}
+
+function socialPostDocId(input) {
+  if (input.id) return input.id.replace(/[^a-zA-Z0-9_-]/g, '-').slice(0, 160);
+
+  const slug = input.title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 70) || 'social-post';
+
+  return `${slug}-${Date.now().toString(36)}`;
+}
+
+/**
+ * GET /adminListSocialPosts
+ * Lists social posts for the marketing admin workspace.
+ */
+exports.adminListSocialPosts = onRequest(
+  { secrets: [SOCIAL_ADMIN_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'GET') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedSocialAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    try {
+      const snapshot = await db.collection('social_posts').get();
+      const posts = snapshot.docs
+        .map(socialPostPayload)
+        .sort((a, b) => (b.updatedAtMillis || b.createdAtMillis || 0) - (a.updatedAtMillis || a.createdAtMillis || 0));
+
+      res.status(200).json({ ok: true, posts });
+    } catch (err) {
+      console.error('[adminListSocialPosts] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminSaveSocialPost
+ * Creates or updates a social post record.
+ */
+exports.adminSaveSocialPost = onRequest(
+  { secrets: [SOCIAL_ADMIN_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedSocialAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const input = socialPostInput(req.body || {});
+    if (input.error) {
+      res.status(400).json({ ok: false, message: input.error });
+      return;
+    }
+
+    try {
+      const postId = socialPostDocId(input);
+      const postRef = db.collection('social_posts').doc(postId);
+      const postSnap = await postRef.get();
+      const now = admin.firestore.FieldValue.serverTimestamp();
+      const doc = {
+        title: input.title,
+        body: input.body,
+        platform: input.platform,
+        status: input.status,
+        siteFunction: input.siteFunction,
+        clientName: input.clientName,
+        campaign: input.campaign,
+        scheduledAtIso: input.scheduledAtIso,
+        assetUrl: input.assetUrl,
+        postUrl: input.postUrl,
+        notes: input.notes,
+        updatedAt: now,
+      };
+
+      if (!postSnap.exists) {
+        doc.createdAt = now;
+      }
+      if (input.status === 'posted' && !postSnap.data()?.postedAtIso) {
+        doc.postedAtIso = new Date().toISOString();
+      }
+
+      await postRef.set(doc, { merge: true });
+      const saved = await postRef.get();
+      res.status(200).json({ ok: true, post: socialPostPayload(saved) });
+    } catch (err) {
+      console.error('[adminSaveSocialPost] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminUpdateSocialPostStatus
+ * Updates post lifecycle state from the calendar or posting workspace.
+ */
+exports.adminUpdateSocialPostStatus = onRequest(
+  { secrets: [SOCIAL_ADMIN_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedSocialAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const postId = nullableString(req.body?.postId, 160);
+    const status = normalizeSocialStatus(req.body?.status);
+    if (!postId) {
+      res.status(400).json({ ok: false, message: 'Missing postId' });
+      return;
+    }
+
+    try {
+      const postRef = db.collection('social_posts').doc(postId);
+      const postSnap = await postRef.get();
+      if (!postSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Post not found' });
+        return;
+      }
+
+      const update = {
+        status,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      };
+      if (status === 'posted') {
+        update.postedAtIso = new Date().toISOString();
+        update.postUrl = nullableString(req.body?.postUrl, 2000) || postSnap.data().postUrl || null;
+      }
+      if (status === 'canceled') {
+        update.canceledAtIso = new Date().toISOString();
+      }
+      if (status === 'staged') {
+        update.stagedAtIso = new Date().toISOString();
+      }
+
+      await postRef.update(update);
+      const saved = await postRef.get();
+      res.status(200).json({ ok: true, post: socialPostPayload(saved) });
+    } catch (err) {
+      console.error('[adminUpdateSocialPostStatus] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminDeleteSocialPost
+ * Deletes a social post record.
+ */
+exports.adminDeleteSocialPost = onRequest(
+  { secrets: [SOCIAL_ADMIN_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedSocialAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const postId = nullableString(req.body?.postId, 160);
+    if (!postId) {
+      res.status(400).json({ ok: false, message: 'Missing postId' });
+      return;
+    }
+
+    try {
+      await db.collection('social_posts').doc(postId).delete();
+      res.status(200).json({ ok: true, message: 'Post deleted' });
+    } catch (err) {
+      console.error('[adminDeleteSocialPost] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
 
 /**
  * GET /adminListProducts?status=pending_review|live
@@ -1015,11 +1277,24 @@ exports.createProductFromSubmission = onRequest(
       category,
       pricingModel,
       productUrl,
+      logoUrl,
+      screenshotUrl,
       targetUser,
+      anythingElse,
     } = req.body;
 
-    if (!email || !productName || !productDescription) {
+    if (!email || !productName || !productDescription || !logoUrl || !screenshotUrl) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+
+    if (!isPublicHttpUrl(logoUrl) || !isPublicHttpUrl(screenshotUrl)) {
+      res.status(400).json({ ok: false, message: 'Logo and screenshot must be valid public image URLs' });
+      return;
+    }
+
+    if (productUrl && !isPublicHttpUrl(productUrl)) {
+      res.status(400).json({ ok: false, message: 'Product URL must be a valid public URL' });
       return;
     }
 
@@ -1041,18 +1316,27 @@ exports.createProductFromSubmission = onRequest(
         tags: ['submitted'], // Mark as submitted for admin review
         price: null, // Admin sets pricing
         billingPeriod: pricingModel || 'month',
+        pricingModel: pricingModel || null,
         polarPriceId: null, // Admin links this later
         externalUrl: productUrl || null,
+        productUrl: productUrl || null,
+        imageUrl: screenshotUrl || logoUrl || null,
+        logoUrl: logoUrl || null,
+        screenshotUrl: screenshotUrl || null,
+        imageUrls: [logoUrl, screenshotUrl].filter(Boolean),
         status: 'pending_review', // Requires admin approval
         featured: false,
         rating: null,
         setupMinutes: null,
         integrations: [],
         inputs: targetUser || null,
+        targetUser: targetUser || null,
         outputs: null,
         iconColor: null,
         iconLetter: null,
         notes: `Submitted by ${contactName}: ${productUrl ? 'Has external URL' : 'No external URL provided'}`,
+        submitterName: contactName || null,
+        anythingElse: anythingElse || null,
         createdAt: admin.firestore.FieldValue.serverTimestamp(),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         submittedByEmail: email,

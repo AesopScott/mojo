@@ -1,0 +1,368 @@
+{
+  "attempted": 40,
+  "updated": 40,
+  "errors": 0,
+  "updated_events": [
+    {
+      "event_id": "315043835",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-mumbai",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T20:30",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-mumbai/events/315043835/"
+    },
+    {
+      "event_id": "315043833",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-bengaluru",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T20:30",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-bengaluru/events/315043833/"
+    },
+    {
+      "event_id": "315043828",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-hyderabad",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T20:30",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-hyderabad/events/315043828/"
+    },
+    {
+      "event_id": "315043825",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-delhi-ncr",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T20:30",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-delhi-ncr/events/315043825/"
+    },
+    {
+      "event_id": "315043834",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-dubai",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T22:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-dubai/events/315043834/"
+    },
+    {
+      "event_id": "315043826",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-nairobi",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T23:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-nairobi/events/315043826/"
+    },
+    {
+      "event_id": "315043824",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-riyadh",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T23:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-riyadh/events/315043824/"
+    },
+    {
+      "event_id": "315043822",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-tel-aviv",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-04T23:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-tel-aviv/events/315043822/"
+    },
+    {
+      "event_id": "315043831",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-berlin",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-berlin/events/315043831/"
+    },
+    {
+      "event_id": "315043829",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-paris",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-paris/events/315043829/"
+    },
+    {
+      "event_id": "315043827",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-amsterdam",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-amsterdam/events/315043827/"
+    },
+    {
+      "event_id": "315043821",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-cape-town",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-cape-town/events/315043821/"
+    },
+    {
+      "event_id": "315043820",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-johannesburg",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-johannesburg/events/315043820/"
+    },
+    {
+      "event_id": "315043819",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-barcelona",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-barcelona/events/315043819/"
+    },
+    {
+      "event_id": "315043818",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-stockholm",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-stockholm/events/315043818/"
+    },
+    {
+      "event_id": "315043817",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-munich",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-munich/events/315043817/"
+    },
+    {
+      "event_id": "315043816",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-madrid",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T00:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-madrid/events/315043816/"
+    },
+    {
+      "event_id": "315043832",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-dublin",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T01:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-dublin/events/315043832/"
+    },
+    {
+      "event_id": "315043830",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-london",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T01:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-london/events/315043830/"
+    },
+    {
+      "event_id": "315043823",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-global-lagos",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T01:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-global-lagos/events/315043823/"
+    },
+    {
+      "event_id": "315043815",
+      "title": "Global - Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-san-francisco",
+      "old_date": "2026-06-28T08:00",
+      "requested_start": "2026-07-05T08:00",
+      "new_date": "2026-07-05T09:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-san-francisco/events/315043815/"
+    },
+    {
+      "event_id": "315037937",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-boston",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-boston/events/315037937/"
+    },
+    {
+      "event_id": "315037935",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-new-york",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-new-york/events/315037935/"
+    },
+    {
+      "event_id": "315037933",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-miami",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-miami/events/315037933/"
+    },
+    {
+      "event_id": "315037932",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-the-triangle",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-the-triangle/events/315037932/"
+    },
+    {
+      "event_id": "315037925",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-columbus",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-columbus/events/315037925/"
+    },
+    {
+      "event_id": "315037923",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-philadelphia",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-philadelphia/events/315037923/"
+    },
+    {
+      "event_id": "315037921",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-washington-dc",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-washington-dc/events/315037921/"
+    },
+    {
+      "event_id": "315037920",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-atlanta",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T16:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-atlanta/events/315037920/"
+    },
+    {
+      "event_id": "315037934",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-chicago",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-chicago/events/315037934/"
+    },
+    {
+      "event_id": "315037931",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-houston",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-houston/events/315037931/"
+    },
+    {
+      "event_id": "315037929",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-okc",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-okc/events/315037929/"
+    },
+    {
+      "event_id": "315037928",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-dallas",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-dallas/events/315037928/"
+    },
+    {
+      "event_id": "315037926",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-kansas-city",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-kansas-city/events/315037926/"
+    },
+    {
+      "event_id": "315037922",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-san-antonio",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T17:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-san-antonio/events/315037922/"
+    },
+    {
+      "event_id": "315037930",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T18:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts/events/315037930/"
+    },
+    {
+      "event_id": "315037938",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-los-angeles",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T19:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-los-angeles/events/315037938/"
+    },
+    {
+      "event_id": "315037936",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-san-francisco",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T19:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-san-francisco/events/315037936/"
+    },
+    {
+      "event_id": "315037927",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-seattle",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T19:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-seattle/events/315037927/"
+    },
+    {
+      "event_id": "315037924",
+      "title": "Dev Automation and Harness Engineering I",
+      "group": "advanced-ai-concepts-phoenix",
+      "old_date": "2026-06-26T18:00",
+      "requested_start": "2026-07-03T18:00",
+      "new_date": "2026-07-03T19:00",
+      "event_url": "https://www.meetup.com/advanced-ai-concepts-phoenix/events/315037924/"
+    }
+  ],
+  "error_details": []
+}

@@ -122,28 +122,28 @@
     card.setAttribute('data-name', product.name);
 
     const iconColor = product.iconColor || 'blue';
-    const iconLetter = product.iconLetter || product.name.charAt(0).toUpperCase();
+    const iconLetter = product.iconLetter || String(product.name || '?').charAt(0).toUpperCase();
+    const imageUrl = safeUrl(product.imageUrl || product.screenshotUrl || '');
+    const logoUrl = safeUrl(product.logoUrl || '');
     const price = product.price ? `$${(product.price / 100).toFixed(0)}/mo` : 'Custom';
     const sellerName = product.sellerId ? `by ${product.sellerId.split('@')[0]}` : 'by Mojo';
 
-    const tagsHtml = (product.tags || [])
-      .slice(0, 3)
-      .map(tag => `<em>${tag}</em>`)
-      .join('');
-
     card.innerHTML = `
-      <div class="app-icon ${iconColor}">${iconLetter}</div>
-      <span>${product.category || 'Tools'} ${product.featured ? '<span class="pill pill--live">Featured</span>' : ''}</span>
-      <h3>${product.name}</h3>
-      <p>${product.description}</p>
+      ${imageUrl ? `<div class="app-image"><img src="${escapeAttribute(imageUrl)}" alt="${escapeAttribute(product.name || 'Product')} screenshot" loading="lazy"></div>` : ''}
+      <div class="app-card-header">
+        ${logoUrl ? `<img class="app-logo" src="${escapeAttribute(logoUrl)}" alt="${escapeAttribute(product.name || 'Product')} logo" loading="lazy">` : `<div class="app-icon ${escapeAttribute(iconColor)}">${escapeHtml(iconLetter)}</div>`}
+        <span>${escapeHtml(product.category || 'Tools')} ${product.featured ? '<span class="pill pill--live">Featured</span>' : ''}</span>
+      </div>
+      <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
+      <p>${escapeHtml(product.description || '')}</p>
       <div class="meta-row">
-        <small>${sellerName}</small>
-        ${product.integrations && product.integrations.length > 0 ? product.integrations.slice(0, 2).map(i => `<small>${i}</small>`).join('') : ''}
+        <small>${escapeHtml(sellerName)}</small>
+        ${product.integrations && product.integrations.length > 0 ? product.integrations.slice(0, 2).map(i => `<small>${escapeHtml(i)}</small>`).join('') : ''}
       </div>
       <footer>
-        <b>${price}</b>
+        <b>${escapeHtml(price)}</b>
         <div class="card-actions">
-          ${product.externalUrl ? `<a class="button dark" href="${product.externalUrl}" target="_blank" rel="noopener">Learn More</a>` : '<button type="button" disabled>Coming Soon</button>'}
+          ${safeUrl(product.externalUrl) ? `<a class="button dark" href="${escapeAttribute(safeUrl(product.externalUrl))}" target="_blank" rel="noopener">Learn More</a>` : '<button type="button" disabled>Coming Soon</button>'}
         </div>
       </footer>
     `;
@@ -160,5 +160,27 @@
     });
 
     filterProducts();
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value).replace(/`/g, '&#96;');
+  }
+
+  function safeUrl(value) {
+    try {
+      const url = new URL(String(value || '').trim());
+      return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+    } catch {
+      return '';
+    }
   }
 }());

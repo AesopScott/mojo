@@ -137,32 +137,77 @@
 
     const seller = product.submittedByEmail || 'Unknown';
     const sellerName = seller.split('@')[0];
+    const submitterName = product.submitterName || sellerName;
+    const productUrl = product.productUrl || product.externalUrl || '';
+    const safeProductUrl = safeUrl(productUrl);
+    const logoUrl = product.logoUrl || '';
+    const screenshotUrl = product.screenshotUrl || product.imageUrl || '';
+    const safeLogoUrl = safeUrl(logoUrl);
+    const safeScreenshotUrl = safeUrl(screenshotUrl);
+    const pricingModel = product.pricingModel || product.billingPeriod || '';
+    const targetUser = product.targetUser || product.inputs || '';
+    const additionalContext = product.anythingElse || '';
 
     div.innerHTML = `
       <div class="product-header">
         <div class="product-info">
-          <h3>${product.name}</h3>
-          <div class="product-seller">by ${sellerName} (${seller})</div>
+          <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
+          <div class="product-seller">by ${escapeHtml(submitterName)} (${escapeHtml(seller)})</div>
         </div>
         <span class="status-badge status-pending">Pending Review</span>
       </div>
 
-      <p class="product-description">${product.description}</p>
+      <p class="product-description">${escapeHtml(product.description || '')}</p>
+
+      <div class="product-assets">
+        <div class="product-asset product-asset--logo">
+          <div class="meta-label">Logo / Icon</div>
+          ${safeLogoUrl ? `<img src="${escapeAttribute(safeLogoUrl)}" alt="${escapeAttribute(product.name || 'Product')} logo" loading="lazy">` : '<div class="meta-value">Not provided</div>'}
+          ${safeLogoUrl ? `<a href="${escapeAttribute(safeLogoUrl)}" target="_blank" rel="noopener">${escapeHtml(logoUrl)}</a>` : ''}
+        </div>
+        <div class="product-asset">
+          <div class="meta-label">Screenshot / Cover</div>
+          ${safeScreenshotUrl ? `<img src="${escapeAttribute(safeScreenshotUrl)}" alt="${escapeAttribute(product.name || 'Product')} screenshot" loading="lazy">` : '<div class="meta-value">Not provided</div>'}
+          ${safeScreenshotUrl ? `<a href="${escapeAttribute(safeScreenshotUrl)}" target="_blank" rel="noopener">${escapeHtml(screenshotUrl)}</a>` : ''}
+        </div>
+      </div>
 
       <div class="product-meta">
         <div class="meta-item">
           <div class="meta-label">Category</div>
-          <div class="meta-value">${product.category || 'Other'}</div>
+          <div class="meta-value">${escapeHtml(formatValue(product.category, 'Other'))}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Pricing Model</div>
-          <div class="meta-value">${product.billingPeriod || 'Month'}</div>
+          <div class="meta-value">${escapeHtml(formatValue(pricingModel, 'Not specified'))}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Submitted</div>
           <div class="meta-value">${formatDate(product.createdAtMillis)}</div>
         </div>
       </div>
+
+      <div class="product-meta">
+        <div class="meta-item">
+          <div class="meta-label">Product URL / Demo</div>
+          <div class="meta-value">${safeProductUrl ? `<a href="${escapeAttribute(safeProductUrl)}" target="_blank" rel="noopener">${escapeHtml(productUrl)}</a>` : escapeHtml(formatValue(productUrl, 'Not provided'))}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Target User</div>
+          <div class="meta-value">${escapeHtml(formatValue(targetUser, 'Not specified'))}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Contact Email</div>
+          <div class="meta-value">${escapeHtml(seller)}</div>
+        </div>
+      </div>
+
+      ${additionalContext ? `
+        <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
+          <div class="meta-label" style="margin-bottom: 8px;">Anything Else</div>
+          <div class="product-description" style="margin-bottom: 0;">${escapeHtml(additionalContext)}</div>
+        </div>
+      ` : ''}
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
         <div class="form-group">
@@ -261,22 +306,22 @@
     div.innerHTML = `
       <div class="product-header">
         <div class="product-info">
-          <h3>${product.name}</h3>
-          <div class="product-seller">by ${seller}</div>
+          <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
+          <div class="product-seller">by ${escapeHtml(seller)}</div>
         </div>
         <span class="status-badge status-live">Published</span>
       </div>
 
-      <p class="product-description">${product.description}</p>
+      <p class="product-description">${escapeHtml(product.description || '')}</p>
 
       <div class="product-meta">
         <div class="meta-item">
           <div class="meta-label">Price</div>
-          <div class="meta-value">${price}</div>
+          <div class="meta-value">${escapeHtml(price)}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Polar ID</div>
-          <div class="meta-value" style="font-family: monospace; font-size: 11px;">${product.polarPriceId || '—'}</div>
+          <div class="meta-value" style="font-family: monospace; font-size: 11px;">${escapeHtml(product.polarPriceId || '—')}</div>
         </div>
         <div class="meta-item">
           <div class="meta-label">Featured</div>
@@ -357,5 +402,32 @@
   function formatDate(value) {
     if (!value) return 'unknown';
     return new Date(value).toLocaleDateString();
+  }
+
+  function formatValue(value, fallback) {
+    const text = String(value || '').trim();
+    return text || fallback;
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function escapeAttribute(value) {
+    return escapeHtml(value).replace(/`/g, '&#96;');
+  }
+
+  function safeUrl(value) {
+    try {
+      const url = new URL(String(value || '').trim());
+      return ['http:', 'https:'].includes(url.protocol) ? url.href : '';
+    } catch {
+      return '';
+    }
   }
 }());

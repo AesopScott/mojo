@@ -7,3 +7,11 @@ firebase-debug.log
 !.env.example
 tmp/
 .codex/
+.firebaserc
+.obsidian/
+.obsidian-memory/
+HANDOFF.md
+Pasted image*.png
+client onboarding smoke test.docx
+deploy.log
+meetup-oauth-token.json

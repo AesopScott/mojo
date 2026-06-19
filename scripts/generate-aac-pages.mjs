@@ -6,7 +6,7 @@ import sharp from "sharp";
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 const ENV_PATH = path.join(ROOT, ".env");
 const ENDPOINT = process.env.MOJO_MEETUP_ADMIN_ENDPOINT || "https://mojoaistudio.com/api/meetup-admin";
-const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Aesop Academy/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
+const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
 const OUT_DIR = path.join(ROOT, "watch");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
 const FALLBACK_HERO_IMAGE = path.join(ASSET_DIR, "hero.jpg");
@@ -423,7 +423,11 @@ function recordingsMarkup() {
 }
 
 function hubPage(chapters, globalEvents) {
-  const homeEvents = chapters[0]?.events || [];
+  const hubChapters = chapters.map((chapter) => ({
+    ...chapter,
+    events: chapter.events.filter(isPublicUpcomingEvent),
+  }));
+  const homeEvents = hubChapters[0]?.events || [];
   const body = `
       <section class="aac-hero">
         <div>
@@ -495,16 +499,16 @@ function hubPage(chapters, globalEvents) {
         <div class="aac-city-session-picker">
           <label for="aac-session-city">City</label>
           <select id="aac-session-city" data-city-select>
-            ${chapters.map((chapter, index) => `
+            ${hubChapters.map((chapter, index) => `
             <option value="${escapeHtml(chapter.slug)}" data-urlname="${escapeHtml(chapter.urlname)}" data-group-url="${escapeHtml(chapter.meetupUrl)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
           </select>
         </div>
         <div class="aac-city-group-card">
           <p>Join the local Meetup group, then RSVP for an upcoming session. Each event is limited to 100 people.</p>
-          <a class="button dark" data-city-group-link href="${escapeHtml(chapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(chapters[0]?.city || "selected city")} group</a>
+          <a class="button dark" data-city-group-link href="${escapeHtml(hubChapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(hubChapters[0]?.city || "selected city")} group</a>
         </div>
         <div class="aac-event-list" data-city-events>
-          ${chapters.map((chapter, index) => chapter.events.map((event) => `
+          ${hubChapters.map((chapter, index) => chapter.events.map((event) => `
           <a class="aac-row-card aac-session-card${eventStateClass(event)}" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
             <span>${escapeHtml(eventDateLabel(event.dateTime))}</span>
             <p>${escapeHtml(event.title)}</p>
@@ -516,7 +520,7 @@ function hubPage(chapters, globalEvents) {
             const select = document.querySelector("[data-city-select]");
             const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
-            const chapterSlugs = ${JSON.stringify(Object.fromEntries(chapters.map((chapter) => [chapter.urlname, chapter.slug])))};
+            const chapterSlugs = ${JSON.stringify(Object.fromEntries(hubChapters.map((chapter) => [chapter.urlname, chapter.slug])))};
             if (!select || !cards.length) return;
             const syncCity = () => {
               const selected = select.selectedOptions[0];
@@ -665,6 +669,7 @@ function hubPage(chapters, globalEvents) {
 }
 
 function cityPage(chapter) {
+  const publicEvents = chapter.events.filter(isPublicUpcomingEvent);
   const description = `Join Advanced AI Concepts in ${chapter.city}. Live online sessions for builders exploring agents, memory, command centers, and advanced AI systems.`;
   const body = `
       <section class="aac-city-hero">
@@ -688,7 +693,7 @@ function cityPage(chapter) {
           <p>Each event is limited to 100 people.</p>
         </div>
         <div class="aac-events-grid">
-          ${eventsMarkup(chapter.events)}
+          ${eventsMarkup(publicEvents)}
         </div>
       </section>
       <section class="section aac-section">
@@ -737,7 +742,7 @@ function cityPage(chapter) {
         { name: "Advanced AI Concepts", url: "https://mojoaistudio.com/watch/" },
         { name: chapter.city, url: `https://mojoaistudio.com/watch/${chapter.slug}/` },
       ]),
-      ...chapter.events.map((event) => eventSchema(chapter, event)),
+      ...publicEvents.map((event) => eventSchema(chapter, event)),
     ],
   });
 }
@@ -797,7 +802,6 @@ async function main() {
     const events = group.events.edges
       .map((edge) => edge.node)
       .filter((event) => event.status === "ACTIVE")
-      .filter(isPublicUpcomingEvent)
       .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     chapters.push({
       ...city,
@@ -811,7 +815,6 @@ async function main() {
   const globalEvents = globalGroup.events.edges
     .map((edge) => edge.node)
     .filter((event) => event.status === "ACTIVE" && /^Global\s*-\s*/i.test(event.title))
-    .filter(isPublicUpcomingEvent)
     .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
 
   const heroSource = await resolveHeroImageSource(env, chapters);
@@ -823,11 +826,14 @@ async function main() {
   await generateOgImage(heroSource, {
     city: "Advanced AI Concepts",
     state: "67 global city chapters",
-    events: chapters[0].events,
+    events: chapters[0].events.filter(isPublicUpcomingEvent),
   }, "og-hub.jpg");
 
   for (const chapter of chapters) {
-    await generateOgImage(heroSource, chapter, `og-${chapter.slug}.jpg`);
+    await generateOgImage(heroSource, {
+      ...chapter,
+      events: chapter.events.filter(isPublicUpcomingEvent),
+    }, `og-${chapter.slug}.jpg`);
     const cityDir = path.join(OUT_DIR, chapter.slug);
     await fs.mkdir(cityDir, { recursive: true });
     await fs.writeFile(path.join(cityDir, "index.html"), cityPage(chapter));
@@ -837,8 +843,8 @@ async function main() {
   console.log(JSON.stringify({
     ok: true,
     city_count: chapters.length,
-    event_count: chapters.reduce((sum, chapter) => sum + chapter.events.length, 0),
-    global_activity_count: globalEvents.length,
+    event_count: chapters.reduce((sum, chapter) => sum + chapter.events.filter(isPublicUpcomingEvent).length, 0),
+    global_activity_count: globalEvents.filter(isPublicUpcomingEvent).length,
   }));
 }
 

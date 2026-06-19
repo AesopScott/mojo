@@ -213,7 +213,7 @@ If PHP is not installed locally, note that explicitly.
 2. Dry-run live endpoint after deploy:
 
 ```text
-https://mojoaistudio.com/api/meetup-admin?action=send-topic-followups&admin_key=... 
+https://mojoaistudio.com/api/meetup-admin?action=send-topic-followups&admin_key=...
 ```
 
 Expected before token restore:
@@ -246,7 +246,7 @@ confirm=send-topic-followups
 Canonical content is also tracked here:
 
 ```text
-G:\My Drive\Aesop Academy\Obsidian\Advanced_AI_Concepts_Build\10-Welcome-Message.md
+G:\My Drive\Obsidian\Advanced_AI_Concepts_Build\10-Welcome-Message.md
 ```
 
 Build plan/logs were updated to reflect:

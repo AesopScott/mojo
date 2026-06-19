@@ -582,7 +582,6 @@ ${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingEl
   return json({ ok: true });
 }
 
-
 async function handleSubmitProduct(request, env, ctx) {
   if (request.method !== "POST") {
     return json({ ok: false, message: "Method not allowed." }, 405);
@@ -595,7 +594,7 @@ async function handleSubmitProduct(request, env, ctx) {
     return json({ ok: false, message: "Expected JSON body." }, 400);
   }
 
-  const required = ["productName", "contactName", "contactEmail", "productDescription"];
+  const required = ["productName", "contactName", "contactEmail", "productDescription", "logoUrl", "screenshotUrl"];
   const missing = required.filter((f) => !String(data[f] || "").trim());
   if (missing.length) {
     return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
@@ -604,6 +603,16 @@ async function handleSubmitProduct(request, env, ctx) {
   const email = String(data.contactEmail || "").trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return json({ ok: false, message: "Invalid email address." }, 422);
+  }
+
+  const logoUrl = String(data.logoUrl || "").trim();
+  const screenshotUrl = String(data.screenshotUrl || "").trim();
+  const productUrl = String(data.productUrl || "").trim();
+  if (!isHttpUrl(logoUrl) || !isHttpUrl(screenshotUrl)) {
+    return json({ ok: false, message: "Logo and screenshot must be valid public image URLs." }, 422);
+  }
+  if (productUrl && !isHttpUrl(productUrl)) {
+    return json({ ok: false, message: "Product URL must be a valid public URL." }, 422);
   }
 
   if (!env.PRODUCT_SUBMISSIONS) {
@@ -619,7 +628,9 @@ async function handleSubmitProduct(request, env, ctx) {
     contactName: String(data.contactName || "").trim(),
     contactEmail: email,
     productDescription: String(data.productDescription || "").trim(),
-    productUrl: String(data.productUrl || "").trim(),
+    productUrl,
+    logoUrl,
+    screenshotUrl,
     category: String(data.category || "").trim(),
     pricingModel: String(data.pricingModel || "").trim(),
     targetUser: String(data.targetUser || "").trim(),
@@ -636,17 +647,20 @@ async function handleSubmitProduct(request, env, ctx) {
     category: record.category,
     pricingModel: record.pricingModel,
     productUrl: record.productUrl,
+    logoUrl: record.logoUrl,
+    screenshotUrl: record.screenshotUrl,
     targetUser: record.targetUser,
+    anythingElse: record.anythingElse,
   });
 
   ctx.waitUntil(Promise.all([
-    fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission", {
+    checkedFetch("submitProduct:createProduct", "https://us-central1-mojo-f86de.cloudfunctions.net/createProductFromSubmission", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: firestoreBody,
-    }).catch((err) => console.error("[submitProduct] product creation failed:", err)),
+    }),
 
-    fetch("https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
+    checkedFetch("submitProduct:createSeller", "https://us-central1-mojo-f86de.cloudfunctions.net/createSellerFromProductSubmission", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -654,9 +668,9 @@ async function handleSubmitProduct(request, env, ctx) {
         contactName: record.contactName,
         productName: record.productName,
       }),
-    }).catch((err) => console.error("[submitProduct] seller record creation failed:", err)),
+    }),
 
-    env.RESEND_API_KEY ? fetch("https://api.resend.com/emails", {
+    env.RESEND_API_KEY ? checkedFetch("submitProduct:confirmationEmail", "https://api.resend.com/emails", {
       method: "POST",
       headers: { "Authorization": `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -669,10 +683,37 @@ async function handleSubmitProduct(request, env, ctx) {
 <p>Questions? Contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
 <p>— Mojo AI Studio</p>`,
       }),
-    }).catch((err) => console.error("[submitProduct] confirmation email failed:", err)) : Promise.resolve(),
+    }) : Promise.resolve(),
   ]));
 
   return json({ ok: true });
+}
+
+function isHttpUrl(value) {
+  try {
+    const url = new URL(String(value || "").trim());
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+async function checkedFetch(label, url, init) {
+  try {
+    const response = await fetch(url, init);
+    if (!response.ok) {
+      const text = await response.text().catch(() => "");
+      console.error(`[${label}] failed`, {
+        status: response.status,
+        statusText: response.statusText,
+        body: text.slice(0, 1000),
+      });
+    }
+    return response;
+  } catch (err) {
+    console.error(`[${label}] network error`, err);
+    return null;
+  }
 }
 
 async function handleSubmitProductAdmin(request, env, url) {
