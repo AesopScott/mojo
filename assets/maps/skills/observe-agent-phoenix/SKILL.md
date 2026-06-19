@@ -75,7 +75,7 @@ Ask exactly one question at a time. Do not present the user with a multi-questio
 
 ## Best Fit
 
-- Choose this wrapper when students should compare open instrumentation and trace/eval analysis.
+- Choose this wrapper when developers should compare open instrumentation and trace/eval analysis.
 - Choose it when OpenTelemetry or OpenInference portability matters.
 - Treat Phoenix as a strong engineering workbench, not necessarily the only product-ops dashboard.
 

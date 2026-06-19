@@ -75,7 +75,7 @@ Ask exactly one question at a time. Do not present the user with a multi-questio
 
 ## Best Fit
 
-- Choose this wrapper when students should compare a self-hostable/open-source observability option.
+- Choose this wrapper when developers should compare a self-hostable/open-source observability option.
 - Choose it when prompt management, feedback, scoring, and data-control concerns matter.
 - Do not assume Langfuse replaces LangSmith; make the tradeoff visible.
 

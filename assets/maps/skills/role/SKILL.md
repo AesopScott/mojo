@@ -21,7 +21,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 - 2026-06-19 - v0.2.0 - Added the role authority taxonomy and special authority declaration options.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
-Use `/role` to design a role agent for an organization. This is not a MAPS phase skill. It is a role-construction skill students can run repeatedly to create two or three organizational roles under a root company, team, service, or agentic corporation.
+Use `/role` to design a role agent for an organization. This is not a MAPS phase skill. It is a role-construction skill developers can run repeatedly to create two or three organizational roles under a root company, team, service, or agentic corporation.
 
 ## Project foundation updates
 

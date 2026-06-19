@@ -177,7 +177,7 @@ Phase 7 should also provide three comparable wrapper skills:
 - `/observe-agent+fuse`: base Observe plus Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability.
 - `/observe-agent+phoenix`: base Observe plus Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis.
 
-The page should let students compare all three instead of telling them one answer is always best.
+The page should let developers compare all three instead of telling them one answer is always best.
 
 Phase 7 should answer:
 
