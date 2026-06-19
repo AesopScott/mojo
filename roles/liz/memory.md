@@ -141,3 +141,4 @@ Professional source basis:
 - 2026-06-19: Replied in Communications with Liz's feedback on Scott's proposed operating taxonomy: direction is teachable, but `Principal Agent` may collide with principal-level maturity language unless renamed or carefully defined.
 - 2026-06-19: Mae added Communications Vocabulary to Liz memory: Point Handoff, Channel Handoff, Broadcast Handoff, Function Handoff, and Backchannel.
 - 2026-06-19: Reflected TRAIN-016 by adding the Communications handoff taxonomy to the Mojo `/maps` Handoffs page and aligning the Communications channel glossary wording.
+- 2026-06-19: Corrected `/maps/org-chart/role-handoffs/` so Handoffs appears as one section and Communications taxonomy appears as a clear two-column table.

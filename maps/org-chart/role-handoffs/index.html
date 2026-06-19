@@ -157,30 +157,20 @@
 
         <section class="maps-section">
           <div class="maps-section-header">
-            <h2>Handoff taxonomy</h2>
-            <p>Use these terms to distinguish who receives a handoff, where it is recorded, and whether it is ready to become shared operating memory.</p>
+            <h2>Communication taxonomy</h2>
+            <p>These terms describe how handoff information moves between roles, channels, and private notes.</p>
           </div>
-          <div class="maps-grid">
-            <article class="maps-panel">
-              <h3>Point Handoff</h3>
-              <p>A direct handoff to one role or thread.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Channel Handoff</h3>
-              <p>A handoff written to a shared channel.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Broadcast Handoff</h3>
-              <p>An org-wide channel handoff through Heartbeat or Communications.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Function Handoff</h3>
-              <p>A domain-channel handoff, such as Recruiting, Pipeline, or Release Management.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Backchannel</h3>
-              <p>A direct note that should not yet become a shared record.</p>
-            </article>
+          <div class="maps-table-wrap">
+            <table class="maps-taxonomy-table">
+              <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td>Point Handoff</td><td>Direct handoff to one role or thread.</td></tr>
+                <tr><td>Channel Handoff</td><td>Handoff written to a shared channel.</td></tr>
+                <tr><td>Broadcast Handoff</td><td>Org-wide channel handoff through Heartbeat or Communications.</td></tr>
+                <tr><td>Function Handoff</td><td>Domain-channel handoff, such as Recruiting, Pipeline, or Release Management.</td></tr>
+                <tr><td>Backchannel</td><td>Direct note that should not yet become shared record.</td></tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -244,60 +234,6 @@
               <h3>Role index</h3>
               <p>Check <code>G:\My Drive\Mindshare\roles.md</code> to confirm the role appears in the organization roster with its title, status, scope, and links. Missing index entries should be treated as follow-up work.</p>
             </article>
-          </div>
-        </section>
-
-        <section class="maps-section">
-          <div class="maps-section-header">
-            <h2>Handoffs</h2>
-            <p>This is the organization-wide list of handoffs between roles, grouped by the function channel where the roles communicate.</p>
-          </div>
-          <div class="maps-table-wrap">
-            <table class="maps-taxonomy-table">
-              <thead><tr><th>Function</th><th>Channel file</th><th>Active handoffs</th><th>Senders</th><th>Receivers</th><th>Status</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td>Heartbeat</td>
-                  <td><code>channels/heartbeat.md</code></td>
-                  <td>Shared Heartbeat Channel</td>
-                  <td>All roles</td>
-                  <td>All roles</td>
-                  <td><code>active</code></td>
-                </tr>
-                <tr>
-                  <td>Pipeline</td>
-                  <td><code>channels/pipeline.md</code></td>
-                  <td>Org Chart Development</td>
-                  <td>Vik, Matt</td>
-                  <td>Vik, Matt</td>
-                  <td><code>drafting</code></td>
-                </tr>
-                <tr>
-                  <td>Recruiting</td>
-                  <td><code>channels/recruiting.md</code></td>
-                  <td>Recruiting Handoff</td>
-                  <td>Vik, Matt, Ana</td>
-                  <td>Vik, Matt, Ana</td>
-                  <td><code>active</code></td>
-                </tr>
-                <tr>
-                  <td>Release Management</td>
-                  <td><code>G:\My Drive\Mindshare\channels\release-management.md</code></td>
-                  <td>Git/GitHub write routing</td>
-                  <td>Roles proposing repo writes</td>
-                  <td>Reid, Scott</td>
-                  <td><code>active</code></td>
-                </tr>
-                <tr>
-                  <td>Training</td>
-                  <td><code>G:\My Drive\Mindshare\mapstraining.md</code></td>
-                  <td>MAPS Training Handoff</td>
-                  <td>Liz</td>
-                  <td>Liz</td>
-                  <td><code>active</code></td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </section>
 
@@ -391,6 +327,15 @@
                   <td>Vik, Matt</td>
                   <td><code>drafting</code></td>
                   <td>Keep shared context in the channel, then route the packet to Matt when the requested build response is explicit.</td>
+                </tr>
+                <tr>
+                  <td>Release Management</td>
+                  <td><code>G:\My Drive\Mindshare\channels\release-management.md</code></td>
+                  <td>Git/GitHub write routing</td>
+                  <td>Roles proposing repo writes</td>
+                  <td>Reid, Scott</td>
+                  <td><code>active</code></td>
+                  <td>Route repo, branch, action, risk, and approval state before commits, pushes, PR merges, releases, promotions, or branch cleanup.</td>
                 </tr>
                 <tr>
                   <td>Recruiting</td>
