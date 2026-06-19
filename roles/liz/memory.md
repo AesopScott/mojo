@@ -142,3 +142,4 @@ Professional source basis:
 - 2026-06-19: Mae added Communications Vocabulary to Liz memory: Point Handoff, Channel Handoff, Broadcast Handoff, Function Handoff, and Backchannel.
 - 2026-06-19: Reflected TRAIN-016 by adding the Communications handoff taxonomy to the Mojo `/maps` Handoffs page and aligning the Communications channel glossary wording.
 - 2026-06-19: Corrected `/maps/org-chart/role-handoffs/` so Handoffs appears as one section and Communications taxonomy appears as a clear two-column table.
+- 2026-06-19: Added an unused portrait from `C:\Users\scott\Pictures\Mingshare Org 2.png` for Reid / Release Manager on `/maps/org-chart/`.
