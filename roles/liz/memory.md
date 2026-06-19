@@ -52,8 +52,9 @@ Assigned handoff files:
 
 - `G:\My Drive\Mindshare\channels\heartbeat.md`
 - `G:\My Drive\Mindshare\channels\communications.md`
+- `G:\My Drive\Mindshare\channels\release-management.md`
 
-Liz does not read Recruiting or Pipeline as an assigned handoff channel unless Scott explicitly assigns a MAPS training item there. If the snapshot detects changes in Pipeline-related files, Liz should use `mapstraining.md` as the training reference. If the changed file is outside Liz's readable scope and is not named by `mapstraining.md`, classify it by path/metadata only and surface a pending-review item instead of reading it.
+Liz reads Release Management only for Git/GitHub routing, branch, PR, release, promotion, or approval-boundary notices relevant to her scoped `/maps` training-site commit/push authority. Liz does not read Recruiting or Pipeline as an assigned handoff channel unless Scott explicitly assigns a MAPS training item there. If the snapshot detects changes in Pipeline-related files, Liz should use `mapstraining.md` as the training reference. If the changed file is outside Liz's readable scope and is not named by `mapstraining.md`, classify it by path/metadata only and surface a pending-review item instead of reading it.
 
 Assigned Obsidian training reference:
 
@@ -108,6 +109,7 @@ Professional source basis:
 - Done: create Liz memory, role contract, workflow, and state files.
 - Done: connect the Liz training room to this memory and role contract so it does not respond as an unbacked persona.
 - Done: activate `liz-handoff-check` for Liz's assigned Heartbeat and Recruiting channels plus Obsidian snapshot comparison.
+- Next: verify or repair the `/maps/` source-link surface so `Open MAPS+Org source` appears beside `Open MAPS source` and points to `https://github.com/AesopScott/maps-plus-org`.
 - Next: practice reflecting confirmed `mapstraining.md` training handoff items into `/maps`.
 - Proposed: design any broader Obsidian-to-Mojo training sync loop only after Scott approves the loop and Vik reviews the control-plane boundary.
 
@@ -132,5 +134,7 @@ Professional source basis:
 - 2026-06-19: On `liz-handoff-check`, reflected Reid / Release Manager onto `/maps/org-chart/` after assigned channels and durable Obsidian role evidence showed Reid was activated as a bounded Role+ operator.
 - 2026-06-19: On `liz-handoff-check`, reflected the Evaluate proof mode boundary onto `/maps/Skills/`: specification-mode proof can show profile/design readiness, but implemented Agent confidence still requires Build, Equip, and executable Evaluate evidence.
 - 2026-06-19: On `liz-handoff-check`, reflected Release Management routing onto `/maps/org-chart/role-handoffs/`: roles proposing Git/GitHub write actions should route repo, branch, action, risk, and approval state through Release Management before acting, without implying independent write authority.
-- 2026-06-19: Mae added Release Management to Liz's assigned heartbeat checked locations because Liz has scoped /maps training-site commit/push authority and should see Git/GitHub routing notices before write activity.
-- 2026-06-19: Moved Role Handoffs out of the Org Chart dropdown and into the top MAPS navigation as Handoffs between Global and References, leaving the page content unchanged.
+- 2026-06-19: Mae added Release Management to Liz's assigned heartbeat checked locations because Liz has scoped `/maps` training-site commit/push authority and should see Git/GitHub routing notices before write activity.
+- 2026-06-19: Vik added a confirmed `mapstraining.md` handoff for Liz to verify or repair the `/maps/` `Open MAPS+Org source` link beside the existing MAPS source link.
+- 2026-06-19: Moved Role Handoffs out of the Org Chart dropdown and into the top MAPS navigation as `Handoffs` between Global and References, leaving the page content unchanged.
+- 2026-06-19: Reflected TRAIN-015 by bumping the `/maps/` script cache key so production loads the `Open MAPS+Org source` button beside `Open MAPS source`.
