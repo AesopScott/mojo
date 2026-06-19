@@ -144,3 +144,4 @@ Professional source basis:
 - 2026-06-19: Corrected `/maps/org-chart/role-handoffs/` so Handoffs appears as one section and Communications taxonomy appears as a clear two-column table.
 - 2026-06-19: Added an unused portrait from `C:\Users\scott\Pictures\Mingshare Org 2.png` for Reid / Release Manager on `/maps/org-chart/`.
 - 2026-06-19: Reflected TRAIN-017 by adding `/build-agent` v0.4.0 Build 10/10 proof requirements to `/maps/Skills/`; Bea was detected as a Mojo MAPS Engineer candidate role but not added to the org chart because she is not activated.
+- 2026-06-19: Reflected TRAIN-018 by adding Bea / Mojo MAPS Engineer to `/maps/org-chart/` after durable Obsidian evidence and Heartbeat showed Bea had been activated as a bounded Role+ operator.
