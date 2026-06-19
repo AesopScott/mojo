@@ -127,8 +127,20 @@ If any required preflight decision is missing or ambiguous, ask the user before 
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/shape` for M1 System Shape, unless M0 says the project needs more foundation work first.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Create or update these concrete outputs in the current project:
 
 - `project-foundation.md`: completed M0 foundation artifact from `templates/project-foundation.md`.

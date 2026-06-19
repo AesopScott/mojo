@@ -54,8 +54,20 @@ If evidence is thin, ask whether to create an observation plan, gather more trac
 6. Record the next experiment.
 7. Feed lessons back into earlier MAPS phases.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: rerun the affected earlier skill: `/design-agent`, `/build-agent`, `/equip-agent`, `/evaluate-agent`, or `/deploy-agent`, depending on what changed.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Return:
 
 - Improvement backlog

@@ -76,8 +76,20 @@ If the user cannot answer, propose a recommendation and ask them to accept, revi
 12. Ask the user to accept or override the recommendations.
 13. Produce or update `agents/{agent-handle}/agent-design.md`.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/design-experience` or `/design-experience++` when user-facing surfaces matter, otherwise `/build-agent`.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Create or update `agents/{agent-handle}/agent-design.md` using `templates/workflow-spec.md` as the starting structure.
 
 The completed file contains:

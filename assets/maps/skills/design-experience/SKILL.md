@@ -64,8 +64,20 @@ If the user is not ready to answer, draft a first useful journey and ask them to
 9. Decide what the experience requires from M9 System Evaluate, M10 Deploy/Observe, M11 Improve, and any APS phase that needs correction.
 10. Write `experience-design.md` from the template and record unresolved decisions as explicit follow-up items.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/build-agent` when the experience handoff is ready, or `/evaluate-agent` if the experience needs proof criteria before build.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 - `m/{project-handle}/experience-design.md` for a multi-agent project, or `agents/{agent-handle}/experience-design.md` for optional single-agent A2
 - User journeys and front-end surfaces
 - Information architecture and navigation model

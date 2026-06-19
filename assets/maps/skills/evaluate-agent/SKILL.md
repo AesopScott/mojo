@@ -54,8 +54,20 @@ If the user does not have eval scenarios, draft candidates and ask for approval 
 6. Run or specify the evaluation process.
 7. Produce a scorecard and release recommendation.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/deploy-agent` when release evidence passes, or `/improve-agent` when failures need fixes before release.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Return:
 
 - Eval scenarios

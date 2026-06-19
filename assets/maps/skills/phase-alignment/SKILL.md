@@ -54,8 +54,20 @@ If the user only has a rough idea, draft a candidate phase map and ask them to a
 6. Record naming decisions and unresolved questions.
 7. Produce a phase alignment brief.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/scaffold` when a new MAPS repo should be created, or `/foundation` when starting a project inside the agreed structure.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Return:
 
 - Framework name

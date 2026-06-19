@@ -66,8 +66,20 @@ If any of those answers are missing or ambiguous, ask before creating or updatin
 5. Identify the interaction, knowledge, coordination, and risk shape.
 6. Produce `templates/system-shape.md`.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/define-agent` for Single-Agent / APS, `/role` for root organization role agents, or the next MAPS roster/contract skill when the project is Multi-Agent / MAPS.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 - Completed `system-shape.md`
 - Track decision: Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS
 - Rationale and evidence

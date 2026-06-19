@@ -204,6 +204,10 @@
               <p>Every MAPS skill asks one question at a time, waits for the answer, and only writes artifacts after missing decisions are clear.</p>
             </article>
             <article class="maps-panel">
+              <h3>Clear handoffs</h3>
+              <p>Every skill ends with a completion report: status, outcome, memory update, and the recommended next skill to run.</p>
+            </article>
+            <article class="maps-panel">
               <h3>Reusable skills</h3>
               <p>Each phase can be executed by compatible agent tooling through `SKILL.md` workflows and helper scripts.</p>
             </article>
@@ -281,7 +285,11 @@
               <p>Review `project-foundation.md`, `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, and `notes/maps-runs/foundation.md` before M1.</p>
             </article>
             <article class="maps-panel" id="training-reset">
-              <h3>3. Reset when wrong</h3>
+              <h3>3. Read the handoff</h3>
+              <p>At completion, read the status, outcome, memory update, and next-skill recommendation before moving forward.</p>
+            </article>
+            <article class="maps-panel" id="training-reset">
+              <h3>4. Reset when wrong</h3>
               <p>Use `/foundation --wipe` to preview cleanup. Confirm only when the listed files are the MAPS-created foundation artifacts you want removed.</p>
             </article>
           </div>

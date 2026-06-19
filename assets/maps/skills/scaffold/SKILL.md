@@ -82,8 +82,20 @@ The script creates:
 - `templates/` deliverable shells
 - `catalogs/repos.md`, `catalogs/skills.md`, and `catalogs/tools.md`
 
-## Done Criteria
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/foundation` for M0 Project Foundation in the scaffolded project.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Done Criteria
 - The target contains the MAPS repo structure.
 - Every phase has a guide, skill, and template where applicable.
 - Generated skills have valid `SKILL.md` frontmatter.

@@ -54,8 +54,20 @@ If release readiness is unclear, ask whether to stop, create a pre-release check
 6. Name owners and operating contacts.
 7. Produce a deployment plan.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/observe-agent` after deployment, or `/evaluate-agent` again if release gates fail.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Return:
 
 - Target environment

@@ -54,8 +54,20 @@ If the answers are missing, ask before editing code.
 6. Document the local run command.
 7. Record deferred risks for Equip or Evaluate.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/equip-agent` to wire tools, permissions, memory, and data sources, or `/evaluate-agent` if the build is already equipped enough to test.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 Return:
 
 - Files changed

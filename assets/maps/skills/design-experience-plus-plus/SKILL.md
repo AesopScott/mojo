@@ -93,8 +93,20 @@ If the user cannot answer, propose a surface classification and component patter
    - tone and microcopy
 9. Write or update `experience-design.md` with website-specific sections and handoffs for Build, Evaluate, Deploy/Observe, and Improve.
 
-## Output
+## Completion report
 
+When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+
+Report:
+
+- Completion status: complete, blocked, or needs more answers.
+- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
+- Key decisions or changes made.
+- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
+- Next skill: `/build-agent` for frontend/product implementation, or `/evaluate-agent` for layout, accessibility, trust, and conversion checks.
+
+If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+## Output
 - Base M8 `experience-design.md`
 - Website/page hierarchy and surface inventory
 - Component pattern shortlist
