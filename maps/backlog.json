@@ -1,0 +1,264 @@
+{
+  "schema_version": "1.0.0",
+  "project": "mojo-maps",
+  "owner": "Matt",
+  "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
+  "created_at": "2026-06-19",
+  "updated_at": "2026-06-19T20:57:24Z",
+  "source_channels": [
+    "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
+    "G:\\My Drive\\Mojo\\channels\\pipeline.md",
+    "G:\\My Drive\\Mindshare\\channels\\communications.md",
+    "G:\\My Drive\\Mindshare\\channels\\release-management.md"
+  ],
+  "rules": [
+    "Matt owns intake, sequencing, acceptance criteria, blocker tracking, evidence review, and Pipeline updates.",
+    "Using an existing MAPS skill does not require a backlog update.",
+    "Building, changing, or publishing a MAPS skill, template, validator, role/agent operating contract, proof build, Obsidian-to-Mojo training change, or /maps website update must be listed in this backlog.",
+    "Engineering implementation should be routed to Bea when the work is build/code execution rather than PM sequencing.",
+    "Liz reads Pipeline for MAPS backlog-to-website coordination only; her website work still follows Obsidian/mapstraining.md routing and Release Management for Git/GitHub writes.",
+    "Each task should define proof before implementation starts.",
+    "Git/GitHub writes, branch changes, PRs, releases, promotions, and cleanup route through Release Management before acting.",
+    "Production deployment, external communication, spending, secrets changes, self-assigned authority expansion, and autonomous runtime remain approval-gated."
+  ],
+  "tasks": [
+    {
+      "number": 1,
+      "id": "MAPS-001",
+      "title": "Create Mojo MAPS backlog.json",
+      "description": "Create a MAPS-specific backlog file in the Mojo repository so Matt owns a concrete PM backlog separate from the general Mojo docs backlog.",
+      "category": "Program Management",
+      "priority": 100,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [],
+      "source": "Scott request in Matt channel",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "MAPS backlog exists",
+          "expectedBehavior": "C:\\Users\\scott\\Code\\mojo\\maps\\backlog.json exists and contains a top-level tasks array.",
+          "proofType": "command",
+          "exactCommand": "Test-Path \"C:\\Users\\scott\\Code\\mojo\\maps\\backlog.json\"; python -m json.tool \"maps/backlog.json\" > $null",
+          "expectedPassingEvidence": "Path check returns True and JSON parser exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Test-Path returned True; python -m json.tool maps/backlog.json exited 0."
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MAPS-002",
+      "title": "Define Matt-to-Bea engineering handoff rhythm",
+      "description": "Define how Matt routes implementation slices to Bea: scope, source files, acceptance criteria, proof units, authority boundaries, owner, due status, blocker handling, and Pipeline update cadence.",
+      "category": "Program Management",
+      "priority": 95,
+      "impact": "major",
+      "status": "ready",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Scott direction that Bea is the MAPS engineer and Matt should take PM role",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Handoff format documented",
+          "expectedBehavior": "Matt has a repeatable handoff format for Bea with scope, files, acceptance criteria, proof, risks, and authority boundaries.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review maps/backlog.json and Matt workflow/memory for Bea handoff format.",
+          "expectedPassingEvidence": "Backlog or Matt workflow includes the handoff fields and routing rule.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MAPS-003",
+      "title": "Run real role-to-agent proof build for /build-agent v0.4.0",
+      "description": "Use the new /build-agent v0.4.0 contract on a real role-to-agent build and collect proof for runnable command evidence, missing profile/design fail-closed tests, stricter-profile conflict tests, profile-denied behavior tests, audit/state/log artifacts, runtime-adapter decision, and Equip/Evaluate handoffs.",
+      "category": "Build Proof",
+      "priority": 90,
+      "impact": "major",
+      "status": "ready",
+      "owner": "Matt",
+      "implementation_owner": "Bea",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001",
+        "MAPS-002"
+      ],
+      "source": "Pipeline Design/Build Confidence Tightening",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Build contract proof run exists",
+          "expectedBehavior": "At least one real role-to-agent build satisfies /build-agent v0.4.0 proof requirements before Build is called 10/10 mature.",
+          "proofType": "artifact-and-command",
+          "exactCommand": "Run selected local build command and tests from the chosen role-to-agent proof build.",
+          "expectedPassingEvidence": "Command evidence, tests, audit/state/log artifacts, adapter decision, and Equip/Evaluate handoffs are recorded.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MAPS-004",
+      "title": "Mirror shared MAPS skill changes to MAPS+Org when approved",
+      "description": "Determine counterpart status for shared MAPS role/agent operating-system changes and route any Mojo / MAPS+Org source sync through Release Management before Git/GitHub writes.",
+      "category": "Release Coordination",
+      "priority": 80,
+      "impact": "major",
+      "status": "blocked",
+      "owner": "Matt",
+      "implementation_owner": "Reid",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "blocker": "Current request scoped to Mojo MAPS backlog only; do not inspect MAPS+Org without explicit approval or a routed release-management item.",
+      "source": "Mojo AGENTS.md dual-repo sync rule",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Release routing exists before repo sync",
+          "expectedBehavior": "Any proposed Git/GitHub write identifies repo, branch, action, risk, approval state, and counterpart status in Release Management before acting.",
+          "proofType": "channel-review",
+          "exactCommand": "Review G:\\My Drive\\Mindshare\\channels\\release-management.md for routed item before any write.",
+          "expectedPassingEvidence": "Release Management contains the routed proposal and approval state.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MAPS-005",
+      "title": "Publish Mojo MAPS backlog governance",
+      "description": "Announce in Pipeline that Matt owns C:\\Users\\scott\\Code\\mojo\\maps\\backlog.json, all Mojo MAPS work must be listed there, and Liz should join Pipeline only for MAPS backlog-to-website coordination.",
+      "category": "Program Management",
+      "priority": 98,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Scott request in Matt channel",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Pipeline and Liz notified",
+          "expectedBehavior": "Pipeline records backlog governance, Communications notifies Liz, and Liz memory/heartbeat include scoped Pipeline participation.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review G:\\My Drive\\Mojo\\channels\\pipeline.md, G:\\My Drive\\Mindshare\\channels\\communications.md, roles/liz/memory.md, and liz-handoff-check automation.",
+          "expectedPassingEvidence": "All locations name maps/backlog.json and Liz's limited Pipeline scope.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Pipeline, Communications, Liz memory, and liz-handoff-check automation updated with maps/backlog.json governance and Liz's limited Pipeline scope."
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MAPS-006",
+      "title": "Update operating taxonomy structure",
+      "description": "Update MAPS role/agent operating taxonomy source language to Position -> Operator -> Coordinator -> Executor, keep Tool -> Tool Agent as a separate lineage, and retain Role, Role+, and Agent as compatibility aliases during transition.",
+      "category": "Role Taxonomy",
+      "priority": 94,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Matt",
+      "implementation_owner": "Bea",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "pm_review_status": "local-mojo-accepted",
+      "pm_reviewed_at": "2026-06-19T20:50:00Z",
+      "pm_review_notes": "Matt accepted local Mojo evidence: maps/backlog.json parses, the Mojo MAPS skill validator passes, and canonical taxonomy strings are present in the Mojo /role source, installed /role copy, role templates, and memory template. Cross-repo maps+org evidence was not independently reopened during this heartbeat under Mojo project-isolation rules; release routing remains Reid-owned and website/training mirror follow-up remains Liz-owned.",
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Communications Broadcast Handoff from Scott and Mae",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Taxonomy source updated",
+          "expectedBehavior": "/role skill and templates describe Position -> Operator -> Coordinator -> Executor, Tool -> Tool Agent, and compatibility aliases for Role, Role+, and Agent without using Principal Agent or Runtime Agent as canonical stages.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"Position -> Operator -> Coordinator -> Executor|Tool -> Tool Agent|Principal Agent|Runtime Agent\" assets C:\\Users\\scott\\.codex\\skills\\role C:\\Users\\scott\\Code\\maps+org",
+          "expectedPassingEvidence": "Canonical taxonomy strings are present; Principal Agent and Runtime Agent appear only in historical changelog or rejected-label context.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted search found canonical taxonomy strings in Mojo /role source, installed /role copy, MAPS+Org source, and Mindshare roles directory; Principal Agent and Runtime Agent appear only in rejected-label context."
+        },
+        {
+          "number": 2,
+          "title": "Validators pass",
+          "expectedBehavior": "Mojo MAPS skill validator and MAPS+Org validator pass after taxonomy source updates.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py; python C:\\Users\\scott\\Code\\maps+org\\validators\\maps_org_validator.py",
+          "expectedPassingEvidence": "Both commands exit 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills; python validators/maps_org_validator.py --config maps-org.yaml exited 0 in MAPS+Org."
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "MAPS-007",
+      "title": "Add autonomy contract gate to /build-agent",
+      "description": "Update /build-agent so it asks for and enforces an explicit autonomy contract before implementing autonomous behavior, recurring triggers, scheduled checks, heartbeat actions, independent goal pursuit, self-continuation, or action outside a visible user-directed turn.",
+      "category": "Skill Contract",
+      "priority": 96,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Vik",
+      "implementation_owner": "Vik",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-001",
+        "MAPS-003"
+      ],
+      "source": "Scott request in Vik channel after ASPA build-agent proof exposed missing autonomy interview gate",
+      "counterpart_status": "No MAPS+Org build-agent skill counterpart exists at C:\\Users\\scott\\Code\\maps+org\\skills\\build-agent\\SKILL.md; synced Mojo repo source and installed Codex skill.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Autonomy gate present",
+          "expectedBehavior": "/build-agent includes an Autonomy Contract Gate, required interview questions for autonomy, workflow stop behavior before implementation, output reporting, done criteria, and autonomy-denied test requirements.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"Autonomy Contract Gate|Does the requested build include or imply autonomous behavior|autonomy-denied|Missing, incomplete, or conflicting autonomy contracts\" assets/maps/skills/build-agent/SKILL.md C:\\Users\\scott\\.codex\\skills\\build-agent\\SKILL.md",
+          "expectedPassingEvidence": "Both Mojo repo source and installed skill contain the autonomy gate, interview prompt, workflow stop gate, done criteria, and autonomy-denied testing language.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed v0.5.0 Autonomy Contract Gate text in Mojo repo source and installed /build-agent skill."
+        },
+        {
+          "number": 2,
+          "title": "Skill validator passes",
+          "expectedBehavior": "Mojo MAPS skill validator passes after /build-agent v0.5.0 update.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
+          "expectedPassingEvidence": "Validator exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    }
+  ]
+}
