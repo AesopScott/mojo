@@ -108,6 +108,13 @@ body.maps-page {
   background: var(--maps-soft);
 }
 
+.maps-links a.active,
+.maps-links a[aria-current="page"] {
+  color: var(--maps-ink);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--maps-line);
+}
+
 .maps-aps-download-button {
   display: inline-flex;
   position: fixed;
