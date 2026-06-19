@@ -1709,6 +1709,13 @@ a.maps-role-name:hover {
   gap: 28px;
 }
 
+.maps-executive-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 440px));
+  justify-content: center;
+  gap: 14px;
+}
+
 .maps-org-node,
 .maps-org-function {
   border: 1px solid var(--maps-line);
@@ -1716,15 +1723,16 @@ a.maps-role-name:hover {
   background: #fff;
 }
 
+.maps-org-node.president,
 .maps-org-node.executive {
   position: relative;
   max-width: 440px;
-  margin: 0 auto;
   padding: 22px;
   text-align: center;
   box-shadow: var(--maps-shadow);
 }
 
+.maps-org-node.president::after,
 .maps-org-node.executive::after {
   content: "";
   position: absolute;
@@ -1747,6 +1755,28 @@ a.maps-role-name:hover {
 
 .maps-role-name {
   font-weight: 850;
+}
+
+.maps-role-person {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.maps-role-person span {
+  min-width: 0;
+}
+
+.maps-role-avatar {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(35, 61, 77, 0.16);
+  border-radius: 50%;
+  background: #e6fbff;
+  object-fit: cover;
 }
 
 .maps-org-branches {
@@ -1828,6 +1858,7 @@ a.maps-role-name:hover {
   .maps-profile-summary,
   .maps-agent-control-grid,
   .maps-org-legend,
+  .maps-executive-row,
   .maps-org-branches {
     grid-template-columns: 1fr;
   }
