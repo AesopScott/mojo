@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MAPS References | Mojo AI Studio</title>
-    <meta name="description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
-    <link rel="canonical" href="https://mojoaistudio.com/maps/References/">
+    <title>Operating Cadence | Mojo AI Studio</title>
+    <meta name="description" content="How MAPS roles are triggered and how implemented role agents operate.">
+    <link rel="canonical" href="https://mojoaistudio.com/maps/org-chart/operating-cadence/">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
@@ -14,9 +14,9 @@
     <meta name="theme-color" content="#0f0f1a">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Mojo AI Studio">
-    <meta property="og:url" content="https://mojoaistudio.com/maps/References/">
-    <meta property="og:title" content="MAPS References">
-    <meta property="og:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta property="og:url" content="https://mojoaistudio.com/maps/org-chart/operating-cadence/">
+    <meta property="og:title" content="Operating Cadence">
+    <meta property="og:description" content="How MAPS roles are triggered and how implemented role agents operate.">
     <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:type" content="image/png">
@@ -24,13 +24,13 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="MAPS References">
-    <meta name="twitter:description" content="All documented MAPS skills, repositories, tools, and templates grouped by phase.">
+    <meta name="twitter:title" content="Operating Cadence">
+    <meta name="twitter:description" content="How MAPS roles are triggered and how implemented role agents operate.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=maps-org-taxonomy">
-    <script src="/maps-data.js?v=maps-org-taxonomy" defer></script>
-    <script src="/maps-page.js?v=maps-org-taxonomy" defer></script>
+    <link rel="stylesheet" href="/maps.css?v=maps-agent-profile">
+    <script src="/maps-data.js?v=maps-agent-profile" defer></script>
+    <script src="/maps-page.js?v=maps-agent-profile" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -99,17 +99,13 @@
 
       <section class="maps-hero maps-hero-wide">
         <div>
-          <p class="maps-eyebrow">MAPS references</p>
-          <h1>Every documented MAPS resource, grouped by phase.</h1>
-          <p>
-            This page collects the skills, repos, tools, and templates that have been attached to the MAPS program so far. Phase pages still show their local Resources section; this page is the full program catalog.
-          </p>
-          <p class="maps-commitment-note">
-            The single-agentic pipeline references exist now, and M8 Experience Design is available as a concrete multi-agent phase page. The remaining multi-agent pipeline pages are still under development.
-          </p>
+          <p class="maps-eyebrow">Org Chart</p>
+          <h1>Operating Cadence</h1>
+          <p>Operating cadence defines when roles appear, what triggers them, and how implemented agents run visible loops.</p>
           <div class="maps-actions">
-            <a class="maps-button primary" href="#all-references">Browse all references</a>
-            <a class="maps-button" href="/maps/">Back to overview</a>
+            <a class="maps-button primary" href="/maps/org-chart/">Back to org chart</a>
+            <a class="maps-button" href="/maps/org-chart/role-handoffs/">Next: role handoffs</a>
+<a class="maps-button" href="/maps/org-chart/authority-taxonomy/">Back: authority taxonomy</a>
           </div>
         </div>
       </section>
@@ -117,44 +113,56 @@
       <main class="maps-main">
         <section class="maps-section">
           <div class="maps-section-header">
-            <h2>Catalog shape</h2>
-            <p>
-              Each phase is grouped into skills, repos, tools, and templates. MAPS program-level definitions live in source catalogs.
-            </p>
+            <h2>Role trigger types</h2>
+            <p>A role should not appear randomly. It should activate because a named trigger matched its engagement rule.</p>
           </div>
-
-          <div class="maps-grid">
-            <article class="maps-panel">
-              <h3>Skills</h3>
-              <p>Downloadable `SKILL.md` workflows used to execute or wrap a MAPS phase.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Repos</h3>
-              <p>Reference implementations, SDKs, catalogs, templates, and open-source projects that informed the phase.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Tools and templates</h3>
-              <p>Operational tools, external references, and downloadable artifact templates used by builders.</p>
-            </article>
-            <article class="maps-panel">
-              <h3>Source catalogs</h3>
-              <p><a href="/assets/maps/catalogs/global-installs.md" download><strong>global installs</strong></a> and <a href="/assets/maps/catalogs/skill-rules.md" download><strong>skill rules</strong></a> define MAPS plugin-level behavior.</p>
-            </article>
+          <div class="maps-grid maps-trigger-grid">
+            <article class="maps-panel"><h3>Explicit invocation</h3><p>A person calls the role by name or asks for its judgment.</p></article>
+            <article class="maps-panel"><h3>Session start</h3><p>A project hook loads the role when the project context requires it.</p></article>
+            <article class="maps-panel"><h3>Phase boundary</h3><p>The role appears when MAPS crosses a phase, approval gate, or artifact handoff.</p></article>
+            <article class="maps-panel"><h3>Review gate</h3><p>The role reviews a plan, artifact, release, policy, or role contract before action.</p></article>
+            <article class="maps-panel"><h3>Event or signal</h3><p>A webhook, queue, incident, metric, backlog threshold, or memory update triggers the role.</p></article>
+            <article class="maps-panel"><h3>Scheduled cadence</h3><p>The role runs on a daily, weekly, milestone, release, or governance rhythm.</p></article>
           </div>
         </section>
 
-        <section id="all-references" class="maps-section">
+        <section class="maps-section">
           <div class="maps-section-header">
-            <h2>All references</h2>
-            <p>
-              The list below is generated from the shared MAPS catalog data so phase pages and this reference page stay aligned.
-            </p>
+            <h2>How agents operate</h2>
+            <p>An implemented agent should run a visible loop, not a hidden personality trick.</p>
           </div>
-
-          <div class="maps-reference-phase-list" data-maps-reference-phases></div>
+          <ol class="maps-step-list">
+            <li><strong>Intake:</strong> read the trigger, role contract, allowed context, and current state.</li>
+            <li><strong>Plan:</strong> choose the next action inside authority, approval, and stop conditions.</li>
+            <li><strong>Act:</strong> draft, recommend, coordinate, call tools, or execute only inside the declared boundary.</li>
+            <li><strong>Record:</strong> write run notes, decisions, evidence, and memory updates to the approved locations.</li>
+            <li><strong>Report:</strong> state what happened, what changed, what remains open, and what approval is needed.</li>
+            <li><strong>Stop or continue:</strong> stop on completion, uncertainty, forbidden action, approval need, risk, budget limit, or escalation condition.</li>
+          </ol>
         </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Cadence ladder</h2>
+            <p>Roles can start light and become more operational as evidence and trust increase.</p>
+          </div>
+          <div class="maps-table-wrap">
+            <table class="maps-taxonomy-table">
+              <thead><tr><th>Cadence</th><th>Behavior</th><th>Typical implementation</th></tr></thead>
+              <tbody>
+                <tr><td>Passive reference</td><td>Provides context when consulted.</td><td>Markdown role contract or memory note.</td></tr>
+                <tr><td>Advisor</td><td>Gives first-person critique, options, and recommendations.</td><td>Skill or loaded project instruction.</td></tr>
+                <tr><td>Review gate</td><td>Must review named artifacts before approval.</td><td>Checklist, hook, or required review step.</td></tr>
+                <tr><td>Workflow owner</td><td>Maintains rhythm, handoffs, blockers, and progress evidence.</td><td>Skill plus helper script and run log.</td></tr>
+                <tr><td>Operator</td><td>Executes approved tasks with tools.</td><td>Script, MCP workflow, or tool-backed skill.</td></tr>
+                <tr><td>Autonomous loop</td><td>Plans, acts, observes, remembers, and continues within explicit bounds.</td><td>Active process, scheduled worker, or agent runtime.</td></tr>
+                <tr><td>Escalation authority</td><td>Approves, vetoes, or breaks glass in a named domain.</td><td>Governance rule plus audit log.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
       </main>
     </div>
   </body>
 </html>
-
