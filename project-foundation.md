@@ -163,6 +163,7 @@ G:\My Drive\Mojo\
 | 2026-06-19T20:49:49+00:00 | /build-agent | A3 | C:\Users\scott\Code\mojo\agents\vik-aspa\agent-build-plan.md | Built ASPA runtime-neutral local proof harness under agents/vik-aspa; added profile/design/backlog loader, CLI run command, fail-closed missing-contract tests, stricter-profile conflict test, profile-denied behavior tests, and audit/state/log artifacts; runtime target remains undecided and adapter proof is deferred to Equip/runtime selection; next skill is /equip-agent. |  |
 | 2026-06-19T20:57:58+00:00 | /build-agent | A3 | C:\Users\scott\Code\mojo\assets\maps\skills\build-agent\SKILL.md | Updated /build-agent to v0.5.0 with an explicit Autonomy Contract Gate; synced installed skill; recorded MAPS-007 in maps/backlog.json; MAPS+Org has no build-agent counterpart; validation passed. |  |
 | 2026-06-19T21:21:12+00:00 | /build-agent | A3 | C:\Users\scott\Code\mojo\agents\vik-aspa\autonomy-contract.md | Advanced ASPA toward full bounded autonomy with a draft autonomy contract; local build harness now requires the contract and blocks activation while draft-not-approved. |  |
+| 2026-06-19T21:41:12+00:00 | /build-agent | A3 | C:\Users\scott\Code\mojo\assets\maps\skills\build-agent\SKILL.md | Updated /build-agent v0.6.0 with input-led autonomy contract interview, one-question-at-a-time rule, R&R gate, ASPA contract reset to input-interview-in-progress, and verified runtime/skill checks. |  |
 ## Evidence Index
 
 | Evidence | Source | What it supports | Confidence |

@@ -163,13 +163,13 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 ## Autonomy Contract
 
 - Contract source: `agents/vik-aspa/autonomy-contract.md`
-- Contract status: draft-not-approved
+- Contract status: input-interview-in-progress
 - Activation status: not active
-- Target autonomy: full bounded autonomy contract, not unbounded authority
+- Target autonomy: input-led bounded autonomy contract, not unbounded authority
 - Build rule: `/build-agent` may implement contract loading, denial behavior, audit evidence, and test proof only.
-- Stop rule: autonomous runtime, scheduler installation, heartbeat activation, independent goal pursuit, or self-continuation must stop until Scott approves the contract and Equip/Evaluate/Deploy/Observe proof exists.
+- Stop rule: autonomous runtime, scheduler installation, heartbeat activation, independent goal pursuit, or self-continuation must stop until Scott completes R&R and the remaining contract fields, approves the contract, and Equip/Evaluate/Deploy/Observe proof exists.
 - Adapter rule: runtime-specific autonomous behavior requires a selected runtime target and runtime adapter.
-- Evaluation rule: `/evaluate-agent` must prove missing, draft, and conflicting autonomy contracts fail closed before activation.
+- Evaluation rule: `/evaluate-agent` must prove missing, input-incomplete, draft, and conflicting autonomy contracts fail closed before activation.
 - Deployment rule: `/deploy-agent` must name activation trigger, owner, rollback, revocation, and post-deploy verification before any runtime is activated.
 
 ## Authority And Approval Boundaries

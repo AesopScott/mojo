@@ -56,7 +56,7 @@ Template version: 0.4.0.
 | B-004 | Memory and handoff boundary handler | Slice | P1 | B-002 | Allowed architecture review and forbidden memory-write tests pass | No memory-as-state promotion | Writes proof artifacts only | Adapter must preserve path rules | Stop on unclear destination | Complete |
 | B-005 | Architecture workflow loop skeleton | Slice | P1 | B-003, B-004 | Intake/classify/recommend/record/handoff flow runs locally | Human-in-loop only | Audit log required | Runtime target required for executable loop | Stop at approval gate | Blocked |
 | B-006 | Audit, state, and log artifacts | Task | P1 | B-005 | Artifacts created and read by eval | No autonomous state claim | State not authority | Adapter-specific storage later | Stop if state implies autonomy | Blocked |
-| B-007 | Autonomy contract gate | Slice | P0 | B-003 | Draft autonomy contract exists; missing/draft-not-approved contract blocks activation | No autonomous activation | Contract is source, not runtime state | Adapter-specific autonomy later | Stop if contract missing, stale, or unapproved | Complete |
+| B-007 | Autonomy contract gate | Slice | P0 | B-003 | Input-led autonomy contract worksheet exists; missing/input-incomplete contract blocks activation | No autonomous activation | Contract is source, not runtime state | Adapter-specific autonomy later | Stop if contract missing, stale, or unapproved | Complete |
 | B-008 | Equip handoff | Task | P1 | B-001, B-007 | Tool/state/adapter/autonomy needs listed | No credentials granted | No secrets in notes | Feeds `/equip-agent` | Stop if credentials needed | Deferred |
 | B-009 | Evaluate handoff and spec suite | Task | P1 | B-003, B-004, B-007 | Eval scenarios cover profile conformance, denied behavior, and autonomy contract state | No release claim | Eval evidence only | Runtime tests after adapter | Stop if no proof artifact | Deferred |
 
@@ -98,10 +98,10 @@ Template version: 0.4.0.
 - Profile-denied autonomous-timer behavior test: passed
 - Profile-denied secrets behavior test: passed
 - Profile-denied authority-expansion behavior test: passed
-- Autonomy contract artifact: `agents/vik-aspa/autonomy-contract.md`; draft-not-approved
+- Autonomy contract artifact: `agents/vik-aspa/autonomy-contract.md`; input-interview-in-progress
 - Missing autonomy contract fail-closed test: passed
-- Draft autonomy contract activation blocker: passed through autonomous-timer denial
-- Full autonomy contract activation: blocked pending Scott approval, Equip, Evaluate, Deploy, Observe, and rollback proof
+- Input-incomplete autonomy contract activation blocker: passed through autonomous-timer denial
+- Full autonomy contract activation: blocked pending R&R, remaining contract inputs, Scott approval, Equip, Evaluate, Deploy, Observe, and rollback proof
 - Audit artifact: `agents/vik-aspa/run-artifacts/audit.jsonl`
 - State artifact: `agents/vik-aspa/run-artifacts/state.json`; proof artifact only, not autonomous runtime state
 - Log artifact: `agents/vik-aspa/run-artifacts/run.log`

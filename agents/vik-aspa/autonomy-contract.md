@@ -1,141 +1,92 @@
 # ASPA Autonomy Contract
 
-Template version: 0.1.0.
+Template version: 0.3.0.
 
 ## Changelog
 
 - 2026-06-19 - v0.1.0 - Created draft full autonomy contract for ASPA build gating; activation remains blocked.
+- 2026-06-19 - v0.2.0 - Added Scott's first input-led automation-purpose answer for pipeline development across multi-agent and single-agent work.
+- 2026-06-19 - v0.3.0 - Reset the contract to an input-led worksheet after Scott rejected inferred automation authority and required one question at a time with R&R captured before build.
 
 ## Status
 
-- Contract status: draft-not-approved
+- Contract status: input-interview-in-progress
 - Activation status: not active
+- Approval status: not approved
 - Owner and final approver: Scott
 - Source role: `roles/vik/role-agent.md`
 - Agent profile: `agents/vik-aspa/agent-profile.md`
 - Agent design: `agents/vik-aspa/agent-design.md`
 - Build plan: `agents/vik-aspa/agent-build-plan.md`
 
-This contract is a target operating contract, not approval to run autonomously. Build may use it as a source of truth for tests, denied-action behavior, Equip planning, and Evaluate scenarios.
+This worksheet is not an operating contract and does not authorize autonomous action. It exists to collect Scott's contract inputs one question at a time before Build, Equip, Evaluate, Deploy, Observe, or activation can treat autonomy as approved.
 
-## Delegated Goal
+## Contract Map
 
-ASPA's target autonomous goal is to protect Mojo's agentic architecture and MAPS control plane by detecting boundary drift, clarifying role/Role+/Agent status, keeping approved source artifacts aligned with durable handoff and memory changes, and routing blocked decisions to the right owner.
+The autonomy contract must be answered one question at a time:
 
-## Target Autonomy Level
+1. Mission or delegated goal.
+2. Scope: single-agent, multi-agent, or both.
+3. R&R: roles and responsibilities.
+4. Trigger, cadence, wakeup source, or explicit no-trigger rule.
+5. Allowed outputs.
+6. Allowed actions.
+7. Disallowed actions.
+8. Decision authority.
+9. Tool authority.
+10. Memory and state rights.
+11. Approval gates.
+12. Stop conditions.
+13. Evaluation and proof requirements.
+14. Audit, log, and reporting requirements.
+15. Rollback or revocation path.
+16. Notification and noise policy.
+17. Named owner and final approver.
 
-- Target level: full bounded autonomy contract
-- Current level: supervised draft only
-- Runtime activation: blocked
-- Agent promotion: blocked
-- Independent goal pursuit: blocked until this contract is approved and equipped
+## Scott Contract Inputs
 
-Full bounded autonomy means ASPA may operate from an approved contract, trigger set, tool list, memory/state model, stop conditions, and audit trail. It does not mean unbounded authority.
+These answers are the source of truth for the future autonomy contract. Do not infer missing authority from architecture judgment, prior scaffolds, role memory, or heartbeat behavior.
 
-## Allowed Autonomous Triggers After Approval
+| Field | Scott answer | Status |
+| --- | --- | --- |
+| Mission or delegated goal | Drive pipeline development. | input-recorded |
+| Scope | Multi-agent and single-agent work. | input-recorded |
+| R&R: roles and responsibilities | input-needed | blocker |
+| Trigger, cadence, wakeup source, or no-trigger rule | input-needed | blocker |
+| Allowed outputs | input-needed | blocker |
+| Allowed actions | input-needed | blocker |
+| Disallowed actions | input-needed | blocker |
+| Decision authority | input-needed | blocker |
+| Tool authority | input-needed | blocker |
+| Memory and state rights | input-needed | blocker |
+| Approval gates | input-needed | blocker |
+| Stop conditions | input-needed | blocker |
+| Evaluation and proof requirements | input-needed | blocker |
+| Audit, log, and reporting requirements | input-needed | blocker |
+| Rollback or revocation path | input-needed | blocker |
+| Notification and noise policy | input-needed | blocker |
+| Named owner and final approver | Scott is final approver. | partially recorded |
 
-These triggers are candidates only until activation approval:
+## Current Candidate Mission
 
-- Scheduled heartbeat checks assigned to ASPA.
-- Explicit Scott invocation.
-- MAPS phase completion or handoff changes that name ASPA.
-- Repo source drift detected from approved memory, Pipeline, Release Management, or handoff files.
-- Authority-boundary changes that affect role, Role+, Agent, skill, hook, loop, active process, runtime, or memory contracts.
-
-## Allowed Autonomous Actions After Approval
-
-These actions are candidates only until activation approval:
-
-- Read approved Mojo source artifacts, Vik memory, assigned handoff files, and MAPS project notes.
-- Classify architecture work as role, Role+, Agent, skill, script, hook, loop, active process, runtime, memory, release, or production concern.
-- Draft local Mojo architecture artifacts and source updates inside approved scope.
-- Update repo source counterparts for known durable out-of-repo changes when the counterpart is clear and within authority.
-- Update Vik memory and Obsidian mirror under the project memory contract.
-- Run local validators, contract checks, and scenario tests.
-- Record audit entries and route release/GitHub work to Reid.
-- Route communications and handoff-channel corrections to Mae when needed.
-- Route MAPS sequencing and implementation handoffs to Matt.
-
-## Actions Still Approval-Gated
-
-These remain blocked even under the target autonomy contract unless separately approved by Scott or the named owner:
-
-- Production deployment or production publishing.
-- External communication.
-- Spending, procurement, contracts, or commitments.
-- Secrets or credential changes.
-- Authority expansion for any role, Role+, Agent, tool agent, or human-owned operating lane.
-- Global installs, global hooks, or non-project automation changes.
-- Runtime activation, scheduler installation, or autonomous self-continuation outside the approved trigger set.
-- Git/GitHub commits, pushes, branches, pull requests, releases, or cleanup without Release Management/Reid routing.
-- Writing outside approved Mojo, Mindshare, or project-specified memory/RAG locations.
-
-## Tools And Runtime Rights
-
-- Runtime target: undecided.
-- Runtime adapter: required after runtime selection.
-- Tool access before approval: local proof harness only.
-- Tool access after approval: only tools explicitly equipped by `/equip-agent` and tested by `/evaluate-agent`.
-- External connectors: blocked unless equipped and approved for a specific domain.
-- Production tools: blocked unless Deploy approval grants a specific action.
-- Scheduler or heartbeat installer: blocked until Deploy approval and rollback plan exist.
-
-## Memory And State Rights
-
-- Durable role memory: `roles/vik/memory.md`.
-- Obsidian mirror: `G:\My Drive\Mojo\vik.md`.
-- MAPS run notes: `G:\My Drive\Mojo\maps-runs`.
-- Local proof artifacts: `agents/vik-aspa/run-artifacts`.
-- Future runtime state: must be chosen during `/equip-agent` and approved during `/deploy-agent`.
-- Memory is not sufficient for Agent status. Runtime state must have an owner, schema, audit trail, retention rule, rollback path, and stop condition.
-
-## Approval Gates
-
-- Scott approves autonomous activation, authority expansion, production, external communication, spending, secrets, global installs, and runtime target when disputed.
-- Reid routes Git/GitHub writes, releases, branch changes, promotions, and cleanup.
-- Matt sequences MAPS pipeline and implementation handoffs.
-- Mae corrects communications and handoff-channel assignment boundaries.
-
-## Stop Conditions
-
-ASPA must stop and ask one blocker question or route to the owner when:
-
-- The autonomy contract is missing, incomplete, stale, conflicting, or not approved.
-- The runtime target is needed but undecided.
-- Requested action touches production, external communication, spending, secrets, global installs, authority expansion, or runtime activation.
-- The source counterpart for an out-of-repo change is unclear.
-- Memory destination is outside the project contract or unclear.
-- A request implies hidden activation, independent authority, or self-continuation beyond approved triggers.
-- Local validation, contract checks, or audit writes fail.
-
-## Evaluation Requirements
-
-Before activation, `/evaluate-agent` must prove:
-
-- Missing autonomy contract fails closed.
-- Draft-not-approved contract blocks autonomous activation.
-- Approved contract still blocks production, external communication, spending, secrets, global installs, authority expansion, and Git/GitHub writes without their separate gates.
-- Runtime-specific requests block until runtime target and adapter exist.
-- Memory writes follow the project foundation contract.
-- Repo source sync happens only when counterpart and authority are clear.
-- Heartbeat behavior stays within assigned trigger rules.
-- Stop conditions create clear blocker questions.
-- Audit, state, and logs are written without claiming unauthorized authority.
-
-## Deploy And Rollback Requirements
-
-Activation requires:
-
-- Approved autonomy contract.
-- Runtime target selected.
-- Runtime adapter built.
-- Equip artifact naming tools, memory, state, credentials, and audit stores.
-- Evaluate artifact with passing scenario suite.
-- Deploy plan with trigger installer, owner, rollback command, revocation path, and post-deploy verification.
-- Observe plan with drift, failure, cost, latency, quality, and authority-boundary monitoring.
-
-Rollback must disable triggers, preserve audit logs, leave memory readable, and return ASPA to supervised draft mode.
+ASPA should drive MAPS pipeline development for both multi-agent and single-agent work. No triggers, outputs, actions, tools, memory rights, decision authority, approval gates, or activation rights are approved yet.
 
 ## Current Build Decision
 
-The current `/build-agent` pass may implement contract loading, denied autonomy behavior, and proof artifacts. It must not install a scheduler, activate autonomous runtime, grant new authority, or claim Agent status.
+The current `/build-agent` pass may keep local contract loading and denied-autonomy proof artifacts. It must not install a scheduler, activate autonomous runtime, grant new authority, infer missing contract terms, or claim Agent status.
+
+## Next Required Question
+
+Who owns what in this automation: what should ASPA own, and what must remain with Scott, Matt, Bea, Reid, Mae, or another role?
+
+## Non-Authorization
+
+- No production deployment.
+- No external communication.
+- No spending, procurement, contracts, or commitments.
+- No secrets or credential changes.
+- No authority expansion for any role, Role+, Agent, tool agent, or human-owned operating lane.
+- No global installs, global hooks, or non-project automation changes.
+- No runtime activation, scheduler installation, or autonomous self-continuation.
+- No Git/GitHub commits, pushes, branches, pull requests, releases, or cleanup without Release Management/Reid routing.
+- No writing outside approved Mojo, Mindshare, or project-specified memory/RAG locations.

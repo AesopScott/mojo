@@ -21,11 +21,33 @@ This is the durable memory file for [proper-role-name].
 
 ## Handoff Check Goal
 
-Create a goal to read your assigned handoff files every 3 min.
+Create a goal to read your assigned handoff files every 5 min, if not engaged in active work.
 
 Assigned handoff files:
 
 - `[assigned-handoff-file]`
+
+Backlog routing, when the role owns or participates in MAPS backlog work:
+
+- Existing MAPS skill usage does not require a backlog update.
+- Building, changing, or publishing a MAPS skill, template, validator, role/agent operating contract, proof build, Obsidian-to-Mojo training change, or `/maps` website update should be listed in the active project backlog.
+- The project backlog path, owner, and role-specific participation scope must be recorded in this memory when assigned.
+
+Repo work routing, when the role creates or edits repo files:
+
+- Use a unique role/work-item worktree or clearly named task branch by default, not `main`.
+- Treat `main` as the integration/release target.
+- Direct `main` work requires scoped Reid / Release Management approval or emergency release authority.
+- Keep unrelated dirty files out of staged changes by using selective staging or a separate worktree.
+- Route commits, pushes, merges, promotions, production deploys, branch cleanup, and worktree cleanup through Release Management before acting.
+
+## Heartbeat Automation
+
+- Automation name: `[role-name]-handoff-check`
+- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes immediately when relevant work appears.
+- Quiet no-work behavior: use `DONT_NOTIFY` and name checked locations when no user action is needed.
+- Adaptive quiet behavior: cadence-only metadata updates are allowed for this fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
+- Authority boundary: this heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond the bounded handoff check.
 
 ## Professional Maturity And Authorization
 
@@ -67,3 +89,4 @@ Candidate loading rule:
 | Date | Update | Source |
 | --- | --- | --- |
 | [date] | Created [proper-role-name] memory file from `memory-template.md`. | `/role` |
+| 2026-06-19 | Added default unique-worktree expectation: roles should work from their own worktrees or branches, not directly on `main`, and route Git/GitHub writes through Release Management. | Scott request to Reid. |

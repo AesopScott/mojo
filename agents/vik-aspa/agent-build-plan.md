@@ -26,7 +26,7 @@
 - Tool bindings: none; denied or stubbed
 - Memory setup: proof artifacts only under `agents/vik-aspa/run-artifacts`
 - Permission gates: profile/design/autonomy-contract guard blocks denied tools, memory writes, external communication, production, spending, autonomous timers, secrets, authority expansion, and runtime-specific build requests
-- Autonomy gate: draft full bounded autonomy contract exists; activation remains blocked until approval and Equip/Evaluate/Deploy/Observe proof
+- Autonomy gate: input-led autonomy contract worksheet exists; activation remains blocked until R&R, remaining contract fields, approval, and Equip/Evaluate/Deploy/Observe proof
 - Verification command or manual check: `python -m unittest agents.vik-aspa.tests.test_aspa_runtime`
 - Known incompatibilities: no runtime adapter proof until target runtime selected
 
@@ -38,7 +38,7 @@
 | 2 | Guardrail classifier | Denied behavior tests | Complete | production/tool/memory/external/spending/autonomy/secrets/authority tests pass |
 | 3 | Local CLI run | Allowed and blocked local commands | Complete | `python agents\vik-aspa\run_aspa.py --request "Review role-agent boundary for Bea"` |
 | 4 | Audit/state/log artifacts | Artifact files created | Complete | `agents/vik-aspa/run-artifacts/state.json`, `audit.jsonl`, `run.log` |
-| 5 | Autonomy contract gate | Missing contract and draft-not-approved activation blocked | Complete | `agents/vik-aspa/autonomy-contract.md`; 14 unit tests pass |
+| 5 | Autonomy contract gate | Missing contract and input-interview-in-progress activation blocked | Complete | `agents/vik-aspa/autonomy-contract.md`; 14 unit tests pass |
 | 6 | Runtime adapter | Adapter proof | Deferred | Runtime target undecided |
 
 ## Implementation Notes
@@ -49,7 +49,7 @@
 - CLI returns `0` for allowed architecture review and `2` for blocked approval-gated behavior.
 - Missing contract files return contract failure.
 - Missing autonomy contract returns contract failure.
-- Draft-not-approved autonomy contract is loadable as source truth but blocks activation.
+- Input-interview-in-progress autonomy contract is loadable as source truth but blocks activation.
 
 ## Checks
 

@@ -1,11 +1,12 @@
 # Vik / ASPA Agent Profile
 
-Template version: 0.4.0.
+Template version: 0.5.0.
 
 ## Changelog
 
 - 2026-06-19 - v0.1.0 - Created ASPA profile from `roles/vik/role-agent.md` through `/define-agent`.
 - 2026-06-19 - v0.4.0 - Added full bounded autonomy contract reference while keeping activation blocked.
+- 2026-06-19 - v0.5.0 - Reset autonomy status to input-interview-in-progress so R&R and remaining contract fields must come from Scott before any autonomy build.
 
 ## Identity
 
@@ -35,7 +36,7 @@ Template version: 0.4.0.
 - Agent profile enabled: yes, as a draft control profile
 - Manual invocation enabled: yes
 - Autonomous runtime installed: no
-- Autonomy contract status: draft-not-approved
+- Autonomy contract status: input-interview-in-progress
 - Autonomous activation status: not active
 - Production publishing allowed: no
 - External communication allowed: no
@@ -71,11 +72,11 @@ Template version: 0.4.0.
 
 ## Autonomy
 
-Current level: human-in-the-loop, draft agent candidate with a full bounded autonomy contract drafted but not approved.
+Current level: human-in-the-loop, draft agent candidate with an input-led autonomy contract interview in progress.
 
 ASPA may recommend, draft, coordinate, and act with approval inside Mojo architecture scope. ASPA is not authorized for autonomous runtime, production deployment, external communication, spending, authority expansion, global installation, or live hook activation.
 
-Autonomy source of truth: `agents/vik-aspa/autonomy-contract.md`. Build and Evaluate may test against this contract, but activation remains blocked until Scott approves the contract and the required Equip, Evaluate, Deploy, Observe, and rollback proof exists.
+Autonomy source of truth: `agents/vik-aspa/autonomy-contract.md`. Build and Evaluate may test fail-closed behavior against this worksheet, but activation remains blocked until Scott completes and approves the contract and the required Equip, Evaluate, Deploy, Observe, and rollback proof exists.
 
 ## Authority
 
@@ -240,7 +241,7 @@ Forbidden:
 | Architecture review | Vik | in progress | Continue through design |
 | Pipeline movement | Matt | pending | Route if sequencing needed |
 | Activation approval | Scott | not approved | Required before Agent promotion |
-| Autonomy contract | Scott / Vik | draft-not-approved | Equip and Evaluate against contract before activation |
+| Autonomy contract | Scott / Vik | input-interview-in-progress | Capture R&R and remaining contract inputs before Equip/Evaluate can treat autonomy as approved |
 
 ## Next Skill
 

@@ -68,7 +68,7 @@ Repo work routing, when the role creates or edits repo files:
 ## Heartbeat Automation
 
 - Automation name: `[role-name]-handoff-check`
-- Cadence: 5-minute heartbeat.
+- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes immediately when relevant work appears.
 - Active memory file: `[project-repo]\roles\[role-name]\memory.md`
 - Checked handoff locations:
   - `G:\My Drive\Mindshare\channels\heartbeat.md`
@@ -76,6 +76,7 @@ Repo work routing, when the role creates or edits repo files:
   - `[assigned-handoff-file]`
 - Automation template source: `templates/heartbeat-automation.md`
 - Quiet no-work behavior: use `DONT_NOTIFY` and name the checked locations when no user action is needed.
+- Adaptive quiet behavior: cadence-only metadata updates are allowed for this fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
 - Work behavior: if new work, blockers, decisions, or status changes exist, respond with the needed action or one blocker question and name the checked locations.
 - Durable memory writes: update `[project-repo]\roles\[role-name]\memory.md` first; mirror to `[project-memory-root]\[role-name].md` when the project has a memory root.
 - Authority boundary: this heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond this heartbeat, or autonomous runtime beyond the bounded handoff check.

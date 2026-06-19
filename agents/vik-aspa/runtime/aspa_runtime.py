@@ -146,12 +146,16 @@ def validate_contracts(role_text: str, profile_text: str, design_text: str, back
         raise ContractError("Design missing runtime adapter requirement.")
     if "non-implementation statement" not in design:
         raise ContractError("Design missing non-implementation statement.")
-    if "contract status: draft-not-approved" not in autonomy:
-        raise ContractError("Autonomy contract must be explicit about draft-not-approved status.")
+    has_blocked_contract_status = (
+        "contract status: draft-not-approved" in autonomy
+        or "contract status: input-interview-in-progress" in autonomy
+    )
+    if not has_blocked_contract_status:
+        raise ContractError("Autonomy contract must be explicit about blocked, not-approved status.")
     if "activation status: not active" not in autonomy:
         raise ContractError("Autonomy contract must keep activation not active.")
-    if "full bounded autonomy contract" not in autonomy:
-        raise ContractError("Autonomy contract must name the target full bounded autonomy contract.")
+    if "r&r: roles and responsibilities | input-needed" not in autonomy and "full bounded autonomy contract" not in autonomy:
+        raise ContractError("Autonomy contract must either be in input-led R&R collection or name the approved full bounded contract.")
     if "no-external-communication" not in normalize(role_text) and "external communication | a0 none" not in normalize(role_text):
         raise ContractError("Role contract missing external communication boundary.")
 
@@ -176,11 +180,15 @@ def decide(request: str, paths: ControlPaths) -> Decision:
             sources=sources,
         )
 
-    if category == "autonomous_runtime" and "contract status: draft-not-approved" in normalize(autonomy_text):
+    autonomy = normalize(autonomy_text)
+    if category == "autonomous_runtime" and (
+        "contract status: draft-not-approved" in autonomy
+        or "contract status: input-interview-in-progress" in autonomy
+    ):
         return Decision(
             status="blocked",
             category=category,
-            message="Autonomy contract is draft-not-approved and activation status is not active. Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.",
+            message="Autonomy contract interview is incomplete and activation status is not active. R&R, approval gates, Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.",
             needs_approval=True,
             sources=sources,
         )

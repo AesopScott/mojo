@@ -6,7 +6,7 @@ description: Implement the MAPS Build phase for an agent or multi-agent system. 
 # Build Agent
 ## Versioning
 
-Current version: 0.5.0.
+Current version: 0.6.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.6.0 - Rebuilt the Autonomy Contract Gate as an input-led, one-question-at-a-time contract interview with required R&R capture before any autonomy build, scaffolded authority, or activation proof.
 - 2026-06-19 - v0.5.0 - Added the Autonomy Contract Gate: Build must ask for and enforce an explicit autonomy contract before implementing autonomous behavior, recurring triggers, scheduled checks, independent goal pursuit, or action outside a visible user turn.
 - 2026-06-19 - v0.4.0 - Added 10/10 role-to-agent proof requirements: runnable command evidence, fail-closed contract tests, stricter-profile conflict tests, profile-denied behavior tests, audit/state/log artifacts, runtime-adapter proof timing, and Equip/Evaluate handoffs.
 - 2026-06-19 - v0.3.0 - Made agent profile enforcement a required build step: Build must read profile plus design, fail closed when either is missing or conflicting, and block behavior beyond profile limits.
@@ -53,9 +54,9 @@ Runtime adapters are mandatory after runtime selection for real built agents. If
 
 ## Autonomy Contract Gate
 
-Build must treat autonomy as a separate contract, not as an implementation detail.
+Build must treat autonomy as an input-led contract, not as an implementation detail or inferred build scaffold.
 
-Do not implement autonomous behavior unless the source role contract, agent profile, and design artifact include an explicit autonomy contract. Autonomous behavior includes:
+Do not implement autonomous behavior unless the source role contract, agent profile, design artifact, and autonomy contract include explicit, approved user input for the requested behavior. Autonomous behavior includes:
 
 - recurring or scheduled triggers
 - heartbeat-style checks that can act beyond reading and reporting
@@ -64,22 +65,37 @@ Do not implement autonomous behavior unless the source role contract, agent prof
 - self-continuation after the initiating request is complete
 - authority to choose new work instead of only completing the assigned build slice
 
-An autonomy contract must name:
+If autonomy is requested or implied and no approved autonomy contract exists, stop the normal build path and start the Autonomy Contract Interview. Do not infer, fill, smooth, or complete missing contract answers from architecture judgment. Preserve Scott's exact answers in a `Scott Contract Inputs` section and mark missing fields `input-needed`.
 
-- delegated goal
-- autonomy level or operating mode
-- authority domains
-- allowed tools
-- memory and state rights
-- trigger, cadence, or wakeup source
-- approval gates
-- stop conditions
-- evaluation and proof requirements
-- audit and log requirements
-- rollback or revocation path
-- named owner or approver
+Build may create or reset `agents/{agent-handle}/autonomy-contract.md` as a worksheet. The worksheet is not approval and must say `Contract status: input-interview-in-progress` or `Contract status: draft-not-approved`, plus `Activation status: not active`, until Scott approves activation.
 
-If autonomy is requested or implied and the autonomy contract is missing, incomplete, or weaker than the requested behavior, stop before implementation and ask one blocker question. Route the gap back to `/define-agent`, `/design-agent`, `/equip-agent`, or `/evaluate-agent` based on what is missing. Build may create stubs, policy checks, and tests that prove autonomous behavior is blocked until the autonomy contract is approved.
+Before the first contract question, briefly name the contract map so Scott can see the surface being built. Then ask exactly one question. Do not present a multi-question form, checklist, or table for Scott to fill out.
+
+An autonomy contract must answer these fields in this order unless Scott explicitly redirects the sequence:
+
+1. Mission or delegated goal.
+2. Scope: single-agent, multi-agent, or both.
+3. R&R: roles and responsibilities.
+4. Trigger, cadence, wakeup source, or explicit no-trigger rule.
+5. Allowed outputs.
+6. Allowed actions.
+7. Disallowed actions.
+8. Decision authority.
+9. Tool authority.
+10. Memory and state rights.
+11. Approval gates.
+12. Stop conditions.
+13. Evaluation and proof requirements.
+14. Audit, log, and reporting requirements.
+15. Rollback or revocation path.
+16. Notification and noise policy.
+17. Named owner and final approver.
+
+R&R means roles and responsibilities. The R&R answer must name which responsibilities belong to the built agent, Scott, and any relevant coordinating roles, and which responsibilities are explicitly outside the automation. If R&R is missing, stop before implementation and ask:
+
+`Who owns what in this automation: what should the agent own, and what must remain with Scott or another named role?`
+
+If autonomy is requested or implied and the autonomy contract is missing, incomplete, stale, inferred, or weaker than the requested behavior, stop before implementation and ask the next unanswered contract question. Route the gap back to `/define-agent`, `/design-agent`, `/equip-agent`, or `/evaluate-agent` only after the missing contract field is identified. Build may create stubs, policy checks, and tests that prove autonomous behavior is blocked until the autonomy contract is approved.
 
 ## Project foundation updates
 
@@ -109,7 +125,7 @@ Ask:
 - Which design artifact is the source of truth?
 - For role-to-agent builds, which source role contract, `agents/{agent-handle}/agent-profile.md`, design artifact, and `agents/{agent-handle}/agent-backlog.md` define the approved build contract?
 - Does the requested build include or imply autonomous behavior, recurring triggers, scheduled checks, heartbeat actions, independent goal pursuit, or action outside a visible user-directed turn?
-- If autonomy is requested or implied, which autonomy contract is the source of truth and does it name delegated goal, autonomy level, authority domains, allowed tools, memory/state rights, trigger/cadence, approval gates, stop conditions, eval/proof, audit/logs, rollback/revocation, and owner/approver?
+- If autonomy is requested or implied, start or continue the Autonomy Contract Interview. Ask the next unanswered question from the Autonomy Contract Gate sequence. Do not ask for implementation slice, runtime, tools, or local command until the contract is complete or Scott explicitly defers the missing field.
 - Does the profile allow the requested runtime, tools, memory writes, approval behavior, external communication, production access, spending, and autonomy level?
 - What is the smallest useful runnable slice?
 - What runtime, framework, language, or repo conventions should be used?
@@ -131,8 +147,8 @@ If the answers are missing, ask before editing code.
 3. Read `agents/{agent-handle}/agent-profile.md` before implementation. If it is missing, stop and route back to `/define-agent` or `/design-agent`.
 4. For role-to-agent builds, also read the source role contract and `agents/{agent-handle}/agent-backlog.md` when present before editing implementation files.
 5. Compare the role contract, agent profile, design artifact, and backlog. If they conflict on role-agent category, authority, tools, memory, approvals, activation, runtime enforcement, profile gates, stop conditions, or forbidden actions, stop and ask one blocker question before implementation.
-6. Check the Autonomy Contract Gate. If the requested build includes or implies autonomous behavior, recurring triggers, scheduled checks, heartbeat actions, independent goal pursuit, or action outside a visible user-directed turn, require an explicit autonomy contract before implementation.
-7. If the autonomy contract is missing, incomplete, or conflicts with the role/profile/design/backlog, stop and ask one blocker question. Do not fill in missing autonomy authority during Build.
+6. Check the Autonomy Contract Gate. If the requested build includes or implies autonomous behavior, recurring triggers, scheduled checks, heartbeat actions, independent goal pursuit, or action outside a visible user-directed turn, require an input-led autonomy contract before implementation.
+7. If the autonomy contract is missing, incomplete, inferred, missing R&R, or conflicts with the role/profile/design/backlog, stop and ask the next unanswered contract question. Do not fill in missing autonomy authority during Build.
 8. Generate or update runtime prompts, policy, routing, tool allowlist, memory rights, approval gates, and stop conditions only from the profile plus design plus approved autonomy contract when autonomy exists.
 9. Treat profile-denied tools, memory writes, external communication, production access, spending, autonomous timers, secrets, and authority expansion as blocked unless explicit approval updates the profile first.
 10. Identify the minimal runnable agent path.
@@ -169,7 +185,7 @@ Return:
 - What remains for Equip, Evaluate, or Deploy
 - For role-to-agent builds, the source role contract, agent profile, design artifact, and backlog read before implementation
 - Any role-agent category, authority, tool, memory, approval, activation, or forbidden-action constraints preserved from the role contract/profile
-- Autonomy contract source, autonomy level, delegated goal, trigger/cadence, approval gates, stop conditions, audit/log artifacts, rollback/revocation path, and owner/approver, or the blocker that prevents autonomy implementation
+- Autonomy contract source, interview status, exact Scott inputs captured, R&R answer or blocker, autonomy level, delegated goal, trigger/cadence, approval gates, stop conditions, audit/log artifacts, rollback/revocation path, and owner/approver, or the blocker that prevents autonomy implementation
 - Any profile/design conflicts found, the stricter limit applied, and any approval-required gate left for Scott or the named approver
 - Profile-denied behavior tests added or deferred
 - Autonomy-denied behavior tests added or deferred
@@ -190,7 +206,8 @@ Return:
 - Profile-denied tools, memory writes, external communication, production access, spending, autonomous timers, secrets, and authority expansion are blocked or escalated.
 - Website profile pages are not used as behavior input or authority evidence.
 - The implementation preserves the approved `Role`, `Role+`, or `Agent` category and does not promote the role-agent category without explicit approval.
-- Autonomous behavior is implemented only when an explicit autonomy contract exists in the approved role/profile/design source set.
+- Autonomous behavior is implemented only when an explicit, input-led autonomy contract exists in the approved role/profile/design source set.
+- R&R is captured before any autonomy implementation, trigger, or activation proof is built.
 - Missing, incomplete, or conflicting autonomy contracts stop the build before implementation and route the gap to the appropriate MAPS skill.
 - No authority expansion, autonomous runtime, production action, external communication, spending, secrets change, or activation status change is introduced without Scott's explicit approval.
 - Basic behavior is verified.

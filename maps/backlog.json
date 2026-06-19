@@ -4,7 +4,7 @@
   "owner": "Matt",
   "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
   "created_at": "2026-06-19",
-  "updated_at": "2026-06-19T21:15:00Z",
+  "updated_at": "2026-06-19T21:40:38Z",
   "source_channels": [
     "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
     "G:\\My Drive\\Mojo\\channels\\pipeline.md",
@@ -301,6 +301,104 @@
           "status": "passed",
           "verified_on": "2026-06-19",
           "verification_method": "python -m unittest agents.vik-aspa.tests.test_aspa_runtime exited 0 with 14 tests passing."
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MAPS-009",
+      "title": "Rebuild /build-agent autonomy contract interview",
+      "description": "Rebuild /build-agent so autonomy contracts are input-led, one question at a time, and blocked on explicit R&R before Build can draft or implement any autonomous behavior.",
+      "category": "Skill Contract",
+      "priority": 98,
+      "impact": "major",
+      "status": "complete",
+      "owner": "Vik",
+      "implementation_owner": "Vik",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-007",
+        "MAPS-008"
+      ],
+      "source": "Scott correction in Vik channel: one question at a time, R&R, rebuild the skill and start over.",
+      "counterpart_status": "No MAPS+Org build-agent skill counterpart exists at C:\\Users\\scott\\Code\\maps+org\\assets\\maps\\skills\\build-agent\\SKILL.md or C:\\Users\\scott\\Code\\maps+org\\skills\\build-agent\\SKILL.md; synced Mojo repo source and installed Codex skill.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Input-led autonomy interview",
+          "expectedBehavior": "/build-agent v0.6.0 requires an input-led autonomy contract interview, asks exactly one question at a time, marks missing fields input-needed, and blocks on R&R before implementation.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"Current version: 0.6.0|input-led autonomy contract|R&R|next unanswered contract question|input-needed\" assets/maps/skills/build-agent/SKILL.md C:\\Users\\scott\\.codex\\skills\\build-agent\\SKILL.md agents/vik-aspa/autonomy-contract.md",
+          "expectedPassingEvidence": "Mojo repo skill, installed skill, and ASPA contract worksheet contain the repaired contract interview language.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed /build-agent v0.6.0 input-led contract interview language in Mojo repo source, installed Codex skill, and ASPA autonomy contract worksheet."
+        },
+        {
+          "number": 2,
+          "title": "Contract worksheet blocks activation",
+          "expectedBehavior": "ASPA runtime accepts input-interview-in-progress as a blocked contract state and continues to fail closed for autonomous runtime requests.",
+          "proofType": "command",
+          "exactCommand": "python -m unittest agents.vik-aspa.tests.test_aspa_runtime",
+          "expectedPassingEvidence": "Unit suite exits 0 with autonomous runtime blocked while the contract interview remains incomplete.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m unittest agents.vik-aspa.tests.test_aspa_runtime exited 0 with 14 tests passing."
+        },
+        {
+          "number": 3,
+          "title": "Skill validator passes",
+          "expectedBehavior": "Mojo MAPS skill validator passes after /build-agent v0.6.0 update.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
+          "expectedPassingEvidence": "Validator exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MAPS-010",
+      "title": "Add adaptive quiet cadence to role heartbeat template",
+      "description": "Update /role heartbeat automation templates and memory templates so five-minute role heartbeats fall back to 10 minutes after 4 no-change checks, fall back to 15 minutes after 4 more no-change checks, and reset to 5 minutes when relevant work appears.",
+      "category": "Role Automation",
+      "priority": 88,
+      "impact": "moderate",
+      "status": "complete",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Mae Communications and Heartbeat handoff from Scott's adaptive heartbeat cadence direction.",
+      "counterpart_status": "Updated Mojo repo /role source and installed Codex /role skill. MAPS+Org counterpart sync remains subject to Release Management routing before any cross-repo write.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Adaptive cadence appears in role templates",
+          "expectedBehavior": "Installed /role and Mojo repo /role sources describe adaptive quiet cadence and limit self-updates to cadence metadata only.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"adaptive quiet cadence|4 consecutive no-change checks|cadence-only\" assets/maps/skills/role C:\\Users\\scott\\.codex\\skills\\role",
+          "expectedPassingEvidence": "Search finds adaptive cadence and cadence-only boundary language in skill and template copies.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed adaptive quiet cadence and cadence-only boundary language in installed and Mojo /role skill/template files."
+        },
+        {
+          "number": 2,
+          "title": "Skill validator passes",
+          "expectedBehavior": "Mojo MAPS skill validator passes after /role v0.22.0 template update.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
+          "expectedPassingEvidence": "Validator exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
         }
       ]
     }
