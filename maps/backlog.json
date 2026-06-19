@@ -4,7 +4,7 @@
   "owner": "Matt",
   "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
   "created_at": "2026-06-19",
-  "updated_at": "2026-06-19T21:40:38Z",
+  "updated_at": "2026-06-19T22:00:14Z",
   "source_channels": [
     "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
     "G:\\My Drive\\Mojo\\channels\\pipeline.md",
@@ -76,7 +76,9 @@
           "proofType": "artifact-review",
           "exactCommand": "Review maps/backlog.json and Matt workflow/memory for Bea handoff format.",
           "expectedPassingEvidence": "Backlog or Matt workflow includes the handoff fields and routing rule.",
-          "status": "pending"
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed /role v0.23.0 and topic labels in installed and Mojo repo role skill/template files; live matt-handoff-check readback confirmed topic-paragraph prompt formatting."
         }
       ]
     },
@@ -106,7 +108,9 @@
           "proofType": "artifact-and-command",
           "exactCommand": "Run selected local build command and tests from the chosen role-to-agent proof build.",
           "expectedPassingEvidence": "Command evidence, tests, audit/state/log artifacts, adapter decision, and Equip/Evaluate handoffs are recorded.",
-          "status": "pending"
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
         }
       ]
     },
@@ -393,6 +397,49 @@
           "number": 2,
           "title": "Skill validator passes",
           "expectedBehavior": "Mojo MAPS skill validator passes after /role v0.22.0 template update.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
+          "expectedPassingEvidence": "Validator exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MAPS-011",
+      "title": "Format role heartbeat prompts into topic paragraphs",
+      "description": "Update /role heartbeat automation templates and Matt's live heartbeat prompt so automation instructions are split into readable topic-based paragraphs without changing scope, authority, checked locations, or cadence.",
+      "category": "Role Automation",
+      "priority": 82,
+      "impact": "moderate",
+      "status": "complete",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": "2026-06-19",
+      "dependencies": [
+        "MAPS-010"
+      ],
+      "source": "Mae Communications and Heartbeat handoff from Scott's automation prompt readability request.",
+      "counterpart_status": "Updated Mojo repo /role source, installed Codex /role skill, and live matt-handoff-check formatting. MAPS+Org counterpart sync remains subject to Release Management routing before any cross-repo write.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Topic paragraph template exists",
+          "expectedBehavior": "Installed /role and Mojo repo /role heartbeat templates contain topic labels for Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"Cadence:|Active-flow rule:|Context to read:|Response contract:|Work handling:|Durable writes:|Authority boundary:\" assets/maps/skills/role C:\\Users\\scott\\.codex\\skills\\role",
+          "expectedPassingEvidence": "Search finds all topic labels in installed and Mojo /role skill/template files.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed /role v0.23.0 and topic labels in installed and Mojo repo role skill/template files; live matt-handoff-check readback confirmed topic-paragraph prompt formatting."
+        },
+        {
+          "number": 2,
+          "title": "Skill validator passes",
+          "expectedBehavior": "Mojo MAPS skill validator passes after /role v0.23.0 formatting update.",
           "proofType": "command",
           "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
           "expectedPassingEvidence": "Validator exits 0.",

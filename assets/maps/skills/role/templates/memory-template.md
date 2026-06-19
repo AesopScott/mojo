@@ -75,6 +75,7 @@ Repo work routing, when the role creates or edits repo files:
   - `G:\My Drive\Mindshare\channels\communications.md`
   - `[assigned-handoff-file]`
 - Automation template source: `templates/heartbeat-automation.md`
+- Prompt format: use topic-based paragraphs for Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary. Formatting changes must not change scope, checked locations, cadence, authority, thread destination, or role identity.
 - Quiet no-work behavior: use `DONT_NOTIFY` and name the checked locations when no user action is needed.
 - Adaptive quiet behavior: cadence-only metadata updates are allowed for this fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
 - Work behavior: if new work, blockers, decisions, or status changes exist, respond with the needed action or one blocker question and name the checked locations.

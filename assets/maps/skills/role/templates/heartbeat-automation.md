@@ -10,7 +10,21 @@
 
 ## Prompt
 
-[proper-role-name] handoff heartbeat. Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity. If [proper-role-name] is engaged in active user-directed work, do not interrupt the flow. Read [proper-role-name]'s active repo-local memory file at `[project-repo]\roles\[role-name]\memory.md`. Read the assigned handoff files [assigned-handoff-files]. In every heartbeat response, include the checked handoff locations in the heartbeat XML message. Check for new work, blockers, decisions, or status changes. If work exists and [proper-role-name] has authority to act, respond in this thread with the needed action, action taken, or one blocker question and name the checked locations. If work exists but [proper-role-name] lacks authority to implement without approval, ask Scott for authorization instead of silently deferring or doing no work. If no work exists, do not visibly notify the user; use a DONT_NOTIFY heartbeat response whose message briefly names the checked locations and says no user action is needed. Record durable role-memory changes in `[project-repo]\roles\[role-name]\memory.md`, mirror role-memory changes to `[project-memory-root]\[role-name].md` when appropriate, and record handoff/channel changes in the relevant handoff file. Do not create noisy no-work log entries, and do not treat this heartbeat as approval for production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond this check.
+[proper-role-name] handoff heartbeat.
+
+Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
+
+Active-flow rule: If [proper-role-name] is engaged in active user-directed work, do not interrupt the flow.
+
+Context to read: Read [proper-role-name]'s active repo-local memory file at `[project-repo]\roles\[role-name]\memory.md`. Read the assigned handoff files [assigned-handoff-files].
+
+Response contract: In every heartbeat response, include the checked handoff locations in the heartbeat XML message.
+
+Work handling: Check for new work, blockers, decisions, or status changes. If work exists and [proper-role-name] has authority to act, respond in this thread with the needed action, action taken, or one blocker question and name the checked locations. If work exists but [proper-role-name] lacks authority to implement without approval, ask Scott for authorization instead of silently deferring or doing no work. If no work exists, do not visibly notify the user; use a DONT_NOTIFY heartbeat response whose message briefly names the checked locations and says no user action is needed.
+
+Durable writes: Record durable role-memory changes in `[project-repo]\roles\[role-name]\memory.md`, mirror role-memory changes to `[project-memory-root]\[role-name].md` when appropriate, and record handoff/channel changes in the relevant handoff file. Do not create noisy no-work log entries.
+
+Authority boundary: Do not treat this heartbeat as approval for production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond this check.
 
 ## Assigned Handoff Files
 

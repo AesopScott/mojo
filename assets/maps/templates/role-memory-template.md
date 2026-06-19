@@ -45,6 +45,7 @@ Repo work routing, when the role creates or edits repo files:
 
 - Automation name: `[role-name]-handoff-check`
 - Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes immediately when relevant work appears.
+- Prompt format: use topic-based paragraphs for Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary. Formatting changes must not change scope, checked locations, cadence, authority, thread destination, or role identity.
 - Quiet no-work behavior: use `DONT_NOTIFY` and name checked locations when no user action is needed.
 - Adaptive quiet behavior: cadence-only metadata updates are allowed for this fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
 - Authority boundary: this heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond the bounded handoff check.

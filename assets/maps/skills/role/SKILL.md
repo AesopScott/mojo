@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.22.0.
+Current version: 0.23.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.23.0 - Reformatted heartbeat automation prompt template into topic-based paragraphs while preserving the same cadence, context, response, durable-write, and authority behavior.
 - 2026-06-19 - v0.22.0 - Added adaptive quiet heartbeat cadence: start at 5 minutes, fall back to 10 minutes after 4 no-change checks, fall back to 15 minutes after 4 more no-change checks, and reset to 5 minutes when relevant work appears.
 - 2026-06-19 - v0.21.0 - Added the operating taxonomy `Position -> Operator -> Coordinator -> Executor` with separate `Tool -> Tool Agent` lineage, while retaining `Role`, `Role+`, and `Agent` as compatibility aliases during transition.
 - 2026-06-19 - v0.20.0 - Added memory-template synchronization as a required autonomy and completion behavior whenever role memory updates create or change reusable memory structure, fields, routing, or operating requirements.
@@ -213,6 +214,7 @@ The heartbeat prompt must be self-contained and include these instructions, loca
 
 - `[Proper Role Name] handoff heartbeat. Only run on this 5-minute heartbeat; do not perform interim due-check logic.`
 - The heartbeat may update only its own cadence metadata for adaptive quiet behavior: after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes as soon as relevant work appears. Do not change prompt scope, checked locations, authority, thread destination, or role identity under this cadence rule.
+- Format the heartbeat prompt as topic-based paragraphs: Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary.
 - If the role is engaged in active user-directed work, do not interrupt the visible flow.
 - Read the role's active repo-local memory file at `<project-repo>\roles\<role-slug>\memory.md`.
 - Read the role's assigned handoff files exactly as listed in the role artifact and memory file.
@@ -228,7 +230,23 @@ The heartbeat prompt must be self-contained and include these instructions, loca
 
 Use `templates/heartbeat-automation.md` as the source automation template. Substitute `[role-name]`, `[proper-role-name]`, `[project-repo]`, `[project-memory-root]`, and `[assigned-handoff-files]`. The generated prompt must use this shared automation message shape for current Mindshare/Mojo roles:
 
-`[Proper Role Name] handoff heartbeat. Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity. If [Proper Role Name] is engaged in active user-directed work, do not interrupt the flow. Read [Proper Role Name]'s active repo-local memory file at <project-repo>\roles\<role-slug>\memory.md. Read the assigned handoff files [assigned-handoff-files]. In every heartbeat response, include the checked handoff locations in the heartbeat XML message. Check for new work, blockers, decisions, or status changes. If work exists and [Proper Role Name] has authority to act, respond in this thread with the needed action, action taken, or one blocker question and name the checked locations. If work exists but [Proper Role Name] lacks authority to implement without approval, ask Scott for authorization instead of silently deferring or doing no work. If no work exists, do not visibly notify the user; use a DONT_NOTIFY heartbeat response whose message briefly names the checked locations and says no user action is needed. Record durable role-memory changes in <project-repo>\roles\<role-slug>\memory.md, mirror role-memory changes to <project-memory-root>\<role-slug>.md when appropriate, and record handoff/channel changes in the relevant handoff file. Do not create noisy no-work log entries, and do not treat this heartbeat as approval for production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond this check.`
+```
+[Proper Role Name] handoff heartbeat.
+
+Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
+
+Active-flow rule: If [Proper Role Name] is engaged in active user-directed work, do not interrupt the flow.
+
+Context to read: Read [Proper Role Name]'s active repo-local memory file at <project-repo>\roles\<role-slug>\memory.md. Read the assigned handoff files [assigned-handoff-files].
+
+Response contract: In every heartbeat response, include the checked handoff locations in the heartbeat XML message.
+
+Work handling: Check for new work, blockers, decisions, or status changes. If work exists and [Proper Role Name] has authority to act, respond in this thread with the needed action, action taken, or one blocker question and name the checked locations. If work exists but [Proper Role Name] lacks authority to implement without approval, ask Scott for authorization instead of silently deferring or doing no work. If no work exists, do not visibly notify the user; use a DONT_NOTIFY heartbeat response whose message briefly names the checked locations and says no user action is needed.
+
+Durable writes: Record durable role-memory changes in <project-repo>\roles\<role-slug>\memory.md, mirror role-memory changes to <project-memory-root>\<role-slug>.md when appropriate, and record handoff/channel changes in the relevant handoff file. Do not create noisy no-work log entries.
+
+Authority boundary: Do not treat this heartbeat as approval for production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond this check.
+```
 
 If the Codex automation tool is unavailable, create `roles/<role-slug>/heartbeat-automation.md` from `templates/heartbeat-automation.md` as a draft automation spec with the same name, cadence, prompt, assigned handoff files, memory configuration, heartbeat response contract, and authority boundary. Mark it blocked on automation-tool availability in the completion report.
 
