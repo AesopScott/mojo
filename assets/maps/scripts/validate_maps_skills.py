@@ -41,7 +41,9 @@ def validate_skill(path: Path) -> list[str]:
 
     if path.parent.name == "role":
         for label, pattern in {
-            "role authority requirement": r"explicit authority",
+            "role authority requirement": r"authority taxonomy",
+            "role authority taxonomy": r"role-authority-taxonomy\.md",
+            "special authority declarations": r"special declarations",
             "role learning requirement": r"learning loop",
             "implementation recommendation": r"implementation form",
         }.items():

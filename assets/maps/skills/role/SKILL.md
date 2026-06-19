@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.2.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.2.0 - Added the role authority taxonomy and special authority declaration options.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/role` to design a role agent for an organization. This is not a MAPS phase skill. It is a role-construction skill students can run repeatedly to create two or three organizational roles under a root company, team, service, or agentic corporation.
@@ -54,14 +55,15 @@ External research is mandatory and heavily weighted. Do not produce the recommen
 
 1. Read M0 foundation, M1 shape, and any existing role or organization artifacts if available.
 2. Use `references/role-patterns.md` to classify the role mode.
-3. Read `references/role-research-sources.md` and select the mandatory source mix for the role type.
-4. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references.
-5. Use at least three external sources for every role recommendation:
+3. Read `references/role-authority-taxonomy.md` to classify authority level, domains, gates, and special declarations.
+4. Read `references/role-research-sources.md` and select the mandatory source mix for the role type.
+5. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references.
+6. Use at least three external sources for every role recommendation:
    - one role-domain source for the human role or function
    - one operating-model or workflow source
    - one agent/governance/source-of-control reference when the role will use tools, memory, RAG, approvals, or autonomy
-6. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
-7. Recommend the rest of the role contract:
+7. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
+8. Recommend the rest of the role contract:
    - role type and mode
    - advisory behavior
    - workflow ownership
@@ -71,15 +73,15 @@ External research is mandatory and heavily weighted. Do not produce the recommen
    - tools and data access
    - boundaries and forbidden actions
    - escalation rules
-   - explicit authority: what the role can recommend, draft, act on with approval, act on independently, and never do
+   - authority taxonomy: level, domains, decision rights, execution rights, approval gates, revocation path, and special declarations
    - learning loop: how the role's responsibilities, capabilities, memory, and proof standards should grow over time
    - success evidence
    - proof scenarios
    - implementation form: skill, script, hook, active process, scheduled loop, workflow/runbook, MCP/tool integration, dashboard, or human-in-the-loop operating procedure
    - next build recommendation
-8. Present the recommendations with concise reasoning and cite the external sources used.
-9. Ask the user to accept the recommendations, revise one part, or mark unknowns. Ask this as one question.
-10. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
+9. Present the recommendations with concise reasoning and cite the external sources used.
+10. Ask the user to accept the recommendations, revise one part, or mark unknowns. Ask this as one question.
+11. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
 
 If the user is still scoping, offer three role modes:
 
@@ -129,13 +131,13 @@ If the user is still scoping, offer three role modes:
    - status updates
 10. Define tools, permissions, and constraints.
 11. Define authority explicitly:
-   - advisory authority
-   - drafting authority
-   - workflow ownership authority
-   - tool-use authority
-   - memory/RAG write authority
+   - taxonomy level: none, observe, advise, recommend, draft, coordinate, execute-with-approval, execute-within-policy, approve, veto, autonomous-within-bounds, emergency-only, or owner
+   - authority domains: advice, artifacts, workflow, tools, memory/RAG, data, external communication, money/commitments, policy/governance, people/roles, deployment/production, escalation
+   - decision rights
+   - execution rights
    - approval gates
    - forbidden decisions and actions
+   - special declarations from `references/role-authority-taxonomy.md`
    - revocation or rollback path
 12. Define learning and growth:
    - what the role should learn from each run
@@ -203,6 +205,7 @@ The completed role artifact must include:
 - Customers/operators served
 - Responsibilities and non-responsibilities
 - Authority and autonomy level, with explicit recommend/draft/act/approve/forbidden boundaries
+- Authority taxonomy, authority domains, approval gates, special declarations, and revocation path
 - Learning and growth loop for responsibilities, capabilities, memory, and authority changes
 - Inputs, outputs, handoffs, and review rhythm
 - Memory contract for this role
@@ -216,5 +219,7 @@ The completed role artifact must include:
 ## References
 
 Read `references/role-patterns.md` when the role mode is ambiguous, the user asks what makes a role an agent rather than a script, or the role could become advisory, workflow-owned, skill-backed, or loop-backed.
+
+Read `references/role-authority-taxonomy.md` for every `/role` run before making recommendations. It defines the authority levels, domains, special declarations, default safety rules, and authority evidence requirements.
 
 Read `references/role-research-sources.md` for every `/role` run before making recommendations. It defines the mandatory external source mix and preferred sources by role family.

@@ -69,6 +69,31 @@ Disable or rollback path:
 
 Recommend / draft / act with approval / act within policy / act autonomously.
 
+Highest authority level: A0 none / A1 observe / A2 advise / A3 recommend / A4 draft / A5 coordinate / A6 execute-with-approval / A7 execute-within-policy / A8 approve / A9 veto / A10 autonomous-within-bounds / A11 emergency-only / A12 owner.
+
+## Authority Taxonomy
+
+| Authority Domain | Level | Special Declarations | Approval Gate | Evidence Required | Revocation Path |
+| --- | --- | --- | --- | --- | --- |
+| Advice and critique | | | | | |
+| Artifact creation | | | | | |
+| Workflow ownership | | | | | |
+| Tool use | | | | | |
+| Memory and RAG writes | | | | | |
+| Source, evidence, and data handling | | | | | |
+| External communication | | | | | |
+| Spending, procurement, or commitments | | | | | |
+| Policy, governance, compliance, or risk | | | | | |
+| People, roles, staffing, or performance | | | | | |
+| Deployment, production, infrastructure, or runtime operations | | | | | |
+| Escalation, approval, veto, or incident response | | | | | |
+
+## Special Authority Declarations
+
+Selected declarations:
+
+Available declarations: read-only / recommend-only / draft-only / human-approval-required / role-approval-required / two-key-approval / policy-bound / budget-bound / time-bound / scope-bound / memory-read / memory-write / memory-propose / external-communication / no-external-communication / tool-use / no-tool-use / production-access / no-production-access / veto-right / escalation-right / emergency-break-glass / self-improvement-propose / self-improvement-write / revocable.
+
 ## Authority Definition
 
 | Authority Area | Allowed | Requires Approval | Forbidden | Evidence Required |
