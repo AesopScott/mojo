@@ -18,7 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
-- 2026-06-19 - v0.2.0 - Added Research and Recommend guidance, ASPM advisory behavior, and source-backed track recommendations.
+- 2026-06-19 - v0.2.0 - Added Research and Recommend guidance, pipeline-owner advisory behavior, and source-backed track recommendations.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/shape` at M1 to discover enough of the operating model to choose the right track.
@@ -50,14 +50,14 @@ Then ask only the next missing question needed to understand the workflow, actor
 After enough context exists to make a provisional track recommendation, stop interviewing and run Research and Recommend:
 
 1. Read M0 Project Foundation, source inventory, persistent memory contract, and any existing role or workflow artifacts.
-2. If an Agentic Systems Program Manager, ASPM, Matt, or pipeline owner role artifact exists, read it and use it as advisory guidance for phase boundaries, scope discipline, memory/RAG implications, and next-skill routing.
+2. If a pipeline owner, MAPS program manager, or similar role artifact exists, read it and use it as advisory guidance for phase boundaries, scope discipline, memory/RAG implications, and next-skill routing.
 3. Read `references/shape-research-sources.md` and select the relevant source mix.
 4. Research or cite comparable workflow-shape, role-pressure, team-design, BPMN/service-blueprint, and agent-orchestration references.
 5. Recommend the S/M/U track:
    - Unknown / Scope First when the workflow, actors, data, handoffs, approval gates, or risk boundaries are not clear enough.
    - Single-Agent / APS when one coherent agent can own the outcome with one main context, tool boundary, memory contract, and evaluation surface.
    - Multi-Agent / MAPS when distinct roles, tools, permissions, memory, review, escalation, timing, or parallel work justify coordination cost.
-6. Include an ASPM guidance note explaining what a pipeline/program manager would advise: whether to slow down for scope, proceed into APS, continue to MAPS, or create role agents before roster/contracts.
+6. Include a pipeline owner guidance note explaining what a pipeline/program manager would advise: whether to slow down for scope, proceed into APS, continue to MAPS, or create role agents before roster/contracts.
 7. Present the recommendation with confidence, evidence, tradeoffs, and what would change the decision.
 8. Ask the user to accept the recommendation, revise one assumption, or mark the decision as scope-first. Ask this as one question.
 
@@ -89,7 +89,7 @@ If any of those answers are missing or ambiguous, ask before creating or updatin
    - Unknown / Scope First when the workflow, actors, data, handoffs, or risk boundaries are not clear.
    - Single-Agent / APS when one coherent agent can own the outcome.
    - Multi-Agent / MAPS when distinct roles, tools, permissions, memory, review, escalation, or parallel work are justified.
-3. Apply ASPM guidance when available:
+3. Apply pipeline owner guidance when available:
    - protect phase boundaries
    - avoid premature roster/contract work when scope is unclear
    - identify when `/role` should run before deeper MAPS phases
@@ -124,7 +124,7 @@ If the skill is blocked, say what answer, artifact, access, approval, or tool is
 ## Output
 - Completed `system-shape.md`
 - Research sources used and recommendation rationale
-- ASPM guidance note when an ASPM, Matt, or pipeline owner role is available or implied
+- Pipeline owner guidance note when a pipeline owner, MAPS program manager, or similar role is available or implied
 - Track decision: Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS
 - Rationale and evidence
 - Next-step recommendation:

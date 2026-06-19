@@ -136,7 +136,7 @@ window.MAPS_SITE = {
         name: "/shape",
         url: "assets/maps/skills/shape/SKILL.md",
         download: true,
-        note: "Runs M1 System Shape with the initial S/M/U question, then uses Research and Recommend plus ASPM guidance to choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
+        note: "Runs M1 System Shape with the initial S/M/U question, then uses Research and Recommend plus pipeline owner guidance to choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
       },
       {
         name: "/role",
@@ -876,7 +876,7 @@ window.MAPS_SITE = {
         name: "templates/system-shape.md",
         url: "assets/maps/templates/system-shape.md",
         download: true,
-        note: "Captures M1 System Shape: research sources, recommendation rationale, ASPM guidance, S/M/U decision, BPMN Lite, role pressure, system shape, and next track recommendation."
+        note: "Captures M1 System Shape: research sources, recommendation rationale, pipeline owner guidance, S/M/U decision, BPMN Lite, role pressure, system shape, and next track recommendation."
       },
       {
         name: "templates/maps-scaffold-template.md",

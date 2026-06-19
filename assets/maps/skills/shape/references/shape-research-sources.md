@@ -39,9 +39,9 @@ Use project foundation context to localize the decision, but use external or bun
 - LangGraph: use for stateful graph workflows, supervisor patterns, persistence, and human-in-the-loop control flow.
   - https://langchain-ai.github.io/langgraph/
 
-## ASPM Guidance Source
+## Pipeline Owner Guidance Source
 
-If a project contains an Agentic Systems Program Manager, ASPM, Matt, pipeline owner, or similar role artifact, use it as advisory guidance for:
+If a project contains a pipeline owner, MAPS program manager, or similar role artifact, use it as advisory guidance for:
 
 - phase boundaries
 - track confidence
@@ -50,7 +50,7 @@ If a project contains an Agentic Systems Program Manager, ASPM, Matt, pipeline o
 - whether to run `/role` before deeper MAPS work
 - next-skill routing
 
-If no ASPM artifact exists, include a short "ASPM guidance" inference based on the role concept: protect scope, avoid premature decomposition, require evidence for MAPS coordination cost, and make the next skill explicit.
+If no pipeline owner artifact exists, include a short "Pipeline owner guidance" inference based on the role concept: protect scope, avoid premature decomposition, require evidence for MAPS coordination cost, and make the next skill explicit.
 
 ## Track Recommendation Heuristics
 
@@ -88,5 +88,5 @@ Every `/shape` recommendation must include:
 - rationale
 - contrary signals
 - what would change the decision
-- ASPM guidance note
+- Pipeline owner guidance note
 - next skill to run
