@@ -136,6 +136,14 @@
               <h3>Reset path</h3>
               <p><strong>/foundation --wipe</strong> previews the foundation scaffold cleanup, then removes confirmed MAPS-created artifacts so the phase can restart cleanly.</p>
             </article>
+            <article class="maps-panel">
+              <h3>Git readiness</h3>
+              <p>M0 checks whether Git already exists, whether <code>git</code> is available, and whether it is allowed to initialize the repo before phase work begins.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Env and secrets</h3>
+              <p>M0 creates the first <code>.env.example</code> and safe ignore rules, then asks before creating any local env file.</p>
+            </article>
           </div>
         </section>
 
@@ -166,13 +174,52 @@
               <p>When RAG or notes stores exist, define what MAPS can read, what it can write, which locations are read-only, and what requires approval.</p>
             </article>
             <article class="maps-panel">
+              <h3>Incremental runs</h3>
+              <p>If M0 has already run, audit the existing scaffold first and implement only missing additions such as Git readiness, env/secrets scaffolding, or memory updates.</p>
+            </article>
+            <article class="maps-panel">
               <h3>Completion</h3>
               <p>When M0 finishes, report whether it is complete, what foundation artifact was created, what memory was updated, and whether `/shape` should run next.</p>
             </article>
           </div>
           <div class="maps-code-panel maps-gap-top">
-            <pre><code>python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
+            <pre><code>python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" status --project .
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --init-git
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project . --confirm</code></pre>
+          </div>
+        </section>
+
+        <section id="git-secrets" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Git and secrets baseline</h2>
+            <p>M0 now sets up the first project safety rails before deeper agent work starts.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Git setup</h3>
+              <p>If <code>.git</code> is missing and permissions allow it, <code>/foundation</code> can run <code>git init</code> so MAPS artifacts have version history from the beginning.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Secrets template</h3>
+              <p>The scaffold creates <code>.env.example</code> with placeholders for API keys, RAG endpoints, notes providers, and runtime identifiers.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Ignore rules</h3>
+              <p>The scaffold adds safe <code>.gitignore</code> entries for local secrets while keeping <code>.env.example</code> trackable.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Local env file</h3>
+              <p><code>.env.local</code> is never created without explicit approval and never receives real secret values from the skill.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Incremental audit</h3>
+              <p>Existing projects use <code>remember_foundation.py status</code> to detect missing foundation files, Git state, env templates, ignore rules, and helper memory files.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>No overwrites</h3>
+              <p>The scaffold creates missing files and directories only. Existing foundation, notes, source, memory, env, and Git files are preserved.</p>
+            </article>
           </div>
         </section>
 

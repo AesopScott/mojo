@@ -1,12 +1,12 @@
 ---
 name: foundation
-description: Start M0 Project Foundation for a MAPS project. Use when kicking off a new agent or multi-agent project, creating the project intent, notes scaffold, source inventory, assumptions, decisions, evidence index, and RAG-readiness plan before system shape or APS phase work begins.
+description: Start M0 Project Foundation for a MAPS project. Use when kicking off a new agent or multi-agent project, creating the project intent, notes scaffold, Git readiness, env/secrets scaffold, source inventory, assumptions, decisions, evidence index, and RAG-readiness plan before system shape or APS phase work begins.
 ---
 
 # Foundation
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.2.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.2.0 - Added incremental scaffold audits, Git initialization, and env/secrets template setup.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/foundation` at M0 to create the project foundation before selecting a system shape, roster, or individual agent build path. Use `/foundation --wipe` to remove the current project's foundation scaffold before starting over.
@@ -58,6 +59,8 @@ python scripts/remember_foundation.py apply --project . --foundation-file projec
 python scripts/remember_foundation.py stamp-run --project . --skill /foundation --phase M0 --output project-foundation.md --memory-updates "Updated memory contract"
 python scripts/remember_foundation.py promote-template --project . --foundation-file project-foundation.md
 python scripts/remember_foundation.py wipe --project .
+python scripts/remember_foundation.py status --project .
+python scripts/remember_foundation.py scaffold --project . --init-git
 ```
 
 Use `scripts/maps_memory.py` for the shared per-skill runtime memory behavior:
@@ -113,14 +116,39 @@ Required preflight decisions:
 - Project identity: name, owner, and whether this is the MAPS framework itself, an APS/single-agent project, or a downstream product/org using MAPS.
 - Project intent: the concrete product, organization, service, or agent system being founded.
 - Primary customer/operator: who will use or operate the system.
+- Git readiness: whether a Git repo already exists, whether M0 may initialize one if missing, and whether Git is available.
+- Env/secrets readiness: whether to create `.env.example`, whether a local ignored `.env.local` is wanted, and where real secrets should live.
 - Global template policy: whether this project's answers should update the living global template for future projects.
 
 If any required preflight decision is missing or ambiguous, ask the user before creating or updating `project-foundation.md`.
 
+## Incremental foundation runs
+
+If `project-foundation.md` or `.maps/foundation-preferences.json` already exists, do not restart M0 from scratch unless the user asks for `/foundation --wipe`. Treat the run as an incremental foundation audit:
+
+1. Run `python scripts/remember_foundation.py status --project .` to identify missing foundation pieces.
+2. Report only the incremental changes that have not been implemented.
+3. Ask one question at a time for missing decisions that cannot be inferred safely.
+4. Run `python scripts/remember_foundation.py scaffold --project .` to create only missing non-destructive scaffold files.
+5. Add `--init-git` only when `.git` is missing, Git is available, and the project permissions allow writing.
+6. Add `--include-local-env` only when the developer confirms they want an ignored local env file created.
+7. Never overwrite existing env, secrets, Git, notes, source, memory, or foundation files during an incremental run.
+8. Append the incremental update to the MAPS Skill Run Log and memory helper note.
+
 1. Complete the memory/RAG-first M0 preflight interview.
 2. Load remembered foundation preferences and apply only the defaults the user confirmed after seeing the memory/RAG choices.
 3. Name the project and the customer or operator outcome from confirmed answers.
-4. Create the working knowledge scaffold using confirmed locations:
+4. Audit the existing foundation state if any M0 artifacts already exist, then create only missing scaffold items.
+5. Check Git readiness:
+   - If `.git/` exists, record that Git is already initialized.
+   - If `.git/` is missing and Git is available, initialize Git only when filesystem permissions allow it and the user has not forbidden it.
+   - If Git cannot be initialized, record the blocker and continue with the rest of M0.
+6. Create the first env/secrets scaffold:
+   - Always create `.env.example` when missing, with placeholder keys only.
+   - Ensure `.gitignore` ignores real secret files such as `.env`, `.env.*`, and `*.local`, while keeping `.env.example` trackable.
+   - Create `.env.local` only when the developer confirms they want an ignored local secrets file.
+   - Never write real secret values into project files.
+7. Create the working knowledge scaffold using confirmed locations:
    - `notes/daily/`
    - `notes/interviews/`
    - `notes/research/`
@@ -131,17 +159,17 @@ If any required preflight decision is missing or ambiguous, ask the user before 
    - `memory/project-context.md`
    - `memory/glossary.md`
    - `memory/entity-map.md`
-5. Complete `templates/project-foundation.md`.
-6. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
-7. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
-8. Log known evidence, assumptions, decisions, open questions, and source gaps.
-9. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
-10. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
-11. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
-12. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
-13. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
-14. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
-15. Prepare the M1 handoff:
+8. Complete `templates/project-foundation.md`.
+9. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
+10. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
+11. Log known evidence, assumptions, decisions, open questions, and source gaps.
+12. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
+13. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
+14. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
+15. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
+16. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
+17. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
+18. Prepare the M1 handoff:
    - If the system shape is unclear, recommend Scope First.
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
@@ -155,6 +183,8 @@ Report:
 - Completion status: complete, blocked, or needs more answers.
 - Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
 - Key decisions or changes made.
+- Git and env/secrets status: whether Git was already initialized, initialized now, blocked, or skipped; and which env/secrets scaffold files were created or already existed.
+- Incremental status: which missing foundation pieces were created and which still need decisions.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
 - Next skill: `/shape` for M1 System Shape, unless M0 says the project needs more foundation work first.
 
@@ -165,6 +195,10 @@ Create or update these concrete outputs in the current project:
 - `project-foundation.md`: completed M0 foundation artifact from `templates/project-foundation.md`.
 - `.maps/foundation-preferences.json`: selected notes, sources, memory, and RAG locations for the next `/foundation` run.
 - `.maps/rag-updates.json`: append-only reindex manifest updated by the shared memory helper.
+- `.git/`: initialized repository only when missing, allowed, and Git is available.
+- `.gitignore`: includes env/secrets ignore rules while preserving `.env.example`.
+- `.env.example`: first env/secrets template with placeholders only.
+- `.env.local`: optional ignored local env file only when explicitly confirmed.
 - `<notesRoot>/maps-runs/[project]-foundation-helper-notes.md`: named `/foundation` helper note for notes/RAG ingestion.
 - `<rag.location>/maps-runs/[project]-foundation-helper-notes.md`: mirrored named `/foundation` helper note when a RAG location is configured.
 - Notes scaffold: the selected notes root with `daily/`, `interviews/`, `research/`, and `decisions/`.
@@ -180,6 +214,8 @@ The completed `project-foundation.md` must include:
 - Service Blueprint Lite notes
 - Evidence index
 - Source inventory
+- Git readiness and repository status
+- Env/secrets scaffold and secret-handling rules
 - Assumptions
 - Decisions
 - Open questions

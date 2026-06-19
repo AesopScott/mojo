@@ -8,6 +8,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -107,6 +108,30 @@ def write_json(path: Path, prefs: dict[str, Any]) -> None:
     path.write_text(json.dumps(prefs, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def write_if_missing(path: Path, content: str) -> bool:
+    if path.exists():
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+    return True
+
+
+def ensure_gitignore_entries(path: Path, entries: list[str]) -> list[str]:
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+    lines = existing.splitlines()
+    normalized = {line.strip() for line in lines}
+    added: list[str] = []
+    if existing and not existing.endswith("\n"):
+        existing += "\n"
+    for entry in entries:
+        if entry not in normalized:
+            existing += entry + "\n"
+            added.append(entry)
+    if added:
+        path.write_text(existing, encoding="utf-8")
+    return added
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
 
@@ -197,6 +222,7 @@ def memory_contract_section(prefs: dict[str, Any]) -> str:
         ["Additional RAG indexes", f"Secondary RAG via {access.get('rag', '')}".strip(), join_values(rag.get("additionalLocations", [])), "Optional secondary indexes, vector stores, service endpoints, or experiments.", "When approved source, notes, or memory changes should be mirrored.", "Update only according to the canonical store policy.", "Derived from canonical notes, sources, or memory.", "No, unless explicitly marked canonical.", "Unapproved sources, secrets, or raw private data."],
         ["RAG update manifest", "JSON state", ".maps/rag-updates.json", "Append-only list of skill notes and memory files that need RAG reindexing.", "Every helper-written skill note or RAG mirror.", "Append a needsReindex entry through maps_memory.py complete-run.", "Used by future indexing automation.", "No, derived from changed stores.", "Long prose or raw evidence."],
         ["MAPS state", "JSON state", ".maps/foundation-preferences.json", "Remembered scaffold and memory configuration for future skill runs.", "Every foundation configuration change.", "Structured JSON update.", "Reflect important choices in this document.", "Yes for automation defaults.", "Long prose or raw evidence."],
+        ["Env/secrets template", "Text config template", ".env.example", "Documents required environment variables and secret names without storing secret values.", "New integration, provider, model, API, or deployment secret requirement.", "Add placeholder names and comments only.", "Real values live in ignored local env files or a platform secrets manager.", "Yes for secret names, not values.", "Secret values, tokens, passwords, private keys."],
     ]
     table = [
         "| Store | Type | Location | Purpose | Update trigger | Update method | Sync rule | Canonical? | Do not write |",
@@ -204,6 +230,37 @@ def memory_contract_section(prefs: dict[str, Any]) -> str:
     ]
     table.extend("| " + " | ".join(markdown_escape(cell) for cell in row) + " |" for row in rows)
     return "\n".join(table)
+
+
+def git_and_secrets_section() -> str:
+    return """| Item | Status | Notes |
+|---|---|---|
+| Git repository | not checked / already initialized / initialized by M0 / skipped / blocked |  |
+| `.gitignore` env rules | not checked / present / added by M0 / blocked |  |
+| `.env.example` | not checked / present / created by M0 / blocked | Placeholder keys only; no real secrets. |
+| `.env.local` | not requested / present / created by M0 / skipped | Ignored local developer secrets file; create only with confirmation. |
+| Secrets manager | none yet / local env / platform secrets / external vault |  |
+
+Secret handling rules:
+
+- Never write real secret values into tracked files.
+- Keep `.env.example` tracked as the documented template.
+- Keep `.env`, `.env.*`, and `*.local` ignored except `.env.example`.
+- Record required secrets by name, purpose, owner, and configuration location."""
+
+
+def incremental_foundation_audit_section() -> str:
+    return """| Item | Exists? | Action Taken | Still Missing |
+|---|---|---|---|
+| `project-foundation.md` |  |  |  |
+| `.maps/foundation-preferences.json` |  |  |  |
+| `.maps/rag-updates.json` |  |  |  |
+| Git repository |  |  |  |
+| `.gitignore` env rules |  |  |  |
+| `.env.example` |  |  |  |
+| Notes scaffold |  |  |  |
+| Sources scaffold |  |  |  |
+| Memory scaffold |  |  |  |"""
 
 
 def ensure_run_log(markdown: str) -> str:
@@ -234,6 +291,8 @@ def apply_to_foundation_file(path: Path, prefs: dict[str, Any], source: str) -> 
         markdown = seed_template_text()
     markdown = replace_section(markdown, "Remembered Foundation Preferences", remembered_preferences_section(prefs, source))
     markdown = replace_section(markdown, "Persistent Memory Contract", memory_contract_section(prefs))
+    markdown = replace_section(markdown, "Git And Secrets Scaffold", git_and_secrets_section())
+    markdown = replace_section(markdown, "Incremental Foundation Audit", incremental_foundation_audit_section())
     markdown = ensure_run_log(markdown)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(markdown, encoding="utf-8")
@@ -391,6 +450,122 @@ def scaffold_paths(project: Path, foundation_file: str) -> tuple[list[Path], lis
     return files, dirs
 
 
+def git_status(project: Path) -> dict[str, Any]:
+    git_dir = project / ".git"
+    git_available = shutil.which("git") is not None
+    return {
+        "gitAvailable": git_available,
+        "isRepository": git_dir.exists(),
+        "gitDir": str(git_dir),
+    }
+
+
+def env_example_text() -> str:
+    return """# Project environment template.
+# Copy to .env.local or configure these values in your platform secrets manager.
+# Do not put real secrets in this tracked example file.
+
+# OPENAI_API_KEY=
+# ANTHROPIC_API_KEY=
+# CLOUDFLARE_API_TOKEN=
+# GITHUB_TOKEN=
+
+"""
+
+
+def incremental_status(args: argparse.Namespace) -> int:
+    project = Path(args.project).resolve()
+    files, dirs = scaffold_paths(project, args.foundation_file)
+    checks = []
+    for path in dirs:
+        checks.append({"path": str(path), "type": "directory", "exists": path.exists()})
+    for path in files:
+        checks.append({"path": str(path), "type": "file", "exists": path.exists()})
+    extra_files = [
+        project / ".gitignore",
+        project / ".env.example",
+    ]
+    if args.include_local_env:
+        extra_files.append(project / ".env.local")
+    for path in extra_files:
+        checks.append({"path": str(path), "type": "file", "exists": path.exists()})
+    status = {
+        "project": str(project),
+        "git": git_status(project),
+        "checks": checks,
+        "missing": [item for item in checks if not item["exists"]],
+    }
+    print(json.dumps(status, indent=2, sort_keys=True))
+    return 0
+
+
+def scaffold(args: argparse.Namespace) -> int:
+    project = Path(args.project).resolve()
+    files, dirs = scaffold_paths(project, args.foundation_file)
+    actions: list[dict[str, str]] = []
+    prefs = load_json(preference_path(project)) or DEFAULT_PREFS
+
+    def configured_root(key: str, default: str) -> Path:
+        value = Path(prefs.get(key) or default)
+        return value if value.is_absolute() else project / value
+
+    for path in dirs:
+        if args.dry_run:
+            action = "exists" if path.exists() else "would-create"
+        elif path.exists():
+            action = "exists"
+        else:
+            path.mkdir(parents=True, exist_ok=True)
+            action = "created"
+        actions.append({"path": str(path), "type": "directory", "action": action})
+
+    seed_files = {
+        preference_path(project): json.dumps({**DEFAULT_PREFS, "updatedAt": datetime.now(timezone.utc).isoformat()}, indent=2, sort_keys=True) + "\n",
+        project / ".maps" / "rag-updates.json": json.dumps({"version": 1, "updates": []}, indent=2) + "\n",
+        project / ".env.example": env_example_text(),
+        project / ".gitignore": "",
+        foundation_path(project, args.foundation_file): seed_template_text(),
+        configured_root("sourcesRoot", "sources") / "links.md": "# Links\n\n",
+        configured_root("memoryRoot", "memory") / "project-context.md": "# Project Context\n\n",
+        configured_root("memoryRoot", "memory") / "glossary.md": "# Glossary\n\n",
+        configured_root("memoryRoot", "memory") / "entity-map.md": "# Entity Map\n\n",
+    }
+    if args.include_local_env:
+        seed_files[project / ".env.local"] = "# Local developer secrets. Do not commit.\n"
+
+    for path, content in seed_files.items():
+        if args.dry_run:
+            action = "exists" if path.exists() else "would-create"
+        else:
+            action = "created" if write_if_missing(path, content) else "exists"
+        actions.append({"path": str(path), "type": "file", "action": action})
+
+    gitignore_entries = [".env", ".env.*", "!.env.example", "*.local", ".maps/tmp/"]
+    gitignore_path = project / ".gitignore"
+    if args.dry_run:
+        added = [entry for entry in gitignore_entries if not gitignore_path.exists() or entry not in {line.strip() for line in gitignore_path.read_text(encoding="utf-8").splitlines()}]
+        actions.append({"path": str(gitignore_path), "type": "gitignore", "action": "would-add:" + ",".join(added) if added else "exists"})
+    else:
+        added = ensure_gitignore_entries(gitignore_path, gitignore_entries)
+        actions.append({"path": str(gitignore_path), "type": "gitignore", "action": "added:" + ",".join(added) if added else "exists"})
+
+    git = git_status(project)
+    if git["isRepository"]:
+        actions.append({"path": str(project / ".git"), "type": "git", "action": "exists"})
+    elif not args.init_git:
+        actions.append({"path": str(project / ".git"), "type": "git", "action": "not-requested"})
+    elif not git["gitAvailable"]:
+        actions.append({"path": str(project / ".git"), "type": "git", "action": "git-not-available"})
+    elif args.dry_run:
+        actions.append({"path": str(project / ".git"), "type": "git", "action": "would-init"})
+    else:
+        subprocess.run(["git", "init"], cwd=project, check=True, capture_output=True, text=True)
+        actions.append({"path": str(project / ".git"), "type": "git", "action": "initialized"})
+
+    print(json.dumps({"project": str(project), "dryRun": args.dry_run, "actions": actions}, indent=2, sort_keys=True))
+    return 0
+
+
 def remove_empty_dir(path: Path, force: bool) -> str:
     if not path.exists():
         return "missing"
@@ -476,6 +651,20 @@ def main() -> int:
     apply_parser.add_argument("--project", default=".", help="Project directory.")
     apply_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
     apply_parser.set_defaults(func=apply)
+
+    status_parser = subparsers.add_parser("status", help="Report missing incremental foundation scaffold items.")
+    status_parser.add_argument("--project", default=".", help="Project directory.")
+    status_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
+    status_parser.add_argument("--include-local-env", action="store_true", help="Also check for an ignored .env.local file.")
+    status_parser.set_defaults(func=incremental_status)
+
+    scaffold_parser = subparsers.add_parser("scaffold", help="Create only missing foundation scaffold items.")
+    scaffold_parser.add_argument("--project", default=".", help="Project directory.")
+    scaffold_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
+    scaffold_parser.add_argument("--init-git", action="store_true", help="Initialize git if .git is missing and git is available.")
+    scaffold_parser.add_argument("--include-local-env", action="store_true", help="Create an empty ignored .env.local file when missing.")
+    scaffold_parser.add_argument("--dry-run", action="store_true", help="Preview missing scaffold items without writing.")
+    scaffold_parser.set_defaults(func=scaffold)
 
     stamp_parser = subparsers.add_parser("stamp-run", help="Append a MAPS skill run to project-foundation.md.")
     stamp_parser.add_argument("--project", default=".", help="Project directory.")
