@@ -4,7 +4,7 @@
   "owner": "Matt",
   "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
   "created_at": "2026-06-19",
-  "updated_at": "2026-06-19T22:00:14Z",
+  "updated_at": "2026-06-19T23:18:42Z",
   "source_channels": [
     "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
     "G:\\My Drive\\Mojo\\channels\\pipeline.md",
@@ -440,6 +440,50 @@
           "number": 2,
           "title": "Skill validator passes",
           "expectedBehavior": "Mojo MAPS skill validator passes after /role v0.23.0 formatting update.",
+          "proofType": "command",
+          "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
+          "expectedPassingEvidence": "Validator exits 0.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "MAPS-012",
+      "title": "Expand adaptive quiet role heartbeat cadence",
+      "description": "Update /role heartbeat automation templates and memory templates so quiet role heartbeats can fall back from 5 minutes to 10, 15, 30 minutes, then 2 hours, and reset to 5 minutes when relevant work appears.",
+      "category": "Role Automation",
+      "priority": 86,
+      "impact": "moderate",
+      "status": "release-review",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-010",
+        "MAPS-011"
+      ],
+      "source": "Mae Communications and Heartbeat handoff from Scott's expanded adaptive heartbeat cadence request.",
+      "counterpart_status": "Updated Mojo repo /role source, installed Codex /role skill, and active memory templates. MAPS+Org is being rebuilt and was intentionally left out of this slice.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Expanded cadence appears in role templates",
+          "expectedBehavior": "Installed /role, Mojo repo /role sources, and active memory templates describe the 5 -> 10 -> 15 -> 30 minute -> 2 hour fallback and cadence-only boundary.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg -n \"30 minutes|2 hours|5 -> 10 -> 15 -> 30 minute -> 2 hour|cadence-only\" assets/maps/skills/role assets/maps/templates/role-memory-template.md C:\\Users\\scott\\.codex\\skills\\role",
+          "expectedPassingEvidence": "Search finds expanded cadence and cadence-only boundary language in Mojo source, installed skill files, and memory templates.",
+          "status": "passed",
+          "verified_on": "2026-06-19",
+          "verification_method": "Targeted rg confirmed /role v0.24.0, expanded 30-minute and 2-hour fallback language, and cadence-only boundary language in Mojo source, installed skill files, and active memory templates."
+        },
+        {
+          "number": 2,
+          "title": "Skill validator passes",
+          "expectedBehavior": "Mojo MAPS skill validator passes after /role v0.24.0 cadence update.",
           "proofType": "command",
           "exactCommand": "python assets/maps/scripts/validate_maps_skills.py",
           "expectedPassingEvidence": "Validator exits 0.",

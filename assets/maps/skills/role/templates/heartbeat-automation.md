@@ -4,7 +4,7 @@
 
 - Automation id/name: `[role-name]-handoff-check`
 - Kind: heartbeat
-- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes immediately when relevant work appears.
+- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; after 4 empty 15-minute checks, fall back to 30 minutes; after 4 empty 30-minute checks, fall back to 2 hours; reset to 5 minutes immediately when relevant work appears.
 - Status: ACTIVE unless Scott asks to pause it
 - Thread: current role thread when this thread is the intended role home
 
@@ -12,7 +12,7 @@
 
 [proper-role-name] handoff heartbeat.
 
-Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
+Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, after 4 empty 15-minute checks fall back to 30 minutes, after 4 empty 30-minute checks fall back to 2 hours, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
 
 Active-flow rule: If [proper-role-name] is engaged in active user-directed work, do not interrupt the flow.
 
@@ -76,4 +76,4 @@ If no work exists:
 
 This heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond this heartbeat, or autonomous runtime beyond the bounded handoff check.
 
-Cadence-only adaptive quiet updates are allowed by this template. They must not change prompt scope, checked locations, authority, thread destination, or role identity.
+Cadence-only adaptive quiet updates are allowed by this template, including the 5 -> 10 -> 15 -> 30 minute -> 2 hour fallback pattern. They must not change prompt scope, checked locations, authority, thread destination, or role identity.

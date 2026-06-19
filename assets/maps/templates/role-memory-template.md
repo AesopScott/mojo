@@ -44,10 +44,10 @@ Repo work routing, when the role creates or edits repo files:
 ## Heartbeat Automation
 
 - Automation name: `[role-name]-handoff-check`
-- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes immediately when relevant work appears.
+- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; after 4 empty 15-minute checks, fall back to 30 minutes; after 4 empty 30-minute checks, fall back to 2 hours; reset to 5 minutes immediately when relevant work appears.
 - Prompt format: use topic-based paragraphs for Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary. Formatting changes must not change scope, checked locations, cadence, authority, thread destination, or role identity.
 - Quiet no-work behavior: use `DONT_NOTIFY` and name checked locations when no user action is needed.
-- Adaptive quiet behavior: cadence-only metadata updates are allowed for this fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
+- Adaptive quiet behavior: cadence-only metadata updates are allowed for the 5 -> 10 -> 15 -> 30 minute -> 2 hour fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
 - Authority boundary: this heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond the bounded handoff check.
 
 ## Professional Maturity And Authorization
@@ -91,3 +91,4 @@ Candidate loading rule:
 | --- | --- | --- |
 | [date] | Created [proper-role-name] memory file from `memory-template.md`. | `/role` |
 | 2026-06-19 | Added default unique-worktree expectation: roles should work from their own worktrees or branches, not directly on `main`, and route Git/GitHub writes through Release Management. | Scott request to Reid. |
+| 2026-06-19 | Expanded adaptive quiet heartbeat cadence to 5 -> 10 -> 15 -> 30 minutes -> 2 hours, with reset to 5 minutes on relevant work. | Scott request to Mae. |

@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.23.0.
+Current version: 0.24.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,8 +18,9 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.24.0 - Expanded adaptive quiet heartbeat cadence to add 30-minute and 2-hour fallback stages while preserving cadence-only scope.
 - 2026-06-19 - v0.23.0 - Reformatted heartbeat automation prompt template into topic-based paragraphs while preserving the same cadence, context, response, durable-write, and authority behavior.
-- 2026-06-19 - v0.22.0 - Added adaptive quiet heartbeat cadence: start at 5 minutes, fall back to 10 minutes after 4 no-change checks, fall back to 15 minutes after 4 more no-change checks, and reset to 5 minutes when relevant work appears.
+- 2026-06-19 - v0.22.0 - Added adaptive quiet heartbeat cadence: start at 5 minutes, fall back to 10 minutes after 4 no-change checks, fall back to 15 minutes after 4 more no-change checks, and reset to 5 minutes when relevant work appears. Expanded by v0.24.0 to include 30-minute and 2-hour fallback stages.
 - 2026-06-19 - v0.21.0 - Added the operating taxonomy `Position -> Operator -> Coordinator -> Executor` with separate `Tool -> Tool Agent` lineage, while retaining `Role`, `Role+`, and `Agent` as compatibility aliases during transition.
 - 2026-06-19 - v0.20.0 - Added memory-template synchronization as a required autonomy and completion behavior whenever role memory updates create or change reusable memory structure, fields, routing, or operating requirements.
 - 2026-06-19 - v0.19.0 - Added Ana's candidate/draft role taxonomy, one-syllable alternating display-name default, Communications channel defaults, and Mindshare roles-directory memory pointer for new roles.
@@ -207,13 +208,13 @@ Use the Codex automation tool when available:
 - Search for the automation capability first if it is not already exposed.
 - Inspect existing automations before creating a new one.
 - Prefer updating the existing `<role-slug>-handoff-check` automation over creating a duplicate.
-- Use heartbeat kind, current thread destination, active status, and the adaptive quiet cadence: 5 minutes by default, 10 minutes after 4 consecutive no-change checks, 15 minutes after 4 more consecutive no-change checks, and reset to 5 minutes immediately when relevant work appears.
+- Use heartbeat kind, current thread destination, active status, and the adaptive quiet cadence: 5 minutes by default, 10 minutes after 4 consecutive no-change checks, 15 minutes after 4 more consecutive no-change checks, 30 minutes after 4 empty 15-minute checks, 2 hours after 4 empty 30-minute checks, and reset to 5 minutes immediately when relevant work appears.
 - Do not create a cron workaround for a thread heartbeat unless Scott explicitly asks for a cron automation.
 
 The heartbeat prompt must be self-contained and include these instructions, localized to the role:
 
 - `[Proper Role Name] handoff heartbeat. Only run on this 5-minute heartbeat; do not perform interim due-check logic.`
-- The heartbeat may update only its own cadence metadata for adaptive quiet behavior: after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; reset to 5 minutes as soon as relevant work appears. Do not change prompt scope, checked locations, authority, thread destination, or role identity under this cadence rule.
+- The heartbeat may update only its own cadence metadata for adaptive quiet behavior: after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; after 4 empty 15-minute checks, fall back to 30 minutes; after 4 empty 30-minute checks, fall back to 2 hours; reset to 5 minutes as soon as relevant work appears. Do not change prompt scope, checked locations, authority, thread destination, or role identity under this cadence rule.
 - Format the heartbeat prompt as topic-based paragraphs: Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary.
 - If the role is engaged in active user-directed work, do not interrupt the visible flow.
 - Read the role's active repo-local memory file at `<project-repo>\roles\<role-slug>\memory.md`.
@@ -233,7 +234,7 @@ Use `templates/heartbeat-automation.md` as the source automation template. Subst
 ```
 [Proper Role Name] handoff heartbeat.
 
-Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
+Cadence: Only run on this heartbeat; do not perform interim due-check logic. Use adaptive quiet cadence: start at 5 minutes, after 4 consecutive no-change checks fall back to 10 minutes, after 4 more consecutive no-change checks fall back to 15 minutes, after 4 empty 15-minute checks fall back to 30 minutes, after 4 empty 30-minute checks fall back to 2 hours, and reset to 5 minutes immediately when relevant work appears. This cadence rule may update only cadence metadata, not prompt scope, checked locations, authority, thread destination, or role identity.
 
 Active-flow rule: If [Proper Role Name] is engaged in active user-directed work, do not interrupt the flow.
 
