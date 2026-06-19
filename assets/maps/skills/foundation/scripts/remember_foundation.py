@@ -178,7 +178,7 @@ def memory_contract_section(prefs: dict[str, Any]) -> str:
     rows = [
         ["Project notes", f"Markdown notes via {access.get('notes', 'filesystem')}", notes, "Human-readable working notes, interviews, research, and decisions.", "New findings, decisions, assumptions, or research notes.", "Append or create dated notes in the appropriate notes folder.", "Summaries may be indexed into RAG if approved.", "Yes for human decisions.", "Secrets, raw private data, unsupported claims."],
         ["Additional notes", f"Secondary notes via {access.get('notes', 'filesystem')}", join_values(prefs.get("additionalNotesLocations", [])), "Optional secondary vaults, folders, services, or exports.", "When the canonical notes policy says to mirror or update them.", "Update only according to the canonical store policy.", "May be read-only, mirrored, or synced from canonical notes.", "Only if marked canonical.", "Secrets or unapproved private notes."],
-        ["Skill run notes", f"Markdown notes via {access.get('notes', 'filesystem')}", f"{notes}/maps-runs", "One named note per MAPS skill, maintained by the shared memory helper.", "Every MAPS skill completion.", "Append the run summary to the skill's named note through maps_memory.py complete-run.", "Mirror to the configured RAG location when available.", "Yes for phase summaries.", "Raw secrets, large logs, or uncited source dumps."],
+        ["Skill run notes", f"Markdown notes via {access.get('notes', 'filesystem')}", f"{notes}/maps-runs/[skill]-helper-notes.md for project-specific roots; [project]-[skill]-helper-notes.md for shared roots; role-[role-name].md for role entries", "One named helper note per MAPS skill, maintained by the shared memory helper.", "Every MAPS skill completion.", "Append the run summary to the helper note through maps_memory.py complete-run.", "Mirror to the configured RAG location when available.", "Yes for phase summaries.", "Raw secrets, large logs, or uncited source dumps."],
         ["Sources", f"Source library via {access.get('sources', 'filesystem')}", sources, "Original evidence, documents, transcripts, screenshots, and links.", "New approved source or changed source.", "Add source and update source inventory.", "RAG indexes approved sources.", "Yes for evidence.", "Unapproved, private, or uncited material."],
         ["Project memory", f"Markdown memory via {access.get('memory', 'filesystem')}", memory, "Durable project context, glossary, and entity map.", "Stable project facts, terms, entities, or durable context changes.", "Edit the relevant memory file with concise updates.", "Keep aligned with notes and source inventory.", "Yes for project context.", "Temporary scratch notes."],
         ["RAG index", f"{rag_provider} via {access.get('rag', '')}".strip(), rag_location, "Queryable project knowledge.", "New or changed approved sources or memory.", "Re-index changed inputs according to the configured provider.", "Mirrors approved sources and selected memory/notes.", "No, derived from canonical stores.", "Unapproved sources or secrets."],
@@ -346,6 +346,7 @@ def scaffold_paths(project: Path, foundation_file: str) -> tuple[list[Path], lis
         foundation_path(project, foundation_file),
         preference_path(project),
         project / ".maps" / "rag-updates.json",
+        notes_root / "maps-runs" / "foundation-helper-notes.md",
         notes_root / "maps-runs" / "foundation.md",
         sources_root / "links.md",
         memory_root / "project-context.md",
@@ -353,6 +354,7 @@ def scaffold_paths(project: Path, foundation_file: str) -> tuple[list[Path], lis
         memory_root / "entity-map.md",
     ]
     if prefs.get("rag", {}).get("location"):
+        files.append(rag_root / "maps-runs" / "foundation-helper-notes.md")
         files.append(rag_root / "maps-runs" / "foundation.md")
 
     dirs = [

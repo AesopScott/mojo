@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,36 @@ def project_path(path: Path, value: str) -> Path:
     return result
 
 
+def slugify(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", value.strip().lower())
+    return slug.strip("-") or "project"
+
+
+def project_slug(project: Path, prefs: dict[str, Any]) -> str:
+    for key in ("projectSlug", "projectName", "name"):
+        if prefs.get(key):
+            return slugify(str(prefs[key]))
+    return slugify(project.name)
+
+
+def resolve_placeholders(value: str, project: Path, prefs: dict[str, Any]) -> str:
+    if not value:
+        return value
+    slug = project_slug(project, prefs)
+    replacements = {
+        "[project]": slug,
+        "{project}": slug,
+        "${project}": slug,
+    }
+    for placeholder, replacement in replacements.items():
+        value = value.replace(placeholder, replacement)
+    return value
+
+
+def configured_path(project: Path, prefs: dict[str, Any], value: str) -> Path:
+    return project_path(project, resolve_placeholders(value, project, prefs))
+
+
 def load_preferences(project: Path) -> tuple[dict[str, Any], str]:
     project_prefs = remember_foundation.load_json(remember_foundation.preference_path(project))
     if project_prefs:
@@ -51,6 +82,45 @@ def route_for(skill: str) -> dict[str, str]:
         return SKILL_ROUTES[skill]
     slug = skill.strip().lower().replace("/", "").replace(" ", "-") or "maps-skill"
     return {"phase": "", "slug": slug, "title": skill or "MAPS Skill"}
+
+
+def role_slug_from_output(output: str) -> str:
+    if not output:
+        return ""
+    parts = Path(output).parts
+    lowered = [part.lower() for part in parts]
+    if "roles" in lowered:
+        index = lowered.index("roles")
+        if index + 1 < len(parts):
+            return slugify(parts[index + 1])
+    if "role" in lowered:
+        index = lowered.index("role")
+        if index + 1 < len(parts):
+            return slugify(parts[index + 1])
+    stem = Path(output).stem
+    if stem and stem not in {"role-agent", "workflow", "loop"}:
+        return slugify(stem)
+    return ""
+
+
+def should_prefix_project(project: Path, notes_root: Path, prefs: dict[str, Any]) -> bool:
+    try:
+        notes_root.resolve().relative_to(project.resolve())
+        return False
+    except ValueError:
+        pass
+    slug = project_slug(project, prefs)
+    return slugify(notes_root.name) != slug
+
+
+def note_slug(project: Path, prefs: dict[str, Any], skill: str, route: dict[str, str], output: str) -> str:
+    if skill == "/role":
+        role_slug = role_slug_from_output(output)
+        return f"role-{role_slug}" if role_slug else "role-unknown"
+    notes_root = configured_path(project, prefs, prefs.get("notesRoot", "notes"))
+    if should_prefix_project(project, notes_root, prefs):
+        return f"{project_slug(project, prefs)}-{route['slug']}-helper-notes"
+    return f"{route['slug']}-helper-notes"
 
 
 def read_body(args: argparse.Namespace, project: Path) -> str:
@@ -144,8 +214,9 @@ def complete_run(args: argparse.Namespace) -> int:
     phase = args.phase or route["phase"]
     timestamp = args.timestamp or remember_foundation.utc_now()
     prefs, source = load_preferences(project)
-    notes_root = project_path(project, prefs.get("notesRoot", "notes"))
-    note_path = notes_root / "maps-runs" / f"{route['slug']}.md"
+    notes_root = configured_path(project, prefs, prefs.get("notesRoot", "notes"))
+    run_note_slug = note_slug(project, prefs, args.skill, route, args.output)
+    note_path = notes_root / "maps-runs" / f"{run_note_slug}.md"
     body = read_body(args, project)
     memory_updates = args.memory_updates or f"Updated {note_path}"
     append_skill_note(
@@ -164,8 +235,8 @@ def complete_run(args: argparse.Namespace) -> int:
     rag_note_path: Path | None = None
     rag_location = rag.get("location", "")
     if rag_location:
-        rag_root = project_path(project, rag_location)
-        rag_note_path = rag_root / "maps-runs" / f"{route['slug']}.md"
+        rag_root = configured_path(project, prefs, rag_location)
+        rag_note_path = rag_root / "maps-runs" / f"{run_note_slug}.md"
         if rag_note_path.resolve() != note_path.resolve():
             append_skill_note(
                 rag_note_path,
@@ -208,7 +279,7 @@ def status(args: argparse.Namespace) -> int:
     project = Path(args.project).resolve()
     prefs, source = load_preferences(project)
     routes = {
-        skill: str(project_path(project, prefs.get("notesRoot", "notes")) / "maps-runs" / f"{route['slug']}.md")
+        skill: str(configured_path(project, prefs, prefs.get("notesRoot", "notes")) / "maps-runs" / f"{note_slug(project, prefs, skill, route, '')}.md")
         for skill, route in SKILL_ROUTES.items()
     }
     print(json.dumps({"preferenceSource": source, "preferences": prefs, "skillNotes": routes}, indent=2, sort_keys=True))

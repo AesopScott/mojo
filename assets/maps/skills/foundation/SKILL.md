@@ -36,7 +36,7 @@ Show the user what would be removed. Only delete files when the user confirms, t
 python scripts/remember_foundation.py wipe --project . --confirm
 ```
 
-The wipe command removes MAPS foundation artifacts and known scaffold files inside the project: `project-foundation.md`, `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, `notes/maps-runs/foundation.md`, `sources/links.md`, and the initial memory files. It removes empty scaffold directories. It does not remove non-empty notes, sources, memory, or RAG directories unless `--force` is explicitly used after user confirmation.
+The wipe command removes MAPS foundation artifacts and known scaffold files inside the project: `project-foundation.md`, `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, legacy `notes/maps-runs/foundation.md`, current `notes/maps-runs/foundation-helper-notes.md`, `sources/links.md`, and the initial memory files. It removes empty scaffold directories. It does not remove non-empty notes, sources, memory, or RAG directories unless `--force` is explicitly used after user confirmation.
 
 ## Self-learning preferences
 
@@ -68,6 +68,10 @@ python scripts/maps_memory.py complete-run --project . --skill /foundation --pha
 ```
 
 `remember_foundation.py` owns foundation configuration, template promotion, and the living memory contract. `maps_memory.py` is the shared helper that every MAPS skill calls after it creates its output. It appends the skill run to `project-foundation.md`, writes that skill's named note under `<notesRoot>/maps-runs/`, mirrors the named note into the configured RAG location when one exists, and records `.maps/rag-updates.json` so reindexing work is visible.
+
+Helper-maintained run notes use explicit helper-note names. When notes are written inside the project folder or project-specific notes root, use `[skill]-helper-notes.md`, such as `shape-helper-notes.md` or `foundation-helper-notes.md`. When notes are written into a shared/global notes root that may contain multiple projects, prefix the project: `[project]-[skill]-helper-notes.md`. Role run notes are named by role: `role-[role-name].md`. The primary output artifact may still be a separate file such as `system-shape.md`; that is the deliverable, while `shape-helper-notes.md` is the helper-maintained run summary note.
+
+When preferences contain `[project]`, `{project}`, or `${project}`, the helper resolves the placeholder to the current project slug before writing notes or RAG mirrors.
 
 The preference file is project memory, not a generated artifact to ignore. Commit it when the project wants future agents to reuse the same foundation choices. The living global template is cross-project memory; it should carry the last accepted memory contract into the next project.
 
@@ -161,8 +165,8 @@ Create or update these concrete outputs in the current project:
 - `project-foundation.md`: completed M0 foundation artifact from `templates/project-foundation.md`.
 - `.maps/foundation-preferences.json`: selected notes, sources, memory, and RAG locations for the next `/foundation` run.
 - `.maps/rag-updates.json`: append-only reindex manifest updated by the shared memory helper.
-- `<notesRoot>/maps-runs/foundation.md`: named `/foundation` run note for notes/RAG ingestion.
-- `<rag.location>/maps-runs/foundation.md`: mirrored named `/foundation` run note when a RAG location is configured.
+- `<notesRoot>/maps-runs/foundation-helper-notes.md` or `<notesRoot>/maps-runs/[project]-foundation-helper-notes.md`: named `/foundation` helper note for notes/RAG ingestion, depending on whether the notes root is project-specific or shared.
+- `<rag.location>/maps-runs/foundation-helper-notes.md` or `<rag.location>/maps-runs/[project]-foundation-helper-notes.md`: mirrored named `/foundation` helper note when a RAG location is configured.
 - Notes scaffold: the selected notes root with `daily/`, `interviews/`, `research/`, and `decisions/`.
 - Sources scaffold: the selected sources root with `docs/`, `transcripts/`, `screenshots/`, and `links.md`.
 - Memory scaffold: the selected memory root with `project-context.md`, `glossary.md`, and `entity-map.md`.
