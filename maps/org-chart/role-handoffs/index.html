@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="How MAPS roles communicate, transfer context, request action, escalate decisions, and close loops.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=source-buttons-stack-1">
+    <link rel="stylesheet" href="/maps.css?v=source-buttons-raised-1">
     <script src="/maps-data.js?v=maps-plus-org-link" defer></script>
-    <script src="/maps-page.js?v=source-buttons-stack-1" defer></script>
+    <script src="/maps-page.js?v=source-buttons-raised-1" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -176,21 +176,22 @@
 
         <section id="handoff-process" class="maps-section">
           <div class="maps-section-header">
-            <h2>5-minute heartbeat check</h2>
-            <p>Every active role and agent should have a standing heartbeat that checks its assigned handoff channels every 5 minutes when it is not already engaged in active user-directed work.</p>
+            <h2>Adaptive heartbeat check</h2>
+            <p>Every active role and agent should have a standing heartbeat that checks assigned handoff channels on the approved active cadence, then may use the approved adaptive quiet fallback when repeated checks show no relevant change.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
               <thead><tr><th>Item</th><th>Rule</th></tr></thead>
               <tbody>
                 <tr><td>Read</td><td>Read the shared Heartbeat channel, the role's relevant function channels, assigned Obsidian source files, and linked active packets.</td></tr>
+                <tr><td>Cadence</td><td>Start with the active 5-minute heartbeat check. When approved templates say the role is quiet and no relevant work is changing, use the adaptive quiet fallback, including 30-minute and 2-hour quiet intervals where appropriate.</td></tr>
                 <tr><td>Snapshot</td><td>For roles with Obsidian awareness, compare content-file changes before overwriting the baseline. Exclude channel folders from snapshot concern; read assigned channels separately as handoff inputs.</td></tr>
                 <tr><td>Detect</td><td>Look for new requests, assigned work, blockers, review needs, decisions, escalations, closeout tasks, confirmed Obsidian training changes, new role folders, new <code>maps-runs</code> records, and <code>roles.md</code> roster updates.</td></tr>
                 <tr><td>Respond</td><td>If work exists, acknowledge it, act inside authority, ask one blocker question, update the relevant training surface, or route it to the correct function channel.</td></tr>
                 <tr><td>Record</td><td>Append when work is found, status changes, evidence changes, a blocker appears, or a closeout happens. Routine no-work checks do not need noisy log entries.</td></tr>
                 <tr><td>Show checked locations</td><td>When the heartbeat surfaces work, action, a blocker, an approval question, or an Obsidian training change, name every checked handoff and Obsidian location so the operator can see what triggered the response.</td></tr>
                 <tr><td>Release routing</td><td>Roles that propose or perform Git/GitHub write actions should route the repo, branch, action, risk, and approval state through Release Management before acting.</td></tr>
-                <tr><td>Guardrail</td><td>The 5-minute heartbeat does not authorize interim due-check wakeups, non-<code>/maps</code> production actions, external communication, spending, authority expansion, continuous file watchers, or autonomous runtime beyond the approved check.</td></tr>
+                <tr><td>Guardrail</td><td>The heartbeat cadence does not authorize interim due-check wakeups, live automation rewrites, non-<code>/maps</code> production actions, external communication, spending, authority expansion, continuous file watchers, or autonomous runtime beyond the approved check.</td></tr>
               </tbody>
             </table>
           </div>
@@ -202,7 +203,7 @@
             <p>Use this flow whenever work needs to move from one role to another: build, review, approval, escalation, research, memory update, operations, or closeout.</p>
           </div>
           <ol class="maps-step-list">
-            <li><strong>Check cadence:</strong> Every 5 minutes by heartbeat, the role checks assigned handoff channels only when it is not engaged in active user-directed work.</li>
+            <li><strong>Check cadence:</strong> Start with the active 5-minute heartbeat check, then use approved adaptive quiet fallback only when the role's template and current state allow it.</li>
             <li><strong>Read heartbeat:</strong> The acting role reads <code>channels/heartbeat.md</code> for shared liveness, cadence, blocker, and cross-role awareness.</li>
             <li><strong>Read function channel:</strong> The acting role reads its relevant function channel before responding to shared work.</li>
             <li><strong>Read training source:</strong> If the role owns training updates, it reads the assigned Obsidian source, such as <code>G:\My Drive\Mindshare\mapstraining.md</code>, and follows confirmed entries into the affected notes.</li>
@@ -308,7 +309,7 @@
                   <td>All roles</td>
                   <td>All roles</td>
                   <td><code>active</code></td>
-                  <td>Check every 5 minutes through approved heartbeat automation; append only meaningful liveness, blocker, cadence, automation, authority, onboarding, retirement, or cross-role state changes.</td>
+                  <td>Check on the approved heartbeat cadence; active checks begin at 5 minutes and quiet roles may fall back to approved 30-minute or 2-hour quiet intervals. Append only meaningful liveness, blocker, cadence, automation, authority, onboarding, retirement, or cross-role state changes.</td>
                 </tr>
                 <tr>
                   <td>Training</td>
@@ -317,7 +318,7 @@
                   <td>Matt, Scott, Liz</td>
                   <td>Liz</td>
                   <td><code>active</code></td>
-                  <td>Check on Liz's 5-minute heartbeat; when confirmed entries require scoped <code>/maps</code> updates, update the site, verify it, commit relevant files, push <code>main</code>, and confirm the Cloudflare Pages deploy.</td>
+                  <td>Check on Liz's approved heartbeat cadence; when confirmed entries require scoped <code>/maps</code> updates, update the site, verify it, commit relevant files, push <code>main</code>, and confirm the Cloudflare Pages deploy when publish authority is available.</td>
                 </tr>
                 <tr>
                   <td>Pipeline</td>
