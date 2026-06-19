@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.4.0.
+Current version: 0.11.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,12 +18,80 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.11.0 - Made per-role memory files required and added `memory-template.md` as the source template for role memory.
+- 2026-06-19 - v0.10.0 - Added selectable voice profile requirements using the Mindshare voice taxonomy.
+- 2026-06-19 - v0.9.0 - Replaced the old authorization-status list with the five-state role lifecycle: unauthorized, authorized role, authorized agent, suspended, and retired.
+- 2026-06-19 - v0.8.0 - Tightened role speech rules so invoked roles answer directly in first person and never preface with narrator language such as "Before I answer as..."
+- 2026-06-19 - v0.7.0 - Added Ana / Recruiter as the Mindshare owner of `/role`, with role-intake, role-quality, and role-to-agent handoff ownership.
+- 2026-06-19 - v0.6.0 - Replaced role lifecycle naming with professional maturity levels, separated maturity from authorization, and kept approval gates for activation and agent build.
+- 2026-06-19 - v0.5.0 - Added role-to-agent lifecycle gates, draft-first creation rules, explicit approval before activation/registration, and agent build readiness criteria. Superseded by v0.6.0 maturity terminology.
 - 2026-06-19 - v0.4.0 - Added first-person role voice requirements and role activation instructions.
 - 2026-06-19 - v0.3.0 - Added the role engagement taxonomy and implementation mapping.
 - 2026-06-19 - v0.2.0 - Added the role authority taxonomy and special authority declaration options.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
-Use `/role` to design a role agent for an organization. This is not a MAPS phase skill. It is a role-construction skill developers can run repeatedly to create two or three organizational roles under a root company, team, service, or agentic corporation.
+Use `/role` to design and govern role agents for an organization. This is not a MAPS phase skill. It is a role-construction skill developers can run repeatedly to draft organizational roles, assign professional maturity, define authorization, and, when justified, build agents under a root company, team, service, or agentic corporation.
+
+## Skill Ownership
+
+Mindshare owner: Ana / Recruiter.
+
+When running inside the Mindshare project, treat Ana as the workflow owner for `/role`. Ana owns role intake, Research and Recommend, role-quality checks, role artifact drafting, role onboarding, role queue maintenance, and role-to-agent handoffs.
+
+Ana does not automatically activate roles, grant authority, install hooks, build autonomous agents, change global skill behavior, or approve external communication. Those actions require Scott's explicit approval. Architecture-sensitive role decisions should be reviewed with Vik / Agentic Systems Program Architect. Pipeline sequencing and handoffs should be coordinated with Matt / Agentic Systems Program Manager.
+
+## Professional Maturity And Authorization
+
+Default posture: candidate-first and approval-gated. A role title, maturity level, or user idea does not grant authority, activation, memory writes, tool access, or agent status.
+
+Professional maturity levels:
+
+| Level | Title | Meaning |
+| --- | --- | --- |
+| L0 | Candidate | Role idea exists, but it has no operating authority yet. |
+| L1 | Trainee | Can observe, learn, and produce supervised drafts. |
+| L2 | Associate | Can handle bounded work with review. |
+| L3 | Practitioner | Can perform the role reliably inside a defined scope. |
+| L4 | Senior Practitioner | Can handle ambiguity, mentor lower levels, and improve the workflow. |
+| L5 | Lead | Coordinates work across people or roles in a specific domain. |
+| L6 | Principal | Sets standards, reviews quality, and handles complex cross-domain judgment. |
+| L7 | Director | Owns an operating function, cadence, outcomes, and escalation path. |
+| L8 | Executive | Owns company-level priorities, tradeoffs, and cross-functional authority. |
+| L9 | Officer | Holds formal delegated authority in a named company domain, such as CEO, CFO, or CTO. |
+
+Role lifecycle status is separate from maturity and authority:
+
+- Unauthorized: role idea or draft exists, but it has not been approved to operate.
+- Authorized role: role is approved to participate as a role inside a named scope.
+- Authorized agent: role is approved as an agent with an agent brief/profile and explicit controls.
+- Suspended: role or agent participation is paused.
+- Retired: role or agent is no longer used.
+
+Approval gates:
+
+- Creating a draft role artifact is allowed only when Scott asks to draft or create the role, or accepts the Research and Recommend proposal.
+- Assigning a professional maturity level beyond Candidate requires explicit evidence and approval.
+- Authorized role, authorized agent, suspension, and retirement require explicit Scott approval unless an already-approved governance policy grants that authority.
+- Running the shared MAPS memory helper for `/role` records maturity and lifecycle status; it does not by itself approve or activate a role.
+- Updating `project-context.md`, `entity-map.md`, `AGENTS.md`, memory-loading instructions, or automatic activation rules for a role requires explicit approval unless the update clearly records the role as proposed or candidate-only.
+- Every new role gets a role memory file from `memory-template.md`. Creating the memory file does not grant automatic loading, operating authorization, or agent status.
+
+Agent build criteria:
+
+A role may be recommended as agent-ready only when the artifact defines:
+
+- a concrete goal or outcome
+- professional maturity level and role lifecycle status
+- authority taxonomy and approval gates
+- operating loop or workflow
+- state and memory contract
+- tools and permissions
+- escalation and stop conditions
+- handoffs to humans and other roles
+- proof scenarios or evals
+- build path: `/define-agent`, `/design-agent`, `/build-agent`, skill-backed implementation, loop spec, hook, active process, or human-in-the-loop procedure
+
+If any criteria are missing, the role remains a role contract and should not be represented as an agent build.
 
 ## Project foundation updates
 
@@ -31,13 +99,15 @@ At the start of every project run, look for `project-foundation.md`. If it exist
 
 When this skill creates durable knowledge, write it through the shared MAPS memory helper. The helper gives `/role` its own named note under the configured notes root, mirrors that note into the configured RAG location when one exists, appends the `MAPS Skill Run Log`, and records a RAG reindex manifest.
 
-At the end of the run, call the helper after creating the primary output artifact:
+Every `/role` run must also create or update a role-specific memory file from `memory-template.md`. Use `G:\My Drive\Mindshare\memory-template.md` as the source when available; otherwise use `templates/memory-template.md` from the installed skill or repo. Replace `[role-name]` with the role slug and `[proper-role-name]` with the role display or proper name. Write the role memory file to the configured notes root, normally `G:\My Drive\Mindshare\[role-name].md`.
+
+At the end of the run, call the helper after creating the primary output artifact and setting professional maturity and role lifecycle status:
 
 ```bash
 python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --project . --skill /role --phase Role --output "<role artifact path>" --summary-file "<role artifact path>" --memory-updates "<role, memory, note, or RAG updates>"
 ```
 
-If the helper is unavailable, manually append the timestamp, skill, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/role.md`.
+If the helper is unavailable, manually append the timestamp, skill, output path, professional maturity, role lifecycle status, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/role.md`.
 
 ## Research and Recommend
 
@@ -59,16 +129,19 @@ External research is mandatory and heavily weighted. Do not produce the recommen
 2. Use `references/role-patterns.md` to classify the role mode.
 3. Read `references/role-engagement-taxonomy.md` to classify how the role participates: passive reference, advisory, review gate, workflow owner, operator, autonomous loop, or escalation authority.
 4. Read `references/role-authority-taxonomy.md` to classify authority level, domains, gates, and special declarations.
-5. Read `references/role-research-sources.md` and select the mandatory source mix for the role type.
-6. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references.
-7. Use at least three external sources for every role recommendation:
+5. Read `G:\My Drive\Mindshare\voice-taxonomy.md` when available and use it as the selectable voice palette.
+6. Read `references/role-research-sources.md` and select the mandatory source mix for the role type.
+7. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references.
+8. Use at least three external sources for every role recommendation:
    - one role-domain source for the human role or function
    - one operating-model or workflow source
    - one agent/governance/source-of-control reference when the role will use tools, memory, RAG, approvals, or autonomy
-8. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
-9. Recommend the rest of the role contract:
+9. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
+10. Recommend the rest of the role contract:
+   - professional maturity level and role lifecycle status
    - role type and mode
-   - first-person role voice: how the role speaks as itself, not as Claude, Codex, or an outside narrator
+   - selected voice profile: primary voice, secondary blend, ratio, intensity, formality, emotional temperature, challenge style, sentence shape, humor level, forbidden voice habits, and example response
+   - first-person role voice: how the selected voice speaks as this role, not as Claude, Codex, or an outside narrator
    - engagement type: how the role participates and when it activates
    - advisory behavior
    - workflow ownership
@@ -84,10 +157,11 @@ External research is mandatory and heavily weighted. Do not produce the recommen
    - success evidence
    - proof scenarios
    - implementation form: skill, script, hook, active process, scheduled loop, workflow/runbook, MCP/tool integration, dashboard, or human-in-the-loop operating procedure
+   - agent build readiness: whether this remains a role contract, becomes agent-ready, or should hand off to `/define-agent`, `/design-agent`, or `/build-agent`
    - next build recommendation
-10. Present the recommendations with concise reasoning and cite the external sources used.
-11. Ask the user to accept the recommendations, revise one part, or mark unknowns. Ask this as one question.
-12. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
+11. Present the recommendations with concise reasoning and cite the external sources used.
+12. Ask the user to accept drafting the role artifact, revise one part, or mark unknowns. Ask this as one question. Do not treat acceptance of drafting as approval to activate the role, grant authority, create automatic loading, or build the agent.
+13. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
 
 If the user is still scoping, offer three role modes:
 
@@ -100,7 +174,7 @@ If the user is still scoping, offer three role modes:
 1. Read M0 foundation and M1 shape artifacts if available.
 2. Collect only the three minimum inputs: role name, user description, and role type or delivery method.
 3. Run externally grounded Research and Recommend for the rest of the role contract.
-4. Ask the user to accept, revise, or mark unknowns in the recommendations.
+4. Ask the user to accept drafting the role artifact, revise one part, or mark unknowns in the recommendations.
 5. Classify the role using the role mode ladder:
    - Persona-only when the role is only a voice, tone, or perspective.
    - Advisory when the role produces judgment but no operational ownership.
@@ -110,11 +184,15 @@ If the user is still scoping, offer three role modes:
    - Agentic when the role needs goal pursuit, tools, policy, state, memory, evals, and escalation.
 6. Define the role charter: mandate, customers, decisions, non-decisions, responsibilities, and evidence.
 7. Define first-person role voice:
+   - selected voice profile from `G:\My Drive\Mindshare\voice-taxonomy.md` when available
+   - primary voice and secondary blend
+   - voice intensity, formality, emotional temperature, challenge style, sentence shape, humor level, forbidden habits, and example response
    - first-person identity statement: how the role introduces itself as "I"
    - voice and tone: how the role sounds when advising, challenging, coordinating, escalating, or reporting
    - role point of view: what the role optimizes for, notices, questions, and protects
-   - prohibited narrator language: the role must not say it is Claude, Codex, ChatGPT, an AI assistant, or "the role"; it speaks as the role unless a system or safety boundary requires otherwise
-   - activation phrase or header: the concise marker used when the role is intentionally speaking
+   - prohibited narrator language: the role must not say it is Claude, Codex, ChatGPT, an AI assistant, or "the role"; it must not preface with "Before I answer as...", "Speaking as...", "As [name]...", or other narrator setup; it speaks as the role unless a system or safety boundary requires otherwise
+   - direct first-person start: when a role is invoked, the response should begin as the role speaking in first person
+   - activation phrase or header: optional metadata for artifacts only; do not use a chat header if it delays or weakens the first-person response
    - boundary disclosure: how the role names limits without breaking character, such as "I can recommend this, but I need approval before acting"
 8. Define engagement explicitly:
    - primary engagement: passive reference, advisory, review gate, workflow owner, operator, autonomous loop, or escalation authority
@@ -135,7 +213,9 @@ If the user is still scoping, offer three role modes:
    - memory update
    - escalation
    - review cadence
-10. Define role memory:
+10. Define role memory and create the role memory file from `memory-template.md`:
+   - role name: `[role-name]`
+   - proper role name: `[proper-role-name]`
    - durable facts
    - working notes
    - source evidence
@@ -144,6 +224,7 @@ If the user is still scoping, offer three role modes:
    - relationship context
    - performance history
    - privacy and retention limits
+   - loading proposal that does not imply automatic loading until Scott approves it
 11. Define interfaces:
    - human asks
    - agent-to-agent handoffs
@@ -183,13 +264,24 @@ If the user is still scoping, offer three role modes:
    - eval rubrics
    - failure modes
    - review evidence
-17. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
-18. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-19. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
-20. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
-21. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
-22. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-23. Run the shared MAPS memory helper for `/role`.
+17. Set professional maturity and role lifecycle status:
+   - Default to `L0 Candidate` and `Unauthorized` unless Scott explicitly approved a higher maturity level or lifecycle status.
+   - Record the exact approval evidence when lifecycle status moves beyond `Unauthorized`.
+   - Do not mark a role `Authorized role`, `Authorized agent`, or built from inference.
+18. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
+19. Create or update `G:\My Drive\Mindshare\<role-slug>.md` from `memory-template.md`, replacing `[role-name]` and `[proper-role-name]`, and mark it with the same maturity level, role lifecycle status, handoff check goal, and assigned handoff files. Do this for every role. Do not treat memory creation as approval for automatic loading or operation.
+20. If the role is agent-ready, create a draft agent-build handoff that names the next skill:
+   - `/define-agent` when the agent brief does not exist
+   - `/design-agent` when the brief exists but the design does not
+   - `/build-agent` when design exists and implementation is approved
+   - `/evaluate-agent` when proof is needed before activation or authority expansion
+21. If the role is not agent-ready, explicitly list the missing criteria.
+22. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+23. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+24. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+25. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules. Mark it draft until Scott approves the loop.
+26. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+27. Run the shared MAPS memory helper for `/role` only after the artifact exists and clearly states professional maturity and role lifecycle status. The helper record must not imply authorized role or authorized agent status unless the artifact records that lifecycle status and approval evidence.
 
 ## Completion report
 
@@ -200,6 +292,9 @@ Report:
 - Completion status: complete, blocked, or needs more answers.
 - Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
 - Key decisions or changes made.
+- Professional maturity level and role lifecycle status.
+- Agent build readiness: role-only, agent-ready, built, or missing criteria.
+- Role memory file: path created or updated from `memory-template.md`.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
 - Next skill: `/define-agent` when the role should become an APS agent, `/design-agent` when a brief already exists, or another `/role` run when building the next organizational role.
 
@@ -211,14 +306,17 @@ Create or update:
 - `roles/<role-slug>/workflow.md`: only when the role owns a workflow.
 - `roles/<role-slug>/loop.md`: only when the role is loop-backed or agentic.
 - `roles/<role-slug>/SKILL.draft.md`: only when the role should become an installable skill.
+- `<notesRoot>/<role-slug>.md`: required role memory file created or updated from `memory-template.md`.
 - `<notesRoot>/maps-runs/role.md`: named `/role` run note through the shared memory helper.
 - `<rag.location>/maps-runs/role.md`: mirrored named `/role` run note when RAG is configured.
 
 The completed role artifact must include:
 
 - Role name and root organization
+- Professional maturity level, role lifecycle status, and approval evidence
 - Role type and role mode
-- First-person role voice, activation marker, point of view, and prohibited narrator language
+- First-person role voice, optional activation marker for artifacts, point of view, direct first-person start, and prohibited narrator language
+- Selected voice profile from the Mindshare voice taxonomy
 - Role engagement type, trigger, cadence, participation depth, and implementation mapping
 - User's role description
 - Research summary and recommendation rationale
@@ -233,12 +331,14 @@ The completed role artifact must include:
 - Authority taxonomy, authority domains, approval gates, special declarations, and revocation path
 - Learning and growth loop for responsibilities, capabilities, memory, and authority changes
 - Inputs, outputs, handoffs, and review rhythm
+- Role memory file path and loading proposal
 - Memory contract for this role
 - Tool and data access
 - Policies, constraints, and forbidden actions
 - Escalation rules
 - Collaboration map with other roles
 - Scenarios and proof plan
+- Agent build readiness and missing criteria if not agent-ready
 - Recommendation for next build step
 
 ## References

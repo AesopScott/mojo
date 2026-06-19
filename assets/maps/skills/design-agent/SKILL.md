@@ -6,7 +6,7 @@ description: Create the MAPS Design phase artifact for an agent or multi-agent s
 # Design Agent
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.3.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,8 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.3.0 - Added voice profile selection from the Mindshare voice taxonomy and required voice profile output in agent designs.
+- 2026-06-19 - v0.2.0 - Tightened Research and Recommend flow: ask only for the source brief first when missing, research and recommend before interviewing, and ask one accept/revise question instead of a blank-slate design form.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 ## Overview
@@ -30,13 +32,21 @@ Default to Research and Recommend (R&R): research comparable agents or similar i
 
 R&R means the agent does the first pass of design judgment.
 
-1. Read `agents/{agent-handle}/agent-brief.md`.
-2. Identify the agent type, such as search agent, build agent, calendar integration agent, support agent, research agent, workflow agent, or coding agent.
-3. Research comparable agents, reference architectures, product patterns, open-source implementations, platform examples, and design guidance. Use current web or repository research when available.
-4. Analyze what the comparable examples suggest about workflow, tools, memory, controls, approvals, failures, observability, test strategy, acceptance scenarios, and user experience.
-5. Produce a recommendation for every design question in this skill.
-6. Present the recommendations with the reasoning and any sources used.
-7. Ask the user to override only the recommendations they disagree with or want to sharpen.
+First ask only the minimum source question if it is not already known:
+
+- Which agent brief or role contract is the source of truth?
+
+After the source is known:
+
+1. Read `agents/{agent-handle}/agent-brief.md` and `agents/{agent-handle}/agent-profile.md` when present.
+2. Read `G:\My Drive\Mindshare\voice-taxonomy.md` when available and use it as the voice palette for role or agent communication design.
+3. Identify the agent type, such as search agent, build agent, calendar integration agent, support agent, research agent, workflow agent, coding agent, role-agent, or human-in-the-loop operating agent.
+4. Research comparable agents, reference architectures, product patterns, open-source implementations, platform examples, and design guidance. Use current web or repository research when available.
+5. Analyze what the comparable examples suggest about workflow, tools, memory, controls, approvals, failures, observability, test strategy, acceptance scenarios, user experience, and communication voice.
+6. Recommend a voice profile using the palette: primary voice, secondary blend, ratio, intensity, formality, emotional temperature, challenge style, sentence shape, humor level, forbidden voice habits, and example response.
+7. Produce a recommendation for every design question in this skill.
+8. Present the recommendations with the reasoning and any sources used.
+9. Ask one question: whether the user accepts the recommendation, wants to revise one part, or wants one item marked unknown.
 
 If research access is unavailable, state that limitation and use known patterns from the brief and MAPS catalogs as the basis for the recommendations.
 
@@ -56,15 +66,16 @@ If the helper is unavailable, manually append the timestamp, skill, phase, outpu
 
 ## Required interview
 
-Before writing `agents/{agent-handle}/agent-design.md`, ask for any missing answers after the Research and Recommend pass. Do not silently choose workflow, memory, tools, approvals, or proof requirements.
+Before writing `agents/{agent-handle}/agent-design.md`, ask for any blocking missing answers after the Research and Recommend pass. Do not silently choose workflow, memory, tools, approvals, or proof requirements, but do not make the user fill out a design form before seeing recommendations.
 
 Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
 
-Ask:
+Use these questions as an internal risk checklist, not as a form to ask upfront:
 
 - Which agent brief or role contract is the source of truth?
 - What design decision is already fixed, if any?
 - Which recommendations from research should be accepted, rejected, or sharpened?
+- Which voice profile should this agent use, if not already fixed by the agent profile?
 - What workflow states, handoffs, and stopping conditions must be modeled?
 - What memory, context, notes, sources, and RAG boundaries should this design respect?
 - What tools, integrations, permissions, and credentials are allowed or forbidden?
@@ -75,21 +86,27 @@ Ask:
 
 If the user cannot answer, propose a recommendation and ask them to accept, revise, or mark it unknown.
 
+Ask follow-up questions one at a time only when a missing answer affects source of truth, fixed design decisions, selected voice profile, allowed tools, approval gates, memory/RAG boundaries, safety, or proof required before build.
+
 ## Workflow
 
-1. Restate the agent goal and success criteria from the agent brief.
-2. Run R&R research for comparable agents or similar implementations.
-3. Summarize the patterns, tradeoffs, and risks found during research.
-4. Recommend whether the design should be single-agent, tool-using agent, supervised agent, or part of a multi-agent system.
-5. Recommend each role, responsibility, input, output, and handoff.
-6. Recommend workflow states, decision points, stopping conditions, and failure paths.
-7. Recommend memory, context, retrieval boundaries, and data retention.
-8. Recommend tools, integrations, permissions, and constraints.
-9. Recommend guardrails, human approval gates, escalation paths, and forbidden paths.
-10. Recommend observability needs and evaluation implications.
-11. Recommend the test-first proof plan: test strategy, acceptance scenarios, eval shape, unit/integration/e2e balance, mock vs real tool policy, failure cases, regression gates, and what must be proven before Phase 3 Build starts.
-12. Ask the user to accept or override the recommendations.
-13. Produce or update `agents/{agent-handle}/agent-design.md`.
+1. Identify the source agent brief or role contract.
+2. Restate the agent goal and success criteria from the agent brief.
+3. Read the voice taxonomy and existing agent profile voice fields when available.
+4. Run R&R research for comparable agents or similar implementations.
+5. Summarize the patterns, tradeoffs, and risks found during research.
+6. Recommend whether the design should be single-agent, tool-using agent, supervised agent, or part of a multi-agent system.
+7. Recommend the voice profile and explain why the selected voice fits the agent's work, users, risk, and authority.
+8. Recommend each role, responsibility, input, output, and handoff.
+9. Recommend workflow states, decision points, stopping conditions, and failure paths.
+10. Recommend memory, context, retrieval boundaries, and data retention.
+11. Recommend tools, integrations, permissions, and constraints.
+12. Recommend guardrails, human approval gates, escalation paths, and forbidden paths.
+13. Recommend observability needs and evaluation implications.
+14. Recommend the test-first proof plan: test strategy, acceptance scenarios, eval shape, unit/integration/e2e balance, mock vs real tool policy, failure cases, regression gates, and what must be proven before Phase 3 Build starts.
+15. Ask the user to accept the recommendation, revise one part, or mark one item unknown.
+16. Ask follow-up questions one at a time only for blocking design, voice, approval, memory, tool, safety, or proof gaps.
+17. Produce or update `agents/{agent-handle}/agent-design.md`.
 
 ## Completion report
 
@@ -114,6 +131,7 @@ The completed file contains:
 - Comparable agents or patterns reviewed
 - Recommendation table
 - Agent roles
+- Voice profile
 - Workflow
 - Decision points
 - State and memory
@@ -138,6 +156,7 @@ Use `templates/workflow-spec.md` from the MAPS repo when working inside this rep
 ## Done Criteria
 
 - Every role has a purpose.
+- The agent has an explicit voice profile selected from or mapped to the voice taxonomy.
 - Handoffs and approvals are explicit.
 - Risks have controls.
 - Recommendations have reasoning.

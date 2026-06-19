@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="The operating rules and implementation contracts behind MAPS skills.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=maps-org-taxonomy">
-    <script src="/maps-data.js?v=maps-org-taxonomy" defer></script>
-    <script src="/maps-page.js?v=maps-org-taxonomy" defer></script>
+    <link rel="stylesheet" href="/maps.css?v=maps-skill-rr">
+    <script src="/maps-data.js?v=maps-skill-rr" defer></script>
+    <script src="/maps-page.js?v=maps-skill-rr" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -201,6 +201,40 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </section>
+
+        <section id="recent-changes" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Recent rule changes</h2>
+            <p>These changes were added to the installed skills, the Mindshare project copies, and the downloadable MAPS training assets.</p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Define Agent v0.5.0</h3>
+              <p><code>/define-agent</code> now asks only for the source role when missing, then researches and recommends the brief, authority, memory, proof, and profile controls before asking one confirmation question.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Design Agent v0.3.0</h3>
+              <p><code>/design-agent</code> now asks only for the source brief or role contract when missing, then recommends workflow, voice, memory, tools, approvals, proof, risks, and handoffs before asking one confirmation question.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Role voice</h3>
+              <p>Generated roles speak in first person as the role. They should not preface answers with narrator language such as "Before I answer as..." or "Speaking as..."</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Role lifecycle</h3>
+              <p>The lifecycle states are now unauthorized, authorized role, authorized agent, suspended, and retired. Maturity, lifecycle, authority, and org-chart color are separate concepts.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Role memory</h3>
+              <p><code>/role</code> now includes a per-role memory template so each role can learn and grow through a named memory file instead of relying only on the role contract.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Memory record</h3>
+              <p>The Define and Design corrections were recorded through MAPS helper notes and in ObsidianMind so later sessions can see why the rules changed.</p>
+            </article>
           </div>
         </section>
 

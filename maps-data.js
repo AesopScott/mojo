@@ -160,13 +160,13 @@ window.MAPS_SITE = {
         name: "/define-agent",
         url: "/assets/maps/skills/define-agent/SKILL.md",
         download: true,
-        note: "Creates agents/{agent-handle}/agent-brief.md: job, user, scope, success criteria, failure criteria, escalation points, risks, and assumptions."
+        note: "Uses source-first Research and Recommend to create agents/{agent-handle}/agent-brief.md and agents/{agent-handle}/agent-profile.md from an existing role."
       },
       {
         name: "/design-agent",
         url: "/assets/maps/skills/design-agent/SKILL.md",
         download: true,
-        note: "Runs Research and Recommend, then creates agents/{agent-handle}/agent-design.md and agents/{agent-handle}/agent-backlog.md."
+        note: "Uses source-first Research and Recommend to create agents/{agent-handle}/agent-design.md and agents/{agent-handle}/agent-backlog.md, including voice, workflow, tools, memory, approvals, proof, and handoffs."
       },
       {
         name: "/design-experience",
@@ -901,10 +901,28 @@ window.MAPS_SITE = {
         note: "Captures Phase 0 structure decisions."
       },
       {
+        name: "templates/role-agent.md",
+        url: "/assets/maps/templates/role-agent.md",
+        download: true,
+        note: "Captures a generated first-person role contract."
+      },
+      {
+        name: "templates/role-memory-template.md",
+        url: "/assets/maps/templates/role-memory-template.md",
+        download: true,
+        note: "Captures the per-role memory file used by the role skill."
+      },
+      {
         name: "templates/agent-definition-template.md",
         url: "/assets/maps/templates/agent-definition-template.md",
         download: true,
         note: "Captures the Phase 1 Define artifact."
+      },
+      {
+        name: "templates/agent-profile-template.md",
+        url: "/assets/maps/templates/agent-profile-template.md",
+        download: true,
+        note: "Captures the operator-facing agent profile controls created by Define."
       },
       {
         name: "templates/workflow-spec.md",
@@ -1015,7 +1033,7 @@ window.MAPS_SITE = {
       skills: ["/define-agent"],
       repos: ["AesopScott/maps"],
       tools: ["Git", "Agent Skills"],
-      templates: ["templates/agent-definition-template.md"]
+      templates: ["templates/agent-definition-template.md", "templates/agent-profile-template.md"]
     },
     "2": {
       skills: ["/design-agent"],

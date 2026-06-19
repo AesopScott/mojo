@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="Turn an agent brief into an agent design using Research and Recommend.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=maps-org-taxonomy">
-    <script src="/maps-data.js?v=maps-org-taxonomy" defer></script>
-    <script src="/maps-page.js?v=maps-org-taxonomy" defer></script>
+    <link rel="stylesheet" href="/maps.css?v=maps-skill-rr">
+    <script src="/maps-data.js?v=maps-skill-rr" defer></script>
+    <script src="/maps-page.js?v=maps-skill-rr" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="2">
     <div class="maps-shell">
@@ -103,8 +103,8 @@
           <h1>Design</h1>
           <p>
             Design turns the agent brief into a buildable agent design. The default
-            method is <span class="maps-term-highlight">Research and Recommend</span>: inspect the brief, research comparable
-            agents, recommend the design choices, then capture user overrides.
+            method is <span class="maps-term-highlight">Research and Recommend</span>: ask only for the missing source brief or role contract,
+            inspect the brief and profile, research comparable agents, recommend the design choices, then ask one accept, revise, or mark unknown question.
             If there is no multi-agent system, optional A2 Experience Design can run after this phase
             on the same page as M3 before Build.
           </p>
@@ -130,15 +130,19 @@
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Research</h3>
-              <p>Find comparable agents, reference architectures, open-source implementations, product patterns, and design guidance.</p>
+              <p>Find comparable agents, reference architectures, open-source implementations, product patterns, design guidance, and voice patterns.</p>
             </article>
             <article class="maps-panel">
               <h3>Recommend</h3>
-              <p>Recommend answers for operating model, roles, workflow, memory, tools, approvals, failures, and observability.</p>
+              <p>Recommend answers for operating model, role behavior, workflow, voice profile, memory, tools, approvals, failures, proof, and observability.</p>
             </article>
             <article class="maps-panel">
-              <h3>Override</h3>
-              <p>Ask the user to accept the recommendations or override only the parts that are wrong, risky, or incomplete.</p>
+              <h3>Ask once</h3>
+              <p>Ask the user to accept the recommendation, revise one part, or mark one item unknown. Follow-up questions happen one at a time only for blocking gaps.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Voice profile</h3>
+              <p>When the agent communicates, Design selects or maps a voice profile: primary voice, blend, intensity, formality, challenge style, humor level, and prohibited habits.</p>
             </article>
           </div>
         </section>
@@ -154,7 +158,7 @@
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Input</h3>
-              <p><strong>`agents/{agent-handle}/agent-brief.md`</strong> from Phase 1 Define.</p>
+              <p><strong><code>agents/{agent-handle}/agent-brief.md</code></strong> and <strong><code>agents/{agent-handle}/agent-profile.md</code></strong> from Phase 1 Define.</p>
             </article>
             <article class="maps-panel">
               <h3>Skill</h3>
@@ -171,6 +175,10 @@
             <article class="maps-panel">
               <h3>Artifact</h3>
               <p><strong>`agent-design.md`</strong> captures recommendations and proof needs; <strong>`agent-backlog.md`</strong> captures the ordered work before Build starts.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Memory update</h3>
+              <p>After the design artifact is written, <code>/design-agent</code> records the run through the MAPS memory helper and updates the project helper note.</p>
             </article>
           </div>
         </section>
@@ -202,6 +210,11 @@
                   <td>Roles and responsibilities</td>
                   <td>What the agent owns, what a human owns, and what other systems own.</td>
                   <td>Remove, add, or rename responsibilities.</td>
+                </tr>
+                <tr>
+                  <td>Communication voice</td>
+                  <td>Primary voice, blend, intensity, formality, emotional temperature, challenge style, sentence shape, humor level, and prohibited habits.</td>
+                  <td>Accept the voice profile or replace the style.</td>
                 </tr>
                 <tr>
                   <td>Workflow states</td>
@@ -450,8 +463,8 @@
             </article>
             <article class="maps-step">
               <span>04</span>
-              <h3>Capture runtime and overrides</h3>
-              <p>Ask the user to change only the recommendations that do not fit, including runtime target and adapter requirements.</p>
+              <h3>Capture runtime and one override</h3>
+              <p>Ask the user to change only the recommendation that does not fit, including runtime target, adapter requirement, voice, or approval boundary.</p>
               <details>
                 <summary>Check it</summary>
                 <p>User overrides and runtime portability notes should appear in `agents/{agent-handle}/agent-design.md`.</p>

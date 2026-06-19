@@ -6,8 +6,8 @@
 | M1 | `/shape` | Scope the workflow and choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS before roster or implementation work. |
 | 0 | `/scaffold` | Create the MAPS structure. |
 | 0 | `phase-alignment` | Align lifecycle names, boundaries, and catalogs. |
-| 1 | `/define-agent` | Create the agent brief. |
-| 2 | `/design-agent` | Create the agent design through Research and Recommend, then turn it into a prioritized dependency-aware backlog. |
+| 1 | `/define-agent` | Create the agent brief and agent profile from an existing role using source-first Research and Recommend. |
+| 2 | `/design-agent` | Create the agent design through source-first Research and Recommend, select or map the voice profile, then turn it into a prioritized dependency-aware backlog. |
 | M8 / optional A2 | `/design-experience` | Create the product experience design, journeys, surfaces, IA, interaction states, accessibility requirements, and APS handoffs. |
 | M8 / optional A2 | `/design-experience++` | Wrap Experience Design with website/product UI references, component patterns, responsive layout, accessibility primitives, and service-design reasoning. |
 | 3 | `/build-agent` | Base Build skill. |

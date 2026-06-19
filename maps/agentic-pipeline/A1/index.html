@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="Define the agent job, user, outcome, authorization level, boundaries, success criteria, and escalation points.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=maps-org-taxonomy">
-    <script src="/maps-data.js?v=maps-org-taxonomy" defer></script>
-    <script src="/maps-page.js?v=maps-org-taxonomy" defer></script>
+    <link rel="stylesheet" href="/maps.css?v=maps-skill-rr">
+    <script src="/maps-data.js?v=maps-skill-rr" defer></script>
+    <script src="/maps-page.js?v=maps-skill-rr" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="1">
     <div class="maps-shell">
@@ -102,10 +102,10 @@
           <p class="maps-eyebrow">Phase 1</p>
           <h1>Define</h1>
           <p>
-            Define turns an agent idea into a usable brief. The brief identifies the
-            agent job, user or operator, desired outcome, authorization level, boundaries,
-            success criteria, failure criteria, escalation points, risks, and assumptions.
-            This is APS work inside the larger MAPS scaffold.
+            Define turns an approved role into a usable agent brief. The skill now starts
+            with the minimum source question, runs Research and Recommend from the role
+            artifact and project context, then asks one accept, revise, or mark unknown
+            question before it writes the brief and profile.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#brief">Build the brief</a>
@@ -155,21 +155,48 @@
             <h2>The agent brief is the contract.</h2>
             <p>
               A strong brief makes later design and evaluation possible because it states exactly what the agent owns.
+              Define should not make the developer fill out the whole brief manually when the role artifact and research can support a recommendation.
             </p>
           </div>
 
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Inputs</h3>
-              <p>An agent idea, workflow need, user request, or multi-agent role candidate.</p>
+              <p>An existing role contract, role artifact, workflow need, or multi-agent role candidate. If no role exists yet, route back to <code>/role</code>.</p>
             </article>
             <article class="maps-panel">
               <h3>Work</h3>
-              <p>Clarify scope, non-goals, authorization, observable success, failure criteria, and human escalation points.</p>
+              <p>Research comparable agents and recommend scope, non-goals, authorization, observable success, failure criteria, profile settings, and escalation points.</p>
             </article>
             <article class="maps-panel">
               <h3>Output</h3>
-              <p>`agents/{agent-handle}/agent-brief.md`, created from <a href="/assets/maps/templates/agent-definition-template.md" download><code>templates/agent-definition-template.md</code></a> and ready for the Design phase.</p>
+              <p><code>agents/{agent-handle}/agent-brief.md</code> and <code>agents/{agent-handle}/agent-profile.md</code>, ready for Design and any org-chart profile surface.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="rr" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Define uses Research and Recommend</h2>
+            <p>The user should review a recommended agent definition, not assemble one from a blank form.</p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Ask the source first</h3>
+              <p>If the source is missing, ask only: "Which role are we turning into an agent?" Do not ask the full interview list up front.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Research the role</h3>
+              <p>Read the role contract, workflow, loop, state, project foundation, and comparable human or agent operating patterns.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Recommend the brief</h3>
+              <p>Recommend the job, operator, outcome, voice, lifecycle status, autonomy, authority, tools, memory, handoffs, boundaries, proof scenarios, and profile controls.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Ask one confirmation</h3>
+              <p>Ask whether the developer accepts the recommendation, wants to revise one part, or wants one item marked unknown.</p>
             </article>
           </div>
         </section>
@@ -178,18 +205,22 @@
           <div class="maps-section-header">
             <h2>Phase 1 output</h2>
             <p>
-              At the end of Define, the required artifact is `agents/{agent-handle}/agent-brief.md`.
+              At the end of Define, the required artifacts are <code>agents/{agent-handle}/agent-brief.md</code> and <code>agents/{agent-handle}/agent-profile.md</code>.
             </p>
           </div>
 
           <div class="maps-grid">
             <article class="maps-panel">
               <h3>Artifact</h3>
-              <p><strong>`agents/{agent-handle}/agent-brief.md`</strong>, completed from <a href="/assets/maps/templates/agent-definition-template.md" download><code>templates/agent-definition-template.md</code></a>.</p>
+              <p><strong><code>agents/{agent-handle}/agent-brief.md</code></strong>, completed from <a href="/assets/maps/templates/agent-definition-template.md" download><code>templates/agent-definition-template.md</code></a>.</p>
             </article>
             <article class="maps-panel">
               <h3>Skill</h3>
-              <p><a href="/assets/maps/skills/define-agent/SKILL.md" download><strong>/define-agent</strong></a> asks the questions and produces or updates the brief.</p>
+              <p><a href="/assets/maps/skills/define-agent/SKILL.md" download><strong>/define-agent</strong></a> uses source-first Research and Recommend to produce or update the brief.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Profile</h3>
+              <p><strong><code>agents/{agent-handle}/agent-profile.md</code></strong>, completed from <a href="/assets/maps/templates/agent-profile-template.md" download><code>templates/agent-profile-template.md</code></a> when available.</p>
             </article>
             <article class="maps-panel">
               <h3>Ready when</h3>
@@ -197,7 +228,7 @@
             </article>
             <article class="maps-panel">
               <h3>Next use</h3>
-              <p>Phase 2 Design uses `agents/{agent-handle}/agent-brief.md` to decide behavior, workflow, handoffs, controls, and tool needs.</p>
+              <p>Phase 2 Design uses <code>agent-brief.md</code> and <code>agent-profile.md</code> to decide behavior, workflow, handoffs, controls, voice, and tool needs.</p>
             </article>
           </div>
         </section>
@@ -218,6 +249,7 @@
             <article class="maps-panel"><h3>Persona and tone</h3><p>Communication style for human-facing or agent-to-agent work.</p></article>
             <article class="maps-panel"><h3>Authorization level</h3><p>What the agent may do alone, what needs approval, and what it must never do.</p></article>
             <article class="maps-panel"><h3>Tool access requested</h3><p>Candidate tools, MCP servers, or capabilities the agent may need later.</p></article>
+            <article class="maps-panel"><h3>Profile controls</h3><p>Activation status, autonomy level, authority level, granted/requested tool access, hook implementations, memory rights, and approval gates.</p></article>
             <article class="maps-panel"><h3>Boundaries</h3><p>In scope, out of scope, and unclear territory.</p></article>
             <article class="maps-panel"><h3>Success and failure</h3><p>Observable criteria for done and explicit conditions that count as failure.</p></article>
             <article class="maps-panel"><h3>Risks and assumptions</h3><p>What must be controlled, escalated, or proven later.</p></article>
@@ -327,38 +359,38 @@
           <div class="maps-walkthrough">
             <article class="maps-step">
               <span>01</span>
-              <h3>Name the job</h3>
-              <p>Write the agent's job in one direct sentence with a clear owner and outcome.</p>
+              <h3>Name the source role</h3>
+              <p>Start with the role being turned into an agent. If the role does not exist yet, create the role first.</p>
               <details>
                 <summary>Check it</summary>
-                <p>If the sentence could describe several agents, it is still too vague.</p>
+                <p>Define should not invent an agent from scratch when there is no role artifact.</p>
               </details>
             </article>
             <article class="maps-step">
               <span>02</span>
-              <h3>Set authority</h3>
-              <p>Choose the highest action level the agent is allowed to take and list what needs approval.</p>
+              <h3>Research and recommend</h3>
+              <p>Use the role contract and comparable patterns to recommend the job, authority, memory, handoffs, and profile controls.</p>
               <details>
                 <summary>Check it</summary>
-                <p>A reviewer should know exactly where the agent stops and where a human takes over.</p>
+                <p>The developer should see a recommendation before being asked to fill missing fields.</p>
               </details>
             </article>
             <article class="maps-step">
               <span>03</span>
-              <h3>Draw boundaries</h3>
-              <p>Separate in-scope work, out-of-scope work, uncertain work, and forbidden actions.</p>
+              <h3>Ask one confirmation</h3>
+              <p>Ask whether the recommendation is accepted, one part should be revised, or one item should remain unknown.</p>
               <details>
                 <summary>Check it</summary>
-                <p>The brief should prevent the most obvious misuse before any tools are connected.</p>
+                <p>No multi-question form, checklist, or table should be handed to the developer.</p>
               </details>
             </article>
             <article class="maps-step">
               <span>04</span>
-              <h3>Define proof</h3>
-              <p>Write success criteria, failure criteria, escalation points, risks, and assumptions.</p>
+              <h3>Write brief and profile</h3>
+              <p>Create the brief and profile, then report completion, memory update, and the next skill.</p>
               <details>
                 <summary>Check it</summary>
-                <p>The next phase should be able to design evals from this definition.</p>
+                <p>The next phase should know whether to run <code>/design-agent</code> and what remains open.</p>
               </details>
             </article>
           </div>
@@ -379,7 +411,7 @@
           <div class="maps-section-header">
             <h2>Phase 1 resources</h2>
             <p>
-              <a href="/assets/maps/skills/define-agent/SKILL.md" download>`/define-agent`</a> uses <a href="/assets/maps/templates/agent-definition-template.md" download>`templates/agent-definition-template.md`</a> to produce `agents/{agent-handle}/agent-brief.md`.
+              <a href="/assets/maps/skills/define-agent/SKILL.md" download>`/define-agent`</a> uses <a href="/assets/maps/templates/agent-definition-template.md" download>`templates/agent-definition-template.md`</a> and <a href="/assets/maps/templates/agent-profile-template.md" download>`templates/agent-profile-template.md`</a> to produce <code>agent-brief.md</code> and <code>agent-profile.md</code>.
             </p>
           </div>
 
