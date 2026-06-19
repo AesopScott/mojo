@@ -206,10 +206,21 @@
     const agenticRect = agentic?.getBoundingClientRect();
 
     if (!agentsRect || !multiRect || !agenticRect) {
-      document.documentElement.style.removeProperty("--maps-source-button-left");
-      document.documentElement.style.removeProperty("--maps-source-button-top");
-      document.documentElement.style.removeProperty("--maps-source-button-right");
-      document.documentElement.style.removeProperty("--maps-source-button-bottom");
+      const brandRect = document.querySelector(".maps-brand")?.getBoundingClientRect();
+      if (!brandRect) {
+        document.documentElement.style.removeProperty("--maps-source-button-left");
+        document.documentElement.style.removeProperty("--maps-source-button-top");
+        document.documentElement.style.removeProperty("--maps-source-button-right");
+        document.documentElement.style.removeProperty("--maps-source-button-bottom");
+        return;
+      }
+
+      const left = Math.min(window.innerWidth - buttonRect.width - 16, brandRect.right + 96);
+      const top = Math.max(16, brandRect.top + (brandRect.height - buttonRect.height) / 2);
+      document.documentElement.style.setProperty("--maps-source-button-left", `${Math.round(left)}px`);
+      document.documentElement.style.setProperty("--maps-source-button-top", `${Math.round(top)}px`);
+      document.documentElement.style.setProperty("--maps-source-button-right", "auto");
+      document.documentElement.style.setProperty("--maps-source-button-bottom", "auto");
       return;
     }
 
