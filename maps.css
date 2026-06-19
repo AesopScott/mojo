@@ -110,10 +110,9 @@ body.maps-page {
 
 .maps-links > a.active,
 .maps-links > a[aria-current="page"] {
-  color: var(--maps-ink);
+  color: var(--maps-muted);
   background: transparent;
   box-shadow: none;
-  font-weight: 780;
 }
 
 .maps-aps-download-button {
