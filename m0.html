@@ -80,6 +80,7 @@
             </div>
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#output">Output</a>
+              <a href="#preflight">Preflight</a>
               <a href="#memory-helper">Memory Helper</a>
               <a href="#methods">Methods</a>
               <a href="#resources">Resources</a>
@@ -96,12 +97,10 @@
           <p>
             M0 starts the project brain with an explicit preflight: intent,
             operator, notes, sources, memory, RAG, evidence, assumptions,
-            decisions, per-skill run notes, and retrieval-ready context before
-            system shape or agent design begins.
+            decisions, per-skill run notes, and retrieval-ready context.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#methods">Start foundation</a>
-            <a class="maps-button" href="m1.html">Continue to M1 System Shape</a>
           </div>
         </div>
       </section>
@@ -122,17 +121,13 @@
               <p><a href="assets/maps/templates/project-foundation.md" download><strong>templates/project-foundation.md</strong></a> captures the foundation artifact.</p>
             </article>
             <article class="maps-panel">
-              <h3>Primary handoff</h3>
-              <p>M1 System Shape receives the foundation, source inventory, EventStorming Lite notes, and M1 handoff questions.</p>
-            </article>
-            <article class="maps-panel">
               <h3>Reset path</h3>
               <p><strong>/foundation --wipe</strong> previews the foundation scaffold cleanup, then removes confirmed MAPS-created artifacts so the phase can restart cleanly.</p>
             </article>
           </div>
         </section>
 
-        <section class="maps-section">
+        <section id="preflight" class="maps-section">
           <div class="maps-section-header">
             <h2>Required preflight</h2>
             <p>M0 now asks before it writes. The skill must confirm the foundation decisions instead of inferring them from the repo.</p>
@@ -189,17 +184,17 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
                 <tr>
                   <td><code>project-foundation.md</code></td>
                   <td>Appends the timestamped MAPS Skill Run Log row.</td>
-                  <td><code>/shape | M1 | system-shape.md</code></td>
+                  <td><code>/foundation | M0 | project-foundation.md</code></td>
                 </tr>
                 <tr>
                   <td><code>&lt;notesRoot&gt;/maps-runs/&lt;skill&gt;.md</code></td>
                   <td>Maintains one human-readable named note per skill.</td>
-                  <td><code>notes/maps-runs/shape.md</code></td>
+                  <td><code>notes/maps-runs/foundation.md</code></td>
                 </tr>
                 <tr>
                   <td><code>&lt;rag.location&gt;/maps-runs/&lt;skill&gt;.md</code></td>
                   <td>Mirrors the named skill note into the configured RAG location when one exists.</td>
-                  <td><code>memory/rag/maps-runs/shape.md</code></td>
+                  <td><code>memory/rag/maps-runs/foundation.md</code></td>
                 </tr>
                 <tr>
                   <td><code>.maps/rag-updates.json</code></td>
@@ -217,11 +212,11 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
           <div class="maps-code-panel maps-gap-top">
             <pre><code>python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run \
   --project . \
-  --skill /shape \
-  --phase M1 \
-  --output system-shape.md \
-  --summary-file system-shape.md \
-  --memory-updates "Track decision captured"</code></pre>
+  --skill /foundation \
+  --phase M0 \
+  --output project-foundation.md \
+  --summary-file project-foundation.md \
+  --memory-updates "Foundation contract captured"</code></pre>
           </div>
         </section>
 

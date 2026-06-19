@@ -80,6 +80,7 @@
             </div>
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#output">Output</a>
+              <a href="#m0-handoff">M0 Handoff</a>
               <a href="#decision">Decision</a>
               <a href="#resources">Resources</a>
             </div>
@@ -123,6 +124,36 @@
               <h3>Primary handoff</h3>
               <p>If S, enter APS. If M, continue to M2 Roster. If U, keep scoping until the operating model is visible.</p>
             </article>
+          </div>
+        </section>
+
+        <section id="m0-handoff" class="maps-section">
+          <div class="maps-section-header">
+            <h2>M0 handoff</h2>
+            <p>M1 receives the foundation artifact and turns it into a system-track decision.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Foundation input</h3>
+              <p>Read `project-foundation.md`, the source inventory, EventStorming Lite notes, and the open foundation questions before choosing a track.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Memory input</h3>
+              <p>Check `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, and the named foundation run note for configured notes, memory, and RAG locations.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Shape output</h3>
+              <p>Record the S/M/U recommendation in `system-shape.md` and write the `/shape` run note through the shared MAPS memory helper.</p>
+            </article>
+          </div>
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run \
+  --project . \
+  --skill /shape \
+  --phase M1 \
+  --output system-shape.md \
+  --summary-file system-shape.md \
+  --memory-updates "Track decision captured"</code></pre>
           </div>
         </section>
 
