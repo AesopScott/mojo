@@ -974,7 +974,7 @@ window.MAPS_SITE = {
   },
   phaseResources: {
     "m0": {
-      skills: ["/foundation"],
+      skills: ["/foundation", "/role"],
       repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
       tools: ["Markdown notes", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
