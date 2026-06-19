@@ -20,6 +20,41 @@ Persona-only / advisory / workflow / skill-backed / loop-backed / tool-using age
 - Loop-backed:
 - Agentic:
 
+## Research Sources Used
+
+| Source | What It Contributed | Recommendation Impact |
+| --- | --- | --- |
+
+## Recommendation Rationale
+
+External research:
+
+Project context:
+
+Assumptions to validate:
+
+## Implementation Recommendation
+
+Recommended form: skill / script / hook / active process / scheduled loop / workflow-runbook / MCP-tool integration / dashboard-report / human operating procedure.
+
+Why this form:
+
+Trigger:
+
+Runtime or surface:
+
+Inputs:
+
+Outputs:
+
+State or memory:
+
+Permissions:
+
+Failure behavior:
+
+Disable or rollback path:
+
 ## Mandate
 
 ## Job To Be Done

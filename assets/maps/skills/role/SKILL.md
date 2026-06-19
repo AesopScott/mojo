@@ -33,12 +33,20 @@ First collect only the minimum three answers:
 
 Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Ask the next missing minimum answer, wait for the answer, then continue.
 
-After those three answers are known, stop interviewing and run Research and Recommend:
+After those three answers are known, stop interviewing and run Research and Recommend.
+
+External research is mandatory and heavily weighted. Do not produce the recommended role contract from project context or the bundled role-pattern ladder alone. Use project context to localize the answer, but use external sources to define the role capability, responsibilities, boundaries, proof, and operating model.
 
 1. Read M0 foundation, M1 shape, and any existing role or organization artifacts if available.
 2. Use `references/role-patterns.md` to classify the role mode.
-3. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references when research access is available.
-4. Recommend the rest of the role contract:
+3. Read `references/role-research-sources.md` and select the mandatory source mix for the role type.
+4. Research comparable human role definitions, agent role patterns, operating models, workflows, and public references.
+5. Use at least three external sources for every role recommendation:
+   - one role-domain source for the human role or function
+   - one operating-model or workflow source
+   - one agent/governance/source-of-control reference when the role will use tools, memory, RAG, approvals, or autonomy
+6. If web access is unavailable, use the bundled source list as the research plan and tell the user the recommendation is blocked or provisional until sources can be checked.
+7. Recommend the rest of the role contract:
    - role type and mode
    - advisory behavior
    - workflow ownership
@@ -50,10 +58,11 @@ After those three answers are known, stop interviewing and run Research and Reco
    - escalation rules
    - success evidence
    - proof scenarios
+   - implementation form: skill, script, hook, active process, scheduled loop, workflow/runbook, MCP/tool integration, dashboard, or human-in-the-loop operating procedure
    - next build recommendation
-5. Present the recommendations with concise reasoning.
-6. Ask the user to accept the recommendations, revise one part, or mark unknowns. Ask this as one question.
-7. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
+8. Present the recommendations with concise reasoning and cite the external sources used.
+9. Ask the user to accept the recommendations, revise one part, or mark unknowns. Ask this as one question.
+10. Only ask follow-up questions when a required decision is still ambiguous after the recommendation.
 
 If the user is still scoping, offer three role modes:
 
@@ -65,7 +74,7 @@ If the user is still scoping, offer three role modes:
 
 1. Read M0 foundation and M1 shape artifacts if available.
 2. Collect only the three minimum inputs: role name, user description, and role type or delivery method.
-3. Run Research and Recommend for the rest of the role contract.
+3. Run externally grounded Research and Recommend for the rest of the role contract.
 4. Ask the user to accept, revise, or mark unknowns in the recommendations.
 5. Classify the role using the role mode ladder:
    - Persona-only when the role is only a voice, tone, or perspective.
@@ -102,17 +111,28 @@ If the user is still scoping, offer three role modes:
    - approval checkpoints
    - status updates
 10. Define tools, permissions, and constraints.
-11. Define proof:
+11. Recommend the implementation form:
+   - Skill when the role is mainly a reusable expert procedure invoked by a user or agent.
+   - Script when the role performs a deterministic transformation, extraction, sync, or setup task.
+   - Hook when the role should run automatically at session start, prompt submit, file change, commit, deploy, or another lifecycle event.
+   - Active process when the role monitors, polls, queues, or coordinates work continuously.
+   - Scheduled loop when the role reviews, summarizes, syncs, or reports on a cadence.
+   - Workflow/runbook when humans and agents share staged work, approvals, or handoffs.
+   - MCP/tool integration when the role needs controlled access to external systems.
+   - Dashboard/report when the role primarily makes state visible for review.
+12. Define proof:
    - role scenarios
    - acceptance tests
    - eval rubrics
    - failure modes
    - review evidence
-12. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
-13. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-14. If the role should become a loop, create a draft `roles/<role-slug>/loop.md` with loop triggers, state, actions, stop conditions, and review rules.
-15. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-16. Run the shared MAPS memory helper for `/role`.
+13. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`.
+14. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+15. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+16. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+17. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules.
+18. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+19. Run the shared MAPS memory helper for `/role`.
 
 ## Completion report
 
@@ -143,7 +163,9 @@ The completed role artifact must include:
 - Role type and role mode
 - User's role description
 - Research summary and recommendation rationale
+- External sources used and how each source shaped the recommendation
 - Advisory/workflow/skill/loop decision
+- Implementation recommendation: skill, script, hook, active process, scheduled loop, workflow/runbook, MCP/tool integration, dashboard/report, or human operating procedure
 - Mandate and job to be done
 - Customers/operators served
 - Responsibilities and non-responsibilities
@@ -160,3 +182,5 @@ The completed role artifact must include:
 ## References
 
 Read `references/role-patterns.md` when the role mode is ambiguous, the user asks what makes a role an agent rather than a script, or the role could become advisory, workflow-owned, skill-backed, or loop-backed.
+
+Read `references/role-research-sources.md` for every `/role` run before making recommendations. It defines the mandatory external source mix and preferred sources by role family.
