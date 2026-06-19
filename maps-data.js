@@ -969,7 +969,7 @@ window.MAPS_SITE = {
   phaseResources: {
     "m0": {
       skills: ["/foundation"],
-      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
       tools: ["Markdown notes", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
     },
