@@ -3,7 +3,7 @@
 ## Standing rules
 - **Session startup:** Run `gh repo set-default AesopScott/mojo` at the start of every session before any `gh` commands.
 - **Project isolation:** Do not read files, inspect git history, or browse the directory structure of any other project directory without explicit approval from Scott. Cross-project access is permitted only when Scott explicitly names the other project in the request.
-- **Mojo / MAPS+Org dual-repo sync:** When work changes MAPS organization bootstrap behavior, role/agent operating rules, role skills/templates, validators, heartbeat installer/source automation, or MAPS+Org source links, update both `C:\Users\scott\Code\mojo` and `C:\Users\scott\Code\maps+org` when a counterpart exists. If one repo has no counterpart, record that in the completion note. Route proposed commits, pushes, PRs, releases, branch changes, and cleanup through Release Management / Reid before acting.
+- **Mojo / MAPS+Org dual-repo sync:** `C:\Users\scott\Code\maps+org` is intended to contain everything MAPS contains plus the organization roles, agents, controllers, operators, channels, automations, validators, and bootstrap structure already built. When work changes MAPS source, organization bootstrap behavior, role/agent operating rules, role skills/templates, validators, heartbeat installer/source automation, or MAPS+Org source links, update both `C:\Users\scott\Code\mojo` and `C:\Users\scott\Code\maps+org`. If MAPS+Org is missing a counterpart, treat that as a MAPS+Org packaging/sync gap to be created or explicitly backlogged, not as a harmless absence. Route proposed commits, pushes, PRs, releases, branch changes, and cleanup through Release Management / Reid before acting.
 
 ## Vik / MAPS ASPA
 
