@@ -136,20 +136,20 @@
         <section id="preflight" class="maps-section">
           <div class="maps-section-header">
             <h2>Required preflight</h2>
-            <p>M0 now asks before it writes. The skill must confirm the foundation decisions instead of inferring them from the repo.</p>
+            <p>M0 now starts with memory discovery: ask whether the project has RAG, where notes live if it does not, how to access each location, and whether there are multiple note or RAG stores.</p>
           </div>
           <div class="maps-grid">
             <article class="maps-panel">
-              <h3>Identity</h3>
-              <p>Confirm project name, owner, type, concrete intent, and primary customer or operator.</p>
+              <h3>First question</h3>
+              <p>Ask: "Do you have a RAG system for this project? If not, do you have another place where you store notes?"</p>
             </article>
             <article class="maps-panel">
-              <h3>Memory</h3>
-              <p>Confirm whether to reuse defaults, where notes live, where sources live, and where durable memory lives.</p>
+              <h3>Locations</h3>
+              <p>Confirm primary and additional notes, memory, source, and RAG locations, then mark which store is canonical and which are mirrors or derived indexes.</p>
             </article>
             <article class="maps-panel">
-              <h3>Retrieval</h3>
-              <p>Confirm RAG provider, location, and index path, or explicitly choose none yet.</p>
+              <h3>Access</h3>
+              <p>Record whether each location is accessed through the file system, an MCP service, or a REST API before asking identity and project-intent questions.</p>
             </article>
           </div>
           <div class="maps-code-panel maps-gap-top">

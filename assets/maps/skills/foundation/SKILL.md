@@ -38,7 +38,7 @@ Use `scripts/remember_foundation.py` when available:
 
 ```bash
 python scripts/remember_foundation.py show --project .
-python scripts/remember_foundation.py remember --project . --notes-root notes --sources-root sources --memory-root memory --rag-provider "LlamaIndex" --rag-location "memory/rag"
+python scripts/remember_foundation.py remember --project . --notes-root notes --notes-access filesystem --additional-notes-locations "G:/My Drive/ObsidianMind" --sources-root sources --sources-access filesystem --memory-root memory --memory-access filesystem --rag-provider "LlamaIndex" --rag-access filesystem --rag-location "memory/rag" --additional-rag-locations "Qdrant: http://localhost:6333"
 python scripts/remember_foundation.py apply --project . --foundation-file project-foundation.md
 python scripts/remember_foundation.py stamp-run --project . --skill /foundation --phase M0 --output project-foundation.md --memory-updates "Updated memory contract"
 python scripts/remember_foundation.py promote-template --project . --foundation-file project-foundation.md
@@ -60,23 +60,45 @@ The preference file is project memory, not a generated artifact to ignore. Commi
 
 Before writing any files, run a required M0 preflight interview. Do not infer these answers from repository files unless the user explicitly asks you to inspect the repo and infer a draft. If the user provided some answers in the prompt, restate them and ask only for the missing decisions.
 
+Start the interview with the user's actual memory system, not with abstract defaults. The first question should be:
+
+> Do you have a RAG system for this project? If not, do you have another place where you store notes?
+
+Then ask:
+
+- What is that notes, memory, or RAG location?
+- Do you have more than one notes location?
+- Do you have more than one RAG or index location?
+- Which notes location is canonical, and which locations are mirrors, exports, or secondary stores?
+- Which RAG location is canonical, and which locations are derived indexes, mirrors, or experimental stores?
+- Should I access it through the file system, an MCP service, or a REST API?
+- If it is file-system based, what path should I use?
+- If it is MCP based, what service/tool name should I use?
+- If it is REST API based, what base URL or endpoint should I record, and where should credentials be configured?
+
+Only after that memory/RAG discovery should you ask about project identity, project intent, operator, and scaffold folders. Do not ask "should I create fresh foundation defaults" as the first question.
+
 Required preflight decisions:
 
+- RAG availability: whether there is a RAG system now, another note store instead, or neither yet.
+- Notes location and access method: file system path, MCP service, REST API endpoint, or none yet.
+- Additional notes locations: any secondary vaults, folders, services, or exports, plus whether each should be updated or read-only.
+- RAG configuration and access method: provider, location, index path, MCP service, REST API endpoint, or explicit "none yet".
+- Additional RAG locations: any secondary indexes, vector stores, service endpoints, or experiments, plus whether each should be updated or read-only.
+- Canonical store policy: which notes/memory/source/RAG location is the source of truth and which locations are mirrors or derived.
+- Memory root and access method: where durable project memory should live and how to access it.
+- Sources root and access method: where evidence, links, transcripts, screenshots, and docs should live and how to access them.
+- Reuse policy: whether to reuse remembered/global foundation defaults after the user has confirmed the memory/RAG setup.
 - Project identity: name, owner, and whether this is the MAPS framework itself, an APS/single-agent project, or a downstream product/org using MAPS.
 - Project intent: the concrete product, organization, service, or agent system being founded.
 - Primary customer/operator: who will use or operate the system.
-- Reuse policy: whether to reuse remembered/global foundation defaults or revise them for this project.
-- Notes root: where human-readable working notes should live.
-- Sources root: where source evidence, links, transcripts, screenshots, and docs should live.
-- Memory root: where durable project memory should live.
-- RAG configuration: provider, location, index path, or an explicit "none yet".
 - Global template policy: whether this project's answers should update the living global template for future projects.
 
 If any required preflight decision is missing or ambiguous, ask the user before creating or updating `project-foundation.md`.
 
-1. Complete the required M0 preflight interview.
-2. Name the project and the customer or operator outcome from confirmed answers.
-3. Load remembered foundation preferences and apply only the defaults the user confirmed.
+1. Complete the memory/RAG-first M0 preflight interview.
+2. Load remembered foundation preferences and apply only the defaults the user confirmed after seeing the memory/RAG choices.
+3. Name the project and the customer or operator outcome from confirmed answers.
 4. Create the working knowledge scaffold using confirmed locations:
    - `notes/daily/`
    - `notes/interviews/`

@@ -16,13 +16,22 @@ from typing import Any
 DEFAULT_PREFS = {
     "version": 1,
     "notesRoot": "notes",
+    "additionalNotesLocations": [],
     "sourcesRoot": "sources",
     "memoryRoot": "memory",
+    "canonicalStorePolicy": "",
+    "access": {
+        "notes": "filesystem",
+        "sources": "filesystem",
+        "memory": "filesystem",
+        "rag": "",
+    },
     "rag": {
         "provider": "",
         "location": "",
         "indexPath": "",
         "notes": "",
+        "additionalLocations": [],
     },
     "updatedAt": "",
 }
@@ -67,7 +76,15 @@ def merge_preferences(existing: dict[str, Any] | None, updates: dict[str, Any]) 
     for key in ("notesRoot", "sourcesRoot", "memoryRoot"):
         if updates.get(key):
             prefs[key] = updates[key]
+    if updates.get("additionalNotesLocations"):
+        prefs["additionalNotesLocations"] = updates["additionalNotesLocations"]
+    if updates.get("canonicalStorePolicy"):
+        prefs["canonicalStorePolicy"] = updates["canonicalStorePolicy"]
+    access_updates = {key: value for key, value in updates.get("access", {}).items() if value}
+    prefs["access"] = {**DEFAULT_PREFS["access"], **prefs.get("access", {}), **access_updates}
     rag_updates = {key: value for key, value in updates.get("rag", {}).items() if value}
+    if updates.get("rag", {}).get("additionalLocations"):
+        rag_updates["additionalLocations"] = updates["rag"]["additionalLocations"]
     prefs["rag"] = {**prefs.get("rag", {}), **rag_updates}
     prefs["updatedAt"] = datetime.now(timezone.utc).isoformat()
     return prefs
@@ -84,6 +101,20 @@ def utc_now() -> str:
 
 def markdown_escape(value: str) -> str:
     return (value or "").replace("|", "\\|").replace("\n", " ").strip()
+
+
+def split_values(value: str) -> list[str]:
+    if not value:
+        return []
+    return [part.strip() for part in re.split(r"[;\n]", value) if part.strip()]
+
+
+def join_values(values: Any) -> str:
+    if not values:
+        return ""
+    if isinstance(values, str):
+        return values
+    return "; ".join(str(value) for value in values if str(value).strip())
 
 
 def foundation_path(project: Path, foundation_file: str) -> Path:
@@ -113,14 +144,22 @@ def replace_section(markdown: str, heading: str, body: str) -> str:
 
 def remembered_preferences_section(prefs: dict[str, Any], source: str) -> str:
     rag = prefs.get("rag", {})
+    access = {**DEFAULT_PREFS["access"], **prefs.get("access", {})}
     lines = [
         f"- Preference source: {source}",
         f"- Notes root: {prefs.get('notesRoot', '')}",
+        f"- Notes access method: {access.get('notes', '')}",
+        f"- Additional notes locations: {join_values(prefs.get('additionalNotesLocations', []))}",
         f"- Sources root: {prefs.get('sourcesRoot', '')}",
+        f"- Sources access method: {access.get('sources', '')}",
         f"- Memory root: {prefs.get('memoryRoot', '')}",
+        f"- Memory access method: {access.get('memory', '')}",
         f"- RAG provider: {rag.get('provider', '')}",
         f"- RAG location: {rag.get('location', '')}",
         f"- RAG index path: {rag.get('indexPath', '')}",
+        f"- RAG access method: {access.get('rag', '')}",
+        f"- Additional RAG locations: {join_values(rag.get('additionalLocations', []))}",
+        f"- Canonical store policy: {prefs.get('canonicalStorePolicy', '')}",
         f"- Last confirmed: {prefs.get('updatedAt', '')}",
         "- Global default used?: " + ("yes" if source == "global" else "no"),
         "- Updated `.maps/foundation-preferences.json`?: yes",
@@ -133,14 +172,17 @@ def memory_contract_section(prefs: dict[str, Any]) -> str:
     sources = prefs.get("sourcesRoot", "sources")
     memory = prefs.get("memoryRoot", "memory")
     rag = prefs.get("rag", {})
+    access = {**DEFAULT_PREFS["access"], **prefs.get("access", {})}
     rag_location = rag.get("location") or rag.get("indexPath") or ""
     rag_provider = rag.get("provider") or "Configured RAG"
     rows = [
-        ["Project notes", "Markdown notes", notes, "Human-readable working notes, interviews, research, and decisions.", "New findings, decisions, assumptions, or research notes.", "Append or create dated notes in the appropriate notes folder.", "Summaries may be indexed into RAG if approved.", "Yes for human decisions.", "Secrets, raw private data, unsupported claims."],
-        ["Skill run notes", "Markdown notes", f"{notes}/maps-runs", "One named note per MAPS skill, maintained by the shared memory helper.", "Every MAPS skill completion.", "Append the run summary to the skill's named note through maps_memory.py complete-run.", "Mirror to the configured RAG location when available.", "Yes for phase summaries.", "Raw secrets, large logs, or uncited source dumps."],
-        ["Sources", "Source library", sources, "Original evidence, documents, transcripts, screenshots, and links.", "New approved source or changed source.", "Add source and update source inventory.", "RAG indexes approved sources.", "Yes for evidence.", "Unapproved, private, or uncited material."],
-        ["Project memory", "Markdown memory", memory, "Durable project context, glossary, and entity map.", "Stable project facts, terms, entities, or durable context changes.", "Edit the relevant memory file with concise updates.", "Keep aligned with notes and source inventory.", "Yes for project context.", "Temporary scratch notes."],
-        ["RAG index", rag_provider, rag_location, "Queryable project knowledge.", "New or changed approved sources or memory.", "Re-index changed inputs according to the configured provider.", "Mirrors approved sources and selected memory/notes.", "No, derived from canonical stores.", "Unapproved sources or secrets."],
+        ["Project notes", f"Markdown notes via {access.get('notes', 'filesystem')}", notes, "Human-readable working notes, interviews, research, and decisions.", "New findings, decisions, assumptions, or research notes.", "Append or create dated notes in the appropriate notes folder.", "Summaries may be indexed into RAG if approved.", "Yes for human decisions.", "Secrets, raw private data, unsupported claims."],
+        ["Additional notes", f"Secondary notes via {access.get('notes', 'filesystem')}", join_values(prefs.get("additionalNotesLocations", [])), "Optional secondary vaults, folders, services, or exports.", "When the canonical notes policy says to mirror or update them.", "Update only according to the canonical store policy.", "May be read-only, mirrored, or synced from canonical notes.", "Only if marked canonical.", "Secrets or unapproved private notes."],
+        ["Skill run notes", f"Markdown notes via {access.get('notes', 'filesystem')}", f"{notes}/maps-runs", "One named note per MAPS skill, maintained by the shared memory helper.", "Every MAPS skill completion.", "Append the run summary to the skill's named note through maps_memory.py complete-run.", "Mirror to the configured RAG location when available.", "Yes for phase summaries.", "Raw secrets, large logs, or uncited source dumps."],
+        ["Sources", f"Source library via {access.get('sources', 'filesystem')}", sources, "Original evidence, documents, transcripts, screenshots, and links.", "New approved source or changed source.", "Add source and update source inventory.", "RAG indexes approved sources.", "Yes for evidence.", "Unapproved, private, or uncited material."],
+        ["Project memory", f"Markdown memory via {access.get('memory', 'filesystem')}", memory, "Durable project context, glossary, and entity map.", "Stable project facts, terms, entities, or durable context changes.", "Edit the relevant memory file with concise updates.", "Keep aligned with notes and source inventory.", "Yes for project context.", "Temporary scratch notes."],
+        ["RAG index", f"{rag_provider} via {access.get('rag', '')}".strip(), rag_location, "Queryable project knowledge.", "New or changed approved sources or memory.", "Re-index changed inputs according to the configured provider.", "Mirrors approved sources and selected memory/notes.", "No, derived from canonical stores.", "Unapproved sources or secrets."],
+        ["Additional RAG indexes", f"Secondary RAG via {access.get('rag', '')}".strip(), join_values(rag.get("additionalLocations", [])), "Optional secondary indexes, vector stores, service endpoints, or experiments.", "When approved source, notes, or memory changes should be mirrored.", "Update only according to the canonical store policy.", "Derived from canonical notes, sources, or memory.", "No, unless explicitly marked canonical.", "Unapproved sources, secrets, or raw private data."],
         ["RAG update manifest", "JSON state", ".maps/rag-updates.json", "Append-only list of skill notes and memory files that need RAG reindexing.", "Every helper-written skill note or RAG mirror.", "Append a needsReindex entry through maps_memory.py complete-run.", "Used by future indexing automation.", "No, derived from changed stores.", "Long prose or raw evidence."],
         ["MAPS state", "JSON state", ".maps/foundation-preferences.json", "Remembered scaffold and memory configuration for future skill runs.", "Every foundation configuration change.", "Structured JSON update.", "Reflect important choices in this document.", "Yes for automation defaults.", "Long prose or raw evidence."],
     ]
@@ -205,13 +247,22 @@ def remember(args: argparse.Namespace) -> int:
     existing = load_json(path)
     updates = {
         "notesRoot": args.notes_root,
+        "additionalNotesLocations": split_values(args.additional_notes_locations),
         "sourcesRoot": args.sources_root,
         "memoryRoot": args.memory_root,
+        "canonicalStorePolicy": args.canonical_store_policy,
+        "access": {
+            "notes": args.notes_access,
+            "sources": args.sources_access,
+            "memory": args.memory_access,
+            "rag": args.rag_access,
+        },
         "rag": {
             "provider": args.rag_provider,
             "location": args.rag_location,
             "indexPath": args.rag_index_path,
             "notes": args.rag_notes,
+            "additionalLocations": split_values(args.additional_rag_locations),
         },
     }
     prefs = merge_preferences(existing, updates)
@@ -387,12 +438,19 @@ def main() -> int:
     remember_parser.add_argument("--project", default=".", help="Project directory.")
     remember_parser.add_argument("--global-default", action="store_true", help="Write the global default instead of project preferences.")
     remember_parser.add_argument("--notes-root", default="", help="Notes root path.")
+    remember_parser.add_argument("--notes-access", default="", help="How to access notes: filesystem, MCP service, REST API, or none.")
+    remember_parser.add_argument("--additional-notes-locations", default="", help="Semicolon-separated secondary notes locations, vaults, services, or exports.")
     remember_parser.add_argument("--sources-root", default="", help="Sources root path.")
+    remember_parser.add_argument("--sources-access", default="", help="How to access sources: filesystem, MCP service, or REST API.")
     remember_parser.add_argument("--memory-root", default="", help="Memory root path.")
+    remember_parser.add_argument("--memory-access", default="", help="How to access durable project memory: filesystem, MCP service, or REST API.")
+    remember_parser.add_argument("--rag-access", default="", help="How to access RAG: filesystem, MCP service, REST API, or none.")
     remember_parser.add_argument("--rag-provider", default="", help="RAG provider or framework.")
     remember_parser.add_argument("--rag-location", default="", help="RAG config, index, or storage location.")
     remember_parser.add_argument("--rag-index-path", default="", help="RAG index path.")
+    remember_parser.add_argument("--additional-rag-locations", default="", help="Semicolon-separated secondary RAG or index locations.")
     remember_parser.add_argument("--rag-notes", default="", help="Additional RAG notes.")
+    remember_parser.add_argument("--canonical-store-policy", default="", help="Which notes, memory, source, or RAG locations are canonical vs mirrored or derived.")
     remember_parser.add_argument("--apply", action="store_true", help="Also update the project foundation file.")
     remember_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
     remember_parser.set_defaults(func=remember)

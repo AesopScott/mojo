@@ -18,14 +18,22 @@ Project Intent + Scaffolding Structure, Kickoff.
 
 | Decision | Answer | Confirmed by | Notes |
 |---|---|---|---|
+| RAG exists? |  |  |  |
+| Notes location |  |  |  |
+| Notes access method | file system / MCP service / REST API / none yet |  |  |
+| Additional notes locations |  |  |  |
+| RAG provider/location/index |  |  |  |
+| RAG access method | file system / MCP service / REST API / none yet |  |  |
+| Additional RAG/index locations |  |  |  |
+| Canonical store policy |  |  |  |
+| Memory root |  |  |  |
+| Memory access method | file system / MCP service / REST API |  |  |
+| Sources root |  |  |  |
+| Sources access method | file system / MCP service / REST API |  |  |
+| Reuse remembered defaults? |  |  |  |
 | Project identity and type |  |  |  |
 | Project intent |  |  |  |
 | Primary customer/operator |  |  |  |
-| Reuse remembered defaults? |  |  |  |
-| Notes root |  |  |  |
-| Sources root |  |  |  |
-| Memory root |  |  |  |
-| RAG provider/location/index |  |  |  |
 | Update global living template? |  |  |  |
 
 ## Customer Story
@@ -88,11 +96,18 @@ memory/
 
 - Preference source:
 - Notes root:
+- Notes access method:
+- Additional notes locations:
 - Sources root:
+- Sources access method:
 - Memory root:
+- Memory access method:
 - RAG provider:
 - RAG location:
 - RAG index path:
+- RAG access method:
+- Additional RAG locations:
+- Canonical store policy:
 - Global default used?:
 - Updated `.maps/foundation-preferences.json`?:
 
