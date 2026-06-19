@@ -140,9 +140,9 @@
             <table class="maps-taxonomy-table">
               <thead><tr><th>File type</th><th>Purpose</th><th>Example</th></tr></thead>
               <tbody>
-                <tr><td>Role channel</td><td>Ongoing shared context between two roles that frequently communicate.</td><td><code>channels/vik-matt.md</code></td></tr>
+                <tr><td>Function channel</td><td>Ongoing shared context for a recurring communication function across roles.</td><td><code>channels/pipeline.md</code></td></tr>
                 <tr><td>Handoff packet</td><td>Bounded work item spawned from a channel when status, acceptance, verification, and closeout must be tracked.</td><td><code>org-chart-development-2026-06-19.md</code></td></tr>
-                <tr><td>Channel template</td><td>Reusable structure for creating new role-to-role communication files.</td><td><code>role-channel-template.md</code></td></tr>
+                <tr><td>Channel template</td><td>Reusable structure for creating new function communication files.</td><td><code>role-channel-template.md</code></td></tr>
                 <tr><td>Packet template</td><td>Reusable structure for creating a scoped role handoff packet.</td><td><code>role-handoff-template.md</code></td></tr>
               </tbody>
             </table>
@@ -151,10 +151,30 @@
 
         <section id="handoff-process" class="maps-section">
           <div class="maps-section-header">
+            <h2>3-minute check goal</h2>
+            <p>Every active role and agent should have a standing goal to check its relevant function channels for work every 3 minutes while it is operating.</p>
+          </div>
+          <div class="maps-table-wrap">
+            <table class="maps-taxonomy-table">
+              <thead><tr><th>Item</th><th>Rule</th></tr></thead>
+              <tbody>
+                <tr><td>Read</td><td>Read the relevant function channel and linked active packets.</td></tr>
+                <tr><td>Detect</td><td>Look for new requests, assigned work, blockers, review needs, decisions, escalations, and closeout tasks.</td></tr>
+                <tr><td>Respond</td><td>If work exists, acknowledge it, act inside authority, ask one blocker question, or route it to the correct function channel.</td></tr>
+                <tr><td>Record</td><td>Append when work is found, status changes, evidence changes, a blocker appears, or a closeout happens. Routine no-work checks do not need noisy log entries.</td></tr>
+                <tr><td>Guardrail</td><td>The 3-minute goal does not activate autonomous polling, production actions, external communication, spending, or authority expansion without an approved runtime and explicit permission.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
             <h2>Handoff process</h2>
             <p>Use this flow whenever work needs to move from one role to another: build, review, approval, escalation, research, memory update, operations, or closeout.</p>
           </div>
           <ol class="maps-step-list">
+            <li><strong>Check cadence:</strong> Every 3 minutes while operating, the role checks relevant function channels and linked packets for work.</li>
             <li><strong>Read channel:</strong> The acting role reads its shared channel file before responding to shared work.</li>
             <li><strong>Append message:</strong> The sending role appends context, request, evidence, authority boundary, and expected response.</li>
             <li><strong>Create packet when needed:</strong> If the work is bounded, risky, multi-step, or reviewable, create a handoff packet and link it from the channel.</li>
@@ -163,6 +183,44 @@
             <li><strong>Record:</strong> The role appends changed artifacts, decisions, evidence, verification, and memory updates to the channel or packet.</li>
             <li><strong>Close or continue:</strong> Close the packet when the receiving condition is met, or continue through another channel or packet.</li>
           </ol>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Handoffs</h2>
+            <p>This is the organization-wide list of handoffs between roles, grouped by the function channel where the roles communicate.</p>
+          </div>
+          <div class="maps-table-wrap">
+            <table class="maps-taxonomy-table">
+              <thead><tr><th>Function</th><th>Channel file</th><th>Active handoffs</th><th>Senders</th><th>Receivers</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Pipeline</td>
+                  <td><code>channels/pipeline.md</code></td>
+                  <td>Org Chart Development</td>
+                  <td>Vik, Matt</td>
+                  <td>Vik, Matt</td>
+                  <td><code>drafting</code></td>
+                </tr>
+                <tr>
+                  <td>Recruiting</td>
+                  <td><code>channels/recruiting.md</code></td>
+                  <td>Recruiting Handoff</td>
+                  <td>Vik, Matt, Ana</td>
+                  <td>Vik, Matt, Ana</td>
+                  <td><code>active</code></td>
+                </tr>
+                <tr>
+                  <td>Training</td>
+                  <td><code>channels/training.md</code></td>
+                  <td>None yet</td>
+                  <td>Liz</td>
+                  <td>Liz</td>
+                  <td><code>planned</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <section class="maps-section">
@@ -222,20 +280,30 @@
 
         <section class="maps-section">
           <div class="maps-section-header">
-            <h2>Current example</h2>
-            <p>The org chart work is an architecture-to-program example inside the larger role communication process. The ongoing communication belongs in the Vik <> Matt channel; the bounded website work belongs in the org-chart handoff packet.</p>
+            <h2>Handoffs</h2>
+            <p>Each handoff belongs to a function channel. Pipeline is one channel; Recruiting is the next active channel.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
-              <thead><tr><th>Channel</th><th>Packet</th><th>Sender</th><th>Receiver</th><th>Status</th><th>Next move</th></tr></thead>
+              <thead><tr><th>Function</th><th>Channel</th><th>Packet</th><th>Senders</th><th>Receivers</th><th>Status</th><th>Next move</th></tr></thead>
               <tbody>
                 <tr>
-                  <td><code>channels/vik-matt.md</code></td>
+                  <td>Pipeline</td>
+                  <td><code>channels/pipeline.md</code></td>
                   <td>Org Chart Development</td>
-                  <td>Vik / Agentic Systems Program Architect</td>
-                  <td>Matt / Agentic Systems Program Manager</td>
+                  <td>Vik, Matt</td>
+                  <td>Vik, Matt</td>
                   <td><code>drafting</code></td>
                   <td>Keep shared context in the channel, then route the packet to Matt when the requested build response is explicit.</td>
+                </tr>
+                <tr>
+                  <td>Recruiting</td>
+                  <td><code>channels/recruiting.md</code></td>
+                  <td>Recruiting Handoff</td>
+                  <td>Vik, Matt, Ana</td>
+                  <td>Vik, Matt, Ana</td>
+                  <td><code>active</code></td>
+                  <td>Use the channel for role recruiting, role definition, role ownership, and role-to-agent readiness coordination.</td>
                 </tr>
               </tbody>
             </table>
