@@ -130,7 +130,7 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, run log, and remembered notes/RAG locations."
+        note: "Starts M0 Project Foundation with project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, and remembered notes/RAG locations."
       },
       {
         name: "/shape",
@@ -854,7 +854,7 @@ window.MAPS_SITE = {
         name: "templates/project-foundation.md",
         url: "assets/maps/templates/project-foundation.md",
         download: true,
-        note: "Captures M0 Project Foundation: intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, run log, open questions, and RAG readiness."
+        note: "Captures M0 Project Foundation: intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
       },
       {
         name: "templates/system-shape.md",
@@ -970,7 +970,7 @@ window.MAPS_SITE = {
     "m0": {
       skills: ["/foundation"],
       repos: ["AesopScott/maps", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
-      tools: ["Markdown notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
+      tools: ["Markdown notes", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
     },
     "m1": {

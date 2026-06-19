@@ -20,15 +20,15 @@ Use this skill after M7 Orchestration Build exists and before M9 System Evaluate
 
 At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
 
-When this skill creates durable knowledge, write it to the memory stores defined by the foundation contract instead of inventing new locations. If the run changes memory configuration, notes/RAG locations, source inventory, or durable project context, update `project-foundation.md` and `.maps/foundation-preferences.json` through `/foundation` conventions.
+When this skill creates durable knowledge, write it through the shared MAPS memory helper. The helper gives this skill its own named note under the configured notes root, mirrors that note into the configured RAG location when one exists, appends `MAPS Skill Run Log`, and records a RAG reindex manifest.
 
-At the end of the run, append a row to `MAPS Skill Run Log` in `project-foundation.md`. Prefer the foundation helper when available:
+At the end of the run, call the helper after creating the primary output artifact:
 
 ```bash
-python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /design-experience --phase M8/A2 --output "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
+python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --project . --skill /design-experience --phase M8/A2 --output "<primary artifact path>" --summary-file "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
 ```
 
-If the helper is unavailable, append the timestamp, skill, phase, output path, memory updates, and short note manually.
+If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
 ## Workflow
 

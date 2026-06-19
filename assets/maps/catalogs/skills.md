@@ -2,7 +2,7 @@
 
 | Phase | Skill | Purpose |
 |---|---|---|
-| M0 | `/foundation` | Start Project Foundation with project intent, notes scaffold, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, run log, and remembered notes/RAG locations. |
+| M0 | `/foundation` | Start Project Foundation with project intent, notes scaffold, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, and remembered notes/RAG locations. |
 | M1 | `/shape` | Scope the workflow and choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS before roster or implementation work. |
 | 0 | `/scaffold` | Create the MAPS structure. |
 | 0 | `phase-alignment` | Align lifecycle names, boundaries, and catalogs. |

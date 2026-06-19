@@ -842,6 +842,26 @@ body.maps-page {
   color: var(--maps-muted);
 }
 
+.maps-code-panel {
+  overflow-x: auto;
+  padding: 18px;
+  border: 1px solid rgba(35, 107, 99, 0.26);
+  border-left: 5px solid var(--maps-teal);
+  border-radius: 8px;
+  background: #10231f;
+}
+
+.maps-code-panel pre {
+  margin: 0;
+}
+
+.maps-code-panel code {
+  color: #e9f5ef;
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre;
+}
+
 .maps-must-cover-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

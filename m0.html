@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MAPS M0: Project Foundation | Mojo AI Studio</title>
-    <meta name="description" content="M0 Project Foundation establishes project intent, notes scaffold, evidence, source inventory, assumptions, decisions, and RAG readiness.">
+    <meta name="description" content="M0 Project Foundation establishes project intent, notes scaffold, evidence, source inventory, persistent memory, run notes, and RAG readiness.">
     <link rel="canonical" href="https://mojoaistudio.com/m0.html">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
@@ -28,8 +28,8 @@
     <meta name="twitter:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="maps.css?v=no-build-nav">
-    <script src="maps-data.js?v=foundation-living-memory" defer></script>
+    <link rel="stylesheet" href="maps.css?v=maps-memory-helper">
+    <script src="maps-data.js?v=maps-memory-helper" defer></script>
     <script src="maps-page.js?v=aps-source" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="m0">
@@ -80,6 +80,7 @@
             </div>
             <div class="maps-inline-links" aria-label="This page sections">
               <a href="#output">Output</a>
+              <a href="#memory-helper">Memory Helper</a>
               <a href="#methods">Methods</a>
               <a href="#resources">Resources</a>
             </div>
@@ -94,8 +95,8 @@
           <h1>Project Foundation</h1>
           <p>
             M0 starts the project brain: intent, notes, sources, evidence,
-            assumptions, decisions, and retrieval-ready context before system
-            shape or agent design begins.
+            assumptions, decisions, per-skill run notes, and retrieval-ready
+            context before system shape or agent design begins.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#methods">Start foundation</a>
@@ -123,6 +124,74 @@
               <h3>Primary handoff</h3>
               <p>M1 System Shape receives the foundation, source inventory, EventStorming Lite notes, and M1 handoff questions.</p>
             </article>
+          </div>
+        </section>
+
+        <section id="memory-helper" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Shared memory helper</h2>
+            <p>The helper is a script, not a background service. Each skill triggers it after creating its phase artifact.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>What it is</h3>
+              <p><a href="assets/maps/skills/foundation/scripts/maps_memory.py" download><strong>maps_memory.py</strong></a> is the shared MAPS runtime helper installed with <code>/foundation</code>.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>What triggers it</h3>
+              <p>Every MAPS skill now instructs the agent to call <code>maps_memory.py complete-run</code> after the skill creates its primary output artifact.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Why it exists</h3>
+              <p>It gives each skill one named note in the configured notes and RAG locations, while <code>project-foundation.md</code> remains the control document.</p>
+            </article>
+          </div>
+          <div class="maps-table-wrap maps-gap-top">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Write target</th>
+                  <th>Purpose</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>project-foundation.md</code></td>
+                  <td>Appends the timestamped MAPS Skill Run Log row.</td>
+                  <td><code>/shape | M1 | system-shape.md</code></td>
+                </tr>
+                <tr>
+                  <td><code>&lt;notesRoot&gt;/maps-runs/&lt;skill&gt;.md</code></td>
+                  <td>Maintains one human-readable named note per skill.</td>
+                  <td><code>notes/maps-runs/shape.md</code></td>
+                </tr>
+                <tr>
+                  <td><code>&lt;rag.location&gt;/maps-runs/&lt;skill&gt;.md</code></td>
+                  <td>Mirrors the named skill note into the configured RAG location when one exists.</td>
+                  <td><code>memory/rag/maps-runs/shape.md</code></td>
+                </tr>
+                <tr>
+                  <td><code>.maps/rag-updates.json</code></td>
+                  <td>Records changed notes and marks them as needing reindexing.</td>
+                  <td><code>"needsReindex": true</code></td>
+                </tr>
+                <tr>
+                  <td><code>.maps/foundation-preferences.json</code></td>
+                  <td>Stores the structured notes, sources, memory, and RAG locations selected by M0.</td>
+                  <td><code>"notesRoot": "notes"</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run \
+  --project . \
+  --skill /shape \
+  --phase M1 \
+  --output system-shape.md \
+  --summary-file system-shape.md \
+  --memory-updates "Track decision captured"</code></pre>
           </div>
         </section>
 

@@ -28,6 +28,15 @@ python scripts/remember_foundation.py stamp-run --project . --skill /foundation 
 python scripts/remember_foundation.py promote-template --project . --foundation-file project-foundation.md
 ```
 
+Use `scripts/maps_memory.py` for the shared per-skill runtime memory behavior:
+
+```bash
+python scripts/maps_memory.py status --project .
+python scripts/maps_memory.py complete-run --project . --skill /foundation --phase M0 --output project-foundation.md --summary-file project-foundation.md --memory-updates "Updated foundation contract and scaffold"
+```
+
+`remember_foundation.py` owns foundation configuration, template promotion, and the living memory contract. `maps_memory.py` is the shared helper that every MAPS skill calls after it creates its output. It appends the skill run to `project-foundation.md`, writes that skill's named note under `<notesRoot>/maps-runs/`, mirrors the named note into the configured RAG location when one exists, and records `.maps/rag-updates.json` so reindexing work is visible.
+
 The preference file is project memory, not a generated artifact to ignore. Commit it when the project wants future agents to reuse the same foundation choices. The living global template is cross-project memory; it should carry the last accepted memory contract into the next project.
 
 ## Workflow
@@ -53,8 +62,9 @@ The preference file is project memory, not a generated artifact to ignore. Commi
 9. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
 10. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
 11. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
-12. Promote the updated `project-foundation.md` to the living global template when those choices should seed the next project.
-13. Prepare the M1 handoff:
+12. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
+13. Promote the updated `project-foundation.md` to the living global template when those choices should seed the next project.
+14. Prepare the M1 handoff:
    - If the system shape is unclear, recommend Scope First.
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
@@ -65,6 +75,9 @@ Create or update these concrete outputs in the current project:
 
 - `project-foundation.md`: completed M0 foundation artifact from `templates/project-foundation.md`.
 - `.maps/foundation-preferences.json`: selected notes, sources, memory, and RAG locations for the next `/foundation` run.
+- `.maps/rag-updates.json`: append-only reindex manifest updated by the shared memory helper.
+- `<notesRoot>/maps-runs/foundation.md`: named `/foundation` run note for notes/RAG ingestion.
+- `<rag.location>/maps-runs/foundation.md`: mirrored named `/foundation` run note when a RAG location is configured.
 - Notes scaffold: the selected notes root with `daily/`, `interviews/`, `research/`, and `decisions/`.
 - Sources scaffold: the selected sources root with `docs/`, `transcripts/`, `screenshots/`, and `links.md`.
 - Memory scaffold: the selected memory root with `project-context.md`, `glossary.md`, and `entity-map.md`.
