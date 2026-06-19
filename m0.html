@@ -82,6 +82,7 @@
               <a href="#output">Output</a>
               <a href="#preflight">Preflight</a>
               <a href="#memory-helper">Memory Helper</a>
+              <a href="#persistence">Persistence</a>
               <a href="#methods">Methods</a>
               <a href="#resources">Resources</a>
             </div>
@@ -239,6 +240,30 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
   --output system-shape.md \
   --summary-file system-shape.md \
   --memory-updates "Track decision captured"</code></pre>
+          </div>
+        </section>
+
+        <section id="persistence" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Rule persistence</h2>
+            <p>MAPS now uses three layers so skill behavior survives new sessions, installs, and future edits.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Always-on instructions</h3>
+              <p>Global and repo-level <code>AGENTS.md</code> rules tell Codex to ask one question at a time, use <code>project-foundation.md</code>, write through the memory helper, report completion, and validate skills before publish.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Per-skill contracts</h3>
+              <p>Every MAPS <code>SKILL.md</code> now carries in-body versioning, a changelog, output expectations, completion reporting, one-question interviews, and memory-helper instructions.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Contract validator</h3>
+              <p><a href="assets/maps/scripts/validate_maps_skills.py" download><strong>validate_maps_skills.py</strong></a> checks every skill for versioning, changelog entries, output contracts, completion reports, one-question interviews, and memory-helper wiring.</p>
+            </article>
+          </div>
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>python scripts/validate_maps_skills.py</code></pre>
           </div>
         </section>
 

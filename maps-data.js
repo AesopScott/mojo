@@ -679,6 +679,11 @@ window.MAPS_SITE = {
         note: "Records scaffold and phase changes."
       },
       {
+        name: "MAPS skill contract validator",
+        url: "assets/maps/scripts/validate_maps_skills.py",
+        note: "Validates that MAPS skills preserve versioning, changelog entries, output contracts, completion reporting, one-question interviews, and memory-helper wiring before publish."
+      },
+      {
         name: "Agent Skills",
         note: "Provides the SKILL.md packaging and workflow format used by /design-agent."
       },
@@ -981,7 +986,7 @@ window.MAPS_SITE = {
     "m0": {
       skills: ["/foundation", "/role"],
       repos: ["AesopScott/maps", "garrytan/gstack", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
-      tools: ["Markdown notes", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
+      tools: ["Markdown notes", "MAPS skill contract validator", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
     },
     "m1": {

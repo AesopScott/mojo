@@ -4,6 +4,21 @@ description: Build role agents for a root organization or multi-agent corporatio
 ---
 
 # Role
+## Versioning
+
+Current version: 0.1.0.
+
+Follow semantic versioning for this skill:
+
+- Patch: wording, examples, references, or small workflow clarifications.
+- Minor: new outputs, new required steps, new helper behavior, or expanded workflow capability.
+- Major: renamed outputs, changed artifact contracts, removed behavior, or incompatible workflow changes.
+
+When changing this skill, update `Current version` and add a `Changelog` entry with the date, version, and short summary of behavior changed.
+
+## Changelog
+
+- 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/role` to design a role agent for an organization. This is not a MAPS phase skill. It is a role-construction skill students can run repeatedly to create two or three organizational roles under a root company, team, service, or agentic corporation.
 

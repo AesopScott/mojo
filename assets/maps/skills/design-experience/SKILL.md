@@ -4,6 +4,21 @@ description: Run MAPS M8 Experience Design for multi-agent products, or optional
 ---
 
 # Design Experience
+## Versioning
+
+Current version: 0.1.0.
+
+Follow semantic versioning for this skill:
+
+- Patch: wording, examples, references, or small workflow clarifications.
+- Minor: new outputs, new required steps, new helper behavior, or expanded workflow capability.
+- Major: renamed outputs, changed artifact contracts, removed behavior, or incompatible workflow changes.
+
+When changing this skill, update `Current version` and add a `Changelog` entry with the date, version, and short summary of behavior changed.
+
+## Changelog
+
+- 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use this skill after M7 Orchestration Build exists and before M9 System Evaluate depends on product behavior. For a standalone agent with no multi-agent system, use the same workflow as optional A2 between Phase 2 Design and Phase 3 Build.
 
