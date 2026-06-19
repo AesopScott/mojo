@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing evals or scorecards, ask for any missing answers. Do not create generic tests that are detached from the real agent job.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Which agent, role, workflow, or release candidate is being evaluated?
+- What success criteria, failure criteria, and release gates already exist?
+- What real tasks or customer stories should become eval scenarios?
+- What edge cases, unsafe requests, adversarial inputs, and escalation cases matter?
+- What tools, memory, RAG, or human approvals need to be tested?
+- What rubric or scoring style should be used?
+- What minimum score or evidence is needed for release?
+- What known failures need regression coverage?
+- Should evals be runnable now, specified for later, or both?
+- Who reviews the eval results and makes the go/no-go decision?
+
+If the user does not have eval scenarios, draft candidates and ask for approval before treating them as the suite.
+
 ## Workflow
 
 1. Restate the agent's success and failure criteria.

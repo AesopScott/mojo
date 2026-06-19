@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing the phase alignment brief, ask for any missing answers. Do not decide lifecycle names, scope, or repo structure without confirmation.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What framework, course, project, or repo are we aligning?
+- Who is the audience or operator?
+- What lifecycle or curriculum problem are we solving?
+- What phase names, order, and boundaries are already decided?
+- What phase names, order, and boundaries are still open?
+- What outputs should each phase produce?
+- What skills, templates, catalogs, docs, and folders are required?
+- What belongs outside this framework or should be postponed?
+- What naming decisions need to be durable?
+- What unresolved questions should be carried forward?
+
+If the user only has a rough idea, draft a candidate phase map and ask them to accept, revise, or reject it.
+
 ## Workflow
 
 1. Identify the teaching or project goal.

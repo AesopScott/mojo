@@ -23,6 +23,28 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing `agents/{agent-handle}/agent-brief.md`, ask for any missing answers. Do not invent the agent's job, authority, or boundaries without confirmation.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What agent or capability are we defining?
+- Who is the user, customer, or operator?
+- What job should the agent do in one sentence?
+- What outcome proves the agent helped?
+- What should the agent never do?
+- Should it advise, draft, act with approval, or act autonomously within limits?
+- What actions are allowed without approval?
+- What actions require approval?
+- What tools, data, memory, or systems might it need?
+- What is in scope and out of scope?
+- What success, failure, and escalation criteria should be visible?
+
+If the user already provided some answers, restate them and ask only for the missing or risky decisions.
+
 ## Workflow
 
 1. Identify the user or operator.

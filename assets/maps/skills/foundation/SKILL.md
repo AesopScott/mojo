@@ -60,6 +60,8 @@ The preference file is project memory, not a generated artifact to ignore. Commi
 
 Before writing any files, run a required M0 preflight interview. Do not infer these answers from repository files unless the user explicitly asks you to inspect the repo and infer a draft. If the user provided some answers in the prompt, restate them and ask only for the missing decisions.
 
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the required decisions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
 Start the interview with the user's actual memory system, not with abstract defaults. The first question should be:
 
 > Do you have a RAG system for this project? If not, do you have another place where you store notes?

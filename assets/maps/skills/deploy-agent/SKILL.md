@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing a deployment plan, ask for any missing answers. Do not assume production targets, secrets, rollout policy, or approval gates.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What agent, role, or system is being released?
+- What eval evidence or approval says it is ready?
+- What target environment, runtime, region, account, or platform should receive it?
+- What configuration, identities, bindings, secrets, and permissions are required?
+- Who approves release, rollback, and access changes?
+- What rollout strategy should be used: local demo, internal alpha, limited beta, staged rollout, or full production?
+- What rollback or disable path is required?
+- What post-deploy verification must pass?
+- Who owns operations, incident response, and user communication?
+- What should not be deployed yet?
+
+If release readiness is unclear, ask whether to stop, create a pre-release checklist, or produce a draft plan only.
+
 ## Workflow
 
 1. Confirm eval evidence and release readiness.

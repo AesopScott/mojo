@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing an observation plan, ask for any missing answers. Do not assume what operators care about after deployment.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Which deployed agent, role, workflow, or system should be observed?
+- Who is the operator or reviewer?
+- What quality, safety, cost, latency, usage, and business signals matter?
+- What traces, tool calls, prompts, outputs, approvals, refusals, and escalations should be captured?
+- What logs or data are sensitive and should be excluded or redacted?
+- What failure categories require immediate alerting versus periodic review?
+- What drift, memory, RAG, or policy risks should be monitored?
+- What dashboard, report, note, or review cadence should operators use?
+- Where should observations be written for later Improve work?
+- Who owns follow-up when observations show problems?
+
+If observability tooling is not available yet, ask whether to specify signals only or create a lightweight manual review loop.
+
 ## Workflow
 
 1. Identify what operators need to know after deployment.

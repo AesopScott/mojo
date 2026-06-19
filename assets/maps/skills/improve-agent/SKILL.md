@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing the improvement backlog, ask for any missing answers. Do not invent root causes or prioritize changes without evidence.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What evidence is driving this improvement pass: evals, traces, incidents, user feedback, operator notes, costs, latency, or drift?
+- Which agent, role, workflow, or system is affected?
+- What happened, when, and who observed it?
+- What user or business impact matters most?
+- Which failures are symptoms, and which root causes are suspected?
+- Should fixes belong in prompt, tool, memory, RAG, policy, design, eval, deployment, or training data?
+- What changes are urgent, risky, cheap, or high-leverage?
+- What regression tests or evals should be added before changing behavior?
+- Who approves the improvement plan?
+- Which earlier MAPS artifacts need to be updated?
+
+If evidence is thin, ask whether to create an observation plan, gather more traces, or mark the item as an assumption.
+
 ## Workflow
 
 1. Gather eval failures, traces, incidents, and user feedback.

@@ -30,6 +30,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing `experience-design.md`, ask for any missing answers. Do not design surfaces or journeys without knowing the user, promise, and trust boundary.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Is this M8 for a multi-agent product or optional A2 for a single-agent product?
+- What user, customer, or operator journey should be designed first?
+- What product promise and outcome must the experience make clear?
+- What surfaces exist or are expected: app, chat, dashboard, approvals, notifications, settings, docs, or handoffs?
+- What agent activity should users see, approve, interrupt, retry, or inspect?
+- What uncertainty, citations, refusals, escalation, and recovery behavior must be visible?
+- What brand, tone, accessibility, compliance, platform, or design-system constraints exist?
+- What information architecture, object model, or navigation is already known?
+- What states must be modeled: loading, streaming, blocked, partial success, error, escalation, success, review?
+- What should be handed to Evaluate, Deploy/Observe, Improve, or an earlier APS phase?
+
+If the user is not ready to answer, draft a first useful journey and ask them to accept, revise, or mark unknowns.
+
 ## Workflow
 
 1. Restate the product promise, target user, trust boundary, and first useful user journey.

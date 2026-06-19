@@ -25,6 +25,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before creating files, ask for any missing answers. Do not scaffold into an ambiguous path or overwrite without explicit permission.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What target directory should receive the scaffold?
+- What should the framework or project be named?
+- Is this a new repo, an existing repo, or a training/example scaffold?
+- Should existing files be preserved, merged, or overwritten with `--force`?
+- Should git be initialized if the target is not already a repo?
+- Which phases, skills, templates, catalogs, docs, or examples should be included?
+- Are there naming or folder conventions to follow?
+- Should generated files use default MAPS content or a custom variant?
+- What should happen if the target directory already contains work?
+- What should be the next action after scaffolding?
+
+If the target path or overwrite policy is unclear, ask before running the scaffold script.
+
 ## Workflow
 
 1. Confirm or infer the target directory.

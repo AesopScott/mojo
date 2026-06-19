@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before changing implementation files, ask for any missing answers. Do not build an agent without a confirmed design target and run path.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Which agent, role, or capability should be built now?
+- Which design artifact is the source of truth?
+- What is the smallest useful runnable slice?
+- What runtime, framework, language, or repo conventions should be used?
+- What tools, APIs, secrets, memory, or RAG access should be stubbed versus wired for real?
+- What should be explicitly out of scope for this build pass?
+- What command should run the agent locally?
+- What test or verification should prove the first slice works?
+- What failure behavior or guardrail must exist in the first build?
+- What should be deferred to Equip, Evaluate, or Deploy?
+
+If the answers are missing, ask before editing code.
+
 ## Workflow
 
 1. Read the project structure and existing conventions first.

@@ -23,6 +23,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing the capability map, ask for any missing answers. Do not grant or assume tools, data, credentials, or permissions.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Which agent, role, or system is being equipped?
+- What workflow steps require tools, data, APIs, MCP servers, memory, RAG, or human help?
+- Which capabilities are required now versus later?
+- What identity should the agent use for each system?
+- What permissions are allowed, read-only, write-capable, approval-gated, or forbidden?
+- Where do credentials live, and should this skill avoid seeing secrets directly?
+- What context sources are canonical, mirrored, or derived?
+- What audit, logging, privacy, retention, or compliance requirements apply?
+- What should happen when a tool call fails or looks unsafe?
+- What integration risks should be carried into Evaluate or Deploy?
+
+If the user does not know, propose least-privilege defaults and ask for confirmation.
+
 ## Workflow
 
 1. List every capability required by the workflow.

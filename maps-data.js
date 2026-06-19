@@ -130,13 +130,19 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with required preflight decisions, project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
+        note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes scaffold, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, per-skill notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
       },
       {
         name: "/shape",
         url: "assets/maps/skills/shape/SKILL.md",
         download: true,
-        note: "Runs M1 System Shape to scope the workflow and choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
+        note: "Runs M1 System Shape with a one-question-at-a-time interview to scope the workflow and choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
+      },
+      {
+        name: "/role",
+        url: "assets/maps/skills/role/SKILL.md",
+        download: true,
+        note: "Creates organization role agents with a one-question-at-a-time interview, then decides whether each role is advisory, workflow-owned, skill-backed, loop-backed, agentic, or persona-only."
       },
       {
         name: "/scaffold",

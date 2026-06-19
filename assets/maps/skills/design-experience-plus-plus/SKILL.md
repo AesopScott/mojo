@@ -34,6 +34,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing the enhanced website or product-surface design, ask for any missing answers. Do not choose components, page hierarchy, or visual direction without a confirmed surface goal.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- What surface are we designing: marketing site, product website, SaaS app, dashboard, chat/copilot, admin tool, form flow, or hybrid?
+- What is the primary user goal and primary action?
+- What must be visible in the first viewport or first screen?
+- What brand, tone, content hierarchy, trust evidence, and conversion or completion goal matter?
+- What component system, frontend stack, or implementation constraints should be respected?
+- What service-flow steps, backstage agent work, evidence, and failure points must the UI reveal?
+- What responsive breakpoints or devices matter most?
+- What accessibility and keyboard/focus behavior must be specified?
+- What content, images, assets, or real product state should appear?
+- What should Build receive as the concrete UI handoff?
+
+If the user cannot answer, propose a surface classification and component pattern shortlist, then ask for approval before writing the artifact.
+
 ## Workflow
 
 1. Run the base `/design-experience` workflow first.

@@ -39,6 +39,27 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing `agents/{agent-handle}/agent-design.md`, ask for any missing answers after the Research and Recommend pass. Do not silently choose workflow, memory, tools, approvals, or proof requirements.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Ask:
+
+- Which agent brief or role contract is the source of truth?
+- What design decision is already fixed, if any?
+- Which recommendations from research should be accepted, rejected, or sharpened?
+- What workflow states, handoffs, and stopping conditions must be modeled?
+- What memory, context, notes, sources, and RAG boundaries should this design respect?
+- What tools, integrations, permissions, and credentials are allowed or forbidden?
+- What human approvals, escalation paths, and refusal behavior are required?
+- What failure modes worry the user most?
+- What must be proven before Build starts?
+- What open decisions should remain explicit instead of guessed?
+
+If the user cannot answer, propose a recommendation and ask them to accept, revise, or mark it unknown.
+
 ## Workflow
 
 1. Restate the agent goal and success criteria from the agent brief.

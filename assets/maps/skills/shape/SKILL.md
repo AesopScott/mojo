@@ -21,6 +21,31 @@ python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --pro
 
 If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
 
+## Required interview
+
+Before writing `system-shape.md`, ask for any missing answers. Do not decide the track from vibes or repo structure alone.
+
+Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
+
+Start with:
+
+> Are we deciding between single-agent, multi-agent, or scope-first, or do you already know the track?
+
+Then ask:
+
+- What workflow, service, product, or organization are we shaping?
+- Who are the actors, users, operators, or roles involved?
+- What outcome should the system own?
+- What are the main tasks, decisions, handoffs, and approval points?
+- What data, tools, memory, or permissions are involved?
+- Which parts could be owned by one coherent agent?
+- Which parts might need separate roles because of distinct expertise, tools, permissions, timing, memory, review, or accountability?
+- What is still unknown enough that the right answer may be Scope First?
+- What failure modes, compliance issues, or escalation needs change the system shape?
+- How confident should the track decision be before moving on?
+
+If any of those answers are missing or ambiguous, ask before creating or updating `system-shape.md`.
+
 ## Workflow
 
 1. Read the M0 Project Foundation artifact and source inventory.
