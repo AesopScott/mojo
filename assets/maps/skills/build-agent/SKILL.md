@@ -6,7 +6,7 @@ description: Implement the MAPS Build phase for an agent or multi-agent system. 
 # Build Agent
 ## Versioning
 
-Current version: 0.6.0.
+Current version: 0.7.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.7.0 - Added mandatory Research and Recommendation before every Autonomy Contract Interview question, with tight scope control so Build recommends a draft answer from source artifacts before asking Scott to approve or revise it.
 - 2026-06-19 - v0.6.0 - Rebuilt the Autonomy Contract Gate as an input-led, one-question-at-a-time contract interview with required R&R capture before any autonomy build, scaffolded authority, or activation proof.
 - 2026-06-19 - v0.5.0 - Added the Autonomy Contract Gate: Build must ask for and enforce an explicit autonomy contract before implementing autonomous behavior, recurring triggers, scheduled checks, independent goal pursuit, or action outside a visible user turn.
 - 2026-06-19 - v0.4.0 - Added 10/10 role-to-agent proof requirements: runnable command evidence, fail-closed contract tests, stricter-profile conflict tests, profile-denied behavior tests, audit/state/log artifacts, runtime-adapter proof timing, and Equip/Evaluate handoffs.
@@ -69,6 +70,15 @@ If autonomy is requested or implied and no approved autonomy contract exists, st
 
 Build may create or reset `agents/{agent-handle}/autonomy-contract.md` as a worksheet. The worksheet is not approval and must say `Contract status: input-interview-in-progress` or `Contract status: draft-not-approved`, plus `Activation status: not active`, until Scott approves activation.
 
+Before asking any Autonomy Contract Interview question, Build must do a short Research and Recommendation pass for that single field:
+
+- Read the source role contract, agent profile, agent design, agent backlog, and current autonomy contract.
+- Identify the smallest relevant scope from Scott's current request.
+- Recommend one draft answer for the next missing contract field.
+- Ask Scott to approve or revise that one recommended answer.
+
+Do not ask Scott to scope the field from scratch when the source artifacts can support a recommendation. Do not enumerate unrelated roles, teams, repos, channels, or owners unless Scott named them for the current build or the source artifacts make them necessary for that exact field. If the build is promotion of one role, keep the recommendation centered on that role and Scott as final approver; mention other roles only as out-of-scope unless Scott explicitly assigns them.
+
 Before the first contract question, briefly name the contract map so Scott can see the surface being built. Then ask exactly one question. Do not present a multi-question form, checklist, or table for Scott to fill out.
 
 An autonomy contract must answer these fields in this order unless Scott explicitly redirects the sequence:
@@ -94,6 +104,16 @@ An autonomy contract must answer these fields in this order unless Scott explici
 R&R means roles and responsibilities. The R&R answer must name which responsibilities belong to the built agent, Scott, and any relevant coordinating roles, and which responsibilities are explicitly outside the automation. If R&R is missing, stop before implementation and ask:
 
 `Who owns what in this automation: what should the agent own, and what must remain with Scott or another named role?`
+
+Before asking the R&R question, Build must first recommend the R&R split from the source artifacts. For a single-role promotion, the default recommendation should be limited to:
+
+- what the promoted agent owns
+- what Scott owns as final approver
+- what remains out of scope unless Scott later assigns it
+
+Then ask one approval question, such as:
+
+`Approve this R&R split as the contract input?`
 
 If autonomy is requested or implied and the autonomy contract is missing, incomplete, stale, inferred, or weaker than the requested behavior, stop before implementation and ask the next unanswered contract question. Route the gap back to `/define-agent`, `/design-agent`, `/equip-agent`, or `/evaluate-agent` only after the missing contract field is identified. Build may create stubs, policy checks, and tests that prove autonomous behavior is blocked until the autonomy contract is approved.
 
