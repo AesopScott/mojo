@@ -1760,23 +1760,45 @@ a.maps-role-name:hover {
 .maps-role-person {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   max-width: 100%;
   vertical-align: middle;
 }
 
-.maps-role-person span {
+.maps-role-copy {
+  display: grid;
+  align-content: center;
+  gap: 2px;
   min-width: 0;
+  line-height: 1.12;
+  text-align: left;
+}
+
+.maps-role-person-name,
+.maps-role-person-title {
+  display: block;
+}
+
+.maps-role-person-name {
+  font-weight: 900;
+}
+
+.maps-role-person-title {
+  font-size: 12px;
+  font-weight: 760;
+  opacity: 0.82;
 }
 
 .maps-role-avatar {
-  flex: 0 0 32px;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(35, 61, 77, 0.16);
-  border-radius: 50%;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  padding: 2px;
+  border: 1px solid rgba(35, 61, 77, 0.28);
+  border-radius: 8px;
   background: #e6fbff;
   object-fit: cover;
+  box-shadow: 0 1px 0 rgba(12, 23, 33, 0.08);
 }
 
 .maps-org-branches {
@@ -1827,7 +1849,8 @@ a.maps-role-name:hover {
 }
 
 .maps-org-function li {
-  padding: 9px 10px;
+  min-height: 56px;
+  padding: 4px 8px;
   border: 1px solid rgba(217, 224, 220, 0.82);
   border-radius: 7px;
   background: #fbfbf8;
