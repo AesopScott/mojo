@@ -134,7 +134,7 @@
         <section class="maps-section">
           <div class="maps-section-header">
             <h2>Channel files</h2>
-            <p>Roles that commonly communicate should share a Markdown channel file. Training roles can also have an assigned Obsidian source file that drives site updates when confirmed training changes appear.</p>
+            <p>Roles that commonly communicate should share a Markdown channel file. Training roles can also have assigned Obsidian sources and snapshot signals that drive site updates when confirmed training changes appear.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
@@ -143,6 +143,9 @@
                 <tr><td>Heartbeat channel</td><td>Organization-wide liveness, cadence, blocker, and cross-role awareness for every active role.</td><td><code>channels/heartbeat.md</code></td></tr>
                 <tr><td>Function channel</td><td>Ongoing shared context for a recurring communication function across roles.</td><td><code>channels/pipeline.md</code></td></tr>
                 <tr><td>Training source</td><td>Editable Obsidian handoff stream that Liz checks for confirmed MAPS training changes and reflects into the Mojo <code>/maps</code> site.</td><td><code>G:\My Drive\Mindshare\mapstraining.md</code></td></tr>
+                <tr><td>Role directory</td><td>Durable Obsidian role artifacts that prove a role was created, activated, renamed, suspended, or retired outside the channel conversation.</td><td><code>G:\My Drive\Mindshare\role\...</code></td></tr>
+                <tr><td>Run notes</td><td>MAPS run records that show completed role work, skill changes, helper output, and training-impact decisions.</td><td><code>G:\My Drive\Mindshare\maps-runs\...</code></td></tr>
+                <tr><td>Role index</td><td>Organization-wide roster used to confirm whether a role exists beyond a temporary handoff message.</td><td><code>G:\My Drive\Mindshare\roles.md</code></td></tr>
                 <tr><td>Handoff packet</td><td>Bounded work item spawned from a channel when status, acceptance, verification, and closeout must be tracked.</td><td><code>org-chart-development-2026-06-19.md</code></td></tr>
                 <tr><td>Channel template</td><td>Reusable structure for creating new function communication files.</td><td><code>role-channel-template.md</code></td></tr>
                 <tr><td>Packet template</td><td>Reusable structure for creating a scoped role handoff packet.</td><td><code>role-handoff-template.md</code></td></tr>
@@ -161,7 +164,8 @@
               <thead><tr><th>Item</th><th>Rule</th></tr></thead>
               <tbody>
                 <tr><td>Read</td><td>Read the shared Heartbeat channel, the role's relevant function channels, assigned Obsidian source files, and linked active packets.</td></tr>
-                <tr><td>Detect</td><td>Look for new requests, assigned work, blockers, review needs, decisions, escalations, closeout tasks, and confirmed Obsidian training changes.</td></tr>
+                <tr><td>Snapshot</td><td>For roles with Obsidian awareness, compare content-file changes before overwriting the baseline. Exclude channel folders from snapshot concern; read assigned channels separately as handoff inputs.</td></tr>
+                <tr><td>Detect</td><td>Look for new requests, assigned work, blockers, review needs, decisions, escalations, closeout tasks, confirmed Obsidian training changes, new role folders, new <code>maps-runs</code> records, and <code>roles.md</code> roster updates.</td></tr>
                 <tr><td>Respond</td><td>If work exists, acknowledge it, act inside authority, ask one blocker question, update the relevant training surface, or route it to the correct function channel.</td></tr>
                 <tr><td>Record</td><td>Append when work is found, status changes, evidence changes, a blocker appears, or a closeout happens. Routine no-work checks do not need noisy log entries.</td></tr>
                 <tr><td>Show checked locations</td><td>When the heartbeat surfaces work, action, a blocker, an approval question, or an Obsidian training change, name every checked handoff and Obsidian location so the operator can see what triggered the response.</td></tr>
@@ -181,6 +185,7 @@
             <li><strong>Read heartbeat:</strong> The acting role reads <code>channels/heartbeat.md</code> for shared liveness, cadence, blocker, and cross-role awareness.</li>
             <li><strong>Read function channel:</strong> The acting role reads its relevant function channel before responding to shared work.</li>
             <li><strong>Read training source:</strong> If the role owns training updates, it reads the assigned Obsidian source, such as <code>G:\My Drive\Mindshare\mapstraining.md</code>, and follows confirmed entries into the affected notes.</li>
+            <li><strong>Check role evidence:</strong> For role creation or activation, check the durable role folder, the related <code>maps-runs</code> note, and <code>roles.md</code> before treating a channel message as complete evidence.</li>
             <li><strong>Append message:</strong> The sending role appends context, request, evidence, authority boundary, and expected response.</li>
             <li><strong>Create packet when needed:</strong> If the work is bounded, risky, multi-step, or reviewable, create a handoff packet and link it from the channel.</li>
             <li><strong>Acknowledge:</strong> The receiving role appends acceptance, one clarifying question, redirect, escalation, or blocker.</li>
@@ -188,6 +193,27 @@
             <li><strong>Record:</strong> The role appends changed artifacts, decisions, evidence, verification, and memory updates to the channel or packet.</li>
             <li><strong>Close or continue:</strong> Close the packet when the receiving condition is met, or continue through another channel or packet.</li>
           </ol>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>Obsidian role signals</h2>
+            <p>Channels tell roles what happened. Role folders, run notes, and the role index prove whether the change became durable operating structure.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Role folder</h3>
+              <p>Check <code>G:\My Drive\Mindshare\role\...</code> for the role contract, memory, workflow, state, and heartbeat automation notes. New files here are strong evidence that a role was created or updated.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>MAPS run note</h3>
+              <p>Check <code>G:\My Drive\Mindshare\maps-runs\...</code> for the skill run that produced or changed the role. These notes explain source request, output artifacts, memory writes, and completion state.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Role index</h3>
+              <p>Check <code>G:\My Drive\Mindshare\roles.md</code> to confirm the role appears in the organization roster with its title, status, scope, and links. Missing index entries should be treated as follow-up work.</p>
+            </article>
+          </div>
         </section>
 
         <section class="maps-section">
@@ -294,7 +320,7 @@
         <section class="maps-section">
           <div class="maps-section-header">
             <h2>Handoffs</h2>
-            <p>Each handoff belongs to the shared Heartbeat channel, a function channel, or an assigned Obsidian training source. Heartbeat carries liveness and cross-role awareness; Pipeline and Recruiting carry recurring work; <code>mapstraining.md</code> carries confirmed MAPS training changes for Liz to reflect into <code>/maps</code>.</p>
+            <p>Each handoff belongs to the shared Heartbeat channel, a function channel, or an assigned Obsidian training source. Heartbeat carries liveness and cross-role awareness; function channels carry recurring work; <code>mapstraining.md</code> carries confirmed MAPS training changes for Liz to reflect into <code>/maps</code>. Channels are not the snapshot baseline; durable role folders, <code>maps-runs</code>, and <code>roles.md</code> are snapshot signals for role changes.</p>
           </div>
           <div class="maps-table-wrap">
             <table class="maps-taxonomy-table">
