@@ -142,7 +142,7 @@ window.MAPS_SITE = {
         name: "/role",
         url: "assets/maps/skills/role/SKILL.md",
         download: true,
-        note: "Creates organization role agents with three minimum inputs, then uses mandatory external Research and Recommend to propose advisory behavior, workflow ownership, authority taxonomy, special authority declarations, autonomy, memory, tools, boundaries, proof, and the implementation form."
+        note: "Creates organization role agents with three minimum inputs, then uses mandatory external Research and Recommend to propose engagement type, advisory behavior, workflow ownership, authority taxonomy, special authority declarations, autonomy, memory, tools, boundaries, proof, and the implementation form."
       },
       {
         name: "/scaffold",
