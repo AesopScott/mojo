@@ -1267,8 +1267,25 @@ body.maps-page {
 }
 
 .maps-reference-phase > header h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
   margin: 0;
   font-size: clamp(26px, 3vw, 38px);
+}
+
+.maps-phase-nomenclature {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid rgba(48, 80, 108, 0.22);
+  border-radius: 6px;
+  color: var(--maps-steel);
+  background: rgba(244, 248, 246, 0.92);
+  font-size: 0.72em;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .maps-reference-phase > header p:not(.maps-layer-kicker) {

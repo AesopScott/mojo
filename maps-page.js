@@ -348,10 +348,13 @@
       const section = document.createElement("article");
       section.className = "maps-reference-phase";
       section.id = `phase-${phase.number}`;
+      const nomenclature = phase.nomenclature
+        ? `<span class="maps-phase-nomenclature">${phase.nomenclature}</span>`
+        : "";
       section.innerHTML = `
         <header>
           <p class="maps-layer-kicker">${phase.label}</p>
-          <h2>${phase.title}</h2>
+          <h2>${phase.title}${nomenclature}</h2>
           <p>${phase.output}</p>
         </header>
         <div class="maps-reference-columns">

@@ -4,6 +4,7 @@ window.MAPS_SITE = {
       number: "m0",
       file: "/maps/multi-agent-pipeline/M0/",
       label: "M0",
+      nomenclature: "M0",
       title: "Project Foundation",
       output: "Intent, notes scaffold, evidence, sources, and RAG readiness",
       status: "available"
@@ -12,6 +13,7 @@ window.MAPS_SITE = {
       number: "m1",
       file: "/maps/multi-agent-pipeline/M1/",
       label: "M1",
+      nomenclature: "M1",
       title: "System Shape",
       output: "S/M/U track decision before roster or APS entry",
       status: "available"
@@ -20,6 +22,7 @@ window.MAPS_SITE = {
       number: "0",
       file: "/maps/agentic-pipeline/A0/",
       label: "Phase 0",
+      nomenclature: "A0",
       title: "Phase Alignment",
       output: "Scaffold and structure",
       status: "available"
@@ -28,6 +31,7 @@ window.MAPS_SITE = {
       number: "1",
       file: "/maps/agentic-pipeline/A1/",
       label: "Phase 1",
+      nomenclature: "A1",
       title: "Define",
       output: "Agent brief",
       status: "available"
@@ -36,6 +40,7 @@ window.MAPS_SITE = {
       number: "2",
       file: "/maps/agentic-pipeline/A2/",
       label: "Phase 2",
+      nomenclature: "A2",
       title: "Design",
       output: "Agent design",
       status: "available"
@@ -44,6 +49,7 @@ window.MAPS_SITE = {
       number: "2a",
       file: "/maps/multi-agent-pipeline/M8/",
       label: "M8 / Optional A2",
+      nomenclature: "M8 / A2",
       title: "Experience Design",
       output: "After M7 orchestration, or before A3 build when there is no M layer",
       status: "available"
@@ -52,6 +58,7 @@ window.MAPS_SITE = {
       number: "3",
       file: "/maps/agentic-pipeline/A3/",
       label: "Phase 3",
+      nomenclature: "A3",
       title: "Build",
       output: "Working agent",
       status: "available"
@@ -60,6 +67,7 @@ window.MAPS_SITE = {
       number: "4",
       file: "/maps/agentic-pipeline/A4/",
       label: "Phase 4",
+      nomenclature: "A4",
       title: "Equip",
       output: "Capability map",
       status: "available"
@@ -68,6 +76,7 @@ window.MAPS_SITE = {
       number: "5",
       file: "/maps/agentic-pipeline/A5/",
       label: "Phase 5",
+      nomenclature: "A5",
       title: "Evaluate",
       output: "Eval suite",
       status: "available"
@@ -76,6 +85,7 @@ window.MAPS_SITE = {
       number: "6",
       file: "/maps/agentic-pipeline/A6/",
       label: "Phase 6",
+      nomenclature: "A6",
       title: "Deploy",
       output: "Release plan",
       status: "available"
@@ -84,6 +94,7 @@ window.MAPS_SITE = {
       number: "7",
       file: "/maps/agentic-pipeline/A7/",
       label: "Phase 7",
+      nomenclature: "A7",
       title: "Observe",
       output: "Observation plan",
       status: "available"
@@ -92,6 +103,7 @@ window.MAPS_SITE = {
       number: "8",
       file: "/maps/agentic-pipeline/A8/",
       label: "Phase 8",
+      nomenclature: "A8",
       title: "Improve",
       output: "Improvement backlog",
       status: "available"
