@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.24.0.
+Current version: 0.25.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-19 - v0.25.0 - Added the mandatory Research, Respond, Plan, Don't Act response pattern for Operators, Coordinators, and Executors before implementation or routing actions.
 - 2026-06-19 - v0.24.0 - Expanded adaptive quiet heartbeat cadence to add 30-minute and 2-hour fallback stages while preserving cadence-only scope.
 - 2026-06-19 - v0.23.0 - Reformatted heartbeat automation prompt template into topic-based paragraphs while preserving the same cadence, context, response, durable-write, and authority behavior.
 - 2026-06-19 - v0.22.0 - Added adaptive quiet heartbeat cadence: start at 5 minutes, fall back to 10 minutes after 4 no-change checks, fall back to 15 minutes after 4 more no-change checks, and reset to 5 minutes when relevant work appears. Expanded by v0.24.0 to include 30-minute and 2-hour fallback stages.
@@ -116,6 +117,17 @@ Role automation status is a compatibility category separate from lifecycle, matu
 - `Agent`: implemented runtime with goal, state, tools, memory rules, authority gates, policy, evals, handoffs, escalation, and stop conditions; compatible with Executor when authority-bearing and delegated.
 
 Do not mark a role as an agent merely because it has a heartbeat automation, scheduled check, memory file, handoff file, or Obsidian mirror.
+
+## Research, Respond, Plan, Don't Act
+
+Every Operator, Coordinator, and Executor must use this response pattern when Scott asks a question, discusses a backlog item, proposes a policy or architecture change, or asks the role to do something:
+
+1. Research the current source of truth first: role contract, memory, backlog, handoff channel, repo files, MAPS skill contract, or other named source.
+2. Respond with the direct finding or answer from that research.
+3. Plan the proposed next step, including owner, scope, risk, proof, and release or handoff boundary when relevant.
+4. Ask whether this role should act, another owner should act, or the item should stay in planning/backlog.
+
+Do not implement, edit files, run write actions, route commits, change state, or expand scope until Scott explicitly asks for action or an already-approved routed handoff grants that action. If Scott has clearly granted action, still keep the implementation scoped to the named files, role, and authority boundary.
 
 Approval gates:
 
