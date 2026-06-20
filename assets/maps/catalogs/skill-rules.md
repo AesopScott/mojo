@@ -23,6 +23,9 @@ The website may explain these rules, but this file is the source-level contract 
 | First-person role voice | Role agents must speak in first person as the role, with a defined voice, point of view, activation marker, and prohibited narrator language. They should not respond as Claude, Codex, ChatGPT, or an outside narrator unless naming a system boundary. | `/role`; `skills/role/templates/role-agent.md`; generated `roles/<role-slug>/role-agent.md` artifacts. | Validator checks the `/role` skill for first-person role voice language. |
 | Role lifecycle | Roles and agents use the lifecycle states unauthorized, authorized role, authorized agent, suspended, and retired. Lifecycle does not replace maturity or authority. | `/role`; role templates; org-chart role maturity page. | Manual review. |
 | Agentic Systems Program Manager role | M0 may create or reference an Agentic Systems Program Manager role for MAPS phase-boundary, scope, memory/RAG, and next-skill guidance. M1 may use ASPM guidance as a reference only after M0 defines or references the role. Spell out the role name first; use ASPM sparingly after that. | `/foundation`, M0 page, `templates/project-foundation.md`, `/role`, `/shape`, and project role artifacts. | Validator checks M1 for ASPM guidance language. |
+| Multi-agent phase bridge | When M1 selects Multi-Agent / MAPS, do not jump directly from shape to build. Run M2-M7 in order unless an equivalent artifact already exists: roster, contracts, coordination, buildout, capabilities, and orchestration. | `/multi-agent-roster`, `/multi-agent-contracts`, `/multi-agent-coordination`, `/multi-agent-buildout`, `/multi-agent-capabilities`, `/multi-agent-orchestration`, `templates/multi-agent-*.md`, and `catalogs/multi-agent-research-sources.md`. | Validator checks base skill contracts; manual review checks phase-specific output quality. |
+| Child APS routing | M5 may route individual participants through APS A1-A8, but M5 itself is a system buildout plan, not permission to build every candidate agent. | `/multi-agent-buildout`, `/define-agent`, `/design-agent`, `/build-agent`, `/equip-agent`, `/evaluate-agent`, `/deploy-agent`, `/observe-agent`, `/improve-agent`. | Manual review plus future buildout evaluator. |
+| Agent-to-agent versus agent-to-tool boundary | M6 and M7 must separate agent-to-agent communication from MCP/tool/resource capability access so orchestration does not hide permission or protocol risk. | `/multi-agent-capabilities`, `/multi-agent-orchestration`, `catalogs/multi-agent-research-sources.md`. | Manual review plus future capability/orchestration validator. |
 
 ## Implementation Forms
 
@@ -44,6 +47,7 @@ Use these source locations before changing website prose:
 | Installed global capabilities | `catalogs/global-installs.md` |
 | Skill operating rules | `catalogs/skill-rules.md` |
 | Skill list and phase mapping | `catalogs/skills.md` |
+| Multi-agent research references | `catalogs/multi-agent-research-sources.md` |
 | Repo references | `catalogs/repos.md` |
 | Tools and service references | `catalogs/tools.md` |
 | Project foundation contract | `templates/project-foundation.md` and `skills/foundation/templates/project-foundation.md` |

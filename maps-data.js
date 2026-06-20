@@ -19,6 +19,96 @@ window.MAPS_SITE = {
       status: "available"
     },
     {
+      number: "m2",
+      file: "/maps/multi-agent-pipeline/M2/",
+      label: "M2",
+      nomenclature: "M2",
+      title: "Roster",
+      output: "Participants, roles, owners, authority, memory scope, and proof needs",
+      status: "available"
+    },
+    {
+      number: "m3",
+      file: "/maps/multi-agent-pipeline/M3/",
+      label: "M3",
+      nomenclature: "M3",
+      title: "Contracts",
+      output: "Participant interfaces, handoff payloads, controls, and acceptance evidence",
+      status: "available"
+    },
+    {
+      number: "m4",
+      file: "/maps/multi-agent-pipeline/M4/",
+      label: "M4",
+      nomenclature: "M4",
+      title: "Coordination",
+      output: "Workflow lanes, routes, approvals, retries, and exception paths",
+      status: "available"
+    },
+    {
+      number: "m5",
+      file: "/maps/multi-agent-pipeline/M5/",
+      label: "M5",
+      nomenclature: "M5",
+      title: "Agent Buildout",
+      output: "Child APS sequence, build order, stubs, tests, and no-build decisions",
+      status: "available"
+    },
+    {
+      number: "m6",
+      file: "/maps/multi-agent-pipeline/M6/",
+      label: "M6",
+      nomenclature: "M6",
+      title: "Capabilities",
+      output: "Shared tools, data, memory, credentials, permissions, limits, and audit map",
+      status: "available"
+    },
+    {
+      number: "m7",
+      file: "/maps/multi-agent-pipeline/M7/",
+      label: "M7",
+      nomenclature: "M7",
+      title: "Orchestration",
+      output: "Runtime topology, routing, state, observability, override, and M8 handoff",
+      status: "available"
+    },
+    {
+      number: "m8",
+      file: "/maps/multi-agent-pipeline/M8/",
+      label: "M8",
+      nomenclature: "M8",
+      title: "Experience Design",
+      output: "User journeys, surfaces, interaction states, accessibility, and trust controls",
+      status: "available"
+    },
+    {
+      number: "m9",
+      file: "/maps/multi-agent-pipeline/M9/",
+      label: "M9",
+      nomenclature: "M9",
+      title: "Evaluate",
+      output: "System scenarios, release gates, evidence, defects, and readiness proof",
+      status: "available"
+    },
+    {
+      number: "m10",
+      file: "/maps/multi-agent-pipeline/M10/",
+      label: "M10",
+      nomenclature: "M10",
+      title: "Deploy/Observe",
+      output: "Runtime release plan, smoke checks, traces, alerts, incidents, and rollback",
+      status: "available"
+    },
+    {
+      number: "m11",
+      file: "/maps/multi-agent-pipeline/M11/",
+      label: "M11",
+      nomenclature: "M11",
+      title: "Improve",
+      output: "Evidence classification, routed improvements, proof, and next iteration entry",
+      status: "available"
+    },
+    {
       number: "0",
       file: "/maps/agentic-pipeline/A0/",
       label: "Phase 0",
@@ -47,11 +137,11 @@ window.MAPS_SITE = {
     },
     {
       number: "2a",
-      file: "/maps/multi-agent-pipeline/M8/",
+      file: "/maps/agentic-pipeline/A2-experience-design/",
       label: "M8 / Optional A2",
-      nomenclature: "M8 / A2",
+      nomenclature: "A2 Experience",
       title: "Experience Design",
-      output: "After M7 orchestration, or before A3 build when there is no M layer",
+      output: "Optional single-agent experience design before A3 build when there is no M layer",
       status: "available"
     },
     {
@@ -151,6 +241,42 @@ window.MAPS_SITE = {
         note: "Runs M1 System Shape with the initial S/M/U question, then uses Research and Recommend plus M0-defined ASPM guidance when available to choose Unknown / Scope First, Single-Agent / APS, or Multi-Agent / MAPS."
       },
       {
+        name: "/multi-agent-roster",
+        url: "/assets/maps/skills/multi-agent-roster/SKILL.md",
+        download: true,
+        note: "Runs M2 Roster to decide which humans, roles, Role+ operators, candidate agents, tools, services, and data sources belong in the multi-agent system before contracts."
+      },
+      {
+        name: "/multi-agent-contracts",
+        url: "/assets/maps/skills/multi-agent-contracts/SKILL.md",
+        download: true,
+        note: "Runs M3 Contracts to define participant inputs, outputs, authority, memory, tool/data access, handoff payloads, human approvals, escalation, stop conditions, and acceptance evidence."
+      },
+      {
+        name: "/multi-agent-coordination",
+        url: "/assets/maps/skills/multi-agent-coordination/SKILL.md",
+        download: true,
+        note: "Runs M4 Coordination to define workflow lanes, routing, supervisor or peer-handoff patterns, messages, approvals, retries, exceptions, and buildout readiness."
+      },
+      {
+        name: "/multi-agent-buildout",
+        url: "/assets/maps/skills/multi-agent-buildout/SKILL.md",
+        download: true,
+        note: "Runs M5 Agent Buildout to decide child APS sequence, build order, runtime-adapter dependencies, stubs, test proof, and no-build decisions."
+      },
+      {
+        name: "/multi-agent-capabilities",
+        url: "/assets/maps/skills/multi-agent-capabilities/SKILL.md",
+        download: true,
+        note: "Runs M6 Capabilities to map shared tools, MCP servers, APIs, data sources, memory stores, credentials, permissions, limits, fallbacks, audit, and revocation."
+      },
+      {
+        name: "/multi-agent-orchestration",
+        url: "/assets/maps/skills/multi-agent-orchestration/SKILL.md",
+        download: true,
+        note: "Runs M7 Orchestration to define runtime topology, routing, handoff protocol, state, queues, schedules, observability, human override, rollback, and M8 handoff."
+      },
+      {
         name: "/role",
         url: "/assets/maps/skills/role/SKILL.md",
         download: true,
@@ -191,6 +317,24 @@ window.MAPS_SITE = {
         url: "/assets/maps/skills/design-experience-plus-plus/SKILL.md",
         download: true,
         note: "Wraps M8 Experience Design with website/product UI references, shadcn/ui composition, Radix accessibility primitives, NN/g service-design reasoning, responsive layout, and frontend handoffs."
+      },
+      {
+        name: "/multi-agent-evaluate",
+        url: "/assets/maps/skills/multi-agent-evaluate/SKILL.md",
+        download: true,
+        note: "Runs M9 System Evaluate to prove system-level behavior across contracts, coordination, orchestration, capabilities, user journeys, approvals, guardrails, observability, and release gates."
+      },
+      {
+        name: "/multi-agent-deploy-observe",
+        url: "/assets/maps/skills/multi-agent-deploy-observe/SKILL.md",
+        download: true,
+        note: "Runs M10 Deploy/Observe to define runtime packaging, release approval, configuration, rollout, smoke checks, observability, incident triggers, rollback, and production review loops."
+      },
+      {
+        name: "/multi-agent-improve",
+        url: "/assets/maps/skills/multi-agent-improve/SKILL.md",
+        download: true,
+        note: "Runs M11 Improve to classify evidence, incidents, traces, eval failures, user feedback, and operator findings into routed improvements across M2-M10 and child APS phases."
       },
       {
         name: "/build-agent",
@@ -385,6 +529,36 @@ window.MAPS_SITE = {
         name: "OpenAI Agent Orchestration",
         url: "https://openai.github.io/openai-agents-python/multi_agent/",
         note: "M1 agent orchestration reference for manager, handoff, and code-led versus LLM-led flow patterns."
+      },
+      {
+        name: "OpenAI Agents Handoffs",
+        url: "https://openai.github.io/openai-agents-python/handoffs/",
+        note: "M2-M7 handoff reference for transfers, input filters, handoff descriptions, callbacks, and multi-agent control boundaries."
+      },
+      {
+        name: "OpenAI Agents Guardrails",
+        url: "https://openai.github.io/openai-agents-python/guardrails/",
+        note: "M3-M9 guardrail reference for input/output checks, tripwires, refusal paths, and contract evidence."
+      },
+      {
+        name: "A2A Protocol",
+        url: "https://a2aproject.github.io/A2A/latest/",
+        note: "M3-M7 agent-to-agent protocol reference for agent cards, tasks, messages, artifacts, state transitions, and external interoperability."
+      },
+      {
+        name: "MCP Specification",
+        url: "https://modelcontextprotocol.io/specification/2025-06-18",
+        note: "M6 shared-capability reference for tool, resource, prompt, server, client, security, and permission boundaries."
+      },
+      {
+        name: "NIST AI RMF",
+        url: "https://airc.nist.gov/airmf-resources/airmf/5-sec-core/",
+        note: "M3-M11 governance reference for map, measure, manage, monitor, risk treatment, accountability, and evidence-backed controls."
+      },
+      {
+        name: "WCAG 2.2",
+        url: "https://www.w3.org/TR/WCAG22/",
+        note: "M8-M9 accessibility reference for user-facing agent product surfaces, controls, forms, status messages, focus, and readable states."
       },
       {
         name: "OpenAI Swarm",
@@ -696,6 +870,58 @@ window.MAPS_SITE = {
         note: "Records scaffold and phase changes."
       },
       {
+        name: "Markdown notes",
+        note: "Stores MAPS project artifacts, role notes, run notes, decisions, and human-readable evidence."
+      },
+      {
+        name: "Shared MAPS memory helper",
+        note: "Writes per-skill notes, project run logs, RAG manifests, and configured memory mirrors when a MAPS phase creates durable knowledge."
+      },
+      {
+        name: "Per-skill run notes",
+        note: "Separate notes for each MAPS phase run so project history remains reviewable and RAG-ready."
+      },
+      {
+        name: "Source inventory",
+        note: "Tracks project source files, external references, evidence, and assumptions that phase decisions depend on."
+      },
+      {
+        name: "RAG readiness",
+        note: "Checks whether durable notes, source inventories, and mirrors are structured for later retrieval."
+      },
+      {
+        name: "Service blueprinting",
+        note: "Maps frontstage user actions, backstage system work, handoffs, evidence, and support processes."
+      },
+      {
+        name: "EventStorming Lite",
+        note: "Identifies events, commands, actors, policies, pain points, and hidden handoffs before system shape decisions."
+      },
+      {
+        name: "BPMN Lite",
+        note: "Uses simple process modeling concepts for lanes, tasks, gateways, messages, approvals, and exception paths."
+      },
+      {
+        name: "Role-pressure checks",
+        note: "Tests whether a candidate participant deserves its own role, Role+, agent, tool boundary, or explicit exclusion."
+      },
+      {
+        name: "Agent handoff mapping",
+        note: "Maps who transfers work to whom, what payload is passed, what state changes, and who owns recovery."
+      },
+      {
+        name: "System evaluation matrix",
+        note: "Connects end-to-end scenarios to contracts, coordination paths, orchestration state, capabilities, user surfaces, evidence, and release gates."
+      },
+      {
+        name: "Release gate checklist",
+        note: "Defines pass/fail criteria, approval owners, hold conditions, rollback triggers, and production-readiness evidence."
+      },
+      {
+        name: "Incident review loop",
+        note: "Turns production signals, traces, user feedback, and operator findings into routed improvements without silently expanding authority."
+      },
+      {
         name: "MAPS skill contract validator",
         url: "/assets/maps/scripts/validate_maps_skills.py",
         note: "Validates that MAPS skills preserve versioning, changelog entries, output contracts, completion reporting, one-question interviews, and memory-helper wiring before publish."
@@ -741,6 +967,14 @@ window.MAPS_SITE = {
       {
         name: "Agent interaction surface references",
         note: "Provides patterns for chat, copilot, generative UI, tool call display, streaming, approvals, review flows, handoff, and user control around agent activity."
+      },
+      {
+        name: "Responsive website design",
+        note: "Defines mobile, tablet, desktop, text-fitting, density, navigation, and first-viewport behavior for website and product surfaces."
+      },
+      {
+        name: "Component pattern selection",
+        note: "Chooses components that match user actions, state, evidence needs, review flows, approvals, and recovery paths."
       },
       {
         name: "Web and repository research",
@@ -954,6 +1188,60 @@ window.MAPS_SITE = {
         note: "Captures the M8 product experience, journeys, surfaces, IA, visual/tone standards, accessibility, states, and APS handoffs."
       },
       {
+        name: "templates/multi-agent-roster.md",
+        url: "/assets/maps/templates/multi-agent-roster.md",
+        download: true,
+        note: "Captures M2 participant roster, classification, authority, memory, ownership, and contract-readiness evidence."
+      },
+      {
+        name: "templates/multi-agent-contracts.md",
+        url: "/assets/maps/templates/multi-agent-contracts.md",
+        download: true,
+        note: "Captures M3 participant contracts, input/output shapes, handoffs, authority limits, escalation, retries, and acceptance evidence."
+      },
+      {
+        name: "templates/multi-agent-coordination.md",
+        url: "/assets/maps/templates/multi-agent-coordination.md",
+        download: true,
+        note: "Captures M4 coordination lanes, routes, approvals, exceptions, queues, retry paths, and buildout readiness."
+      },
+      {
+        name: "templates/multi-agent-buildout.md",
+        url: "/assets/maps/templates/multi-agent-buildout.md",
+        download: true,
+        note: "Captures M5 child APS sequence, build order, runtime-adapter decisions, stubs, test gates, and no-build decisions."
+      },
+      {
+        name: "templates/multi-agent-capabilities.md",
+        url: "/assets/maps/templates/multi-agent-capabilities.md",
+        download: true,
+        note: "Captures M6 shared tools, MCP servers, APIs, data, memory, credentials, limits, audit, fallbacks, and revocation."
+      },
+      {
+        name: "templates/multi-agent-orchestration.md",
+        url: "/assets/maps/templates/multi-agent-orchestration.md",
+        download: true,
+        note: "Captures M7 runtime topology, routing, task/message/artifact schema, state, queues, observability, override, and rollback."
+      },
+      {
+        name: "templates/multi-agent-evaluate.md",
+        url: "/assets/maps/templates/multi-agent-evaluate.md",
+        download: true,
+        note: "Captures M9 system scenarios, release gates, evaluation evidence, defects, risk routing, and deploy/observe readiness."
+      },
+      {
+        name: "templates/multi-agent-deploy-observe.md",
+        url: "/assets/maps/templates/multi-agent-deploy-observe.md",
+        download: true,
+        note: "Captures M10 runtime configuration, release plan, smoke checks, observation signals, incident triggers, rollback, and review cadence."
+      },
+      {
+        name: "templates/multi-agent-improve.md",
+        url: "/assets/maps/templates/multi-agent-improve.md",
+        download: true,
+        note: "Captures M11 evidence sources, finding classification, routed improvement backlog, decisions, proof, and next iteration entry."
+      },
+      {
         name: "templates/agent-backlog.md",
         url: "/assets/maps/templates/agent-backlog.md",
         download: true,
@@ -1039,6 +1327,66 @@ window.MAPS_SITE = {
       repos: ["AesopScott/maps", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph"],
       tools: ["BPMN Lite", "Role-pressure checks", "Service blueprinting", "Agent handoff mapping"],
       templates: ["templates/system-shape.md"]
+    },
+    "m2": {
+      skills: ["/multi-agent-roster", "/role"],
+      repos: ["AesopScott/maps", "OpenAI Agents Handoffs", "A2A Protocol", "NIST AI RMF", "Team Topologies"],
+      tools: ["Role-pressure checks", "Agent handoff mapping", "Shared MAPS memory helper", "Per-skill run notes"],
+      templates: ["templates/multi-agent-roster.md"]
+    },
+    "m3": {
+      skills: ["/multi-agent-contracts"],
+      repos: ["AesopScott/maps", "OpenAI Agents Handoffs", "OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF"],
+      tools: ["Agent handoff mapping", "BPMN Lite", "Release gate checklist", "Shared MAPS memory helper"],
+      templates: ["templates/multi-agent-contracts.md"]
+    },
+    "m4": {
+      skills: ["/multi-agent-coordination"],
+      repos: ["AesopScott/maps", "BPMN", "OpenAI Agent Orchestration", "LangGraph", "A2A Protocol"],
+      tools: ["BPMN Lite", "Agent handoff mapping", "Service blueprinting", "Shared MAPS memory helper"],
+      templates: ["templates/multi-agent-coordination.md"]
+    },
+    "m5": {
+      skills: ["/multi-agent-buildout", "/define-agent", "/design-agent", "/build-agent"],
+      repos: ["AesopScott/maps", "OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "LangGraph", "NIST AI RMF"],
+      tools: ["Backlog planning", "Test runner", "Agent runtime", "Optional code review"],
+      templates: ["templates/multi-agent-buildout.md", "templates/agent-definition-template.md", "templates/workflow-spec.md", "templates/agent-build-plan.md"]
+    },
+    "m6": {
+      skills: ["/multi-agent-capabilities", "/equip-agent"],
+      repos: ["AesopScott/maps", "MCP Specification", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
+      tools: ["MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
+      templates: ["templates/multi-agent-capabilities.md", "templates/capability-map.md"]
+    },
+    "m7": {
+      skills: ["/multi-agent-orchestration"],
+      repos: ["AesopScott/maps", "OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "A2A Protocol", "LangGraph", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python"],
+      tools: ["Agent handoff mapping", "Agent runtime", "OpenAI Agents SDK tracing", "OpenTelemetry GenAI conventions"],
+      templates: ["templates/multi-agent-orchestration.md"]
+    },
+    "m8": {
+      skills: ["/design-experience++", "/design-experience"],
+      repos: ["AesopScott/maps", "NN/g Service Blueprints", "WCAG 2.2", "shadcn-ui/ui", "radix-ui/primitives", "assistant-ui/assistant-ui"],
+      tools: ["Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "Agent interaction surface references"],
+      templates: ["templates/experience-design.md"]
+    },
+    "m9": {
+      skills: ["/multi-agent-evaluate", "/evaluate-agent", "/evaluate-agent++"],
+      repos: ["AesopScott/maps", "OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF", "WCAG 2.2", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "Arize-ai/phoenix"],
+      tools: ["System evaluation matrix", "Release gate checklist", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
+      templates: ["templates/multi-agent-evaluate.md", "templates/eval-suite.md", "templates/eval-report.md"]
+    },
+    "m10": {
+      skills: ["/multi-agent-deploy-observe", "/deploy-agent", "/observe-agent"],
+      repos: ["AesopScott/maps", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "langfuse/langfuse", "cloudflare/agents", "cloudflare/workers-sdk"],
+      tools: ["Release gate checklist", "GitHub Actions environments", "Runtime packaging", "OpenAI Agents SDK tracing", "OpenTelemetry GenAI conventions", "Incident review loop"],
+      templates: ["templates/multi-agent-deploy-observe.md", "templates/deploy-plan.md", "templates/deployment-record.md", "templates/observation-plan.md", "templates/observation-log.md"]
+    },
+    "m11": {
+      skills: ["/multi-agent-improve", "/improve-agent"],
+      repos: ["AesopScott/maps", "NIST AI RMF", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix"],
+      tools: ["Incident review loop", "Backlog planning", "System evaluation matrix", "Release gate checklist"],
+      templates: ["templates/multi-agent-improve.md", "templates/improvement-review.md", "templates/improvement-backlog.md"]
     },
     "0": {
       skills: ["/scaffold", "phase-alignment"],

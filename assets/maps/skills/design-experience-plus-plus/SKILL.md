@@ -6,7 +6,7 @@ description: Run enhanced MAPS M8 Experience Design for websites, SaaS products,
 # Design Experience++
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.1.1.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-20 - v0.1.1 - Clarified M8 handoff to system evaluation while preserving optional single-agent frontend handoffs.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use `/design-experience++` when the M8 or optional A2 output must drive an actual website, app surface, dashboard, or landing/product page rather than only a generic experience artifact.
@@ -118,7 +119,7 @@ Report:
 - Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
 - Key decisions or changes made.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
-- Next skill: `/build-agent` for frontend/product implementation, or `/evaluate-agent` for layout, accessibility, trust, and conversion checks.
+- Next skill: `/multi-agent-evaluate` for M8, `/build-agent` for optional single-agent frontend/product implementation, or `/evaluate-agent` for optional single-agent layout, accessibility, trust, and conversion checks.
 
 If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
 ## Output

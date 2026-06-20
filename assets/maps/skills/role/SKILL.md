@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.25.0.
+Current version: 0.26.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-20 - v0.26.0 - Added required role-home Codex session creation in the correct project and activation packet delivery when Scott approves a new employee for activation.
 - 2026-06-19 - v0.25.0 - Added the mandatory Research, Respond, Plan, Don't Act response pattern for Operators, Coordinators, and Executors before implementation or routing actions.
 - 2026-06-19 - v0.24.0 - Expanded adaptive quiet heartbeat cadence to add 30-minute and 2-hour fallback stages while preserving cadence-only scope.
 - 2026-06-19 - v0.23.0 - Reformatted heartbeat automation prompt template into topic-based paragraphs while preserving the same cadence, context, response, durable-write, and authority behavior.
@@ -138,6 +139,7 @@ Approval gates:
 - Updating `project-context.md`, `entity-map.md`, `AGENTS.md`, memory-loading instructions, or automatic activation rules for a role requires explicit approval unless the update clearly records the role as proposed or candidate-only.
 - Every new role gets a primary repo-local role memory file at `roles/<role-slug>/memory.md` from `memory-template.md`. Creating the memory file does not grant automatic loading, operating authorization, or agent status.
 - Every new role gets a role-specific heartbeat automation named `<role-slug>-handoff-check` from `templates/heartbeat-automation.md` when the Codex automation tool is available. Creating this heartbeat duplicates the handoff-check pattern only; it does not grant production action, external communication, spending, authority expansion, or autonomous runtime beyond the bounded heartbeat check.
+- When Scott approves activation for a new employee, create or locate the employee's Codex role-home session in the correct project before reporting activation complete. The role-home session is separate from heartbeat automation: it gives the employee a room; it does not grant autonomous runtime, production action, external communication, spending, release authority, or recurring checks.
 
 Agent build criteria:
 
@@ -210,6 +212,24 @@ Also list the role's assigned handoff files. For the current Mindshare/Mojo role
 - If the role starts a new communication function, create or recommend a new top-level channel under the relevant organization root, such as `G:\My Drive\Mindshare\channels\<function>.md` for parent/shared functions or `G:\My Drive\Mojo\channels\<function>.md` for Mojo operating-company functions.
 - If no function channel is assigned yet, assign the shared Heartbeat channel, the Communications channel, and the relevant visible queue page until the role is connected to a function channel.
 - Do not treat the 5-minute goal or Heartbeat channel membership as approval for autonomous polling, background automation, external communication, production action, spending, authority expansion, or memory writes beyond the role's approved scope.
+
+## Role Home Session
+
+When Scott approves activating a new employee, create or locate the employee's Codex role-home session in the correct project before reporting the activation complete.
+
+Use the Codex thread tools when available:
+
+- Search for thread/project capabilities first if they are not already exposed.
+- Use `list_projects` to find the project whose root matches the role's primary repository.
+- Use `create_thread` with a project target and local environment for the correct project. Do not create a projectless thread for a project role unless no matching project exists and Scott accepts that fallback.
+- Title the thread as `[Proper Role Name] - [Short Role Title]` when a title tool is available.
+- Send an activation packet as the first message or follow-up in the role-home session. The packet must tell the role to read its repo-local memory first, then its role contract, then its assigned handoff files. It must include first-person role voice, authority boundaries, assigned channels, activation evidence, and the rule that role-home activation does not grant autonomous runtime or release authority.
+- If a matching role-home session already exists, use that session and record its thread id/title instead of creating a duplicate.
+- If the thread tools are unavailable, write `roles/<role-slug>/session.md` as a blocked draft session spec and report that activation is incomplete until the role-home session is created.
+
+Record the role-home session id or title in `roles/<role-slug>/memory.md`, the Obsidian memory mirror when one exists, the organization roles directory when that directory tracks the role, and the relevant function channel or Communications channel when the activation changes organization-visible status.
+
+Creating the role-home session is activation plumbing only. It does not create a heartbeat, file watcher, background automation, agent runtime, tool access, production authority, release authority, external communication authority, spending authority, or authority expansion.
 
 ## Role Heartbeat Automation
 
@@ -440,19 +460,20 @@ If the user is still scoping, offer three role modes:
    - `Tool Agent` only for a capability/tool worker outside org-position lineage.
    - Compatibility status remains `Role` when no automation is enabled, `Role+` when bounded automation exists without autonomous runtime authority, and `Agent` only when an implemented runtime exists with goal, state, tools, memory rules, authority gates, policy, evals, handoffs, escalation, and stop conditions.
 22. When the project has a configured Obsidian or notes memory root, create or update `<project-memory-root>/<role-slug>.md` as the required mirror of `roles/<role-slug>/memory.md`, and create or update `<project-memory-root>/role/<role-slug>/role-agent.md` as the required mirror of `roles/<role-slug>/role-agent.md`. Mark mirrors as secondary unless project instructions explicitly make them primary. Verify both files exist and contain the new role name before reporting completion. If either mirror cannot be written or verified, stop with status `blocked`.
-23. Create or update the Codex heartbeat automation `<role-slug>-handoff-check` using `templates/heartbeat-automation.md` and the Role Heartbeat Automation contract above. If the automation tool is unavailable, create `roles/<role-slug>/heartbeat-automation.md` from the template as a blocked draft automation spec instead.
-24. If the role is agent-ready, create a draft agent-build handoff that names the next skill:
+23. When Scott has approved activation for the new employee, create or locate the role-home Codex session in the correct project, send the activation packet there, and record the session id/title in repo memory, Obsidian mirror, and organization roster. If the role is only a candidate or draft, create the session spec only when Scott asks for the room.
+24. Create or update the Codex heartbeat automation `<role-slug>-handoff-check` using `templates/heartbeat-automation.md` and the Role Heartbeat Automation contract above. If the automation tool is unavailable, create `roles/<role-slug>/heartbeat-automation.md` from the template as a blocked draft automation spec instead.
+25. If the role is agent-ready, create a draft agent-build handoff that names the next skill:
    - `/define-agent` when the agent brief does not exist
    - `/design-agent` when the brief exists but the design does not
    - `/build-agent` when design exists and implementation is approved
    - `/evaluate-agent` when proof is needed before activation or authority expansion
-25. If the role is not agent-ready, explicitly list the missing criteria.
-26. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-27. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
-28. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
-29. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules. Mark it draft until Scott approves the loop.
-30. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-31. Run the shared MAPS memory helper for `/role` only after the artifact exists, clearly states professional maturity and role lifecycle status, and required Obsidian or notes-root role mirrors have been written and verified. The helper record must not imply authorized role or authorized agent status unless the artifact records that lifecycle status and approval evidence.
+26. If the role is not agent-ready, explicitly list the missing criteria.
+27. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+28. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+29. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+30. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules. Mark it draft until Scott approves the loop.
+31. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+32. Run the shared MAPS memory helper for `/role` only after the artifact exists, clearly states professional maturity and role lifecycle status, and required Obsidian or notes-root role mirrors have been written and verified. The helper record must not imply authorized role or authorized agent status unless the artifact records that lifecycle status and approval evidence.
 
 ## Completion report
 
@@ -468,6 +489,7 @@ Report:
 - Role automation status: `Role`, `Role+`, or `Agent`, with a short reason.
 - Agent build readiness: role-only, agent-ready, built, or missing criteria.
 - Role memory file: `roles/<role-slug>/memory.md` created or updated from `memory-template.md`.
+- Role-home session: created or located in the correct Codex project when activation was approved, with the session id/title recorded; or blocked with `roles/<role-slug>/session.md` when thread tools were unavailable.
 - Memory template sync: whether `memory-template.md` was updated for reusable memory requirements, or explicitly checked and left unchanged because the memory change was role-specific.
 - Obsidian role update: required role memory mirror `<project-memory-root>/<role-slug>.md` and role contract mirror `<project-memory-root>/role/<role-slug>/role-agent.md` written and verified when the project has an Obsidian or notes memory root.
 - Heartbeat automation: `<role-slug>-handoff-check` created or updated from `templates/heartbeat-automation.md`, or `roles/<role-slug>/heartbeat-automation.md` created as a blocked draft if the automation tool was unavailable.
@@ -481,6 +503,7 @@ Create or update:
 - `roles/<role-slug>/role-agent.md`: completed role-agent contract.
 - `roles/<role-slug>/workflow.md`: only when the role owns a workflow.
 - `roles/<role-slug>/memory.md`: required primary role memory file created or updated from `memory-template.md`.
+- `roles/<role-slug>/session.md`: only when Scott approved activation but Codex thread tools were unavailable, as a blocked draft role-home session spec.
 - `<role-slug>-handoff-check`: required Codex heartbeat automation created from `templates/heartbeat-automation.md`, or `roles/<role-slug>/heartbeat-automation.md` as a blocked draft if the automation tool is unavailable.
 - `roles/<role-slug>/loop.md`: only when the role is loop-backed or agentic.
 - `roles/<role-slug>/SKILL.draft.md`: only when the role should become an installable skill.
@@ -511,6 +534,7 @@ The completed role artifact must include:
 - Learning and growth loop for responsibilities, capabilities, memory, and authority changes
 - Inputs, outputs, handoffs, and review rhythm
 - Handoff check goal and assigned handoff files
+- Role-home session id/title, project, activation packet summary, and boundary that the session grants no autonomous runtime or release authority
 - Heartbeat automation name, checked locations behavior, quiet no-work behavior, and authority boundary
 - Role memory file path and loading proposal
 - Memory contract for this role

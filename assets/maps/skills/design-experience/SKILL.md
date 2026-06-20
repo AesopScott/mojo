@@ -6,7 +6,7 @@ description: Run MAPS M8 Experience Design for multi-agent products, or optional
 # Design Experience
 ## Versioning
 
-Current version: 0.1.0.
+Current version: 0.1.1.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-20 - v0.1.1 - Clarified that multi-agent M8 hands to M9 System Evaluate while optional single-agent A2 hands to A3 Build or A5 Evaluate as needed.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
 Use this skill after M7 Orchestration Build exists and before M9 System Evaluate depends on product behavior. For a standalone agent with no multi-agent system, use the same workflow as optional A2 between Phase 2 Design and Phase 3 Build.
@@ -89,7 +90,7 @@ Report:
 - Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
 - Key decisions or changes made.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
-- Next skill: `/build-agent` when the experience handoff is ready, or `/evaluate-agent` if the experience needs proof criteria before build.
+- Next skill: `/multi-agent-evaluate` for M8, `/build-agent` for optional single-agent A2 when the experience handoff is ready, or `/evaluate-agent` if optional single-agent A2 needs proof criteria before build.
 
 If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
 ## Output

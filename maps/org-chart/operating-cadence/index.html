@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="How MAPS roles are triggered and how implemented role agents operate.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=source-buttons-stack-1">
+    <link rel="stylesheet" href="/maps.css?v=source-buttons-raised-1">
     <script src="/maps-data.js?v=maps-plus-org-link" defer></script>
-    <script src="/maps-page.js?v=source-buttons-stack-1" defer></script>
+    <script src="/maps-page.js?v=source-buttons-raised-1" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -70,16 +70,16 @@
                 <div class="maps-dropdown-menu" role="menu">
                   <a href="/maps/multi-agent-pipeline/M0/" role="menuitem">M0 Project Foundation</a>
                   <a href="/maps/multi-agent-pipeline/M1/" role="menuitem">M1 System Shape</a>
-                  <span role="menuitem">M2 Roster</span>
-                  <span role="menuitem">M3 Contracts</span>
-                  <span role="menuitem">M4 Coordination</span>
-                  <span role="menuitem">M5 Agent Buildout</span>
-                  <span role="menuitem">M6 Capabilities</span>
-                  <span role="menuitem">M7 Orchestration</span>
+                  <a href="/maps/multi-agent-pipeline/M2/" role="menuitem">M2 Roster</a>
+                  <a href="/maps/multi-agent-pipeline/M3/" role="menuitem">M3 Contracts</a>
+                  <a href="/maps/multi-agent-pipeline/M4/" role="menuitem">M4 Coordination</a>
+                  <a href="/maps/multi-agent-pipeline/M5/" role="menuitem">M5 Agent Buildout</a>
+                  <a href="/maps/multi-agent-pipeline/M6/" role="menuitem">M6 Capabilities</a>
+                  <a href="/maps/multi-agent-pipeline/M7/" role="menuitem">M7 Orchestration</a>
                   <a href="/maps/multi-agent-pipeline/M8/" role="menuitem">M8 Experience Design</a>
-                  <span role="menuitem">M9 Evaluate</span>
-                  <span role="menuitem">M10 Deploy/Observe</span>
-                  <span role="menuitem">M11 Improve</span>
+                  <a href="/maps/multi-agent-pipeline/M9/" role="menuitem">M9 Evaluate</a>
+                  <a href="/maps/multi-agent-pipeline/M10/" role="menuitem">M10 Deploy/Observe</a>
+                  <a href="/maps/multi-agent-pipeline/M11/" role="menuitem">M11 Improve</a>
                 </div>
               </div>
               <div class="maps-nav-dropdown org-chart">
@@ -101,7 +101,7 @@
         <div>
           <p class="maps-eyebrow">Org Chart</p>
           <h1>Operating Cadence</h1>
-          <p>Operating cadence defines when roles appear, what triggers them, and how implemented agents run visible loops.</p>
+          <p>Operating cadence defines when roles appear, when Role+ automation may check for work, and how implemented agents run visible loops.</p>
           <div class="maps-actions">
             <a class="maps-button primary" href="/maps/org-chart/">Back to org chart</a>
             <a class="maps-button" href="/maps/org-chart/role-handoffs/">Next: role handoffs</a>
@@ -123,7 +123,7 @@
             <article class="maps-panel"><h3>Review gate</h3><p>The role reviews a plan, artifact, release, policy, or role contract before action.</p></article>
             <article class="maps-panel"><h3>Event or signal</h3><p>A webhook, queue, incident, metric, backlog threshold, or memory update triggers the role.</p></article>
             <article class="maps-panel"><h3>Memory/RAG update</h3><p>A memory write, RAG update, source refresh, or durable note change requires the role to review context and act inside its authority.</p></article>
-            <article class="maps-panel"><h3>Scheduled cadence</h3><p>The role runs on a daily, weekly, milestone, release, or governance rhythm.</p></article>
+            <article class="maps-panel"><h3>Scheduled cadence</h3><p>Role+ automation can wake a role on a heartbeat or governance rhythm, but the automation grants no extra authority, goal, or runtime state.</p></article>
           </div>
         </section>
 
@@ -155,6 +155,7 @@
                 <tr><td>Advisor</td><td>Gives first-person critique, options, and recommendations.</td><td>Skill or loaded project instruction.</td></tr>
                 <tr><td>Review gate</td><td>Must review named artifacts before approval.</td><td>Checklist, hook, or required review step.</td></tr>
                 <tr><td>Workflow owner</td><td>Maintains rhythm, handoffs, blockers, and progress evidence.</td><td>Skill plus helper script and run log.</td></tr>
+                <tr><td>Role+</td><td>Runs bounded automation with no independent authority or runtime state.</td><td>Heartbeat automation or scheduled check.</td></tr>
                 <tr><td>Operator</td><td>Executes approved tasks with tools.</td><td>Script, MCP workflow, or tool-backed skill.</td></tr>
                 <tr><td>Autonomous loop</td><td>Plans, acts, observes, remembers, and continues within explicit bounds.</td><td>Active process, scheduled worker, or agent runtime.</td></tr>
                 <tr><td>Escalation authority</td><td>Approves, vetoes, or breaks glass in a named domain.</td><td>Governance rule plus audit log.</td></tr>

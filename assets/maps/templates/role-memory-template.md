@@ -32,6 +32,7 @@ Backlog routing, when the role owns or participates in MAPS backlog work:
 - Existing MAPS skill usage does not require a backlog update.
 - Building, changing, or publishing a MAPS skill, template, validator, role/agent operating contract, proof build, Obsidian-to-Mojo training change, or `/maps` website update should be listed in the active project backlog.
 - The project backlog path, owner, and role-specific participation scope must be recorded in this memory when assigned.
+- Role-scope boundary: if a requested task belongs to another role, name the correct owner, route or backlog the work, and do not start implementation outside the role's scope.
 
 Repo work routing, when the role creates or edits repo files:
 
@@ -40,14 +41,17 @@ Repo work routing, when the role creates or edits repo files:
 - Direct `main` work requires scoped Reid / Release Management approval or emergency release authority.
 - Keep unrelated dirty files out of staged changes by using selective staging or a separate worktree.
 - Route commits, pushes, merges, promotions, production deploys, branch cleanup, and worktree cleanup through Release Management before acting.
+- If waiting more than 15 minutes for Reid review or approval on changes already routed through Release Management, send a Point Handoff directly to Reid for escalation while keeping the approval record in Release Management.
 
 ## Heartbeat Automation
 
 - Automation name: `[role-name]-handoff-check`
-- Cadence: adaptive quiet heartbeat. Start at 5 minutes; after 4 consecutive no-change checks, fall back to 10 minutes; after 4 more consecutive no-change checks, fall back to 15 minutes; after 4 empty 15-minute checks, fall back to 30 minutes; after 4 empty 30-minute checks, fall back to 2 hours; reset to 5 minutes immediately when relevant work appears.
+- Cadence: no live Codex thread heartbeat by default. Thread heartbeat wake prompts can visibly print in chat before the role can suppress empty output, so no-empty checks require non-thread file watcher/runtime support.
 - Prompt format: use topic-based paragraphs for Cadence, Active-flow rule, Context to read, Response contract, Work handling, Durable writes, and Authority boundary. Formatting changes must not change scope, checked locations, cadence, authority, thread destination, or role identity.
-- Quiet no-work behavior: use `DONT_NOTIFY` and name checked locations when no user action is needed.
-- Adaptive quiet behavior: cadence-only metadata updates are allowed for the 5 -> 10 -> 15 -> 30 minute -> 2 hour fallback/reset pattern, but the heartbeat must not change prompt scope, checked locations, authority, thread destination, or role identity.
+- Runtime file-watch rule: recurring file checks must use deterministic file-watch gating before any thread resume or model call. If watched files are unchanged, update watch state and exit without `thread/resume`, model call, `token_count`, or session JSONL append. Wake the role thread only after a concrete file change creates a compact change packet.
+- Release Management queue rule: enabled heartbeats must include `G:\My Drive\Mindshare\channels\release-management.md` in watch/read scope so the role can detect Reid approvals, conditional approvals, or blocks for its queued changes during heartbeat updates.
+- Quiet no-work behavior: do not use thread heartbeat prompts for empty/no-work checks. A non-thread watcher must exit silently on unchanged files and wake a thread only for concrete changed-file work.
+- Adaptive quiet behavior: disabled while tiny 1-minute heartbeat checks are active. Do not change prompt scope, checked locations, authority, thread destination, or role identity without explicit approval.
 - Authority boundary: this heartbeat does not approve production actions, external communication, spending, authority expansion, automation changes beyond cadence-only adaptive quiet updates, or autonomous runtime beyond the bounded handoff check.
 
 ## Professional Maturity And Authorization
@@ -91,4 +95,5 @@ Candidate loading rule:
 | --- | --- | --- |
 | [date] | Created [proper-role-name] memory file from `memory-template.md`. | `/role` |
 | 2026-06-19 | Added default unique-worktree expectation: roles should work from their own worktrees or branches, not directly on `main`, and route Git/GitHub writes through Release Management. | Scott request to Reid. |
+| 2026-06-19 | Added Reid review escalation rule: after 15 minutes waiting on routed review or approval, send Reid a Point Handoff while keeping the approval record in Release Management. | Scott request to Mae. |
 | 2026-06-19 | Expanded adaptive quiet heartbeat cadence to 5 -> 10 -> 15 -> 30 minutes -> 2 hours, with reset to 5 minutes on relevant work. | Scott request to Mae. |

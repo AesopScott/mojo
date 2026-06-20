@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -28,9 +28,9 @@
     <meta name="twitter:description" content="Agent profile controls for Ana, the Recruiter and role-building owner.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
-    <link rel="stylesheet" href="/maps.css?v=source-buttons-stack-1">
+    <link rel="stylesheet" href="/maps.css?v=source-buttons-raised-1">
     <script src="/maps-data.js?v=maps-plus-org-link" defer></script>
-    <script src="/maps-page.js?v=source-buttons-stack-1" defer></script>
+    <script src="/maps-page.js?v=source-buttons-raised-1" defer></script>
   </head>
   <body class="maps-page">
     <div class="maps-shell">
@@ -70,16 +70,16 @@
                 <div class="maps-dropdown-menu" role="menu">
                   <a href="/maps/multi-agent-pipeline/M0/" role="menuitem">M0 Project Foundation</a>
                   <a href="/maps/multi-agent-pipeline/M1/" role="menuitem">M1 System Shape</a>
-                  <span role="menuitem">M2 Roster</span>
-                  <span role="menuitem">M3 Contracts</span>
-                  <span role="menuitem">M4 Coordination</span>
-                  <span role="menuitem">M5 Agent Buildout</span>
-                  <span role="menuitem">M6 Capabilities</span>
-                  <span role="menuitem">M7 Orchestration</span>
+                  <a href="/maps/multi-agent-pipeline/M2/" role="menuitem">M2 Roster</a>
+                  <a href="/maps/multi-agent-pipeline/M3/" role="menuitem">M3 Contracts</a>
+                  <a href="/maps/multi-agent-pipeline/M4/" role="menuitem">M4 Coordination</a>
+                  <a href="/maps/multi-agent-pipeline/M5/" role="menuitem">M5 Agent Buildout</a>
+                  <a href="/maps/multi-agent-pipeline/M6/" role="menuitem">M6 Capabilities</a>
+                  <a href="/maps/multi-agent-pipeline/M7/" role="menuitem">M7 Orchestration</a>
                   <a href="/maps/multi-agent-pipeline/M8/" role="menuitem">M8 Experience Design</a>
-                  <span role="menuitem">M9 Evaluate</span>
-                  <span role="menuitem">M10 Deploy/Observe</span>
-                  <span role="menuitem">M11 Improve</span>
+                  <a href="/maps/multi-agent-pipeline/M9/" role="menuitem">M9 Evaluate</a>
+                  <a href="/maps/multi-agent-pipeline/M10/" role="menuitem">M10 Deploy/Observe</a>
+                  <a href="/maps/multi-agent-pipeline/M11/" role="menuitem">M11 Improve</a>
                 </div>
               </div>
               <div class="maps-nav-dropdown org-chart">
@@ -102,7 +102,7 @@
           <p class="maps-eyebrow">Agent Profile</p>
           <h1>Ana / Recruiter</h1>
           <p>
-            Ana is the first recruiter role to cross from blue role contract into green agent-definition territory. This page shows the controls an operator should review before Ana is activated, expanded, connected to tools, or allowed to manage role pipeline work.
+            Ana is the first recruiter role to cross from blue role contract into green agent-definition territory. This page is a website mirror of <code>agents/ana-recruiter/agent-profile.md</code>; authority comes from the canonical profile, project artifacts, and Scott's approvals, not from this page. The profile status is active profile, approval-gated runtime; current category is Agent profile, human-in-the-loop; and runtime enforcement status is not built.
           </p>
           <div class="maps-actions">
             <a class="maps-button primary" href="#agent-controls">View controls</a>
@@ -115,20 +115,20 @@
         <section class="maps-section">
           <div class="maps-section-header">
             <h2>Profile summary</h2>
-            <p>Agent profiles make the role-to-agent transition explicit. The controls below are a visual profile model; production authority still comes from the project role artifact and Scott's approval.</p>
+            <p>Agent profiles make the role-to-agent transition explicit. The controls below mirror the canonical <code>agent-profile.md</code>; production authority, activation, tool access, memory rights, external communication, spending, and autonomous runtime still come from the project artifacts and Scott's approval.</p>
           </div>
           <div class="maps-profile-summary">
-            <article><span>Status</span><strong>Agent profile active</strong><p>Green on the org chart.</p></article>
+            <article><span>Status</span><strong>active profile, approval-gated runtime</strong><p>Agent handle: ana-recruiter.</p></article>
             <article><span>Source role</span><strong>Ana / Recruiter</strong><p>Mindshare role-building owner.</p></article>
             <article><span>Owner</span><strong>Scott</strong><p>Approves activation and authority.</p></article>
-            <article><span>Next MAPS phase</span><strong>/design-agent</strong><p>Runtime and queue design.</p></article>
+            <article><span>Next MAPS phase</span><strong>/build-agent</strong><p>After Scott accepts design/backlog and Vik reviews control-plane boundaries.</p></article>
           </div>
         </section>
 
         <section id="agent-controls" class="maps-section">
           <div class="maps-section-header">
             <h2>Agent controls</h2>
-            <p>These are the controls every green agent profile should expose: activation, autonomy, authority, tools, hooks, memory, and MAPS phase status.</p>
+            <p>These are the controls every green agent profile should expose: activation, autonomy, authority, voice, tools, hooks, memory, and MAPS phase status.</p>
           </div>
           <div class="maps-agent-control-grid">
             <article class="maps-control-panel">
@@ -151,6 +151,16 @@
               <h3>Authority</h3>
               <div class="maps-level-strip" aria-label="Authority level"><span>A0</span><span>A1</span><span>A2</span><span>A3</span><span>A4</span><strong>A6</strong><span>A10</span><span>A12</span></div>
               <p>A6 Execute With Approval. Draft role-pipeline ownership only; no independent activation, authority grants, global install, spending, external communication, or autonomous recruiting authority.</p>
+            </article>
+
+            <article class="maps-control-panel">
+              <h3>Voice Profile</h3>
+              <div class="maps-segmented-control" aria-label="Voice profile">
+                <strong>Diplomat</strong><span>Analyst</span><span>Coach</span><span>Reviewer</span>
+              </div>
+              <p>Primary voice: Diplomat. Secondary voice blend: Analyst, Coach, Reviewer. Voice blend ratio: Diplomat 40% + Analyst 25% + Coach 20% + Reviewer 15%. Voice intensity: medium.</p>
+              <p>Warm professional formality, calm people-aware temperature, and gently rigorous challenge.</p>
+              <p>Voice is expression only. It does not grant authority, activation, tool access, memory rights, external communication, spending, production access, autonomous runtime, or authority expansion.</p>
             </article>
 
             <article class="maps-control-panel">
