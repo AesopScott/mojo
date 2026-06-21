@@ -252,8 +252,10 @@ body.maps-page {
 }
 
 .maps-source-link-stack {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 190px;
+  grid-template-rows: repeat(2, minmax(44px, auto));
   gap: 8px;
 }
 
@@ -2037,6 +2039,11 @@ a.maps-role-name:hover {
 
   .maps-source-button {
     width: min(220px, calc(100vw - 32px));
+  }
+
+  .maps-source-link-stack {
+    display: flex;
+    flex-direction: column;
   }
 
   .maps-hero {
