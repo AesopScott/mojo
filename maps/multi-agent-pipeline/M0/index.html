@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MAPS M0: Project Foundation | Mojo AI Studio</title>
-    <meta name="description" content="M0 Project Foundation establishes project intent, required preflight decisions, notes scaffold, source inventory, persistent memory, run notes, and RAG readiness.">
+    <meta name="description" content="M0 Project Foundation establishes project intent, required preflight decisions, notes structure, source inventory, persistent memory, run notes, and RAG readiness.">
     <link rel="canonical" href="https://mojoaistudio.com/maps/multi-agent-pipeline/M0/">
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="Mojo AI Studio">
     <meta property="og:url" content="https://mojoaistudio.com/maps/multi-agent-pipeline/M0/">
     <meta property="og:title" content="MAPS M0: Project Foundation">
-    <meta property="og:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
+    <meta property="og:description" content="Start MAPS with project intent, foundation notes, evidence, sources, and RAG readiness.">
     <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta property="og:image:type" content="image/png">
@@ -25,11 +25,11 @@
     <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MAPS M0: Project Foundation">
-    <meta name="twitter:description" content="Start MAPS with project intent, scaffolded notes, evidence, sources, and RAG readiness.">
+    <meta name="twitter:description" content="Start MAPS with project intent, foundation notes, evidence, sources, and RAG readiness.">
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
     <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
     <link rel="stylesheet" href="/maps.css?v=maps-source-links-grid-1">
-    <script src="/maps-data.js?v=maps-source-policy-1" defer></script>
+    <script src="/maps-data.js?v=foundation-copy-1" defer></script>
     <script src="/maps-page.js?v=maps-source-links-1" defer></script>
   </head>
   <body class="maps-page" data-maps-phase="m0">
@@ -100,7 +100,7 @@
       <section class="maps-hero">
         <div>
           <p class="maps-eyebrow">M0</p>
-          <p class="maps-kickoff-line">Project Intent + Scaffolding Structure, Kickoff.</p>
+          <p class="maps-kickoff-line">Project Intent + Foundation Structure, Kickoff.</p>
           <h1>Project Foundation</h1>
           <p>
             M0 starts the project brain with an explicit preflight: intent,
@@ -119,7 +119,7 @@
         <section id="output" class="maps-section">
           <div class="maps-section-header">
             <h2>M0 output</h2>
-            <p>The required artifact is `project-foundation.md`, backed by a notes, sources, and memory scaffold.</p>
+            <p>The required artifact is `project-foundation.md`, backed by notes, sources, and memory setup.</p>
           </div>
           <div class="maps-grid">
             <article class="maps-panel">
@@ -144,7 +144,7 @@
             </article>
             <article class="maps-panel">
               <h3>Reset path</h3>
-              <p><strong>/foundation --wipe</strong> previews the foundation scaffold cleanup, then removes confirmed MAPS-created artifacts so the phase can restart cleanly.</p>
+              <p><strong>/foundation --wipe</strong> previews the foundation cleanup, then removes confirmed MAPS-created artifacts so the phase can restart cleanly.</p>
             </article>
             <article class="maps-panel">
               <h3>Git readiness</h3>
@@ -185,7 +185,7 @@
             </article>
             <article class="maps-panel">
               <h3>Incremental runs</h3>
-              <p>If M0 has already run, audit the existing scaffold first and implement only missing additions such as Git readiness, remote setup, env/secrets scaffolding, or memory updates.</p>
+              <p>If M0 has already run, audit the existing foundation first and implement only missing additions such as Git readiness, remote setup, env/secrets setup, or memory updates.</p>
             </article>
             <article class="maps-panel">
               <h3>Completion</h3>
@@ -194,9 +194,8 @@
           </div>
           <div class="maps-code-panel maps-gap-top">
             <pre><code>python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" status --project .
-python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --init-git
-python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --remote-url https://github.com/OWNER/REPO.git
-python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" scaffold --project . --github-repo OWNER/REPO --github-visibility private
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" apply --project . --foundation-file project-foundation.md
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" stamp-run --project . --skill /foundation --phase M0 --output project-foundation.md
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
 python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project . --confirm</code></pre>
           </div>
@@ -218,11 +217,11 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
             </article>
             <article class="maps-panel">
               <h3>Secrets template</h3>
-              <p>The scaffold creates <code>.env.example</code> with placeholders for API keys, RAG endpoints, notes providers, and runtime identifiers.</p>
+              <p>Foundation creates <code>.env.example</code> with placeholders for API keys, RAG endpoints, notes providers, and runtime identifiers.</p>
             </article>
             <article class="maps-panel">
               <h3>Ignore rules</h3>
-              <p>The scaffold adds safe <code>.gitignore</code> entries for local secrets while keeping <code>.env.example</code> trackable.</p>
+              <p>Foundation adds safe <code>.gitignore</code> entries for local secrets while keeping <code>.env.example</code> trackable.</p>
             </article>
             <article class="maps-panel">
               <h3>Local env file</h3>
@@ -234,7 +233,7 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
             </article>
             <article class="maps-panel">
               <h3>No overwrites</h3>
-              <p>The scaffold creates missing files and directories only. Existing foundation, notes, source, memory, env, and Git files are preserved.</p>
+              <p>Foundation creates missing files and directories only. Existing foundation, notes, source, memory, env, and Git files are preserved.</p>
             </article>
           </div>
         </section>
@@ -348,7 +347,7 @@ python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --pro
           </div>
           <div class="maps-grid">
             <article class="maps-panel">
-              <h3>Notes scaffold</h3>
+              <h3>Notes foundation</h3>
               <p>Create daily, interview, research, decision, source, and memory folders before synthesis starts.</p>
             </article>
             <article class="maps-panel">

@@ -6,7 +6,7 @@ window.MAPS_SITE = {
       label: "M0",
       nomenclature: "M0",
       title: "Project Foundation",
-      output: "Intent, notes scaffold, evidence, sources, and RAG readiness",
+      output: "Intent, notes structure, evidence, sources, and RAG readiness",
       status: "available"
     },
     {
@@ -114,7 +114,7 @@ window.MAPS_SITE = {
       label: "Phase 0",
       nomenclature: "A0",
       title: "Phase Alignment",
-      output: "Scaffold and structure",
+      output: "Foundation and structure",
       status: "available"
     },
     {
@@ -232,7 +232,7 @@ window.MAPS_SITE = {
         name: "/foundation",
         url: "/assets/maps/skills/foundation/SKILL.md",
         download: true,
-        note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes scaffold, Git and remote readiness, env/secrets scaffold, incremental foundation audits, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, maps-run helper notes named [project]-[skill]-helper-notes, role-[role-name] notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
+        note: "Starts M0 Project Foundation with a one-question-at-a-time memory-first preflight, project intent, notes structure, Git and remote readiness, env/secrets setup, incremental foundation audits, EventStorming Lite, Service Blueprint Lite, source inventory, evidence index, assumptions, decisions, RAG-readiness, persistent memory contract, maps-run helper notes named [project]-[skill]-helper-notes, role-[role-name] notes, RAG mirrors, run log, remembered notes/RAG locations, and /foundation --wipe reset support."
       },
       {
         name: "/shape",
@@ -283,16 +283,10 @@ window.MAPS_SITE = {
         note: "Creates organization role agents with three minimum inputs, then uses mandatory external Research and Recommend to propose engagement type, advisory behavior, workflow ownership, authority taxonomy, special authority declarations, autonomy, memory, tools, boundaries, proof, and the implementation form."
       },
       {
-        name: "/scaffold",
-        url: "/assets/maps/skills/scaffold/SKILL.md",
-        download: true,
-        note: "Creates the MAPS repository structure, phase docs, phase skills, templates, catalogs, project page, README, license, and gitignore."
-      },
-      {
         name: "phase-alignment",
         url: "/assets/maps/skills/phase-alignment/SKILL.md",
         download: true,
-        note: "Captures lifecycle names, boundaries, scaffolding decisions, and open questions."
+        note: "Captures lifecycle names, boundaries, foundation decisions, and open questions."
       },
       {
         name: "/define-agent",
@@ -493,7 +487,7 @@ window.MAPS_SITE = {
       {
         name: "Haystack",
         url: "https://github.com/deepset-ai/haystack",
-        note: "M0 production RAG pipeline reference for retrieval systems that may follow the foundation scaffold."
+        note: "M0 production RAG pipeline reference for retrieval systems that may follow the foundation layer."
       },
       {
         name: "Qdrant",
@@ -728,7 +722,7 @@ window.MAPS_SITE = {
       {
         name: "crewAIInc/crewAI",
         url: "https://github.com/crewAIInc/crewAI",
-        note: "Agent scaffold and task configuration reference."
+        note: "Agent setup and task configuration reference."
       },
       {
         name: "google/adk-python",
@@ -859,7 +853,7 @@ window.MAPS_SITE = {
     tools: [
       {
         name: "Python",
-        note: "Runs the scaffold generator."
+        note: "Runs the Foundation structure generator."
       },
       {
         name: "GitHub CLI",
@@ -867,7 +861,7 @@ window.MAPS_SITE = {
       },
       {
         name: "Git",
-        note: "Records scaffold and phase changes."
+        note: "Records foundation and phase changes."
       },
       {
         name: "Markdown notes",
@@ -1131,19 +1125,13 @@ window.MAPS_SITE = {
         name: "templates/project-foundation.md",
         url: "/assets/maps/templates/project-foundation.md",
         download: true,
-        note: "Captures M0 Project Foundation: preflight decisions, intent, scaffold, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
+        note: "Captures M0 Project Foundation: preflight decisions, intent, foundation structure, EventStorming Lite, Service Blueprint Lite, evidence, sources, assumptions, decisions, persistent memory contract, per-skill notes, run log, open questions, and RAG readiness."
       },
       {
         name: "templates/system-shape.md",
         url: "/assets/maps/templates/system-shape.md",
         download: true,
         note: "Captures M1 System Shape: research sources, recommendation rationale, M0-defined ASPM guidance when available, S/M/U decision, BPMN Lite, role pressure, system shape, and next track recommendation."
-      },
-      {
-        name: "templates/maps-scaffold-template.md",
-        url: "/assets/maps/templates/maps-scaffold-template.md",
-        download: true,
-        note: "Defines the repeatable MAPS repository structure that /scaffold instantiates."
       },
       {
         name: "templates/phase-alignment-brief.md",
@@ -1389,10 +1377,10 @@ window.MAPS_SITE = {
       templates: ["templates/multi-agent-improve.md", "templates/improvement-review.md", "templates/improvement-backlog.md"]
     },
     "0": {
-      skills: ["/scaffold", "phase-alignment"],
+      skills: ["/foundation", "phase-alignment"],
       repos: ["AesopScott/maps-plus-org", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
       tools: ["Python", "GitHub CLI", "Git"],
-      templates: ["templates/maps-scaffold-template.md", "templates/phase-alignment-brief.md"]
+      templates: ["templates/project-foundation.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],
