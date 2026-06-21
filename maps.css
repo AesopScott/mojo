@@ -224,16 +224,17 @@ body.maps-page {
   bottom: var(--maps-source-button-bottom, 48px);
   left: var(--maps-source-button-left, auto);
   z-index: 20;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
-  gap: 8px;
-  max-width: min(360px, calc(100vw - 32px));
+  gap: 10px;
+  max-width: calc(100vw - 32px);
 }
 
 .maps-source-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 190px;
   min-height: 44px;
   padding: 10px 16px;
   border: 2px solid var(--maps-orange);
@@ -242,10 +243,18 @@ body.maps-page {
   background: #fff;
   font-size: 13px;
   font-weight: 850;
+  line-height: 1.15;
   text-decoration: none;
+  text-align: center;
   box-shadow:
     0 0 0 5px rgba(214, 111, 34, 0.14),
     0 18px 44px rgba(23, 33, 31, 0.18);
+}
+
+.maps-source-link-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .maps-source-button:hover {
@@ -2019,10 +2028,15 @@ a.maps-role-name:hover {
   }
 
   .maps-source-actions {
+    flex-direction: column;
     top: auto;
     left: auto;
     right: 16px;
     bottom: 40px;
+  }
+
+  .maps-source-button {
+    width: min(220px, calc(100vw - 32px));
   }
 
   .maps-hero {

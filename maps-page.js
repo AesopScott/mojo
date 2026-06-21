@@ -77,8 +77,14 @@
         return skill?.url ? { ...config, skill } : null;
       })
       .filter(Boolean);
+    const quickLinks = [
+      { label: "AESOP AI Academy", url: "https://aesopacademy.org" },
+      { label: "Mojo AI Studio Links", url: "https://mojoaistudio.com/learn" },
+      { label: "AI Training and Certs", url: "https://theladderai.com" },
+      { label: "AI Video Collection", url: "https://25experts.com/videos.html" }
+    ];
 
-    if (!buttons.length) {
+    if (!buttons.length && !quickLinks.length) {
       return;
     }
 
@@ -90,22 +96,38 @@
     group.className = "maps-source-actions";
     group.dataset.mapsSourceButton = "true";
 
-    buttons.forEach(({ skill, label }, index) => {
+    const createSourceButton = ({ href, label, download = false, primary = false }) => {
       const button = document.createElement("a");
-      button.href = skill.url;
-      if (skill.download) {
+      button.href = href;
+      if (download) {
         button.download = "";
       } else {
         button.target = "_blank";
         button.rel = "noopener noreferrer";
       }
       button.className = "maps-source-button";
-      if (index === 0) {
+      if (primary) {
         button.dataset.mapsPrimarySourceButton = "true";
       }
       button.textContent = label;
-      group.appendChild(button);
+      return button;
+    };
+
+    buttons.forEach(({ skill, label }, index) => {
+      group.appendChild(createSourceButton({
+        href: skill.url,
+        label,
+        download: Boolean(skill.download),
+        primary: index === 0
+      }));
     });
+
+    const quickLinkStack = document.createElement("div");
+    quickLinkStack.className = "maps-source-link-stack";
+    quickLinks.forEach((link) => {
+      quickLinkStack.appendChild(createSourceButton({ href: link.url, label: link.label }));
+    });
+    group.appendChild(quickLinkStack);
 
     document.body.appendChild(group);
     positionMapsSourceButton();
