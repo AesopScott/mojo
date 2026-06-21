@@ -70,8 +70,7 @@
 
   function renderMapsSourceButton() {
     const buttons = [
-      { skillName: "/maps", label: "Open MAPS source" },
-      { skillName: "/maps+org", label: "Open MAPS+Org source" }
+      { skillName: "/maps", label: "Open MAPS source" }
     ]
       .map((config) => {
         const skill = site.resources.skills.find((item) => item.name === config.skillName);
