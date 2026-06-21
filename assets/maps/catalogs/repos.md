@@ -2,7 +2,7 @@
 
 | Phase | Repo | Use |
 |---|---|---|
-| 0 | `AesopScott/maps` | Working MAPS repository. |
+| 0 | `AesopScott/maps-plus-org` | MAPS+Org repository for MAPS-family source updates. |
 | M0 | `NotebookLM` | Source-grounded research workspace for collecting sources, asking questions against them, and synthesizing evidence with citations. |
 | M0 | `Obsidian` | Local-first Markdown vault, graph notes, linked project memory, and durable context reference. |
 | M0 | `LlamaIndex` | RAG-readiness reference for source loading, indexing, retrieval, and queryable project knowledge. |

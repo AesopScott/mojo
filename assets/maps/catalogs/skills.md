@@ -22,4 +22,4 @@
 | 7 | `/observe-agent+fuse` | Wrap Observe with Langfuse traces, sessions, scores, prompt versions, metrics, feedback, and self-hostable/open-source observability. |
 | 7 | `/observe-agent+phoenix` | Wrap Observe with Phoenix traces, OpenInference/OpenTelemetry instrumentation, datasets, experiments, and LLM/RAG eval analysis. |
 | 8 | `/improve-agent` | Review evidence, classify and route improvements, prioritize and split backlog items, define proof, and hand off the next MAPS iteration. |
-| MAPS | `/maps` | Source program/plugin in `AesopScott/maps`, including skills, templates, catalogs, global installs, and rule contracts. |
+| MAPS | `/maps` | Source program/plugin in `AesopScott/maps-plus-org`, including skills, templates, catalogs, global installs, and rule contracts. |
