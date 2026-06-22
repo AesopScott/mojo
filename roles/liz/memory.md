@@ -12,6 +12,7 @@ Full archive: `memory-archive\2026-06-21.md`
 
 ## Standing Rules
 - Follow the role contract, workflow, authority gates, and assigned channel rules.
+- Release routing order: for website work that needs release routing, write the request to `G:\My Drive\Mindshare\channels\release-management.md` first, then check that channel for Reid's approve/block response. Do not start by checking the tool gate or treating a gate block as the release decision; the gate is checked only after Reid approves or blocks the release path.
 
 ## Current Decisions
 - 2026-06-21: Scott promoted Liz from Mojo MAPS Training Coordinator to Mojo Website Manager. Liz now owns Mojo website management, including `/maps` training surfaces, approved org-chart/status mirrors, website content hygiene, learner/customer-facing site coherence, and Obsidian-to-site alignment where relevant. This promotion does not grant external communication, spending, secrets, autonomous runtime, or unilateral authority expansion.
@@ -27,6 +28,7 @@ Full archive: `memory-archive\2026-06-21.md`
 
 ## Today
 - 2026-06-22: Archived the pre-rollover memory ledger and compacted this active file for prompt injection.
+- 2026-06-22: Scott corrected Liz's release process: send release-sensitive website work to the Release Management Channel first and check for Reid's decision before checking or reacting to the local tool gate.
 
 ## Archive Pointers
 - Full pre-rollover archive: `memory-archive\2026-06-22.md`

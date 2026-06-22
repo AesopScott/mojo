@@ -2039,11 +2039,19 @@ a.maps-role-name:hover {
 }
 
 .maps-role-person {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 10px;
+  box-sizing: border-box;
+  width: 260px;
+  height: 64px;
   max-width: 100%;
   vertical-align: middle;
+}
+
+.maps-role-person--wide {
+  width: 312px;
+  height: 92px;
 }
 
 .maps-role-copy {
@@ -2088,6 +2096,7 @@ a.maps-role-name:hover {
 .maps-role-actions a {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 22px;
   padding: 3px 7px;
   border: 1px solid rgba(35, 61, 77, 0.22);
@@ -2225,6 +2234,15 @@ a.maps-role-name:hover {
 }
 
 @media (max-width: 640px) {
+  .maps-org-function {
+    padding: 14px;
+  }
+
+  .maps-org-function li {
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
   .maps-nav {
     align-items: flex-start;
     flex-direction: column;
