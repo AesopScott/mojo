@@ -118,51 +118,13 @@
               <span>Agent development pipeline</span>
             </div>
           </div>
-          <div class="maps-actions">
-            <a class="maps-button primary" href="/maps/Agents/">Start with agents</a>
-            <a class="maps-button" href="#walkthrough">Preview the build path</a>
-          </div>
           <p class="maps-commitment-note">
             Start with M0 Project Foundation. If the first pass is wrong, use `/foundation --wipe`, then restart with confirmed preflight answers.
           </p>
         </div>
-
-        <aside class="maps-card">
-          <h2>Build path</h2>
-          <ol class="maps-week-path">
-            <li><strong>Agents:</strong> define what an agent is and review examples.</li>
-            <li><strong>Phase 0:</strong> align names, files, and boundaries.</li>
-            <li><strong>Phase 1:</strong> define the first agent brief.</li>
-            <li><strong>M layer:</strong> connect individual agents into a coordinated system.</li>
-          </ol>
-          <a class="maps-button primary" href="/maps/Agents/">Start with agents</a>
-        </aside>
       </section>
 
       <main class="maps-main">
-        <section class="maps-path-chooser" aria-label="Choose your MAPS starting point">
-          <a href="/maps/Agents/">
-            <strong>I need the agent concept first</strong>
-            <span>Define agents and see common examples.</span>
-          </a>
-          <a href="/maps/multi-agent-pipeline/M0/">
-            <strong>I am starting a new MAPS project</strong>
-            <span>Begin with M0 preflight, memory, RAG, and source setup.</span>
-          </a>
-          <a href="/maps/multi-agent-pipeline/M0/#training-reset">
-            <strong>I need to restart M0 cleanly</strong>
-            <span>Preview `/foundation --wipe`, confirm cleanup, then run M0 again.</span>
-          </a>
-          <a href="/maps/agentic-pipeline/A1/">
-            <strong>I already have the foundation and need an agent brief</strong>
-            <span>Go straight to Phase 1 Define.</span>
-          </a>
-          <a href="#layers">
-            <strong>I need the MAPS vs APS explanation first</strong>
-            <span>Review the two-layer structure.</span>
-          </a>
-        </section>
-
         <section id="layers" class="maps-section">
           <div class="maps-section-header">
             <h2>Two layers, one foundation</h2>
@@ -218,60 +180,6 @@
             <article class="maps-panel">
               <h3>Reusable skills</h3>
               <p>Each phase can be executed by compatible agent tooling through `SKILL.md` workflows and helper scripts.</p>
-            </article>
-          </div>
-        </section>
-
-        <section id="walkthrough" class="maps-section">
-          <div class="maps-section-header">
-            <h2>Self-guided build path</h2>
-          </div>
-
-          <div class="maps-walkthrough">
-            <article class="maps-step">
-              <span>01</span>
-              <h3>Orient</h3>
-              <p>Separate the multi-agent project foundation from the agent development pipeline.</p>
-              <details>
-                <summary>Check your understanding</summary>
-                <p>M defines the multi-agent system. APS develops one agent or agent capability.</p>
-              </details>
-            </article>
-            <article class="maps-step">
-              <span>02</span>
-              <h3>Start at M0</h3>
-              <p>Use Project Foundation to confirm RAG, notes, memory, sources, access methods, canonical stores, intent, and the first handoff.</p>
-              <details>
-                <summary>Expected output</summary>
-                <p>`project-foundation.md`, `.maps/foundation-preferences.json`, named run notes, memory files, source inventory, and M1 handoff questions.</p>
-              </details>
-            </article>
-            <article class="maps-step">
-              <span>03</span>
-              <h3>Reset bad starts</h3>
-              <p>Use `/foundation --wipe` when M0 inferred the wrong project or memory choices.</p>
-              <details>
-                <summary>Training move</summary>
-                <p>Preview the wipe first, confirm only after reviewing the files, then rerun M0 with explicit answers.</p>
-              </details>
-            </article>
-            <article class="maps-step">
-              <span>04</span>
-              <h3>Move through APS</h3>
-              <p>Open each available phase page, use its skill and template, then check the output.</p>
-              <details>
-                <summary>Before moving on</summary>
-                <p>The phase output should be specific enough for another builder or agent to continue, and the run should be recorded in `notes/maps-runs/`.</p>
-              </details>
-            </article>
-            <article class="maps-step">
-              <span>05</span>
-              <h3>Connect the layers</h3>
-              <p>Use M0 Project Foundation and M1 System Shape to coordinate the agents that APS defines, designs, builds, and improves.</p>
-              <details>
-                <summary>System target</summary>
-                <p><code>/foundation</code> and M1 establish the multi-agent outcome, roster path, responsibilities, coordination, integration, and system proof direction.</p>
-              </details>
             </article>
           </div>
         </section>
