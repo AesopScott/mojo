@@ -117,24 +117,40 @@
         <section id="legend" class="maps-section">
           <div class="maps-section-header">
             <h2>Legend</h2>
-            <p>Use color to track role operating state. Red items do not exist yet. Blue marks active roles. Green marks cross-role, cross-channel, or process authority. Gold marks approved agent runtime with proof and bounded authority.</p>
+            <p>Use color to track Tess's current autonomy-stage assessment. These stages are not HR status, pay grade, company title, role maturity, or generic builder authority. Staff is the last non-autonomous stage; higher stages mean more autonomy only inside the person's approved function.</p>
           </div>
-          <div class="maps-org-legend" aria-label="Role maturity legend">
+          <div class="maps-org-legend" aria-label="Autonomy stage legend">
             <article>
-              <span class="maps-role-status missing">Red</span>
-              <p>Role does not exist.</p>
+              <span class="maps-role-status human">Human</span>
+              <p>Human final authority, not a role agent.</p>
             </article>
             <article>
-              <span class="maps-role-status role">Blue</span>
-              <p>Activated role with bounded monitoring or action authority.</p>
+              <span class="maps-role-status candidate">Candidate</span>
+              <p>Level 0 role or draft position; no operating autonomy.</p>
             </article>
             <article>
-              <span class="maps-role-status coordinator">Green</span>
-              <p>Cross-role, cross-channel, or process authority.</p>
+              <span class="maps-role-status new-hire">New Hire</span>
+              <p>Level 1 onboarding role; learns boundaries before taking operating work.</p>
             </article>
             <article>
-              <span class="maps-role-status executor">Gold</span>
-              <p>Approved agent runtime with tools, state, eval proof, audit trail, and escalation boundaries.</p>
+              <span class="maps-role-status trainee">Trainee</span>
+              <p>Level 2 responsive role; researches and recommends.</p>
+            </article>
+            <article>
+              <span class="maps-role-status staff">Staff</span>
+              <p>Level 3 coordinating role; last non-autonomous stage.</p>
+            </article>
+            <article>
+              <span class="maps-role-status senior-staff">Senior Staff</span>
+              <p>Level 4 scoped autonomy; may continue approved role-native work inside a defined lane.</p>
+            </article>
+            <article>
+              <span class="maps-role-status principal">Principal</span>
+              <p>Level 5 policy autonomy; Vik is only a Principal candidate for research and architecture autonomy.</p>
+            </article>
+            <article>
+              <span class="maps-role-status partner">Partner</span>
+              <p>Level 6 full role autonomy; nobody has this approval today.</p>
             </article>
           </div>
         </section>
@@ -143,23 +159,23 @@
           <div class="maps-section-header">
             <h2>Typical company org chart</h2>
             <p>
-              All names start red. Activated roles turn blue. Roles with approved cross-role or process authority turn green. Agent runtimes turn gold only after runtime proof and explicit approval. Current role status comes from the Ana-owned roles directory in Obsidian.
+              Current autonomy standing comes from Tess's <cite>Autonomy Evaluation 1</cite> v0.1.4. Color and labels mirror current standing from <code>roles.md</code>, role contracts, and autonomy contracts; those source records control authority. Vik's Principal path is research and architecture autonomy, not build/change authority, and he is not promoted without review and approval.
             </p>
           </div>
 
           <div class="maps-org-chart" aria-label="Typical organization chart">
             <div class="maps-executive-row">
               <article class="maps-org-node president">
-                <h3 class="maps-role-name role maps-role-person">
+                <h3 class="maps-role-name human maps-role-person">
                   <img class="maps-role-avatar" src="/assets/maps/team/scott.webp" alt="Scott portrait" width="32" height="32">
-                  <span class="maps-role-copy"><span class="maps-role-person-name">Scott</span><span class="maps-role-person-title">President</span></span>
+                  <span class="maps-role-copy"><span class="maps-role-person-name">Scott</span><span class="maps-role-person-title">President</span><span class="maps-role-person-stage">Human Authority</span></span>
                 </h3>
                 <p>Sets direction, approves authority, protects the operating model, and keeps the team aligned to Mojo's purpose.</p>
               </article>
               <article class="maps-org-node executive">
-                <h3 class="maps-role-name role maps-role-person">
+                <h3 class="maps-role-name staff maps-role-person">
                   <img class="maps-role-avatar" src="/assets/maps/team/rae.png" alt="Rae portrait" width="32" height="32">
-                  <span class="maps-role-copy"><span class="maps-role-person-name">Rae</span><span class="maps-role-person-title">Chief Executive Officer</span></span>
+                  <span class="maps-role-copy"><span class="maps-role-person-name">Rae</span><span class="maps-role-person-title">Chief Executive Officer</span><span class="maps-role-person-stage">Level 3 Staff</span></span>
                 </h3>
                 <p>Coordinates executive alignment, operating cadence, role-boundary escalation, and decision-ready recommendations for Scott.</p>
               </article>
@@ -175,7 +191,7 @@
                   <li>
                     <span class="maps-role-name missing">Human Resources</span>
                     <ul>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/cole.webp" alt="Cole portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Cole</span><span class="maps-role-person-title">HR Director</span></span></span></li>
+                      <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/cole.webp" alt="Cole portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Cole</span><span class="maps-role-person-title">HR Director</span><span class="maps-role-person-stage">Level 3 Staff probable</span></span></span></li>
                     </ul>
                   </li>
                 </ul>
@@ -201,7 +217,7 @@
                   <li>
                     <span class="maps-role-name missing">Platform Engineering</span>
                     <ul>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/reid.webp" alt="Reid portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Reid</span><span class="maps-role-person-title">Release Manager</span></span></span></li>
+                      <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/reid.webp" alt="Reid portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Reid</span><span class="maps-role-person-title">Release Manager</span><span class="maps-role-person-stage">Level 3 Staff</span></span></span></li>
                     </ul>
                   </li>
                   <li><span class="maps-role-name missing">Data Engineering</span></li>
@@ -209,11 +225,12 @@
                     <span class="maps-role-name missing">AI Systems Engineering</span>
                     <ul>
                       <li>
-                        <span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/vik.webp" alt="Vik portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Vik</span><span class="maps-role-person-title">MAPS <abbr title="Agentic Systems Program Architect">ASPA</abbr> / Team Lead</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/vik" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span>
+                        <span class="maps-role-name principal maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/vik.webp" alt="Vik portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Vik</span><span class="maps-role-person-title">MAPS <abbr title="Agentic Systems Program Architect">ASPA</abbr> / Team Lead</span><span class="maps-role-person-stage">Current Level 3 Staff; Level 5 Principal candidate, not promoted</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/vik" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span>
                         <ul>
-                          <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/cal.webp" alt="Cal portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Cal</span><span class="maps-role-person-title">MAPS <abbr title="Agentic Systems Program Manager">ASPM</abbr> / Reports to Vik</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/cal" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span></li>
-                          <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/bea.webp" alt="Bea portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Bea</span><span class="maps-role-person-title">Mojo MAPS Engineer / Reports to Vik</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/bea" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span></li>
-                          <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/tess.webp" alt="Tess portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Tess</span><span class="maps-role-person-title">Autonomy Engineer / Reports to Vik</span></span></span></li>
+                          <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/cal.webp" alt="Cal portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Cal</span><span class="maps-role-person-title">MAPS <abbr title="Agentic Systems Program Manager">ASPM</abbr> / Reports to Vik</span><span class="maps-role-person-stage">Level 3 Staff</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/cal" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span></li>
+                          <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/bea.webp" alt="Bea portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Bea</span><span class="maps-role-person-title">Mojo MAPS Engineer / Reports to Vik</span><span class="maps-role-person-stage">Level 3 Staff; draft autonomy contract</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/mojo/tree/main/roles/bea" target="_blank" rel="noopener noreferrer">Mojo org</a></span></span></span></li>
+                          <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/tess.webp" alt="Tess portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Tess</span><span class="maps-role-person-title">Autonomy Engineer / Reports to Vik</span><span class="maps-role-person-stage">Level 3 Staff</span></span></span></li>
+                          <li><span class="maps-role-name candidate maps-role-person"><span class="maps-role-avatar-placeholder" aria-hidden="true">LO</span><span class="maps-role-copy"><span class="maps-role-person-name">Lab Operator</span><span class="maps-role-person-title">Draft Position</span><span class="maps-role-person-stage">Level 0 Candidate / draft only</span></span></span></li>
                         </ul>
                       </li>
                     </ul>
@@ -230,15 +247,15 @@
                   <li>
                     <span class="maps-role-name role">Marketing</span>
                     <ul>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/june.webp" alt="June portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">June</span><span class="maps-role-person-title">Staff Writer</span></span></span></li>
+                      <li><span class="maps-role-name trainee maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/june.webp" alt="June portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">June</span><span class="maps-role-person-title">Staff Writer</span><span class="maps-role-person-stage">Level 2 Trainee; Staff candidate</span></span></span></li>
                     </ul>
                   </li>
                   <li><span class="maps-role-name missing">Partnerships</span></li>
                   <li>
                     <span class="maps-role-name missing">Customer Success</span>
                     <ul>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/liz.webp" alt="Liz portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Liz</span><span class="maps-role-person-title">Mojo Website Manager</span></span></span></li>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/jay.png" alt="Jay portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Jay</span><span class="maps-role-person-title">Meetup Coordinator</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/watch" target="_blank" rel="noopener noreferrer">Watch org</a></span></span></span></li>
+                      <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/liz.webp" alt="Liz portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Liz</span><span class="maps-role-person-title">Mojo Website Manager</span><span class="maps-role-person-stage">Level 3 Staff</span></span></span></li>
+                      <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/jay.png" alt="Jay portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Jay</span><span class="maps-role-person-title">Meetup Coordinator</span><span class="maps-role-person-stage">Level 3 Staff</span><span class="maps-role-actions"><a href="https://github.com/AesopScott/watch" target="_blank" rel="noopener noreferrer">Watch org</a></span></span></span></li>
                     </ul>
                   </li>
                   <li><span class="maps-role-name missing">Support</span></li>
@@ -253,8 +270,8 @@
                   <li>
                     <span class="maps-role-name missing">People Operations</span>
                     <ul>
-                      <li><a class="maps-role-name coordinator maps-role-person" href="/maps/org-chart/agents/ana-recruiter/"><img class="maps-role-avatar" src="/assets/maps/team/ana.webp" alt="Ana portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Ana</span><span class="maps-role-person-title">Recruiter</span></span></a></li>
-                      <li><span class="maps-role-name role maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/mae.webp" alt="Mae portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Mae</span><span class="maps-role-person-title">Communications Director</span></span></span></li>
+                      <li><a class="maps-role-name staff maps-role-person" href="/maps/org-chart/agents/ana-recruiter/"><img class="maps-role-avatar" src="/assets/maps/team/ana.webp" alt="Ana portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Ana</span><span class="maps-role-person-title">Recruiter</span><span class="maps-role-person-stage">Level 3 Staff</span></span></a></li>
+                      <li><span class="maps-role-name staff maps-role-person"><img class="maps-role-avatar" src="/assets/maps/team/mae.webp" alt="Mae portrait" width="32" height="32"><span class="maps-role-copy"><span class="maps-role-person-name">Mae</span><span class="maps-role-person-title">Communications Director</span><span class="maps-role-person-stage">Level 3 Staff</span></span></span></li>
                     </ul>
                   </li>
                   <li><span class="maps-role-name missing">Legal</span></li>
@@ -269,7 +286,7 @@
         <section id="role-next" class="maps-section">
           <div class="maps-section-header">
             <h2>How this becomes MAPS work</h2>
-            <p>Each blue item can be qualified by Ana and reviewed by Vik. Green items carry approved cross-role or process authority. Gold items expose activation, autonomy, authority, tool, hook, memory, and evaluation controls.</p>
+            <p>Each role can move only when its source contract, autonomy assessment, eval proof, gates, and explicit approvals agree. Color is a training signal, not an authority grant.</p>
           </div>
           <div class="maps-grid">
             <article class="maps-panel">

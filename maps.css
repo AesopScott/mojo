@@ -1532,7 +1532,7 @@ body.maps-page {
 
 .maps-org-legend {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1571,7 +1571,14 @@ body.maps-page {
   color: #b83232;
 }
 
-.maps-role-status.missing {
+.maps-role-status.missing,
+.maps-role-status.candidate,
+.maps-role-name.candidate {
+  color: #b83232;
+}
+
+.maps-role-status.missing,
+.maps-role-status.candidate {
   color: #fff;
   background: #b83232;
 }
@@ -1587,6 +1594,56 @@ body.maps-page {
 .maps-role-status.role {
   color: #fff;
   background: var(--maps-blue);
+}
+
+.maps-role-status.human,
+.maps-role-name.human {
+  color: #4f3b78;
+}
+
+.maps-role-status.human {
+  color: #fff;
+  background: #4f3b78;
+}
+
+.maps-role-status.new-hire,
+.maps-role-name.new-hire {
+  color: #9c5a16;
+}
+
+.maps-role-status.new-hire {
+  color: #fff;
+  background: #9c5a16;
+}
+
+.maps-role-status.trainee,
+.maps-role-name.trainee {
+  color: #047481;
+}
+
+.maps-role-status.trainee {
+  color: #fff;
+  background: #047481;
+}
+
+.maps-role-status.staff,
+.maps-role-name.staff {
+  color: #245ea8;
+}
+
+.maps-role-status.staff {
+  color: #fff;
+  background: #245ea8;
+}
+
+.maps-role-status.senior-staff,
+.maps-role-name.senior-staff {
+  color: #1f7a4d;
+}
+
+.maps-role-status.senior-staff {
+  color: #fff;
+  background: #1f7a4d;
 }
 
 .maps-role-status.mature,
@@ -1606,13 +1663,26 @@ body.maps-page {
 }
 
 .maps-role-status.executor,
-.maps-role-name.executor {
+.maps-role-name.executor,
+.maps-role-status.principal,
+.maps-role-name.principal {
   color: var(--maps-gold);
 }
 
-.maps-role-status.executor {
+.maps-role-status.executor,
+.maps-role-status.principal {
   color: #fff;
   background: var(--maps-gold);
+}
+
+.maps-role-status.partner,
+.maps-role-name.partner {
+  color: #1f7a4d;
+}
+
+.maps-role-status.partner {
+  color: #fff;
+  background: #1f7a4d;
 }
 
 a.maps-role-name {
@@ -1853,6 +1923,14 @@ a.maps-role-name:hover {
   font-size: 12px;
   font-weight: 760;
   opacity: 0.82;
+}
+
+.maps-role-person-stage {
+  display: block;
+  font-size: 11px;
+  font-weight: 720;
+  line-height: 1.2;
+  opacity: 0.74;
 }
 
 .maps-role-actions {
