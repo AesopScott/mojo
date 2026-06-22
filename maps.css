@@ -1877,6 +1877,8 @@ a.maps-role-name:hover {
   border: 1px solid var(--maps-line);
   border-radius: 8px;
   background: #fff;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .maps-profile-summary article {
@@ -1897,6 +1899,7 @@ a.maps-role-name:hover {
   color: var(--maps-ink);
   font-size: 20px;
   line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .maps-profile-summary p {
@@ -1927,6 +1930,95 @@ a.maps-role-name:hover {
 .maps-control-panel p {
   margin: 0;
   color: var(--maps-muted);
+}
+
+.maps-role-tabs {
+  margin-top: 24px;
+}
+
+.maps-tab-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.maps-tab-buttons {
+  position: sticky;
+  top: 0;
+  z-index: 32;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid var(--maps-line);
+  border-bottom: 1px solid var(--maps-line);
+  background: rgba(249, 247, 241, 0.92);
+  backdrop-filter: blur(8px);
+}
+
+.maps-tab-buttons label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 118px;
+  min-height: 42px;
+  padding: 10px 16px;
+  border: 1px solid var(--maps-line);
+  border-radius: 7px;
+  background: #fff;
+  color: var(--maps-muted);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+#tab-profile:checked ~ .maps-tab-buttons label[for="tab-profile"],
+#tab-artifacts:checked ~ .maps-tab-buttons label[for="tab-artifacts"] {
+  color: #fff;
+  border-color: var(--maps-ink);
+  background: var(--maps-ink);
+}
+
+.maps-role-view {
+  display: none;
+  padding-top: 28px;
+}
+
+#tab-profile:checked ~ .maps-role-views .maps-role-view-profile,
+#tab-artifacts:checked ~ .maps-role-views .maps-role-view-artifacts {
+  display: block;
+}
+
+.maps-personnel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.maps-personnel-panel {
+  min-height: 168px;
+}
+
+.maps-personnel-panel.wide {
+  grid-column: 1 / -1;
+}
+
+.maps-profile-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.maps-profile-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid var(--maps-line);
+  border-radius: 999px;
+  background: #f8fafc;
+  color: var(--maps-muted);
+  font-size: 13px;
+  font-weight: 760;
 }
 
 .maps-toggle-row,
@@ -2224,6 +2316,7 @@ a.maps-role-name:hover {
   .maps-checklist-grid,
   .maps-profile-summary,
   .maps-agent-control-grid,
+  .maps-personnel-grid,
   .maps-org-legend,
   .maps-executive-row,
   .maps-org-branches {
