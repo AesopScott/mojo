@@ -15,3 +15,21 @@ Pasted image*.png
 client onboarding smoke test.docx
 deploy.log
 meetup-oauth-token.json
+maps/backlog.json
+
+# Python/cache output
+__pycache__/
+*.py[cod]
+
+# Codex file-watch runtime state
+pending-change-packet.json
+pending-change-packet.md
+resume-process.json
+last-resume-*.txt
+watch_state.json
+channel_queue_guard_state.json
+queue_guard_state.json
+change-packet-log.jsonl
+file-watch-runner.log
+file-watch-service.log
+file-watch-status.md
