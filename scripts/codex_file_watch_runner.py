@@ -586,6 +586,18 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
 
             snapshot = scan_snapshot(cfg, config_path, automation_dir, old_files, now, dry_run)
 
+            if (
+                not pending
+                and len(snapshot["changes"]) == 0
+                and snapshot["missing_count"] == 0
+                and not snapshot["queue_guard"]["open"]
+            ):
+                log(root, f"{cfg['automation_id']}: unchanged")
+                if not dry_run and not existing_state:
+                    write_state(state_path, cfg, now, snapshot["new_files"])
+                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
+                continue
+
             should_resume_clean_file_change = bool(cfg.get("resume_on_clean_file_change")) and len(snapshot["changes"]) > 0
             if queue_guard_is_clean_no_open(snapshot) and snapshot["missing_count"] == 0 and not should_resume_clean_file_change:
                 if len(snapshot["changes"]) > 0:

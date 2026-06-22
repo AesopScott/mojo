@@ -11,7 +11,7 @@
 
 ## Backlog Item
 
-- Backlog ID: B-001 through B-004, B-007, plus proof artifacts from B-006
+- Backlog ID: B-001 through B-004 and B-007 through B-009, plus proof artifacts from B-006
 - Priority: P0/P1
 - Depends on: accepted A2 design and profile contract
 - Ready/blocked: runtime-neutral harness ready; runtime-specific adapter blocked on runtime target
@@ -26,7 +26,7 @@
 - Tool bindings: none; denied or stubbed
 - Memory setup: proof artifacts only under `agents/vik-aspa/run-artifacts`
 - Permission gates: profile/design/autonomy-contract guard blocks denied tools, memory writes, external communication, production, spending, autonomous timers, secrets, authority expansion, and runtime-specific build requests
-- Autonomy gate: input-led autonomy contract worksheet exists; activation remains blocked until R&R, remaining contract fields, approval, and Equip/Evaluate/Deploy/Observe proof
+- Autonomy gate: canonical contract approves Level 4 scoped research/architecture loops only; Level 5, Level 6, Agent promotion, autonomous runtime, and deployed operation remain blocked until approval and Equip/Evaluate/Deploy/Observe proof
 - Verification command or manual check: `python -m unittest agents.vik-aspa.tests.test_aspa_runtime`
 - Known incompatibilities: no runtime adapter proof until target runtime selected
 
@@ -34,12 +34,13 @@
 
 | Slice | Behavior | Proof | Status | Evidence |
 |---|---|---|---|---|
-| 1 | Runtime-neutral profile/design/backlog loader | Missing contract tests | Complete | 13 unit tests pass |
+| 1 | Runtime-neutral profile/design/backlog loader | Missing contract tests | Complete | 16 unit tests pass |
 | 2 | Guardrail classifier | Denied behavior tests | Complete | production/tool/memory/external/spending/autonomy/secrets/authority tests pass |
 | 3 | Local CLI run | Allowed and blocked local commands | Complete | `python agents\vik-aspa\run_aspa.py --request "Review role-agent boundary for Bea"` |
 | 4 | Audit/state/log artifacts | Artifact files created | Complete | `agents/vik-aspa/run-artifacts/state.json`, `audit.jsonl`, `run.log` |
-| 5 | Autonomy contract gate | Missing contract and input-interview-in-progress activation blocked | Complete | `agents/vik-aspa/autonomy-contract.md`; 14 unit tests pass |
-| 6 | Runtime adapter | Adapter proof | Deferred | Runtime target undecided |
+| 5 | Autonomy contract gate | Missing contract and higher activation blocked | Complete | `agents/vik-aspa/autonomy-contract.md`; 16 unit tests pass |
+| 6 | Level 4 scoped-loop classifier | Valid backlog/work-state item allowed; builder drift blocked | Complete | scoped research loop and production drift tests pass |
+| 7 | Runtime adapter | Adapter proof | Deferred | Runtime target undecided |
 
 ## Implementation Notes
 
@@ -49,11 +50,12 @@
 - CLI returns `0` for allowed architecture review and `2` for blocked approval-gated behavior.
 - Missing contract files return contract failure.
 - Missing autonomy contract returns contract failure.
-- Input-interview-in-progress autonomy contract is loadable as source truth but blocks activation.
+- Canonical Level 4 autonomy contract is loadable as source truth and allows only scoped research/architecture loops.
+- Higher activation remains blocked.
 
 ## Checks
 
-- Unit: `python -m unittest agents.vik-aspa.tests.test_aspa_runtime` -> 14 tests passed.
+- Unit: `python -m unittest agents.vik-aspa.tests.test_aspa_runtime` -> 16 tests passed.
 - Integration: CLI reads five control artifacts and writes audit/state/log artifacts.
 - Scenario eval: allowed architecture review, production block, runtime-specific block, tool block, memory block.
 - Runtime/manual: runtime-neutral local CLI only.

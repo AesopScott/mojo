@@ -6,7 +6,7 @@ description: Create the MAPS Design phase artifact for an agent or multi-agent s
 # Design Agent
 ## Versioning
 
-Current version: 0.4.0.
+Current version: 0.5.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,6 +18,7 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-21 - v0.5.0 - Added TDD design requirements using `dwyl/learn-tdd` as the reference pattern for red/green/refactor, failing-test-first proof, and build-gate evidence.
 - 2026-06-19 - v0.4.0 - Restored voice-profile selection from the voice taxonomy as a required design output while preserving profile gates and non-authority boundaries.
 - 2026-06-19 - v0.3.0 - Made `agents/{agent-handle}/agent-profile.md` required before design, added profile-limit checks and safe profile sync fields, and required website profile pages to remain mirrors only.
 - 2026-06-19 - v0.2.0 - Added role-to-agent design boundaries: `/design-agent` creates the design contract, runtime contract, build backlog, proof plan, and build gate, but must not claim implementation or operational readiness.
@@ -49,6 +50,29 @@ R&R means the agent does the first pass of design judgment.
 12. Ask the user to override only the recommendations they disagree with or want to sharpen.
 
 If research access is unavailable, state that limitation and use known patterns from the brief and MAPS catalogs as the basis for the recommendations.
+
+## TDD Reference Pattern
+
+Use `dwyl/learn-tdd` as the default TDD reference pattern when designing test-first proof for agent builds.
+
+Reference:
+
+- Repo: `https://github.com/dwyl/learn-tdd`
+- License: MPL-2.0
+- Fit: beginner-friendly TDD loop with clear failing-test-first, minimal implementation, and refactor rhythm.
+- Usage boundary: use as a design reference only. Do not copy code, import dependencies, or treat the repo as a runtime dependency unless a separate adoption review approves that.
+
+Every design must translate test-first proof into a concrete TDD build gate:
+
+1. Name the first failing tests before implementation begins.
+2. Define the red/green/refactor loop for each implementation slice.
+3. Separate acceptance tests, unit tests, integration tests, and e2e tests.
+4. State which collaborators, tools, APIs, memory stores, or external services are mocked, faked, simulated, or real.
+5. Require regression tests for every fixed failure mode.
+6. Require `/build-agent` to show failing-test evidence first, then passing-test evidence, then refactor evidence when refactoring occurs.
+7. Block build start when the design cannot name at least one meaningful failing test or acceptance scenario.
+
+For agent systems, map TDD proof to behavior, not only code. A valid failing test can be an eval scenario, contract test, approval-gate test, tool-call boundary test, memory-write test, handoff test, stop-condition test, or user-journey test.
 
 ## Project foundation updates
 
@@ -99,7 +123,7 @@ Ask:
 - What tools, integrations, permissions, and credentials are allowed or forbidden?
 - What human approvals, escalation paths, and refusal behavior are required?
 - What failure modes worry the user most?
-- What must be proven before `/build-agent` starts?
+- What failing test, acceptance scenario, or eval should exist before `/build-agent` starts?
 - What runtime target, runtime-neutral profile, adapter requirement, or no-adapter decision must Build use?
 - What open decisions should remain explicit instead of guessed?
 
@@ -122,7 +146,7 @@ If the user cannot answer, propose a recommendation and ask them to accept, revi
 13. Recommend tools, integrations, permissions, and constraints.
 14. Recommend guardrails, human approval gates, escalation paths, and forbidden paths.
 15. Recommend observability needs and evaluation implications.
-16. Recommend the test-first proof plan: test strategy, acceptance scenarios, eval shape, unit/integration/e2e balance, mock vs real tool policy, failure cases, regression gates, and what must be proven before `/build-agent` starts.
+16. Recommend the TDD proof plan: first failing tests, acceptance scenarios, red/green/refactor loop, eval shape, unit/integration/e2e balance, mock/fake/simulated/real tool policy, failure cases, regression gates, and what must be proven before `/build-agent` starts.
 17. State whether Build must create a runtime profile, runtime adapter, or no adapter.
 18. Create or update an ordered build backlog when the design identifies implementation slices.
 19. Update only safe, non-authority-expanding profile sync fields when the project and source role allow profile updates.
@@ -175,6 +199,7 @@ The completed file contains:
 - Regression gates
 - Proof required before `/build-agent`
 - Build gate, including what must be proven before `/build-agent` starts
+- TDD build gate, including first failing tests, red/green/refactor evidence, mock/fake/simulated/real boundaries, and regression proof
 - Agent profile source path, profile gates, profile-limit check result, and any approval-required profile conflicts
 - Safe profile sync fields updated or explicitly left unchanged
 - Website profile mirror sync status, if a website profile page exists
@@ -193,6 +218,7 @@ Use `assets/maps/templates/workflow-spec.md` from the Mojo repo when the install
 - Recommendations have reasoning.
 - User overrides are captured.
 - Test-first proof requirements are explicit.
+- TDD proof requirements name the first failing tests, acceptance scenarios, red/green/refactor evidence, mock/fake/simulated/real boundaries, and regression gates.
 - The design names what must be proven before `/build-agent` starts.
 - The design includes a build gate and cannot be mistaken for implementation.
 - Role contract, agent brief, and agent profile authority, memory, tool, approval, stop-condition, activation, profile-gate, and runtime-enforcement controls do not conflict.

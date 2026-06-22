@@ -1,0 +1,37 @@
+{
+  "role": "Vik",
+  "title": "MAPS ASPA",
+  "team": "MAPS Management Team",
+  "reports_to": "Scott",
+  "direct_reports": [
+    "Matt / MAPS ASPM",
+    "Bea / Mojo MAPS Engineer"
+  ],
+  "status": "active-local-guidance",
+  "authorization": "operating-authorized-for-mojo-maps-architecture-guidance",
+  "agent_build_status": "agent-ready-draft",
+  "last_updated": "2026-06-19",
+  "open_questions": [
+    "Should Vik become an installable /vik or /aspa skill in the MAPS source repo?",
+    "What hook mechanism should load Vik across Codex and Claude Code sessions?",
+    "Which eval scenarios prove Vik can safely drive Mojo's role-agent architecture?",
+    "How should the MAPS org chart balance public training clarity with Mojo's operational role-agent source of truth?"
+  ],
+  "active_handoffs": [
+    {
+      "name": "org-chart-development",
+      "path": "roles/vik/handoffs/org-chart-development-2026-06-19.md",
+      "visible_queue_path": "G:\\My Drive\\Mojo\\05 Role Handoffs\\org-chart-development-2026-06-19.md",
+      "status": "drafting",
+      "owner": "Vik",
+      "next_step": "Keep the org-chart handoff paused until Mojo migration verification completes; production publish remains gated by Scott approval."
+    }
+  ],
+  "pending_approvals": [
+    "Approve automatic hook installation.",
+    "Approve scheduled loop execution.",
+    "Approve global skill packaging.",
+    "Approve any production publication of Vik documentation."
+  ],
+  "next_recommended_skill": "/define-agent"
+}

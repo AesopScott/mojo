@@ -4,7 +4,7 @@
   "owner": "Matt",
   "purpose": "PM-owned backlog for Mojo MAPS work, including skill contracts, training surfaces, role-to-agent proof work, and engineer handoffs.",
   "created_at": "2026-06-19",
-  "updated_at": "2026-06-19T23:18:42Z",
+  "updated_at": "2026-06-20T03:58:00Z",
   "source_channels": [
     "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
     "G:\\My Drive\\Mojo\\channels\\pipeline.md",
@@ -59,7 +59,7 @@
       "category": "Program Management",
       "priority": 95,
       "impact": "major",
-      "status": "ready",
+      "status": "backlog",
       "owner": "Matt",
       "implementation_owner": "Matt",
       "created_at": "2026-06-19",
@@ -90,7 +90,7 @@
       "category": "Build Proof",
       "priority": 90,
       "impact": "major",
-      "status": "ready",
+      "status": "backlog",
       "owner": "Matt",
       "implementation_owner": "Bea",
       "created_at": "2026-06-19",
@@ -490,6 +490,428 @@
           "status": "passed",
           "verified_on": "2026-06-19",
           "verification_method": "python -m json.tool maps/backlog.json exited 0; python assets/maps/scripts/validate_maps_skills.py passed for 21 skills."
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "MAPS-013",
+      "title": "Review MAPS skills for role, task, guardrails, and response expectations",
+      "description": "Review every skill we build and every skill in standalone Maps for four required prompt contract elements: 1. Role, 2. Defined Task, 3. Guardrails, and 4. Response Expectations.",
+      "category": "Skill Contract",
+      "priority": 93,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Scott request in Matt channel to review every built skill and every Maps skill for four prompt contract elements: Role, Defined Task, Guardrails, and Response Expectations.",
+      "counterpart_status": "Review scope includes Mojo MAPS skills and standalone Maps skills. MAPS+Org is being rebuilt and remains out of scope unless Scott or Reid assigns it later.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Skill inventory exists",
+          "expectedBehavior": "Backlog review identifies every Mojo-built skill and every standalone Maps skill to be checked.",
+          "proofType": "artifact-review",
+          "exactCommand": "rg --files assets/maps/skills C:\\Users\\scott\\Code\\maps\\skills | rg \"SKILL\\.md$\"",
+          "expectedPassingEvidence": "Inventory lists all skill SKILL.md files in Mojo-built MAPS source and standalone Maps source.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "Prompt contract review matrix",
+          "expectedBehavior": "Each reviewed skill has explicit notes for Role, Defined Task, Guardrails, and Response Expectations.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review generated MAPS-013 matrix artifact after audit.",
+          "expectedPassingEvidence": "Matrix contains one row per skill with pass/fail/needs-fix status for Role, Defined Task, Guardrails, and Response Expectations, plus concrete follow-up backlog items where needed.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "Follow-up routing",
+          "expectedBehavior": "Any skill that lacks Role, Defined Task, Guardrails, or Response Expectations gets a scoped follow-up item before implementation changes begin.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review maps/backlog.json for follow-up items linked to MAPS-013.",
+          "expectedPassingEvidence": "Backlog contains linked fix items for every failed or incomplete skill contract finding.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "MAPS-014",
+      "title": "Enforce prompt-response communication expectations for operators, coordinators, and executors",
+      "description": "Define and enforce prompt-response communication expectations for every Operator, Coordinator, and Executor so each activated role or agent responds with clear role identity, scoped task understanding, authority boundary, action/answer, evidence or blocker, and next handoff when relevant.",
+      "category": "Operating Contract",
+      "priority": 92,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-013"
+      ],
+      "source": "Scott request in Matt channel to create a backlog item enforcing prompt response communication expectations from every Operator, Coordinator, and Executor.",
+      "counterpart_status": "Scope starts with Mojo MAPS role/agent operating contracts and standalone Maps skill contracts. MAPS+Org is being rebuilt and remains out of scope unless Scott or Reid assigns it later.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Communication expectation contract drafted",
+          "expectedBehavior": "A reusable contract defines what every Operator, Coordinator, and Executor must include in prompt responses.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review the MAPS-014 contract artifact after drafting.",
+          "expectedPassingEvidence": "Contract covers role identity, defined task, authority boundary, direct answer/action, evidence or blocker, next handoff, and response format expectations.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "Role and skill integration plan exists",
+          "expectedBehavior": "Backlog or design notes identify which templates, role artifacts, skills, and memory templates need updates to enforce the communication expectation.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-014 implementation plan and affected-file list.",
+          "expectedPassingEvidence": "Plan names affected role templates, memory templates, skill contracts, validators, and any website/training mirrors before implementation begins.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "Validation path defined",
+          "expectedBehavior": "The work defines how future Operator, Coordinator, and Executor prompts are checked for the communication expectation.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-014 validation plan.",
+          "expectedPassingEvidence": "Validation plan includes acceptance checks or validator updates for required response expectations.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "MAPS-015",
+      "title": "Add MAPS contract failure rules and Agent eval gates",
+      "description": "Add backlog coverage for five MAPS operating-contract fixes: repo update language, R&R before question, single-role scope, Release Management channel first, and eval scenarios for these exact failures before any role can become Agent.",
+      "category": "Operating Contract",
+      "priority": 97,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-013",
+        "MAPS-014"
+      ],
+      "source": "Scott request in Matt channel to add backlog item covering repo update language, R&R before question, single-role scope, Release Management channel first, and eval scenarios for those failures before Agent status.",
+      "counterpart_status": "Scope starts with Mojo MAPS skills, templates, validators, and standalone Maps skill parity where relevant. MAPS+Org is being rebuilt and remains out of scope unless Scott or Reid assigns it later.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Repo update language rule",
+          "expectedBehavior": "MAPS contracts explicitly say local repo edit, install, commit, and push are separate actions and each must be named when relevant.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review affected MAPS skill and template contracts for separate repo edit/install/commit/push language.",
+          "expectedPassingEvidence": "Contracts distinguish local repo edit, install, commit, and push without collapsing them into one vague update.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "R&R before question rule",
+          "expectedBehavior": "All MAPS contract/interview skills require Research and Recommend before asking implementation-shaping questions, except when one exact blocker question is needed to proceed safely.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS contract/interview skills for R&R-before-question language.",
+          "expectedPassingEvidence": "Every contract/interview skill has explicit R&R-before-question behavior and one-question blocker exception.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "Single-role scope rule",
+          "expectedBehavior": "MAPS role/agent work stays scoped to the single named role unless the user asks for org-role expansion or a cited source requires it.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review role/agent skills and templates for single-role scope language.",
+          "expectedPassingEvidence": "Contracts block unasked org-role expansion and require explicit user request or source requirement before expanding scope.",
+          "status": "pending"
+        },
+        {
+          "number": 4,
+          "title": "Release Management channel first rule",
+          "expectedBehavior": "Git/GitHub approval requests go to the Release Management channel before any point handoff to Reid.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review repo-write routing rules in skills, templates, memories, and handoff guidance.",
+          "expectedPassingEvidence": "Rules require Release Management channel record first, then optional Point Handoff escalation or notice to Reid.",
+          "status": "pending"
+        },
+        {
+          "number": 5,
+          "title": "Agent eval failure scenarios",
+          "expectedBehavior": "Before any role can become Agent, eval scenarios must test these exact failures: collapsed repo update language, question before R&R, unasked org-role expansion, bypassing Release Management channel, and missing response expectations.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review agent eval templates and role-to-agent gates for these exact failure scenarios.",
+          "expectedPassingEvidence": "Eval templates or gates include the five named failures and block Agent status when any fail.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MAPS-016",
+      "title": "Route org-chart left-side rebuild to Jay",
+      "description": "Track Scott's requested rebuild of the entire left side of the Mojo /maps org-chart page as Jay-owned work. Matt owns backlog intake, sequencing, and status tracking only; Matt must not implement the page rebuild.",
+      "category": "Website",
+      "priority": 91,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Jay",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Scott correction in Matt channel: the org-chart left-side page rebuild is Jay's work.",
+      "counterpart_status": "Scope is Mojo /maps org-chart page work. Matt should route and track; Jay owns implementation. No page files should be edited by Matt for this item.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Jay ownership recorded",
+          "expectedBehavior": "Backlog and channels record Jay as implementation owner for the org-chart left-side rebuild and Matt as PM tracker only.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review maps/backlog.json, G:\\My Drive\\Mojo\\channels\\pipeline.md, and G:\\My Drive\\Mindshare\\channels\\communications.md for MAPS-016.",
+          "expectedPassingEvidence": "Artifacts identify Jay as the implementation owner and state that Matt must not implement the page rebuild.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "Visual verification before ready",
+          "expectedBehavior": "Before Jay marks the page work ready, Jay visually verifies the rebuilt left side in the browser and records the verification evidence.",
+          "proofType": "visual-review",
+          "exactCommand": "Jay to use the in-app browser or approved visual verification path for the local /maps/org-chart/ page.",
+          "expectedPassingEvidence": "Jay records screenshot or browser verification notes showing the rebuilt left side before ready/complete status.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "No Matt implementation",
+          "expectedBehavior": "Matt does not edit maps/org-chart/index.html, maps.css, or related page implementation files for MAPS-016.",
+          "proofType": "diff-review",
+          "exactCommand": "Review git diff for MAPS-016-related changes before any release routing.",
+          "expectedPassingEvidence": "Any MAPS-016 page implementation diff is owned by Jay, not Matt.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "MAPS-017",
+      "title": "Define Agent promotion guardrail and eval hardening",
+      "description": "Sequence guardrail and evaluation hardening before any future role-to-Agent promotion, /equip-agent runtime work, runtime adapter work, deployment, observation, or promotion work resumes for Vik/ASPA or any other role.",
+      "category": "Evaluation",
+      "priority": 99,
+      "impact": "major",
+      "status": "implementation-sequenced",
+      "owner": "Matt",
+      "implementation_owner": "Bea",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-013",
+        "MAPS-014",
+        "MAPS-015"
+      ],
+      "source": "Vik Pipeline handoff after Scott paused Vik/ASPA Agent promotion pending stronger guardrails and eval proof.",
+      "counterpart_status": "Scope starts with Mojo MAPS guardrail and eval sequencing. Standalone Maps parity and repo writes require Release Management routing before action. MAPS+Org remains out of scope unless Scott or Reid assigns it.",
+      "plan_artifact": "G:\\My Drive\\Mojo\\maps-runs\\maps-017-agent-promotion-guardrail-eval-hardening.md",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Agent promotion pause respected",
+          "expectedBehavior": "Pipeline and backlog state that Vik remains Role+ and no /equip-agent, runtime adapter, deployment, observation, or Agent-promotion work resumes before guardrail/eval hardening is defined and accepted.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review maps/backlog.json and G:\\My Drive\\Mojo\\channels\\pipeline.md for MAPS-017.",
+          "expectedPassingEvidence": "MAPS-017 blocks future Agent-promotion work until guardrail/eval hardening is defined and accepted.",
+          "status": "passed"
+        },
+        {
+          "number": 2,
+          "title": "Failure scenarios defined",
+          "expectedBehavior": "Eval scenarios cover the observed failures: role-scope drift, question before Research and Recommendation, unclear repo update language, bypassing Release Management channel, missing response expectations, and implementation outside assigned role scope.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-017 guardrail/eval artifact after drafting.",
+          "expectedPassingEvidence": "Artifact contains concrete scenarios, expected failures, pass criteria, and blocked-promotion consequences.",
+          "status": "passed"
+        },
+        {
+          "number": 3,
+          "title": "Promotion gate integrated",
+          "expectedBehavior": "Role-to-Agent promotion guidance requires passing MAPS-017 guardrail/eval scenarios before any role can be treated as Agent or Executor.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review affected skill/template/eval contracts after MAPS-017 implementation planning.",
+          "expectedPassingEvidence": "Affected contracts name the gate and block promotion when any scenario fails.",
+          "status": "pending"
+        },
+        {
+          "number": 4,
+          "title": "Stop/no-action override scenario defined",
+          "expectedBehavior": "Guardrail/eval plan catches failures where a role keeps acting after Scott says stop, leave it alone, do not touch it, or says the work belongs to another role.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-017 guardrail/eval artifact for stop/no-action override guardrail and scenario.",
+          "expectedPassingEvidence": "Artifact requires immediate stop, constraint acknowledgement, and response limited to explanation, routing, or requested status unless Scott later authorizes action.",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "MAPS-018",
+      "title": "Question until certain",
+      "description": "Add an operating rule for roles, operators, coordinators, executors, and MAPS skills: when the role is not certain enough to act safely or correctly, it must keep asking one focused question at a time until the uncertainty is resolved instead of guessing, over-scoping, or implementing from a bad assumption.",
+      "category": "Operating Contract",
+      "priority": 96,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-013",
+        "MAPS-014",
+        "MAPS-015",
+        "MAPS-017"
+      ],
+      "source": "Scott request in Matt channel: backlog item is 'Question until certain.'",
+      "counterpart_status": "Scope starts with Mojo MAPS operating contracts, role templates, and skill prompt expectations. Standalone Maps parity and repo writes require Release Management routing before action. MAPS+Org remains out of scope unless Scott or Reid assigns it.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Question-until-certain rule drafted",
+          "expectedBehavior": "A reusable operating rule says uncertain roles must ask one focused question at a time until certain enough to act safely and correctly.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-018 rule artifact after drafting.",
+          "expectedPassingEvidence": "Rule distinguishes useful uncertainty questions from noisy deferral and blocks action from assumptions when certainty is insufficient.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "Rule integrated into response expectations",
+          "expectedBehavior": "Operator, Coordinator, Executor, and relevant MAPS skill response expectations include the question-until-certain behavior.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review affected role, skill, and template contracts after MAPS-018 implementation planning.",
+          "expectedPassingEvidence": "Affected contracts include the rule and keep the one-question-at-a-time MAPS behavior.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "Eval scenario exists",
+          "expectedBehavior": "Eval scenarios test that a role asks a focused question when certainty is insufficient and does not guess or implement from an unsafe assumption.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review eval templates and MAPS-017/MAPS-018 scenario artifacts after drafting.",
+          "expectedPassingEvidence": "Eval scenario fails any role or skill response that guesses, over-scopes, or acts without enough certainty.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "MAPS-019",
+      "title": "Correct scaffold next-skill routing",
+      "description": "Update /scaffold so completion reports conditional A1 routing instead of hard-coding /foundation as the next skill. Scaffold should route to /foundation only when M0 is missing or incomplete, to /shape when valid M0 exists, to /define-agent when an approved role is moving into A1, or to no phase skill when the scaffold is only a reusable framework/template shell.",
+      "category": "Skill Contract",
+      "priority": 94,
+      "impact": "moderate",
+      "status": "release-review",
+      "owner": "Vik",
+      "implementation_owner": "Vik",
+      "created_at": "2026-06-19",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-001"
+      ],
+      "source": "Scott asked why a fresh scaffold run reported /foundation as the fixed follow-up skill; Vik's A1 review said scaffold must route based on project state.",
+      "counterpart_status": "Mojo source, installed Codex skill, and standalone Maps source have been locally updated to /scaffold v0.3.0. MAPS+Org has no scaffold skill counterpart yet; treat that as a packaging/sync gap for Reid/Liz coordination, not as a harmless absence.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Conditional routing text present",
+          "expectedBehavior": "/scaffold completion instructions report conditional A1 routing instead of a fixed /foundation next step.",
+          "proofType": "artifact-review",
+          "exactCommand": "Select-String -Path assets/maps/skills/scaffold/SKILL.md -Pattern 'conditional A1 routing','Use /foundation only','Use /shape','Use /define-agent'",
+          "expectedPassingEvidence": "The scaffold skill names all conditional routes and does not require /foundation for every scaffold run.",
+          "status": "passed"
+        },
+        {
+          "number": 2,
+          "title": "Skill contract validation passes",
+          "expectedBehavior": "Mojo and standalone Maps skill validators pass after the /scaffold v0.3.0 change.",
+          "proofType": "command",
+          "exactCommand": "python assets\\maps\\scripts\\validate_maps_skills.py; python C:\\Users\\scott\\Code\\maps\\scripts\\validate_maps_skills.py",
+          "expectedPassingEvidence": "Both validators pass without contract errors.",
+          "status": "passed"
+        },
+        {
+          "number": 3,
+          "title": "Release routing completed",
+          "expectedBehavior": "Reid reviews and approves or blocks the scoped Git write for the Mojo and Maps source files before commit or push.",
+          "proofType": "handoff-review",
+          "exactCommand": "Review G:\\My Drive\\Mindshare\\channels\\release-management.md for MAPS-019.",
+          "expectedPassingEvidence": "Release Management records Reid's approval/block decision for exactly the scoped source files.",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "id": "MAPS-020",
+      "title": "Research, Respond, Plan, Don't Act",
+      "description": "Add an operating rule for MAPS roles, operators, coordinators, executors, and skills: when Scott is discussing a backlog item, policy change, architecture concern, or planning question, the role must research current state, respond with findings, propose a plan, and not implement until Scott explicitly asks for action.",
+      "category": "Operating Contract",
+      "priority": 96,
+      "impact": "major",
+      "status": "backlog",
+      "owner": "Matt",
+      "implementation_owner": "Matt",
+      "created_at": "2026-06-20",
+      "completed_at": null,
+      "dependencies": [
+        "MAPS-013",
+        "MAPS-014",
+        "MAPS-015",
+        "MAPS-017",
+        "MAPS-018"
+      ],
+      "source": "Scott request in Bea channel: create a backlog item called \"Research, Respond, Plan, Don't Act\".",
+      "counterpart_status": "Scope starts with Mojo MAPS operating contracts, role templates, and skill prompt expectations. Standalone Maps parity and repo writes require Release Management routing before action. MAPS+Org remains out of scope unless Scott or Reid assigns it.",
+      "proofUnits": [
+        {
+          "number": 1,
+          "title": "Research-respond-plan rule drafted",
+          "expectedBehavior": "A reusable operating rule tells roles to research current state, respond with findings, and propose a plan before implementation when Scott has not explicitly asked for action.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review MAPS-020 rule artifact after drafting.",
+          "expectedPassingEvidence": "Rule distinguishes planning/discussion from implementation authorization and blocks action when Scott says not to act.",
+          "status": "pending"
+        },
+        {
+          "number": 2,
+          "title": "Rule integrated into response expectations",
+          "expectedBehavior": "Operator, Coordinator, Executor, and relevant MAPS skill response expectations include research, response, plan, and wait-for-authorization behavior.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review affected role, skill, and template contracts after MAPS-020 implementation planning.",
+          "expectedPassingEvidence": "Affected contracts require research and planning without implementation unless Scott explicitly asks for action.",
+          "status": "pending"
+        },
+        {
+          "number": 3,
+          "title": "Eval scenario exists",
+          "expectedBehavior": "Eval scenarios test that a role does not implement when Scott is discussing, questioning, planning, or explicitly says not to act.",
+          "proofType": "artifact-review",
+          "exactCommand": "Review eval templates and MAPS-020 scenario artifacts after drafting.",
+          "expectedPassingEvidence": "Eval scenario fails any role or skill response that moves from research/planning into implementation without explicit action authorization.",
+          "status": "pending"
         }
       ]
     }

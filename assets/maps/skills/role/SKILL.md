@@ -6,7 +6,7 @@ description: Build role agents for a root organization or multi-agent corporatio
 # Role
 ## Versioning
 
-Current version: 0.26.0.
+Current version: 0.32.1.
 
 Follow semantic versioning for this skill:
 
@@ -18,7 +18,15 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
-- 2026-06-20 - v0.26.0 - Added required role-home Codex session creation in the correct project and activation packet delivery when Scott approves a new employee for activation.
+
+- 2026-06-21 - v0.32.1 - Added gate-block tracking instructions to memory templates so roles remember to update `gate-blocks.md` when gate blocks open or clear.
+- 2026-06-21 - v0.32.0 - Added required per-role `gate-blocks.md` files so gate blocks can be tracked by role and monitored by Reid.
+- 2026-06-21 - v0.31.0 - Made standalone `WhoAmI.md` and `state.json` required role outputs, added `templates/whoami-template.md`, and required Obsidian-visible Who Am I mirrors when a project memory root exists.
+- 2026-06-20 - v0.30.0 - Added Mindshare culture standards and required Who Am I card lines to new role contracts.
+- 2026-06-20 - v0.29.0 - Made `name.md` and `personality.md` required outputs for new roles, with `personality.md` carrying the required primary voice entry and room-bound Who Am I card source behavior.
+- 2026-06-20 - v0.28.0 - Added role-name preload guidance using `G:\My Drive\Mindshare\roles.md` as the canonical employee/name directory. Superseded by v0.29.0 room-bound Who Am I card context.
+- 2026-06-20 - v0.27.0 - Added optional `personality.md` loading hooks for role voice, personality, meeting behavior, and distinct multi-role participation.
+- 2026-06-20 - v0.26.0 - Added required role-home Codex session creation in the correct project, activation packet delivery, and Communications announcement when Scott approves a new employee for activation.
 - 2026-06-19 - v0.25.0 - Added the mandatory Research, Respond, Plan, Don't Act response pattern for Operators, Coordinators, and Executors before implementation or routing actions.
 - 2026-06-19 - v0.24.0 - Expanded adaptive quiet heartbeat cadence to add 30-minute and 2-hour fallback stages while preserving cadence-only scope.
 - 2026-06-19 - v0.23.0 - Reformatted heartbeat automation prompt template into topic-based paragraphs while preserving the same cadence, context, response, durable-write, and authority behavior.
@@ -130,6 +138,21 @@ Every Operator, Coordinator, and Executor must use this response pattern when Sc
 
 Do not implement, edit files, run write actions, route commits, change state, or expand scope until Scott explicitly asks for action or an already-approved routed handoff grants that action. If Scott has clearly granted action, still keep the implementation scoped to the named files, role, and authority boundary.
 
+## Mindshare Culture Standards
+
+Every new Mindshare-owned role contract must include a `Mindshare Culture Standards` section sourced from repo-root `MINDSHARE_CULTURE.md`.
+
+Required Who Am I card lines:
+
+- Proactive: I notice useful work, surface the next move, and do not wait to be chased.
+- Consistent: I use repeatable process, clear handoffs, and steady follow-through.
+- Bug-free: I verify before calling work done and treat avoidable defects as a trust issue.
+- Bounded: I plan before acting, get approval when needed, and stay inside my role authority.
+
+Trust standard: trust is earned through proactive, consistent, verified work inside clear bounds.
+
+Human-led boundary: permissions and financial choices stay human-led unless Scott explicitly grants a narrower approved policy.
+
 Approval gates:
 
 - Creating a draft role artifact is allowed when Scott asks to draft or create the role, accepts the Research and Recommend proposal, or an authorized role owner assigns the draft through an approved handoff channel.
@@ -137,7 +160,7 @@ Approval gates:
 - Authorized Mindshare role, authorized agent/executor build, activated operator, suspension, and retirement require explicit Scott approval unless an already-approved governance policy grants that authority.
 - Running the shared MAPS memory helper for `/role` records maturity and lifecycle status; it does not by itself approve or activate a role.
 - Updating `project-context.md`, `entity-map.md`, `AGENTS.md`, memory-loading instructions, or automatic activation rules for a role requires explicit approval unless the update clearly records the role as proposed or candidate-only.
-- Every new role gets a primary repo-local role memory file at `roles/<role-slug>/memory.md` from `memory-template.md`. Creating the memory file does not grant automatic loading, operating authorization, or agent status.
+- Every new role gets a primary repo-local role identity file at `roles/<role-slug>/name.md`, a required personality file at `roles/<role-slug>/personality.md` with a populated `Primary voice` entry, a required compact Who Am I prompt card at `roles/<role-slug>/WhoAmI.md`, a required gate block tracker at `roles/<role-slug>/gate-blocks.md`, a primary repo-local role memory file at `roles/<role-slug>/memory.md` from `memory-template.md`, and a machine-readable state file at `roles/<role-slug>/state.json`. Creating these files does not grant automatic loading, operating authorization, or agent status.
 - Every new role gets a role-specific heartbeat automation named `<role-slug>-handoff-check` from `templates/heartbeat-automation.md` when the Codex automation tool is available. Creating this heartbeat duplicates the handoff-check pattern only; it does not grant production action, external communication, spending, authority expansion, or autonomous runtime beyond the bounded heartbeat check.
 - When Scott approves activation for a new employee, create or locate the employee's Codex role-home session in the correct project before reporting activation complete. The role-home session is separate from heartbeat automation: it gives the employee a room; it does not grant autonomous runtime, production action, external communication, spending, release authority, or recurring checks.
 
@@ -164,13 +187,16 @@ At the start of every project run, look for `project-foundation.md`. If it exist
 
 When this skill creates durable knowledge, write the role's own durable memory first to `roles/<role-slug>/memory.md`, then update the configured Obsidian or notes memory root with the new role before the `/role` run can be called complete. After those role-specific writes succeed, record the run through the shared MAPS memory helper. The helper gives `/role` its own named note under the configured notes root, mirrors that note into the configured RAG location when one exists, appends the `MAPS Skill Run Log`, and records a RAG reindex manifest.
 
-Every `/role` run must also create or update a role-specific primary memory file from `memory-template.md`. Use `<project-memory-root>/memory-template.md` as the source when available; otherwise use `G:\My Drive\Mindshare\memory-template.md` when available; otherwise use `templates/memory-template.md` from the installed skill or repo. Replace `[role-name]` with the role slug, `[proper-role-name]` with the role display or proper name, `[project-repo]` with the active project repository root, and `[project-memory-root]` with the configured memory root when one exists. Write the primary role memory file to `roles/<role-slug>/memory.md`.
+Every `/role` run must also create or update `roles/<role-slug>/name.md` from `templates/name-template.md`, `roles/<role-slug>/personality.md` from `templates/personality-template.md`, `roles/<role-slug>/WhoAmI.md` from `templates/whoami-template.md`, `roles/<role-slug>/gate-blocks.md` from `templates/gate-blocks-template.md`, `roles/<role-slug>/state.json`, and a role-specific primary memory file from `memory-template.md`. Use `<project-memory-root>/memory-template.md` as the source when available; otherwise use `G:\My Drive\Mindshare\memory-template.md` when available; otherwise use `templates/memory-template.md` from the installed skill or repo. Replace `[role-name]` with the role slug, `[proper-role-name]` with the role display or proper name, `[project-repo]` with the active project repository root, and `[project-memory-root]` with the configured memory root when one exists. Write the primary role identity file to `roles/<role-slug>/name.md`, the primary role personality file to `roles/<role-slug>/personality.md`, the compact prompt card to `roles/<role-slug>/WhoAmI.md`, the gate block tracker to `roles/<role-slug>/gate-blocks.md`, the machine-readable state file to `roles/<role-slug>/state.json`, and the primary role memory file to `roles/<role-slug>/memory.md`.
 
 Whenever a role memory update adds or changes a reusable memory structure, field, routing rule, channel requirement, autonomy requirement, or operating requirement, update the active source `memory-template.md` in the same pass so future roles inherit the requirement. If the memory update is purely role-specific, check the template and leave it unchanged; do not copy role-specific facts into the template.
 
 When the project has an Obsidian or notes memory root, the run must also create or update these Obsidian-visible role files before completion:
 
 - `<project-memory-root>/<role-slug>.md` as the role memory mirror.
+- `<project-memory-root>/role/<role-slug>/name.md` as the role identity mirror.
+- `<project-memory-root>/role/<role-slug>/personality.md` as the role personality mirror.
+- `<project-memory-root>/role/<role-slug>/WhoAmI.md` as the role prompt-card mirror.
 - `<project-memory-root>/role/<role-slug>/role-agent.md` as the role contract mirror.
 
 Mark Obsidian mirrors as secondary unless project instructions explicitly make them primary. If the Obsidian or notes root exists but cannot be written or verified, the `/role` run is blocked and must not be reported as complete.
@@ -215,7 +241,7 @@ Also list the role's assigned handoff files. For the current Mindshare/Mojo role
 
 ## Role Home Session
 
-When Scott approves activating a new employee, create or locate the employee's Codex role-home session in the correct project before reporting the activation complete.
+When Scott approves activating a new employee, create or locate the employee's Codex role-home session in the correct project, send the activation packet, and write the company-visible announcement before reporting the activation complete.
 
 Use the Codex thread tools when available:
 
@@ -227,7 +253,7 @@ Use the Codex thread tools when available:
 - If a matching role-home session already exists, use that session and record its thread id/title instead of creating a duplicate.
 - If the thread tools are unavailable, write `roles/<role-slug>/session.md` as a blocked draft session spec and report that activation is incomplete until the role-home session is created.
 
-Record the role-home session id or title in `roles/<role-slug>/memory.md`, the Obsidian memory mirror when one exists, the organization roles directory when that directory tracks the role, and the relevant function channel or Communications channel when the activation changes organization-visible status.
+Record the role-home session id or title in `roles/<role-slug>/memory.md`, the Obsidian memory mirror when one exists, the organization roles directory when that directory tracks the role, and the relevant function channel or Communications channel when the activation changes organization-visible status. Announce activations, replacements, suspensions, retirements, reporting changes, and role-boundary changes in the Communications channel before reporting activation complete.
 
 Creating the role-home session is activation plumbing only. It does not create a heartbeat, file watcher, background automation, agent runtime, tool access, production authority, release authority, external communication authority, spending authority, or authority expansion.
 
@@ -369,7 +395,8 @@ If the user is still scoping, offer three role modes:
    - direct first-person start: when a role is invoked, the response should begin as the role speaking in first person
    - activation phrase or header: optional metadata for artifacts only; do not use a chat header if it delays or weakens the first-person response
    - boundary disclosure: how the role names limits without breaking character, such as "I can recommend this, but I need approval before acting"
-8. Define engagement explicitly:
+8. Add the `Mindshare Culture Standards` section to the role contract and room-bound Who Am I card context, using the four required lines from `MINDSHARE_CULTURE.md`: Proactive, Consistent, Bug-free, and Bounded.
+9. Define engagement explicitly:
    - primary engagement: passive reference, advisory, review gate, workflow owner, operator, autonomous loop, or escalation authority
    - secondary engagements
    - trigger and activation condition
@@ -378,7 +405,7 @@ If the user is still scoping, offer three role modes:
    - expected implementation form from `references/role-engagement-taxonomy.md`
    - human involvement and handoff expectations
    - deactivation or stop condition
-9. Define the operating loop if needed:
+10. Define the operating loop if needed:
    - trigger
    - context intake
    - plan
@@ -388,7 +415,7 @@ If the user is still scoping, offer three role modes:
    - memory update
    - escalation
    - review cadence
-10. Define role memory and create the primary role memory file from `memory-template.md`:
+11. Define role identity, personality, and memory; create `name.md` from `templates/name-template.md`, `personality.md` from `templates/personality-template.md`, and the primary role memory file from `memory-template.md`:
    - role name: `[role-name]`
    - proper role name: `[proper-role-name]`
    - durable facts
@@ -405,7 +432,7 @@ If the user is still scoping, offer three role modes:
    - loading proposal that does not imply automatic loading until Scott approves it
    - the exact handoff check goal line: `Create a goal to read your assigned handoff files every 5 min, if not engaged in active work.`
    - assigned handoff files under the visible role handoff queue
-11. Define interfaces:
+12. Define interfaces:
    - human asks
    - agent-to-agent handoffs
    - assigned function channel files
@@ -413,8 +440,8 @@ If the user is still scoping, offer three role modes:
    - output formats
    - approval checkpoints
    - status updates
-12. Define tools, permissions, and constraints.
-13. Define authority explicitly:
+13. Define tools, permissions, and constraints.
+14. Define authority explicitly:
    - taxonomy level: none, observe, advise, recommend, draft, coordinate, execute-with-approval, execute-within-policy, approve, veto, autonomous-within-bounds, emergency-only, or owner
    - authority domains: advice, artifacts, workflow, tools, memory/RAG, data, external communication, money/commitments, policy/governance, people/roles, deployment/production, escalation
    - decision rights
@@ -423,14 +450,14 @@ If the user is still scoping, offer three role modes:
    - forbidden decisions and actions
    - special declarations from `references/role-authority-taxonomy.md`
    - revocation or rollback path
-14. Define learning and growth:
+15. Define learning and growth:
    - what the role should learn from each run
    - where learned responsibilities and capabilities are proposed
    - what evidence is required before the role gains new responsibility
    - who approves expanded authority
    - how role changes are written to notes, RAG, memory, and the role artifact
    - how stale or harmful responsibilities are retired
-15. Recommend the implementation form:
+16. Recommend the implementation form:
    - Skill when the role is mainly a reusable expert procedure invoked by a user or agent.
    - Script when the role performs a deterministic transformation, extraction, sync, or setup task.
    - Hook when the role should run automatically at session start, prompt submit, file change, commit, deploy, or another lifecycle event.
@@ -439,41 +466,41 @@ If the user is still scoping, offer three role modes:
    - Workflow/runbook when humans and agents share staged work, approvals, or handoffs.
    - MCP/tool integration when the role needs controlled access to external systems.
    - Dashboard/report when the role primarily makes state visible for review.
-16. Define proof:
+17. Define proof:
    - role scenarios
    - acceptance tests
    - eval rubrics
    - failure modes
    - review evidence
-17. Set professional maturity and role lifecycle status:
+18. Set professional maturity and role lifecycle status:
    - Default to `L0 Candidate` and `Mindshare candidate role / draft role contract` unless Scott explicitly approved a higher maturity level or lifecycle status.
    - Record the exact approval evidence when lifecycle status moves beyond `Mindshare candidate role / draft role contract`.
    - Do not mark a role `Authorized Mindshare role`, `Authorized agent`, `Activated operator`, or built from inference.
-18. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`, including the handoff check goal, heartbeat automation name, memory configuration, and assigned handoff files. The assigned files must include the active project's Heartbeat channel for every role.
-19. Create or update `roles/<role-slug>/memory.md` from `memory-template.md`, replacing `[role-name]`, `[proper-role-name]`, `[project-repo]`, and `[project-memory-root]`, and mark it with the same maturity level, role lifecycle status, memory configuration, handoff check goal, heartbeat automation name, and assigned handoff files. The assigned files must include the project's shared Heartbeat channel for every role. Do this for every role. Do not treat memory creation as approval for automatic loading or operation.
-20. If any role-memory update in this run adds or changes reusable memory structure, routing, channel, autonomy, or operating requirements, update the active source `memory-template.md` before reporting completion. If the memory update is role-specific only, verify the template does not need a change.
-21. Set operating taxonomy stage and compatibility automation status explicitly:
+19. Create `roles/<role-slug>/name.md` from `templates/name-template.md`, including proper role name, title, organization, status, work center, source roster, and primary voice. Create `roles/<role-slug>/personality.md` from `templates/personality-template.md`, including the required `Primary voice` entry and full voice/personality fields. Create `roles/<role-slug>/WhoAmI.md` from `templates/whoami-template.md` as the compact prompt-injection card compiled from `roles.md`, `name.md`, `personality.md`, `memory.md`, and `role-agent.md`. Create `roles/<role-slug>/gate-blocks.md` from `templates/gate-blocks-template.md` for active gate-block tracking. Create `roles/<role-slug>/role-agent.md` from `templates/role-agent.md`, including the culture standards, handoff check goal, heartbeat automation name, memory configuration, and assigned handoff files. The assigned files must include the active project's Heartbeat channel for every role.
+20. Create or update `roles/<role-slug>/memory.md` from `memory-template.md`, replacing `[role-name]`, `[proper-role-name]`, `[project-repo]`, and `[project-memory-root]`, and mark it with the same maturity level, role lifecycle status, memory configuration, handoff check goal, heartbeat automation name, and assigned handoff files. Create or update `roles/<role-slug>/state.json` with the role slug, proper role name, role title, organization, maturity level, lifecycle status, operating taxonomy stage, automation status, room binding status, source files, and last updated timestamp. The assigned files must include the project's shared Heartbeat channel for every role. Do this for every role. Do not treat memory or state creation as approval for automatic loading or operation.
+21. If any role-memory update in this run adds or changes reusable memory structure, routing, channel, autonomy, or operating requirements, update the active source `memory-template.md` before reporting completion. If the memory update is role-specific only, verify the template does not need a change.
+22. Set operating taxonomy stage and compatibility automation status explicitly:
    - `Position` for a job seat or role contract with no runtime implied.
    - `Operator` for an activated Position with bounded monitoring or action authority.
    - `Coordinator` for an Operator with cross-role, cross-channel, or process coordination authority.
    - `Executor` only for an autonomous authority-bearing agent stage with delegated mandate, state, tools, evals, runtime proof, and escalation boundaries.
    - `Tool Agent` only for a capability/tool worker outside org-position lineage.
    - Compatibility status remains `Role` when no automation is enabled, `Role+` when bounded automation exists without autonomous runtime authority, and `Agent` only when an implemented runtime exists with goal, state, tools, memory rules, authority gates, policy, evals, handoffs, escalation, and stop conditions.
-22. When the project has a configured Obsidian or notes memory root, create or update `<project-memory-root>/<role-slug>.md` as the required mirror of `roles/<role-slug>/memory.md`, and create or update `<project-memory-root>/role/<role-slug>/role-agent.md` as the required mirror of `roles/<role-slug>/role-agent.md`. Mark mirrors as secondary unless project instructions explicitly make them primary. Verify both files exist and contain the new role name before reporting completion. If either mirror cannot be written or verified, stop with status `blocked`.
-23. When Scott has approved activation for the new employee, create or locate the role-home Codex session in the correct project, send the activation packet there, and record the session id/title in repo memory, Obsidian mirror, and organization roster. If the role is only a candidate or draft, create the session spec only when Scott asks for the room.
-24. Create or update the Codex heartbeat automation `<role-slug>-handoff-check` using `templates/heartbeat-automation.md` and the Role Heartbeat Automation contract above. If the automation tool is unavailable, create `roles/<role-slug>/heartbeat-automation.md` from the template as a blocked draft automation spec instead.
-25. If the role is agent-ready, create a draft agent-build handoff that names the next skill:
+23. When the project has a configured Obsidian or notes memory root, create or update `<project-memory-root>/<role-slug>.md` as the required mirror of `roles/<role-slug>/memory.md`, create or update `<project-memory-root>/role/<role-slug>/name.md` as the role identity mirror, create or update `<project-memory-root>/role/<role-slug>/personality.md` as the role personality mirror, create or update `<project-memory-root>/role/<role-slug>/WhoAmI.md` as the role prompt-card mirror, and create or update `<project-memory-root>/role/<role-slug>/role-agent.md` as the required mirror of `roles/<role-slug>/role-agent.md`. Mark mirrors as secondary unless project instructions explicitly make them primary. Verify the mirrors exist and contain the new role name before reporting completion. If any required mirror cannot be written or verified, stop with status `blocked`.
+24. When Scott has approved activation for the new employee, create or locate the role-home Codex session in the correct project, send the activation packet there, record the session id/title in repo memory, Obsidian mirror, and organization roster, and announce the activation or replacement in Communications. If the role is only a candidate or draft, create the session spec only when Scott asks for the room.
+25. Create or update the Codex heartbeat automation `<role-slug>-handoff-check` using `templates/heartbeat-automation.md` and the Role Heartbeat Automation contract above. If the automation tool is unavailable, create `roles/<role-slug>/heartbeat-automation.md` from the template as a blocked draft automation spec instead.
+26. If the role is agent-ready, create a draft agent-build handoff that names the next skill:
    - `/define-agent` when the agent brief does not exist
    - `/design-agent` when the brief exists but the design does not
    - `/build-agent` when design exists and implementation is approved
    - `/evaluate-agent` when proof is needed before activation or authority expansion
-26. If the role is not agent-ready, explicitly list the missing criteria.
-27. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
-28. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
-29. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
-30. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules. Mark it draft until Scott approves the loop.
-31. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
-32. Run the shared MAPS memory helper for `/role` only after the artifact exists, clearly states professional maturity and role lifecycle status, and required Obsidian or notes-root role mirrors have been written and verified. The helper record must not imply authorized role or authorized agent status unless the artifact records that lifecycle status and approval evidence.
+27. If the role is not agent-ready, explicitly list the missing criteria.
+28. If the role should become a skill, create a draft `roles/<role-slug>/SKILL.draft.md` or recommend running a skill-creation pass.
+29. If the role should become a script, create a draft `roles/<role-slug>/script-spec.md` with inputs, outputs, command, idempotency, errors, and test cases.
+30. If the role should become a hook, create a draft `roles/<role-slug>/hook-spec.md` with trigger event, command, emitted context, permissions, failure behavior, and disable path.
+31. If the role should become a loop or active process, create a draft `roles/<role-slug>/loop.md` with triggers, cadence, state, actions, stop conditions, observability, and review rules. Mark it draft until Scott approves the loop.
+32. If the role owns a workflow, create a draft `roles/<role-slug>/workflow.md` with stages, handoffs, approvals, and artifacts.
+33. Run the shared MAPS memory helper for `/role` only after the artifact exists, clearly states professional maturity and role lifecycle status, and required Obsidian or notes-root role mirrors have been written and verified. The helper record must not imply authorized role or authorized agent status unless the artifact records that lifecycle status and approval evidence.
 
 ## Completion report
 
@@ -488,10 +515,10 @@ Report:
 - Operating taxonomy stage: `Position`, `Operator`, `Coordinator`, `Executor`, or separate-lineage `Tool Agent`.
 - Role automation status: `Role`, `Role+`, or `Agent`, with a short reason.
 - Agent build readiness: role-only, agent-ready, built, or missing criteria.
-- Role memory file: `roles/<role-slug>/memory.md` created or updated from `memory-template.md`.
-- Role-home session: created or located in the correct Codex project when activation was approved, with the session id/title recorded; or blocked with `roles/<role-slug>/session.md` when thread tools were unavailable.
+- Role identity/personality/prompt/gate-block/memory/state files: `roles/<role-slug>/name.md`, `roles/<role-slug>/personality.md`, `roles/<role-slug>/WhoAmI.md`, `roles/<role-slug>/gate-blocks.md`, `roles/<role-slug>/memory.md`, and `roles/<role-slug>/state.json` created or updated from their templates or structured state contract; `personality.md` includes a populated primary voice entry and `WhoAmI.md` is compiled from the role roster, identity, personality, memory, and role contract.
+- Role-home session and announcement: created or located in the correct Codex project when activation was approved, activation packet sent, session id/title recorded, and Communications announcement written; or blocked with `roles/<role-slug>/session.md` when thread tools were unavailable.
 - Memory template sync: whether `memory-template.md` was updated for reusable memory requirements, or explicitly checked and left unchanged because the memory change was role-specific.
-- Obsidian role update: required role memory mirror `<project-memory-root>/<role-slug>.md` and role contract mirror `<project-memory-root>/role/<role-slug>/role-agent.md` written and verified when the project has an Obsidian or notes memory root.
+- Obsidian role update: required role memory mirror `<project-memory-root>/<role-slug>.md`, identity mirror `<project-memory-root>/role/<role-slug>/name.md`, personality mirror `<project-memory-root>/role/<role-slug>/personality.md`, Who Am I mirror `<project-memory-root>/role/<role-slug>/WhoAmI.md`, and role contract mirror `<project-memory-root>/role/<role-slug>/role-agent.md` written and verified when the project has an Obsidian or notes memory root.
 - Heartbeat automation: `<role-slug>-handoff-check` created or updated from `templates/heartbeat-automation.md`, or `roles/<role-slug>/heartbeat-automation.md` created as a blocked draft if the automation tool was unavailable.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
 - Next skill: `/define-agent` when the role should become an APS agent, `/design-agent` when a brief already exists, or another `/role` run when building the next organizational role.
@@ -500,14 +527,22 @@ If the skill is blocked, say what answer, artifact, access, approval, or tool is
 ## Output
 Create or update:
 
+- `roles/<role-slug>/name.md`: completed role identity card with primary voice.
+- `roles/<role-slug>/personality.md`: completed personality profile with required primary voice entry.
+- `roles/<role-slug>/WhoAmI.md`: compact prompt-injection role card compiled from the roster, identity, personality, memory, and role contract.
+- `roles/<role-slug>/gate-blocks.md`: active gate-block tracker for this role.
 - `roles/<role-slug>/role-agent.md`: completed role-agent contract.
 - `roles/<role-slug>/workflow.md`: only when the role owns a workflow.
 - `roles/<role-slug>/memory.md`: required primary role memory file created or updated from `memory-template.md`.
+- `roles/<role-slug>/state.json`: required machine-readable role state with lifecycle, operating taxonomy, automation status, room binding status, source files, and update timestamp.
 - `roles/<role-slug>/session.md`: only when Scott approved activation but Codex thread tools were unavailable, as a blocked draft role-home session spec.
 - `<role-slug>-handoff-check`: required Codex heartbeat automation created from `templates/heartbeat-automation.md`, or `roles/<role-slug>/heartbeat-automation.md` as a blocked draft if the automation tool is unavailable.
 - `roles/<role-slug>/loop.md`: only when the role is loop-backed or agentic.
 - `roles/<role-slug>/SKILL.draft.md`: only when the role should become an installable skill.
 - `<project-memory-root>/<role-slug>.md`: required role memory mirror when the project has a configured Obsidian or notes memory root.
+- `<project-memory-root>/role/<role-slug>/name.md`: required role identity mirror when the project has a configured Obsidian or notes memory root.
+- `<project-memory-root>/role/<role-slug>/personality.md`: required role personality mirror when the project has a configured Obsidian or notes memory root.
+- `<project-memory-root>/role/<role-slug>/WhoAmI.md`: required Who Am I prompt-card mirror when the project has a configured Obsidian or notes memory root.
 - `<project-memory-root>/role/<role-slug>/role-agent.md`: required role contract mirror when the project has a configured Obsidian or notes memory root.
 - `<notesRoot>/maps-runs/role.md`: named `/role` run note through the shared memory helper.
 - `<rag.location>/maps-runs/role.md`: mirrored named `/role` run note when RAG is configured.
@@ -534,9 +569,10 @@ The completed role artifact must include:
 - Learning and growth loop for responsibilities, capabilities, memory, and authority changes
 - Inputs, outputs, handoffs, and review rhythm
 - Handoff check goal and assigned handoff files
-- Role-home session id/title, project, activation packet summary, and boundary that the session grants no autonomous runtime or release authority
+- Role-home session id/title, project, room-bound Who Am I card context, activation packet summary, and boundary that the session grants no autonomous runtime or release authority
+- Mindshare culture standards with the four Who Am I card lines: Proactive, Consistent, Bug-free, and Bounded
 - Heartbeat automation name, checked locations behavior, quiet no-work behavior, and authority boundary
-- Role memory file path and loading proposal
+- Role identity, personality, and memory file paths and loading proposal
 - Memory contract for this role
 - Tool and data access
 - Policies, constraints, and forbidden actions

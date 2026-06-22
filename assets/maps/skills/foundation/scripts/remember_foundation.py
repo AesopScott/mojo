@@ -34,6 +34,21 @@ DEFAULT_PREFS = {
         "notes": "",
         "additionalLocations": [],
     },
+    "paths": {
+        "policy": "",
+        "repoRoot": ".",
+        "notesRoot": "{{repo_root}}/notes",
+        "channelsRoot": "{{repo_root}}/channels",
+        "rolesDirectory": "{{repo_root}}/roles.md",
+        "voiceTaxonomy": "{{notes_root}}/voice-taxonomy.md",
+        "automationsRoot": "%USERPROFILE%/.codex/automations",
+        "companyRoots": [],
+        "channelPaths": [],
+        "syntax": "{{name}} placeholders; environment variables; relative paths",
+        "fullScaffold": "",
+        "scaffoldTarget": "",
+        "overwritePolicy": "preserve",
+    },
     "updatedAt": "",
 }
 
@@ -99,6 +114,12 @@ def merge_preferences(existing: dict[str, Any] | None, updates: dict[str, Any]) 
     if updates.get("rag", {}).get("additionalLocations"):
         rag_updates["additionalLocations"] = updates["rag"]["additionalLocations"]
     prefs["rag"] = {**prefs.get("rag", {}), **rag_updates}
+    path_updates = {key: value for key, value in updates.get("paths", {}).items() if value}
+    if updates.get("paths", {}).get("companyRoots"):
+        path_updates["companyRoots"] = updates["paths"]["companyRoots"]
+    if updates.get("paths", {}).get("channelPaths"):
+        path_updates["channelPaths"] = updates["paths"]["channelPaths"]
+    prefs["paths"] = {**DEFAULT_PREFS["paths"], **prefs.get("paths", {}), **path_updates}
     prefs["updatedAt"] = datetime.now(timezone.utc).isoformat()
     return prefs
 
@@ -175,12 +196,13 @@ def replace_section(markdown: str, heading: str, body: str) -> str:
     section = f"## {heading}\n\n{body.strip()}\n"
     pattern = re.compile(rf"(?ms)^## {re.escape(heading)}\s*\n.*?(?=^## |\Z)")
     if pattern.search(markdown):
-        return pattern.sub(section, markdown).rstrip() + "\n"
+        return pattern.sub(lambda _match: section, markdown).rstrip() + "\n"
     return markdown.rstrip() + "\n\n" + section
 
 
 def remembered_preferences_section(prefs: dict[str, Any], source: str) -> str:
     rag = prefs.get("rag", {})
+    paths = {**DEFAULT_PREFS["paths"], **prefs.get("paths", {})}
     access = {**DEFAULT_PREFS["access"], **prefs.get("access", {})}
     lines = [
         f"- Preference source: {source}",
@@ -197,11 +219,54 @@ def remembered_preferences_section(prefs: dict[str, Any], source: str) -> str:
         f"- RAG access method: {access.get('rag', '')}",
         f"- Additional RAG locations: {join_values(rag.get('additionalLocations', []))}",
         f"- Canonical store policy: {prefs.get('canonicalStorePolicy', '')}",
+        f"- Portable path policy: {paths.get('policy', '')}",
+        f"- Repository root: {paths.get('repoRoot', '')}",
+        f"- Channels root: {paths.get('channelsRoot', '')}",
+        f"- Roles directory: {paths.get('rolesDirectory', '')}",
+        f"- Voice taxonomy: {paths.get('voiceTaxonomy', '')}",
+        f"- Automations root: {paths.get('automationsRoot', '')}",
+        f"- Company roots: {join_values(paths.get('companyRoots', []))}",
+        f"- Channel paths: {join_values(paths.get('channelPaths', []))}",
+        f"- Path syntax: {paths.get('syntax', '')}",
+        f"- Full scaffold: {paths.get('fullScaffold', '')}",
+        f"- Scaffold target: {paths.get('scaffoldTarget', '')}",
+        f"- Scaffold overwrite policy: {paths.get('overwritePolicy', '')}",
         f"- Last confirmed: {prefs.get('updatedAt', '')}",
         "- Global default used?: " + ("yes" if source == "global" else "no"),
         "- Updated `.maps/foundation-preferences.json`?: yes",
     ]
     return "\n".join(lines)
+
+
+def portable_path_contract_section(prefs: dict[str, Any]) -> str:
+    paths = {**DEFAULT_PREFS["paths"], **prefs.get("paths", {})}
+    rows = [
+        ["`repo_root`", paths.get("repoRoot", "."), "yes", "Base repository root for generated project-relative paths."],
+        ["`notes_root`", paths.get("notesRoot", "{{repo_root}}/notes"), "yes / mirror / derived", "Human-readable notes root."],
+        ["`channels_root`", paths.get("channelsRoot", "{{repo_root}}/channels"), "yes / mirror / derived", "Root for named handoff channels."],
+        ["`roles_directory`", paths.get("rolesDirectory", "{{repo_root}}/roles.md"), "yes / mirror / derived", "Canonical roster and name directory."],
+        ["`voice_taxonomy`", paths.get("voiceTaxonomy", "{{notes_root}}/voice-taxonomy.md"), "yes / mirror / derived / not used", "Canonical voice taxonomy when role personality is used."],
+        ["`automations_root`", paths.get("automationsRoot", "%USERPROFILE%/.codex/automations"), "local install / not used", "Local install root for file-watch, heartbeat, scheduled, or monitor automations."],
+        ["Company roots", join_values(paths.get("companyRoots", [])), "", "Named company, subsidiary, product, or org roots."],
+        ["Channel paths", join_values(paths.get("channelPaths", [])), "", "Named channels and replaceable paths."],
+        ["Path syntax", paths.get("syntax", ""), "", "Use placeholders, environment variables, relative paths, MCP references, or REST endpoints instead of hardcoded personal paths."],
+        ["Full scaffold", paths.get("fullScaffold", ""), "", "Whether Foundation should create the full MAPS framework/org scaffold."],
+        ["Scaffold target", paths.get("scaffoldTarget", ""), "", "Directory that receives the full scaffold when requested."],
+        ["Scaffold overwrite policy", paths.get("overwritePolicy", "preserve"), "", "Preserve by default; force only with explicit approval."],
+    ]
+    table = [
+        "| Path setting | Value | Canonical? | Notes |",
+        "|---|---|---|---|",
+    ]
+    table.extend("| " + " | ".join(markdown_escape(cell) for cell in row) + " |" for row in rows)
+    return "\n".join(table) + """
+
+Replacement rules:
+
+- Do not hardcode personal user directories, local drive mappings, or company-specific roots into reusable MAPS+Org artifacts.
+- Prefer `{{repo_root}}`, `{{notes_root}}`, `{{channels_root}}`, and environment variables for portable filesystem paths.
+- Record external MCP or REST locations as named endpoints, not as hidden assumptions.
+- Treat this section as the source of truth for role, channel, automation, scaffold, and memory path generation."""
 
 
 def memory_contract_section(prefs: dict[str, Any]) -> str:
@@ -292,6 +357,7 @@ def apply_to_foundation_file(path: Path, prefs: dict[str, Any], source: str) -> 
     else:
         markdown = seed_template_text()
     markdown = replace_section(markdown, "Remembered Foundation Preferences", remembered_preferences_section(prefs, source))
+    markdown = replace_section(markdown, "Portable Path Contract", portable_path_contract_section(prefs))
     markdown = replace_section(markdown, "Persistent Memory Contract", memory_contract_section(prefs))
     markdown = replace_section(markdown, "Git And Secrets Scaffold", git_and_secrets_section())
     markdown = replace_section(markdown, "Incremental Foundation Audit", incremental_foundation_audit_section())
@@ -336,6 +402,21 @@ def remember(args: argparse.Namespace) -> int:
             "indexPath": args.rag_index_path,
             "notes": args.rag_notes,
             "additionalLocations": split_values(args.additional_rag_locations),
+        },
+        "paths": {
+            "policy": args.path_policy,
+            "repoRoot": args.repo_root,
+            "notesRoot": args.path_notes_root,
+            "channelsRoot": args.channels_root,
+            "rolesDirectory": args.roles_directory,
+            "voiceTaxonomy": args.voice_taxonomy,
+            "automationsRoot": args.automations_root,
+            "companyRoots": split_values(args.company_roots),
+            "channelPaths": split_values(args.channel_paths),
+            "syntax": args.path_syntax,
+            "fullScaffold": args.full_scaffold,
+            "scaffoldTarget": args.scaffold_target,
+            "overwritePolicy": args.scaffold_overwrite_policy,
         },
     }
     prefs = merge_preferences(existing, updates)
@@ -694,6 +775,19 @@ def main() -> int:
     remember_parser.add_argument("--additional-rag-locations", default="", help="Semicolon-separated secondary RAG or index locations.")
     remember_parser.add_argument("--rag-notes", default="", help="Additional RAG notes.")
     remember_parser.add_argument("--canonical-store-policy", default="", help="Which notes, memory, source, or RAG locations are canonical vs mirrored or derived.")
+    remember_parser.add_argument("--path-policy", default="", help="Portable path policy: project-local, org-local, global reusable, or imported.")
+    remember_parser.add_argument("--repo-root", default="", help="Configured repo_root path.")
+    remember_parser.add_argument("--path-notes-root", default="", help="Configured portable notes_root path.")
+    remember_parser.add_argument("--channels-root", default="", help="Configured channels_root path.")
+    remember_parser.add_argument("--roles-directory", default="", help="Configured roles_directory path.")
+    remember_parser.add_argument("--voice-taxonomy", default="", help="Configured voice_taxonomy path.")
+    remember_parser.add_argument("--automations-root", default="", help="Configured automations_root path.")
+    remember_parser.add_argument("--company-roots", default="", help="Semicolon-separated company, subsidiary, product, or org roots.")
+    remember_parser.add_argument("--channel-paths", default="", help="Semicolon-separated named channel paths.")
+    remember_parser.add_argument("--path-syntax", default="", help="Placeholder, environment variable, relative path, MCP, or REST path syntax policy.")
+    remember_parser.add_argument("--full-scaffold", default="", help="Whether Foundation should create the full MAPS framework/org scaffold.")
+    remember_parser.add_argument("--scaffold-target", default="", help="Target directory for the full MAPS framework/org scaffold.")
+    remember_parser.add_argument("--scaffold-overwrite-policy", default="", help="Scaffold overwrite policy: preserve, append-safe, or force approved.")
     remember_parser.add_argument("--apply", action="store_true", help="Also update the project foundation file.")
     remember_parser.add_argument("--foundation-file", default="project-foundation.md", help="Project foundation markdown file.")
     remember_parser.set_defaults(func=remember)

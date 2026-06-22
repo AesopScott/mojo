@@ -1,12 +1,12 @@
 ---
 name: foundation
-description: Start M0 Project Foundation for a MAPS project. Use when kicking off a new agent or multi-agent project, creating the project intent, notes scaffold, Git and remote readiness, env/secrets scaffold, source inventory, assumptions, decisions, evidence index, and RAG-readiness plan before system shape or APS phase work begins.
+description: Start M0 Project Foundation for a MAPS project or instantiate a MAPS framework/org scaffold. Use when kicking off a new agent, multi-agent project, MAPS+Org project, reusable MAPS framework, or replacing /scaffold by creating project intent, portable path layer settings, notes/source/memory/RAG scaffold, Git and remote readiness, env/secrets scaffold, source inventory, assumptions, decisions, evidence index, RAG-readiness plan, and optional full MAPS repo structure before system shape or APS phase work begins.
 ---
 
 # Foundation
 ## Versioning
 
-Current version: 0.3.0.
+Current version: 0.5.0.
 
 Follow semantic versioning for this skill:
 
@@ -18,11 +18,13 @@ When changing this skill, update `Current version` and add a `Changelog` entry w
 
 ## Changelog
 
+- 2026-06-20 - v0.5.0 - Absorbed `/scaffold` responsibilities and added portable path layer inquiry/output requirements.
+- 2026-06-20 - v0.4.0 - Added root `MINDSHARE_CULTURE.md` as a required foundation artifact for Mindshare-owned repos.
 - 2026-06-19 - v0.3.0 - Added Git remote detection, connect-existing-remote support, and GitHub remote creation guidance.
 - 2026-06-19 - v0.2.0 - Added incremental scaffold audits, Git initialization, and env/secrets template setup.
 - 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
 
-Use `/foundation` at M0 to create the project foundation before selecting a system shape, roster, or individual agent build path. Use `/foundation --wipe` to remove the current project's foundation scaffold before starting over.
+Use `/foundation` at M0 to create the project foundation before selecting a system shape, roster, or individual agent build path. Use `/foundation` instead of `/scaffold`; Foundation now owns both M0 project control and optional MAPS framework/org structure creation. Use `/foundation --wipe` to remove the current project's foundation scaffold before starting over.
 
 ## Wipe mode
 
@@ -64,6 +66,7 @@ python scripts/remember_foundation.py status --project .
 python scripts/remember_foundation.py scaffold --project . --init-git
 python scripts/remember_foundation.py scaffold --project . --remote-url https://github.com/OWNER/REPO.git
 python scripts/remember_foundation.py scaffold --project . --github-repo OWNER/REPO --github-visibility private
+python scripts/create_maps_scaffold.py /path/to/target --name "MAPS+Org"
 ```
 
 Use `scripts/maps_memory.py` for the shared per-skill runtime memory behavior:
@@ -107,6 +110,18 @@ Only after that memory/RAG discovery should you ask about project identity, proj
 
 Required preflight decisions:
 
+- Portable path layer: whether this project/org should use project-local defaults, org-local defaults, global reusable defaults, or imported path settings.
+- Repository root: the configured `repo_root`, usually `.` for a project-local repo.
+- Notes root: the configured `notes_root`, and whether it is canonical or a mirror.
+- Channels root: the configured `channels_root`, including whether channels are repo-local, company-local, or external.
+- Roles directory: the configured `roles_directory`, usually a `roles.md` file.
+- Voice taxonomy path: the configured `voice_taxonomy`, if role personality/voice is used.
+- Automation install root: the configured `automations_root`, if file-watch, heartbeat, scheduled, or monitor automations are part of the project.
+- Company roots: any named company, subsidiary, product, or org roots that must be abstracted instead of hardcoded.
+- Channel paths: the named channel paths and owners/participants that should be configured instead of hardcoded.
+- Path syntax: whether path values should use `{{repo_root}}` placeholders, environment variables, relative paths, MCP references, REST endpoints, or another replaceable form.
+- Scaffold structure intent: whether Foundation should create only M0 knowledge scaffolding or the full MAPS framework/org repo structure formerly created by `/scaffold`.
+- Scaffold target and overwrite policy: target directory, preserve/append/force behavior, framework/project name, included phases/skills/templates/catalogs/docs, and what to do if existing work is present.
 - RAG availability: whether there is a RAG system now, another note store instead, or neither yet.
 - Notes location and access method: file system path, MCP service, REST API endpoint, or none yet.
 - Additional notes locations: any secondary vaults, folders, services, or exports, plus whether each should be updated or read-only.
@@ -134,34 +149,39 @@ If `project-foundation.md` or `.maps/foundation-preferences.json` already exists
 2. Report only the incremental changes that have not been implemented.
 3. Ask one question at a time for missing decisions that cannot be inferred safely.
 4. Run `python scripts/remember_foundation.py scaffold --project .` to create only missing non-destructive scaffold files.
-5. Add `--init-git` only when `.git` is missing, Git is available, and the project permissions allow writing.
-6. If the local repo has no remote, ask one question: "No Git remote is configured for this project. Should I create a new remote repo, connect an existing remote URL, or leave it local for now?"
-7. Add `--remote-url` only when the developer supplies an existing remote URL.
-8. Add `--github-repo OWNER/REPO --github-visibility private|public` only when the developer confirms a new GitHub repo should be created and `gh` is available/authenticated.
-9. Add `--include-local-env` only when the developer confirms they want an ignored local env file created.
-10. Never overwrite existing env, secrets, Git, remotes, notes, source, memory, or foundation files during an incremental run.
-11. Append the incremental update to the MAPS Skill Run Log and memory helper note.
+5. If the project needs the full reusable MAPS framework/org structure, run `python scripts/create_maps_scaffold.py <target-directory> --name "<framework name>"` after target and overwrite policy are clear. Add `--force` only when overwrite is explicitly approved.
+6. Review created, appended, and preserved scaffold files against `templates/maps-scaffold-template.md`.
+7. Add `--init-git` only when `.git` is missing, Git is available, and the project permissions allow writing.
+8. If the local repo has no remote, ask one question: "No Git remote is configured for this project. Should I create a new remote repo, connect an existing remote URL, or leave it local for now?"
+9. Add `--remote-url` only when the developer supplies an existing remote URL.
+10. Add `--github-repo OWNER/REPO --github-visibility private|public` only when the developer confirms a new GitHub repo should be created and `gh` is available/authenticated.
+11. Add `--include-local-env` only when the developer confirms they want an ignored local env file created.
+12. Never overwrite existing env, secrets, Git, remotes, notes, source, memory, or foundation files during an incremental run.
+13. Append the incremental update to the MAPS Skill Run Log and memory helper note.
 
 1. Complete the memory/RAG-first M0 preflight interview.
 2. Load remembered foundation preferences and apply only the defaults the user confirmed after seeing the memory/RAG choices.
-3. Name the project and the customer or operator outcome from confirmed answers.
-4. Audit the existing foundation state if any M0 artifacts already exist, then create only missing scaffold items.
-5. Check Git readiness:
+3. Complete the portable path layer interview and record replaceable paths before writing role, channel, automation, or org files.
+4. Name the project and the customer or operator outcome from confirmed answers.
+5. Audit the existing foundation state if any M0 artifacts already exist, then create only missing scaffold items.
+6. If the project needs a full MAPS framework/org repo, instantiate the MAPS structure from `templates/maps-scaffold-template.md` with `scripts/create_maps_scaffold.py`, preserving existing files unless force is explicitly approved.
+7. Check Git readiness:
    - If `.git/` exists, record that Git is already initialized.
    - If `.git/` is missing and Git is available, initialize Git only when filesystem permissions allow it and the user has not forbidden it.
    - If Git cannot be initialized, record the blocker and continue with the rest of M0.
-6. Check remote readiness:
+8. Check remote readiness:
    - If `origin` or another Git remote exists, record the remote URL.
    - If no remote exists, ask whether to create a new remote repo, connect an existing remote URL, or leave the project local for now.
    - If connecting an existing remote, add it only after the user supplies the URL.
    - If creating a GitHub remote, use `gh repo create OWNER/REPO --private|--public --source . --remote origin` only when `gh` is available, authenticated, and the user confirms the owner, repo name, and visibility.
    - Never create, rename, overwrite, or replace a remote silently.
-7. Create the first env/secrets scaffold:
+9. Create the first env/secrets scaffold:
    - Always create `.env.example` when missing, with placeholder keys only.
    - Ensure `.gitignore` ignores real secret files such as `.env`, `.env.*`, and `*.local`, while keeping `.env.example` trackable.
    - Create `.env.local` only when the developer confirms they want an ignored local secrets file.
    - Never write real secret values into project files.
-8. Create the working knowledge scaffold using confirmed locations:
+10. Create the working knowledge scaffold using confirmed locations:
+   - `MINDSHARE_CULTURE.md` at repo root
    - `notes/daily/`
    - `notes/interviews/`
    - `notes/research/`
@@ -172,23 +192,24 @@ If `project-foundation.md` or `.maps/foundation-preferences.json` already exists
    - `memory/project-context.md`
    - `memory/glossary.md`
    - `memory/entity-map.md`
-9. Define the Agentic Systems Program Manager section:
+11. Define the Agentic Systems Program Manager section:
    - If the project needs MAPS phase ownership, create or reference an Agentic Systems Program Manager role in M0.
    - Spell out Agentic Systems Program Manager first; use ASPM sparingly after that.
    - Record whether the role is advisory, workflow-owning, review-gating, or operational.
    - Record its authority boundaries, memory/RAG responsibilities, and next-skill routing responsibility.
    - If the role should be built as a role agent, hand off to `/role` after M0 records the need.
-10. Complete `templates/project-foundation.md`.
-11. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
-12. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
-13. Log known evidence, assumptions, decisions, open questions, and source gaps.
-14. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
-15. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
-16. Remember the final notes, sources, memory, RAG locations, and memory contract in `.maps/foundation-preferences.json`.
-17. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
-18. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
-19. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
-20. Prepare the M1 handoff:
+12. Complete `templates/project-foundation.md`.
+13. Run EventStorming Lite to expose domain events, triggers, actors, rules, systems, pain points, and open questions.
+14. Run Service Blueprint Lite to separate customer/operator actions, visible system behavior, backstage work, supporting data, evidence, and failure points.
+15. Log known evidence, assumptions, decisions, open questions, and source gaps.
+16. Define what should become retrievable later: source types, metadata, privacy limits, citation needs, and freshness rules.
+17. Define the Persistent Memory Contract in `project-foundation.md`: all memory stores, what each is for, how each is updated, when multiple stores must be synced, and which store is canonical.
+18. Define the Portable Path Contract in `project-foundation.md`: `repo_root`, `notes_root`, `channels_root`, `roles_directory`, `voice_taxonomy`, `automations_root`, company roots, channel paths, canonical path source, and replacement rules for downstream installs.
+19. Remember the final notes, sources, memory, RAG locations, path layer settings, and memory contract in `.maps/foundation-preferences.json`.
+20. Append this run to the `MAPS Skill Run Log` in `project-foundation.md` with timestamp, skill, phase, output, and memory updates.
+21. Run the shared MAPS memory helper so `/foundation` gets its own named note in the configured notes and RAG locations.
+22. Promote the updated `project-foundation.md` to the living global template only if the user confirmed that policy.
+23. Prepare the M1 handoff:
    - If the system shape is unclear, recommend Scope First.
    - If one coherent agent can own the outcome, recommend Single-Agent / APS.
    - If separate roles, permissions, memory, review, or parallel work are justified, recommend Multi-Agent / MAPS.
@@ -204,6 +225,8 @@ Report:
 - Key decisions or changes made.
 - Git, remote, and env/secrets status: whether Git was already initialized, initialized now, blocked, or skipped; whether a remote existed, was connected, was created, or was intentionally left local; and which env/secrets scaffold files were created or already existed.
 - Incremental status: which missing foundation pieces were created and which still need decisions.
+- Portable path status: which path layer settings were confirmed, inferred, created, or still need a decision.
+- Scaffold status: whether Foundation created only M0 knowledge scaffolding or also the full MAPS framework/org structure; include created, appended, and preserved files.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
 - Next skill: `/shape` for M1 System Shape, unless M0 says the project needs more foundation work first.
 
@@ -219,6 +242,8 @@ Create or update these concrete outputs in the current project:
 - `.gitignore`: includes env/secrets ignore rules while preserving `.env.example`.
 - `.env.example`: first env/secrets template with placeholders only.
 - `.env.local`: optional ignored local env file only when explicitly confirmed.
+- `MINDSHARE_CULTURE.md`: repo-root culture standards artifact with Mindshare's trust standard, Who Am I card lines, and human-led permission/financial boundary.
+- Optional full MAPS framework/org scaffold formerly owned by `/scaffold`: `README.md`, `LICENSE`, `docs/`, `phases/`, `skills/`, `templates/`, `catalogs/`, and append-only `.gitignore` updates, created only when the project needs reusable MAPS structure.
 - `<notesRoot>/maps-runs/[project]-foundation-helper-notes.md`: named `/foundation` helper note for notes/RAG ingestion.
 - `<rag.location>/maps-runs/[project]-foundation-helper-notes.md`: mirrored named `/foundation` helper note when a RAG location is configured.
 - Notes scaffold: the selected notes root with `daily/`, `interviews/`, `research/`, and `decisions/`.
@@ -236,6 +261,8 @@ The completed `project-foundation.md` must include:
 - Source inventory
 - Git readiness, repository status, and remote status
 - Env/secrets scaffold and secret-handling rules
+- Portable Path Contract: replaceable roots and paths for repo, notes, channels, roles directory, voice taxonomy, automations, companies, and named channels
+- Culture standard and `MINDSHARE_CULTURE.md` repo-root status
 - Agentic Systems Program Manager: need, status, authority, and M1 guidance handoff
 - Assumptions
 - Decisions

@@ -217,3 +217,4 @@ G:\My Drive\Mojo\
 - Which roles need separate tools, permissions, or memory?
 - What can run in parallel?
 - What failure modes change the system shape?
+| 2026-06-20T15:35:00+00:00 | /role | Role | assets/maps/skills/role/SKILL.md | Updated /role to v0.29.0 so new roles generate name.md and personality.md automatically, with personality.md carrying required Primary voice; synced installed skill, Mojo assets, MAPS+Org templates, and role_batch.py. |  |

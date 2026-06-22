@@ -19,21 +19,39 @@ class Phase:
     purpose: str
 
 
+@dataclass(frozen=True)
+class WriteResult:
+    path: Path
+    status: str
+
+
 PHASES = [
-    Phase("00", "phase-alignment", "Phase Alignment", "phase-alignment", "Phase alignment brief", "Agree on lifecycle structure, names, scope, scaffolding, and where future work belongs."),
-    Phase("01", "define", "Define", "define-agent", "Agent brief", "Clarify the agent job, users, authorization level, boundaries, success criteria, and risks."),
-    Phase("02", "design", "Design", "design-agent", "System design", "Shape roles, workflow, state, memory, controls, handoffs, and escalation."),
-    Phase("03", "build", "Build", "build-agent", "Working agent", "Implement the runnable agent loop, prompts, state, routing, and orchestration."),
-    Phase("04", "equip", "Equip", "equip-agent", "Capability map", "Map tools, data, permissions, context, memory, and integrations."),
-    Phase("05", "evaluate", "Evaluate", "evaluate-agent", "Eval suite", "Prove behavior with scenarios, rubrics, regressions, and safety checks."),
-    Phase("06", "deploy", "Deploy", "deploy-agent", "Release plan", "Release with runtime configuration, identities, approvals, rollback, and verification."),
-    Phase("07", "observe", "Observe", "observe-agent", "Observation plan", "Monitor traces, costs, quality, failures, drift, and outcomes."),
-    Phase("08", "improve", "Improve", "improve-agent", "Improvement backlog", "Turn evidence into prioritized changes to prompts, tools, memory, policies, design, and evals."),
+    Phase("M0", "project-foundation", "Project Foundation", "foundation", "Project foundation", "Create project intent, notes, sources, evidence, assumptions, decisions, memory contract, and RAG readiness."),
+    Phase("M1", "system-shape", "System Shape", "shape", "System shape", "Choose Unknown, Single-Agent APS, or Multi-Agent MAPS before roster and implementation work."),
+    Phase("M2", "roster", "Roster", "multi-agent-roster", "Multi-agent roster", "Define humans, roles, Role+ operators, candidate agents, tools, services, owners, authority, memory, and proof needs."),
+    Phase("M3", "contracts", "Contracts", "multi-agent-contracts", "Participant contracts", "Define inputs, outputs, authority, memory, tools, handoffs, escalation, stop conditions, retries, rollback, and acceptance evidence."),
+    Phase("M4", "coordination", "Coordination", "multi-agent-coordination", "Coordination model", "Define lanes, routes, supervisor/router or peer patterns, queues, approvals, exception paths, retries, and evidence."),
+    Phase("M5", "agent-buildout", "Agent Buildout", "multi-agent-buildout", "Child APS buildout plan", "Plan which participants become built agents, child APS sequence, dependency order, stubs, test gates, runtime adapters, and no-build decisions."),
+    Phase("M6", "capabilities", "Capabilities", "multi-agent-capabilities", "Shared capability map", "Map shared tools, APIs, MCP servers, data, memory, credentials, permissions, limits, fallbacks, audit, and revocation."),
+    Phase("M7", "orchestration", "Orchestration", "multi-agent-orchestration", "Runtime orchestration", "Define topology, routing, protocol, task/message/artifact schema, state, queues, schedules, observability, override, and rollback."),
+    Phase("M8", "experience-design", "Experience Design", "design-experience", "Experience design", "Turn orchestration and agent behavior into user journeys, surfaces, IA, interaction states, accessibility, and trust controls."),
+    Phase("M9", "evaluate", "Evaluate", "multi-agent-evaluate", "System evaluation", "Prove system-level behavior across contracts, coordination, orchestration, capabilities, journeys, approvals, guardrails, observability, and release gates."),
+    Phase("M10", "deploy-observe", "Deploy Observe", "multi-agent-deploy-observe", "Deploy/observe plan", "Define runtime release, configuration, secrets, rollout, smoke checks, traces, alerts, incidents, rollback, and production review loops."),
+    Phase("M11", "improve", "Improve", "multi-agent-improve", "System improvement backlog", "Classify evidence, incidents, traces, eval failures, user feedback, and operator findings into routed improvements."),
+    Phase("A0", "phase-alignment", "Phase Alignment", "phase-alignment", "Phase alignment brief", "Agree on lifecycle structure, names, scope, scaffolding, and where future work belongs."),
+    Phase("A1", "define", "Define", "define-agent", "Agent brief", "Clarify the agent job, users, authorization level, boundaries, success criteria, and risks."),
+    Phase("A2", "design", "Design", "design-agent", "System design", "Shape roles, workflow, state, memory, controls, handoffs, and escalation."),
+    Phase("A3", "build", "Build", "build-agent", "Working agent", "Implement the runnable agent loop, prompts, state, routing, and orchestration."),
+    Phase("A4", "equip", "Equip", "equip-agent", "Capability map", "Map tools, data, permissions, context, memory, and integrations."),
+    Phase("A5", "evaluate", "Evaluate", "evaluate-agent", "Eval suite", "Prove behavior with scenarios, rubrics, regressions, and safety checks."),
+    Phase("A6", "deploy", "Deploy", "deploy-agent", "Release plan", "Release with runtime configuration, identities, approvals, rollback, and verification."),
+    Phase("A7", "observe", "Observe", "observe-agent", "Observation plan", "Monitor traces, costs, quality, failures, drift, and outcomes."),
+    Phase("A8", "improve", "Improve", "improve-agent", "Improvement backlog", "Turn evidence into prioritized changes to prompts, tools, memory, policies, design, and evals."),
 ]
 
 
 TEMPLATES = {
-    "maps-scaffold-template.md": "# MAPS Scaffold Template\n\nThis template defines the repeatable repository structure created by `/scaffold`.\n\n## Purpose\n\nCreate a MAPS-ready repository with phase docs, phase skills, reusable templates, catalogs, and lightweight docs pages.\n\n## Repository Structure\n\n```text\nmaps/\n  README.md\n  LICENSE\n  .gitignore\n  docs/\n    phase0.html\n    phase1.html\n    styles.css\n    maps-manifest.js\n    maps-render.js\n    contributing.md\n  phases/\n    00-phase-alignment.md\n    01-define.md\n    02-design.md\n    03-build.md\n    04-equip.md\n    05-evaluate.md\n    06-deploy.md\n    07-observe.md\n    08-improve.md\n  skills/\n    phase-alignment/\n      SKILL.md\n      agents/openai.yaml\n    define-agent/\n      SKILL.md\n      agents/openai.yaml\n    design-agent/\n      SKILL.md\n      agents/openai.yaml\n    build-agent/\n      SKILL.md\n      agents/openai.yaml\n    equip-agent/\n      SKILL.md\n      agents/openai.yaml\n    evaluate-agent/\n      SKILL.md\n      agents/openai.yaml\n    deploy-agent/\n      SKILL.md\n      agents/openai.yaml\n    observe-agent/\n      SKILL.md\n      agents/openai.yaml\n    improve-agent/\n      SKILL.md\n      agents/openai.yaml\n  templates/\n    maps-scaffold-template.md\n    phase-alignment-brief.md\n    agent-definition-template.md\n    workflow-spec.md\n    tool-map.md\n    eval-scorecard.md\n    deployment-plan.md\n    observation-report.md\n    improvement-backlog.md\n  catalogs/\n    repos.md\n    skills.md\n    tools.md\n```\n\n## Required Guarantees\n\n- Every APS phase has a phase doc.\n- Every APS phase has a `SKILL.md`.\n- Every generated skill has valid frontmatter.\n- Templates are reusable input shells, not completed outputs.\n- Catalogs are present before resources are curated.\n- Docs pages expose the scaffold and current phase resources.\n\n## Instantiation\n\nUse `/scaffold` to instantiate this template into a target directory.\n",
+    "maps-scaffold-template.md": "# MAPS Scaffold Template\n\nThis template defines the repeatable repository structure created by `/foundation`.\n\n## Purpose\n\nCreate a MAPS-ready repository with M0-M11 multi-agent phase docs, APS A0-A8 agent phase docs, phase skills, reusable templates, catalogs, and lightweight docs pages.\n\n## Repository Structure\n\n```text\nmaps/\n  README.md\n  LICENSE\n  .gitignore\n  docs/\n    phase0.html\n    phase1.html\n    styles.css\n    maps-manifest.js\n    maps-render.js\n    contributing.md\n  phases/\n    M0-project-foundation.md\n    M1-system-shape.md\n    M2-roster.md\n    M3-contracts.md\n    M4-coordination.md\n    M5-agent-buildout.md\n    M6-capabilities.md\n    M7-orchestration.md\n    M8-experience-design.md\n    M9-evaluate.md\n    M10-deploy-observe.md\n    M11-improve.md\n    A0-phase-alignment.md\n    A1-define.md\n    A2-design.md\n    A3-build.md\n    A4-equip.md\n    A5-evaluate.md\n    A6-deploy.md\n    A7-observe.md\n    A8-improve.md\n  skills/\n    foundation/\n      SKILL.md\n      agents/openai.yaml\n    shape/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-roster/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-contracts/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-coordination/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-buildout/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-capabilities/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-orchestration/\n      SKILL.md\n      agents/openai.yaml\n    design-experience/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-evaluate/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-deploy-observe/\n      SKILL.md\n      agents/openai.yaml\n    multi-agent-improve/\n      SKILL.md\n      agents/openai.yaml\n    phase-alignment/\n      SKILL.md\n      agents/openai.yaml\n    define-agent/\n      SKILL.md\n      agents/openai.yaml\n    design-agent/\n      SKILL.md\n      agents/openai.yaml\n    build-agent/\n      SKILL.md\n      agents/openai.yaml\n    equip-agent/\n      SKILL.md\n      agents/openai.yaml\n    evaluate-agent/\n      SKILL.md\n      agents/openai.yaml\n    deploy-agent/\n      SKILL.md\n      agents/openai.yaml\n    observe-agent/\n      SKILL.md\n      agents/openai.yaml\n    improve-agent/\n      SKILL.md\n      agents/openai.yaml\n  templates/\n    maps-scaffold-template.md\n    phase-alignment-brief.md\n    agent-definition-template.md\n    workflow-spec.md\n    tool-map.md\n    eval-scorecard.md\n    deployment-plan.md\n    observation-report.md\n    improvement-backlog.md\n  catalogs/\n    repos.md\n    skills.md\n    tools.md\n```\n\n## Required Guarantees\n\n- Every MAPS M phase has a phase doc.\n- Every APS A phase has a phase doc.\n- Every generated phase has a `SKILL.md`.\n- Existing scaffold or Foundation artifacts are preserved unless `--force` is explicitly used.\n- Templates are reusable input shells, not completed outputs.\n- Catalogs are present before resources are curated.\n- Docs pages expose the scaffold and current phase resources.\n\n## Instantiation\n\nUse `/foundation` to instantiate this template into a target directory.\n",
     "phase-alignment-brief.md": "# Phase Alignment Brief\n\n## Framework Name\n\n## Purpose\n\n## Audience\n\n## Phase Sequence\n\n```text\nphase alignment -> define -> design -> build -> equip -> evaluate -> deploy -> observe -> improve\n```\n\n## Phase Definitions\n\n| Phase | Purpose | Primary output |\n| --- | --- | --- |\n\n## Repository Or Project Structure\n\n## Naming Decisions\n\n## What Belongs Where\n\n## Open Questions\n\n## Done Criteria\n",
     "agent-definition-template.md": "# Agent Brief\n\n## Name\n\n## Agent Handle\n\n## Role Or Mandate\n\n## User Or Operator\n\n## Job To Be Done\n\n## Desired Outcome\n\n## Persona And Tone\n\n## Authorization Level\n\n## Allowed Without Approval\n\n## Approval Required For\n\n## Forbidden Actions\n\n## Tool Access Requested\n\n## In Scope\n\n## Out Of Scope\n\n## Success Criteria\n\n## Failure Criteria\n\n## Human Escalation Points\n\n## Risks And Assumptions\n",
     "workflow-spec.md": "# Workflow Spec\n\n## System Goal\n\n## Source Brief\n\n`agents/{agent-handle}/agent-brief.md`\n\n## Research Summary\n\n## Comparable Agents Or Patterns Reviewed\n\n| Source or pattern | What it suggests | Fit for this agent | Caveats |\n| --- | --- | --- | --- |\n\n## Recommendation Table\n\n| Design question | Recommendation | Reasoning | User override |\n| --- | --- | --- | --- |\n| Operating model |  |  |  |\n| Roles and responsibilities |  |  |  |\n| Workflow states |  |  |  |\n| Decision points |  |  |  |\n| Memory and context |  |  |  |\n| Tools and integrations |  |  |  |\n| Approval gates |  |  |  |\n| Escalation paths |  |  |  |\n| Failure handling |  |  |  |\n| Observability |  |  |  |\n| Test strategy |  |  |  |\n| Acceptance scenarios |  |  |  |\n| Eval shape |  |  |  |\n| Unit/integration/e2e balance |  |  |  |\n| Mock vs real tool policy |  |  |  |\n| Regression gates |  |  |  |\n\n## Agent Roles\n\n| Role | Responsibility | Inputs | Outputs | Escalates when |\n| --- | --- | --- | --- | --- |\n\n## Workflow\n\n1.\n\n## Decision Points\n\n## State And Memory\n\n## Tools And Integrations\n\n## Guardrails\n\n## Human Approval Gates\n\n## Handoffs\n\n## Failure Modes\n\n## Observability Needs\n\n## Test Strategy\n\n## Acceptance Scenarios\n\n| Scenario | Given | When | Then | Proof method |\n| --- | --- | --- | --- | --- |\n\n## Eval Shape\n\n## Unit Integration E2E Balance\n\n## Mock Vs Real Tool Policy\n\n## Failure Cases\n\n## Regression Gates\n\n## Proof Required Before Phase 3 Build\n\n## Open Questions\n",
@@ -45,12 +63,28 @@ TEMPLATES = {
 }
 
 
-def write_file(path: Path, content: str, force: bool) -> bool:
-    if path.exists() and not force:
+def append_missing_lines(path: Path, lines: list[str]) -> bool:
+    existing = path.read_text(encoding="utf-8", errors="replace") if path.exists() else ""
+    existing_lines = {line.strip() for line in existing.splitlines()}
+    missing = [line for line in lines if line.strip() not in existing_lines]
+    if not missing:
         return False
+    needs_newline = bool(existing) and not existing.endswith("\n")
+    with path.open("a", encoding="utf-8") as handle:
+        if needs_newline:
+            handle.write("\n")
+        handle.write("\n".join(missing).rstrip() + "\n")
+    return True
+
+
+def write_file(path: Path, content: str, force: bool, append_lines: list[str] | None = None) -> WriteResult:
+    if path.exists() and not force:
+        if append_lines and append_missing_lines(path, append_lines):
+            return WriteResult(path, "updated")
+        return WriteResult(path, "preserved")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content.rstrip() + "\n", encoding="utf-8")
-    return True
+    return WriteResult(path, "created" if not force else "overwritten")
 
 
 def skill_md(phase: Phase) -> str:
@@ -109,7 +143,9 @@ def readme(name: str) -> str:
         {name} is a skill-based framework for building multi-agent systems.
 
         ```text
-        phase alignment -> define -> design -> build -> equip -> evaluate -> deploy -> observe -> improve
+        M0 foundation -> M1 shape -> M2 roster -> M3 contracts -> M4 coordination -> M5 buildout -> M6 capabilities -> M7 orchestration -> M8 experience -> M9 evaluate -> M10 deploy/observe -> M11 improve
+
+        APS child path: A0 alignment -> A1 define -> A2 design -> A3 build -> A4 equip -> A5 evaluate -> A6 deploy -> A7 observe -> A8 improve
         ```
 
         ## Phase Map
@@ -154,27 +190,30 @@ def docs_phase0(name: str) -> str:
   docs/
     phase0.html
   skills/
-    scaffold/
+    foundation/
       SKILL.md</code></pre>
               <h2>Phase 0 Resources</h2>
               <section class="resources">
-                <article><h3>Skills</h3><ul data-maps-skills><li><strong>/scaffold</strong></li></ul></article>
-                <article><h3>Repos</h3><ul data-maps-repos><li>AesopScott/maps</li></ul></article>
+                <article><h3>Skills</h3><ul data-maps-skills><li><strong>/foundation</strong></li></ul></article>
+                <article><h3>Repos</h3><ul data-maps-repos><li>AesopScott/maps-plus-org</li></ul></article>
                 <article><h3>Tools</h3><ul data-maps-tools><li>Python</li></ul></article>
                 <article><h3>Templates</h3><ul data-maps-templates><li>templates/maps-scaffold-template.md</li><li>templates/phase-alignment-brief.md</li></ul></article>
                 <article><h3>Catalogs</h3><ul data-maps-catalogs><li>catalogs/skills.md</li></ul></article>
               </section>
               <h2>Phase Sequence</h2>
               <ol>
-                <li>Phase Alignment</li>
-                <li>Define</li>
-                <li>Design</li>
-                <li>Build</li>
-                <li>Equip</li>
-                <li>Evaluate</li>
-                <li>Deploy</li>
-                <li>Observe</li>
-                <li>Improve</li>
+                <li>M0 Project Foundation</li>
+                <li>M1 System Shape</li>
+                <li>M2 Roster</li>
+                <li>M3 Contracts</li>
+                <li>M4 Coordination</li>
+                <li>M5 Agent Buildout</li>
+                <li>M6 Capabilities</li>
+                <li>M7 Orchestration</li>
+                <li>M8 Experience Design</li>
+                <li>M9 Evaluate</li>
+                <li>M10 Deploy/Observe</li>
+                <li>M11 Improve</li>
               </ol>
             </main>
           </body>
@@ -224,7 +263,7 @@ def docs_phase1(name: str) -> str:
               <h2>Phase 1 Resources</h2>
               <section class="resources">
                 <article><h3>Skills</h3><ul data-maps-skills><li><strong>/define-agent</strong></li></ul></article>
-                <article><h3>Repos</h3><ul data-maps-repos><li>AesopScott/maps</li></ul></article>
+                <article><h3>Repos</h3><ul data-maps-repos><li>AesopScott/maps-plus-org</li></ul></article>
                 <article><h3>Tools</h3><ul data-maps-tools><li>Agent Skills</li></ul></article>
                 <article><h3>Templates</h3><ul data-maps-templates><li>templates/agent-definition-template.md</li></ul></article>
                 <article><h3>Catalogs</h3><ul data-maps-catalogs><li>catalogs/skills.md</li></ul></article>
@@ -273,7 +312,7 @@ def docs_manifest() -> str:
             {phases}
           ],
           skills: [
-            {{ name: "scaffold", files: ["SKILL.md", "scripts/create_maps_scaffold.py"] }},
+            {{ name: "foundation", files: ["SKILL.md", "scripts/create_maps_scaffold.py"] }},
             {skills}
           ],
           templates: [
@@ -289,22 +328,22 @@ def docs_manifest() -> str:
           ],
           catalogs: ["repos.md", "skills.md", "tools.md"],
           repos: [
-            {{ label: "AesopScott/maps", url: "https://github.com/AesopScott/maps" }},
+            {{ label: "AesopScott/maps-plus-org", url: "https://github.com/AesopScott/maps-plus-org" }},
             {{ label: "VoltAgent/awesome-agent-skills", url: "https://github.com/VoltAgent/awesome-agent-skills" }},
             {{ label: "hqhq1025/skill-optimizer", url: "https://github.com/hqhq1025/skill-optimizer" }}
           ],
           tools: ["Python", "GitHub CLI", "Git", "Agent Skills"],
           phaseResources: {{
             "0": {{
-              skills: ["scaffold", "phase-alignment"],
-              repos: ["AesopScott/maps", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+              skills: ["foundation", "phase-alignment"],
+              repos: ["AesopScott/maps-plus-org", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
               tools: ["Python", "GitHub CLI", "Git"],
               templates: ["maps-scaffold-template.md", "phase-alignment-brief.md"],
               catalogs: ["skills.md", "repos.md", "tools.md"]
             }},
             "1": {{
               skills: ["define-agent"],
-              repos: ["AesopScott/maps"],
+              repos: ["AesopScott/maps-plus-org"],
               tools: ["Git", "Agent Skills"],
               templates: ["agent-definition-template.md"],
               catalogs: ["skills.md", "repos.md", "tools.md"]
@@ -354,7 +393,7 @@ def docs_render() -> str:
           const byName = (items, names, key = "name") => (names || []).map((name) => items.find((item) => item[key] === name)).filter(Boolean);
           const skills = byName(manifest.skills, phaseResources.skills);
           const repos = byName(manifest.repos, phaseResources.repos, "label");
-          fill("[data-maps-skills]", skills, (li, item) => li.append(item.displayName || (item.name === "scaffold" ? "/scaffold" : item.name)));
+          fill("[data-maps-skills]", skills, (li, item) => li.append(item.displayName || (item.name === "foundation" ? "/foundation" : item.name)));
           fill("[data-maps-repos]", repos, (li, item) => {
             const a = document.createElement("a");
             a.href = item.url;
@@ -397,8 +436,8 @@ def phase_doc(phase: Phase) -> str:
     )
 
 
-def build(target: Path, name: str, force: bool) -> list[Path]:
-    written: list[Path] = []
+def build(target: Path, name: str, force: bool) -> list[WriteResult]:
+    results: list[WriteResult] = []
     files = {
         "README.md": readme(name),
         ".gitignore": ".DS_Store\nThumbs.db\n*.tmp\n*.log\n",
@@ -413,26 +452,32 @@ def build(target: Path, name: str, force: bool) -> list[Path]:
         "catalogs/skills.md": "# Skills Catalog\n\n| Phase | Skill | Source | Label | Why it helps |\n| --- | --- | --- | --- | --- |\n",
         "catalogs/tools.md": "# Tools Catalog\n\n| Phase | Tool | Type | Label | Notes |\n| --- | --- | --- | --- | --- |\n",
     }
+    append_defaults = {
+        ".gitignore": [".DS_Store", "Thumbs.db", "*.tmp", "*.log"],
+    }
     for filename, content in files.items():
         path = target / filename
-        if write_file(path, content, force):
-            written.append(path)
+        results.append(write_file(path, content, force, append_defaults.get(filename)))
 
     for phase in PHASES:
         phase_path = target / "phases" / f"{phase.number}-{phase.slug}.md"
-        if write_file(phase_path, phase_doc(phase), force):
-            written.append(phase_path)
+        results.append(write_file(phase_path, phase_doc(phase), force))
         skill_root = target / "skills" / phase.skill
-        if write_file(skill_root / "SKILL.md", skill_md(phase), force):
-            written.append(skill_root / "SKILL.md")
-        if write_file(skill_root / "agents" / "openai.yaml", openai_yaml(phase), force):
-            written.append(skill_root / "agents" / "openai.yaml")
+        results.append(write_file(skill_root / "SKILL.md", skill_md(phase), force))
+        results.append(write_file(skill_root / "agents" / "openai.yaml", openai_yaml(phase), force))
 
     for filename, content in TEMPLATES.items():
         path = target / "templates" / filename
-        if write_file(path, content, force):
-            written.append(path)
-    return written
+        results.append(write_file(path, content, force))
+    return results
+
+
+def foundation_artifacts(target: Path) -> list[Path]:
+    candidates = [
+        target / "project-foundation.md",
+        target / ".maps" / "foundation-preferences.json",
+    ]
+    return [path for path in candidates if path.exists()]
 
 
 def main() -> int:
@@ -443,11 +488,27 @@ def main() -> int:
     args = parser.parse_args()
 
     target = Path(args.target).expanduser().resolve()
-    written = build(target, args.name, args.force)
+    foundation = foundation_artifacts(target)
+    results = build(target, args.name, args.force)
+    created = [result.path for result in results if result.status in {"created", "overwritten"}]
+    updated = [result.path for result in results if result.status == "updated"]
+    preserved = [result.path for result in results if result.status == "preserved"]
     print(f"MAPS scaffold ready: {target}")
-    print(f"Files written: {len(written)}")
-    for path in written:
+    if foundation:
+        print(f"Foundation artifacts detected and preserved: {len(foundation)}")
+        for path in foundation:
+            print(path.relative_to(target).as_posix())
+    print(f"Files created or overwritten: {len(created)}")
+    for path in created:
         print(path.relative_to(target).as_posix())
+    if updated:
+        print(f"Files appended without overwrite: {len(updated)}")
+        for path in updated:
+            print(path.relative_to(target).as_posix())
+    if preserved:
+        print(f"Existing files preserved: {len(preserved)}")
+        for path in preserved:
+            print(path.relative_to(target).as_posix())
     return 0
 
 

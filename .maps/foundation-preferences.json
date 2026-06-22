@@ -1,0 +1,24 @@
+{
+  "access": {
+    "memory": "filesystem",
+    "notes": "filesystem",
+    "rag": "filesystem",
+    "sources": "filesystem"
+  },
+  "additionalNotesLocations": [],
+  "canonicalStorePolicy": "Obsidian at G:\\My Drive\\Mojo is canonical for Mojo-authored notes, durable role memory, MAPS run notes, and RAG. .maps is automation state. Mindshare paths are parent/historical sources unless explicitly named for current work.",
+  "memoryRoot": "G:\\My Drive\\Mojo",
+  "notesRoot": "G:\\My Drive\\Mojo",
+  "projectName": "Mojo",
+  "projectSlug": "mojo",
+  "rag": {
+    "additionalLocations": [],
+    "indexPath": "",
+    "location": "G:\\My Drive\\Mojo",
+    "notes": "G:\\My Drive\\Mojo",
+    "provider": "Obsidian"
+  },
+  "sourcesRoot": "G:\\My Drive\\Mojo",
+  "updatedAt": "2026-06-19T16:46:29+00:00",
+  "version": 1
+}

@@ -39,6 +39,18 @@ Project Intent + Scaffolding Structure, Kickoff.
 | Git remote exists or should be created? |  |  |  |
 | Env/secrets scaffold needed? |  |  |  |
 | Local env file approved? |  |  |  |
+| Portable path layer policy | project-local / org-local / global reusable / imported |  |  |
+| `repo_root` |  |  |  |
+| `notes_root` |  |  |  |
+| `channels_root` |  |  |  |
+| `roles_directory` |  |  |  |
+| `voice_taxonomy` |  |  |  |
+| `automations_root` |  |  |  |
+| Company roots |  |  |  |
+| Channel paths |  |  |  |
+| Path replacement syntax | `{{repo_root}}` / environment variables / relative paths / MCP / REST |  |  |
+| Full MAPS framework/org scaffold needed? | yes / no / later |  |  |
+| Scaffold target and overwrite policy | preserve / append-safe / force approved |  |  |
 | Update global living template? |  |  |  |
 
 ## Customer Story
@@ -73,6 +85,17 @@ Project Intent + Scaffolding Structure, Kickoff.
 - Business or mission value:
 - Why agents are appropriate:
 - Why multiple agents may be needed:
+
+## Culture Standard
+
+- Culture artifact: `MINDSHARE_CULTURE.md`
+- Trust standard: trust is earned through proactive, consistent, verified work inside clear bounds.
+- Role Who Am I lines:
+  - Proactive: I notice useful work, surface the next move, and do not wait to be chased.
+  - Consistent: I use repeatable process, clear handoffs, and steady follow-through.
+  - Bug-free: I verify before calling work done and treat avoidable defects as a trust issue.
+  - Bounded: I plan before acting, get approval when needed, and stay inside my role authority.
+- Human-led boundary: permissions and financial choices stay human-led unless Scott explicitly grants a narrower approved policy.
 
 ## Agentic Systems Program Manager
 
@@ -115,6 +138,39 @@ memory/
   glossary.md
   entity-map.md
 ```
+
+Optional full MAPS framework/org scaffold formerly owned by `/scaffold`:
+
+```text
+README.md
+LICENSE
+docs/
+phases/
+skills/
+templates/
+catalogs/
+```
+
+## Portable Path Contract
+
+| Path setting | Value | Canonical? | Notes |
+|---|---|---|---|
+| `repo_root` |  | yes / no |  |
+| `notes_root` |  | yes / mirror / derived |  |
+| `channels_root` |  | yes / mirror / derived |  |
+| `roles_directory` |  | yes / mirror / derived |  |
+| `voice_taxonomy` |  | yes / mirror / derived / not used |  |
+| `automations_root` |  | yes / local install / not used |  |
+| Company roots |  |  |  |
+| Channel paths |  |  |  |
+| Path syntax |  |  | Use placeholders, environment variables, relative paths, MCP references, or REST endpoints instead of hardcoded personal paths. |
+
+Replacement rules:
+
+- Do not hardcode personal user directories, local drive mappings, or company-specific roots into reusable MAPS+Org artifacts.
+- Prefer `{{repo_root}}`, `{{notes_root}}`, `{{channels_root}}`, and environment variables for portable filesystem paths.
+- Record external MCP or REST locations as named endpoints, not as hidden assumptions.
+- Treat this section as the source of truth for role, channel, automation, scaffold, and memory path generation.
 
 ## Git And Secrets Scaffold
 

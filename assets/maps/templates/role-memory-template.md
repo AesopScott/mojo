@@ -1,10 +1,14 @@
 # [proper-role-name] Memory
 
+Last reviewed: [last-reviewed-date]
+Last rollover: [last-rollover-date]
+Full archive: `[project-repo]\roles\[role-name]\memory-archive\[date].md` when archived
+
 ## Purpose
 
-This is the durable memory file for [proper-role-name].
+This is the compact active memory file for [proper-role-name].
 
-[proper-role-name] uses this file to preserve durable operating context, preferences, decisions, active work, handoff files, and role-specific learning.
+[proper-role-name] uses this file for prompt-loadable operating context only: identity, standing rules, current decisions, active work, same-day notes, and archive pointers. Full history belongs in dated archives, source artifacts, channels, MAPS run notes, or Obsidian notes.
 
 ## Role Identity
 
@@ -17,7 +21,18 @@ This is the durable memory file for [proper-role-name].
 
 - Local role contract: `C:\Users\scott\Code\mindshare\roles\[role-name]\role-agent.md`
 - Local workflow: `C:\Users\scott\Code\mindshare\roles\[role-name]\workflow.md`
+- Local personality file: `C:\Users\scott\Code\mindshare\roles\[role-name]\personality.md` (required)
+- Local gate-block tracker: `C:\Users\scott\Code\mindshare\roles\[role-name]\gate-blocks.md`
 - Obsidian role mirror: `G:\My Drive\Mindshare\maps-runs\role-[role-name].md`
+- Obsidian personality mirror: `G:\My Drive\Mindshare\role\[role-name]\personality.md` (required)
+
+## Daily Memory Rollover
+
+- Active memory target size: keep under about 1,500 words when possible; warn above 2,000 words; rollover required above 3,000 words unless the role is blocked from archiving.
+- Retain in active memory: durable identity, source pointers, standing rules, unresolved decisions, active work, same-day notes, and archive pointers.
+- Archive from active memory: completed run logs, long decision history, old heartbeat evidence, raw transcripts, obsolete status, and detailed proof already recorded elsewhere.
+- Rollover cadence: a daily maintenance heartbeat may call the shared role-memory rollover script once per local day. The script must archive before compacting and must skip if `memory-state.json` shows the role already rolled over that day.
+- Rollover state: write `[project-repo]\roles\[role-name]\memory-state.json` with `last_rollover_date`, `last_rollover_at`, `last_archive`, old word count, and new word count.
 
 ## Handoff Check Goal
 
@@ -43,6 +58,13 @@ Repo work routing, when the role creates or edits repo files:
 - Route commits, pushes, merges, promotions, production deploys, branch cleanup, and worktree cleanup through Release Management before acting.
 - If waiting more than 15 minutes for Reid review or approval on changes already routed through Release Management, send a Point Handoff directly to Reid for escalation while keeping the approval record in Release Management.
 
+Gate-block tracking:
+
+- When blocked by the Codex tool gate, add an open entry to `C:\Users\scott\Code\mindshare\roles\[role-name]\gate-blocks.md` with time, blocked action, target path or command, approval needed, and current owner.
+- Also route the gate block to `G:\My Drive\Mindshare\channels\release-management.md` when the block needs Reid or Scott visibility.
+- When the gate clears, remove the open gate-block entry and add a short cleared note.
+- Reid monitors role `gate-blocks.md` files and notifies Scott when any open gate block exists.
+
 ## Heartbeat Automation
 
 - Automation name: `[role-name]-handoff-check`
@@ -64,6 +86,9 @@ Repo work routing, when the role creates or edits repo files:
 ## Operating Preferences Learned
 
 - [operating-preference]
+- Personality loading: every new role has required `personality.md` with a populated Primary voice entry. Read `personality.md` after role memory and `name.md` before visible role responses, role voice/personality answers, multi-role meetings, and room-bound Who Am I card generation. `personality.md` is expression and trait context only; it does not replace role contract, workflow, memory, authority, or approval gates. Do not read it for quiet no-work heartbeat/file-watch checks unless changed work requires a visible response or touches role, personality, voice, or status behavior.
+- Room binding: when Scott declares this room/office/channel belongs to `[proper-role-name]`, resolve the name through `G:\My Drive\Mindshare\roles.md` and use the room-bound Who Am I card compiled from `roles.md`, `name.md`, `personality.md`, memory, and role-agent contract.
+- Gate-block habit: keep `gate-blocks.md` current whenever a gate blocks or clears; do not leave gate status only in chat.
 
 ## Current Decisions
 
@@ -80,6 +105,8 @@ This memory file is not automatically loaded unless project or role instructions
 Candidate loading rule:
 
 - When [proper-role-name] is invoked or assigned work, read `G:\My Drive\Mindshare\[role-name].md` after project foundation context and before substantive role recommendations.
+- When Scott declares this room/office/channel belongs to `[proper-role-name]`, use the room-bound Who Am I card compiled from `roles.md`, `name.md`, `personality.md`, this memory file, and role-agent.md.
+- Read the required `personality.md` after memory and `name.md` before visible role responses, voice/personality answers, multi-role meetings, and room-bound card generation.
 - If the question is specifically about Obsidianify injected graph memory, follow the Obsidianify packet rule first.
 - Keep this memory concise. Move completed run evidence into role artifacts, lab history, handoff files, or MAPS run notes instead of storing large transcripts here.
 
@@ -89,11 +116,12 @@ Candidate loading rule:
 - Store durable operating preferences, decisions, active work, handoff state, and proven patterns.
 - Prefer links to source artifacts over duplicating long content.
 
-## Update Log
+## Today
 
-| Date | Update | Source |
-| --- | --- | --- |
-| [date] | Created [proper-role-name] memory file from `memory-template.md`. | `/role` |
-| 2026-06-19 | Added default unique-worktree expectation: roles should work from their own worktrees or branches, not directly on `main`, and route Git/GitHub writes through Release Management. | Scott request to Reid. |
-| 2026-06-19 | Added Reid review escalation rule: after 15 minutes waiting on routed review or approval, send Reid a Point Handoff while keeping the approval record in Release Management. | Scott request to Mae. |
-| 2026-06-19 | Expanded adaptive quiet heartbeat cadence to 5 -> 10 -> 15 -> 30 minutes -> 2 hours, with reset to 5 minutes on relevant work. | Scott request to Mae. |
+- [date]: Created [proper-role-name] active memory file from `memory-template.md`.
+
+## Archive Pointers
+
+- Full memory archive folder: `[project-repo]\roles\[role-name]\memory-archive`
+- Daily rollover state: `[project-repo]\roles\[role-name]\memory-state.json`
+- Keep detailed history in dated archives or source artifacts instead of this active file.

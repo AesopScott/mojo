@@ -10,8 +10,14 @@ param(
 $ErrorActionPreference = "Continue"
 
 try {
+  $env:CODEX_FILE_WATCH_RESUME = "1"
+  $env:CODEX_THREAD_ID = $ThreadId
+  $env:CODEX_TARGET_THREAD_ID = $ThreadId
   Get-Content -LiteralPath $InputPath -Raw |
     & $CodexExe exec resume --skip-git-repo-check $ThreadId - > $OutputPath 2> $ErrorPath
 } finally {
+  Remove-Item Env:\CODEX_FILE_WATCH_RESUME -ErrorAction SilentlyContinue
+  Remove-Item Env:\CODEX_THREAD_ID -ErrorAction SilentlyContinue
+  Remove-Item Env:\CODEX_TARGET_THREAD_ID -ErrorAction SilentlyContinue
   Remove-Item -LiteralPath $MarkerPath -Force -ErrorAction SilentlyContinue
 }

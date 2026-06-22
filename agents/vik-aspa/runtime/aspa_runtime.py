@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import sys
@@ -8,6 +9,21 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
+
+
+mojo_root = Path(__file__).resolve().parents[3]
+code_root = mojo_root.parent
+mindshare_root = code_root / "mindshare"
+
+validator_path = mindshare_root / "agents" / "shared" / "autonomy_contract_validator.py"
+spec = importlib.util.spec_from_file_location("autonomy_contract_validator", validator_path)
+if spec and spec.loader:
+    autonomy_contract_validator = importlib.util.module_from_spec(spec)
+    sys.modules["autonomy_contract_validator"] = autonomy_contract_validator
+    spec.loader.exec_module(autonomy_contract_validator)
+    validate_contract = autonomy_contract_validator.validate_contract
+else:
+    raise ImportError(f"Cannot load validator from {validator_path}")
 
 
 DENIED_PATTERNS = {
@@ -41,6 +57,7 @@ class ControlPaths:
     design: Path
     backlog: Path
     autonomy_contract: Path
+    canonical_autonomy: Path
 
 
 @dataclass(frozen=True)
@@ -120,42 +137,93 @@ def detect_runtime_specific_request(request: str) -> bool:
     return any(term in text for term in ("cloudflare worker", "agents sdk", "slack bot", "gmail bot", "cron", "durable object"))
 
 
+def detect_scoped_research_loop_request(request: str) -> bool:
+    text = normalize(request)
+    has_work_state = any(term in text for term in ("backlog item", "work-state item", "work queue", "research queue", "handoff item"))
+    has_role_lane = any(term in text for term in (
+        "architecture",
+        "control-plane",
+        "role-agent",
+        "memory/rag",
+        "authority taxonomy",
+        "autonomy contract",
+        "runtime gate",
+        "eval",
+        "proof",
+        "owner routing",
+    ))
+    has_loop_language = any(term in text for term in (
+        "scoped goal",
+        "research packet",
+        "assessment",
+        "recommendation",
+        "risk/gate",
+        "complete or block",
+        "close or block",
+    ))
+    return has_work_state and has_role_lane and has_loop_language
+
+
 def detect_category(request: str) -> str:
     text = normalize(request)
     for category, patterns in DENIED_PATTERNS.items():
         if has_any(text, patterns):
             return category
+    if detect_scoped_research_loop_request(request):
+        return "scoped_research_loop"
     if detect_runtime_specific_request(request):
         return "runtime_specific"
     return "architecture_review"
 
 
-def validate_contracts(role_text: str, profile_text: str, design_text: str, backlog_text: str, autonomy_text: str) -> None:
+def validate_contracts(role_text: str, profile_text: str, design_text: str, backlog_text: str, autonomy_text: str, canonical_autonomy_text: str) -> None:
     profile = normalize(profile_text)
     design = normalize(design_text)
     backlog = normalize(backlog_text)
     autonomy = normalize(autonomy_text)
+    canonical = normalize(canonical_autonomy_text)
 
     if "current category: role+" not in profile:
         raise ContractError("Profile missing expected Role+ category.")
     if "autonomous runtime installed: no" not in profile:
         raise ContractError("Profile must keep autonomous runtime disabled.")
+    if "level 4 senior staff (scoped autonomy)" not in profile:
+        raise ContractError("Profile must record Level 4 scoped autonomy.")
+    if "current level: 4" not in canonical:
+        raise ContractError("Canonical Autonomy.md must record current Level 4.")
     if "runtime target: undecided" not in backlog:
         raise ContractError("Backlog must record undecided runtime target.")
     if "runtime adapter required" not in design and "runtime adapter" not in design:
         raise ContractError("Design missing runtime adapter requirement.")
     if "non-implementation statement" not in design:
         raise ContractError("Design missing non-implementation statement.")
-    has_blocked_contract_status = (
-        "contract status: draft-not-approved" in autonomy
-        or "contract status: input-interview-in-progress" in autonomy
-    )
-    if not has_blocked_contract_status:
-        raise ContractError("Autonomy contract must be explicit about blocked, not-approved status.")
-    if "activation status: not active" not in autonomy:
-        raise ContractError("Autonomy contract must keep activation not active.")
-    if "r&r: roles and responsibilities | input-needed" not in autonomy and "full bounded autonomy contract" not in autonomy:
-        raise ContractError("Autonomy contract must either be in input-led R&R collection or name the approved full bounded contract.")
+
+    if "autonomous runtime activation status: not active" not in autonomy and "activation status: not active" not in autonomy and "activation not active" not in autonomy:
+        raise ContractError("Autonomy contract shim must keep autonomous runtime activation not active.")
+
+    if "canonical autonomy source:" not in autonomy and "points to:" not in autonomy:
+        raise ContractError("Autonomy contract must point to canonical source.")
+
+    if not canonical_autonomy_text.strip():
+        raise ContractError("Canonical autonomy source missing or empty.")
+
+    if "autonomous runtime activation: not active" not in canonical and "activation not active" not in canonical and "current status: not active" not in canonical and "activation status: not active" not in canonical:
+        raise ContractError("Canonical Autonomy.md must keep autonomous runtime activation not active.")
+
+    if "approved contract answers" not in canonical:
+        raise ContractError("Canonical Autonomy.md must contain Scott-approved contract interview answers.")
+
+    if "valid backlog/work-state item" not in canonical:
+        raise ContractError("Canonical Autonomy.md must define the Level 4 workflow trigger.")
+
+    if "bounded goal loop" not in canonical:
+        raise ContractError("Canonical Autonomy.md must define the Level 4 scoped goal loop.")
+
+    validator_result = validate_contract(canonical_autonomy_text)
+    if not validator_result.ok:
+        errors_str = "; ".join(validator_result.errors)
+        raise ContractError(f"Canonical Autonomy.md validation failed: {errors_str}")
+
     if "no-external-communication" not in normalize(role_text) and "external communication | a0 none" not in normalize(role_text):
         raise ContractError("Role contract missing external communication boundary.")
 
@@ -165,11 +233,13 @@ def decide(request: str, paths: ControlPaths) -> Decision:
     profile_text = read_required(paths.profile, "agent profile")
     design_text = read_required(paths.design, "agent design")
     backlog_text = read_required(paths.backlog, "agent backlog")
-    autonomy_text = read_required(paths.autonomy_contract, "autonomy contract")
-    validate_contracts(role_text, profile_text, design_text, backlog_text, autonomy_text)
+    autonomy_text = read_required(paths.autonomy_contract, "autonomy contract shim")
+    canonical_autonomy_text = read_required(paths.canonical_autonomy, "canonical Autonomy.md")
+
+    validate_contracts(role_text, profile_text, design_text, backlog_text, autonomy_text, canonical_autonomy_text)
 
     category = detect_category(request)
-    sources = [str(paths.role), str(paths.profile), str(paths.design), str(paths.backlog), str(paths.autonomy_contract)]
+    sources = [str(paths.role), str(paths.profile), str(paths.design), str(paths.backlog), str(paths.autonomy_contract), str(paths.canonical_autonomy)]
 
     if category == "runtime_specific":
         return Decision(
@@ -180,15 +250,21 @@ def decide(request: str, paths: ControlPaths) -> Decision:
             sources=sources,
         )
 
-    autonomy = normalize(autonomy_text)
-    if category == "autonomous_runtime" and (
-        "contract status: draft-not-approved" in autonomy
-        or "contract status: input-interview-in-progress" in autonomy
-    ):
+    if category == "scoped_research_loop":
+        return Decision(
+            status="allowed",
+            category=category,
+            message="Level 4 scoped research/architecture loop allowed: valid work-state trigger plus bounded goal loop. No implementation, release, production, external communication, spending, secrets, authority expansion, autonomous runtime, or Level 5/6 authority granted.",
+            needs_approval=False,
+            sources=sources,
+        )
+
+    canonical = normalize(canonical_autonomy_text)
+    if category == "autonomous_runtime" and ("activation not active" in canonical or "current status: not active" in canonical):
         return Decision(
             status="blocked",
             category=category,
-            message="Autonomy contract interview is incomplete and activation status is not active. R&R, approval gates, Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.",
+            message="Activation status is not active. R&R, approval gates, Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.",
             needs_approval=True,
             sources=sources,
         )
@@ -235,6 +311,7 @@ def default_paths(repo_root: Path) -> ControlPaths:
         design=repo_root / "agents" / "vik-aspa" / "agent-design.md",
         backlog=repo_root / "agents" / "vik-aspa" / "agent-backlog.md",
         autonomy_contract=repo_root / "agents" / "vik-aspa" / "autonomy-contract.md",
+        canonical_autonomy=repo_root / "roles" / "vik" / "Autonomy.md",
     )
 
 

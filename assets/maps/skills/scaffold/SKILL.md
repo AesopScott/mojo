@@ -1,130 +1,67 @@
 ---
 name: scaffold
-description: Instantiate the MAPS scaffold template. Use when the user invokes /scaffold or asks to create a Multi-Agent Pipeline Skills repo from templates/maps-scaffold-template.md with phase docs, phase skills, templates, catalogs, docs page placeholders, README, gitignore, and MIT license.
+description: Deprecated compatibility alias for older /scaffold requests. Use /foundation instead when creating or auditing MAPS project foundations, portable path settings, or full MAPS framework/org scaffolds.
 ---
 
 # Scaffold
+
 ## Versioning
 
-Current version: 0.3.0.
+Current version: 1.0.0.
 
-Follow semantic versioning for this skill:
+Follow semantic versioning for this compatibility alias:
 
-- Patch: wording, examples, references, or small workflow clarifications.
-- Minor: new outputs, new required steps, new helper behavior, or expanded workflow capability.
-- Major: renamed outputs, changed artifact contracts, removed behavior, or incompatible workflow changes.
-
-When changing this skill, update `Current version` and add a `Changelog` entry with the date, version, and short summary of behavior changed.
+- Patch: wording or routing clarifications.
+- Minor: added compatibility behavior.
+- Major: changed alias contract.
 
 ## Changelog
 
-- 2026-06-19 - v0.3.0 - Replaced fixed `/foundation` follow-up with conditional A1 routing: `/foundation` for missing/incomplete M0, `/shape` for valid M0, `/define-agent` for approved role-to-agent A1, or no phase skill for framework/template-only scaffolds.
-- 2026-06-19 - v0.2.0 - Made scaffold idempotent by default: preserve existing project/Foundation files, append safe `.gitignore` defaults when missing, and report created, appended, and preserved paths.
-- 2026-06-19 - v0.1.0 - Established the initial MAPS skill version baseline and changelog tracking.
+- 2026-06-20 - v1.0.0 - Deprecated `/scaffold` as an independent skill; Foundation now owns scaffold creation.
 
-## Overview
+## Deprecation
 
-Use this skill to instantiate the repeatable MAPS repository structure defined in `templates/maps-scaffold-template.md`. Prefer the bundled script for deterministic scaffolding.
+Do not run an independent `/scaffold` workflow.
 
-The skill is the action. The template is the structure.
+When the user invokes `/scaffold`, route the request to `/foundation` and explain that Foundation now owns:
 
-Default behavior is idempotent and foundation-safe. If the target already contains `project-foundation.md`, `.maps/foundation-preferences.json`, existing phase docs, skills, templates, catalogs, README, docs pages, or other project work, preserve those files. Create only missing scaffold files. For known append-only project setup files, append missing scaffold defaults only when safe; currently this means adding missing `.gitignore` defaults without removing existing entries. Never overwrite existing project scaffolding unless Scott explicitly asks for `--force`.
+- M0 project foundation
+- portable path layer inquiry and recording
+- notes/source/memory/RAG scaffold
+- Git, remote, env, and secrets readiness
+- optional full MAPS framework/org repo structure formerly created by `/scaffold`
 
-## Project foundation updates
+Use the Foundation resource `scripts/create_maps_scaffold.py` only through a Foundation run after target directory, project/framework name, and overwrite policy are clear.
 
-At the start of every project run, look for `project-foundation.md`. If it exists, read `Persistent Memory Contract` and use its configured notes, sources, memory, RAG, and sync rules as the project defaults. If `.maps/foundation-preferences.json` exists, use it as the structured preference source for automation.
+## Foundation Routing Rules
 
-When this skill creates durable knowledge, write it through the shared MAPS memory helper. The helper gives this skill its own named note under the configured notes root, mirrors that note into the configured RAG location when one exists, appends `MAPS Skill Run Log`, and records a RAG reindex manifest.
+- Ask exactly one question at a time.
+- Read `project-foundation.md` when it exists and use its persistent memory contract before routing.
+- Route the request to `/foundation` and let Foundation handle durable artifacts, path settings, scaffolding, and memory updates.
+- When Foundation creates or updates durable knowledge, Foundation should run `maps_memory.py` according to its own skill contract.
+- Do not create a separate Scaffold run note or independent Scaffold artifact.
 
-At the end of the run, call the helper after creating the primary output artifact:
+## Done Criteria
 
-```bash
-python "$CODEX_HOME/skills/foundation/scripts/maps_memory.py" complete-run --project . --skill /scaffold --phase Scaffold --output "<primary artifact path>" --summary-file "<primary artifact path>" --memory-updates "<notes, sources, memory, or RAG updates>"
-```
-
-If the helper is unavailable, manually append the timestamp, skill, phase, output path, memory updates, and short note to `project-foundation.md`, then update this skill's named note in `<notesRoot>/maps-runs/`.
-
-## Required interview
-
-Before creating files, ask for any missing answers. Do not scaffold into an ambiguous path or overwrite without explicit permission.
-
-Ask exactly one question at a time. Do not present the user with a multi-question form, checklist, or table to fill out. Use the questions below as the internal interview sequence: ask the next most important missing question, wait for the answer, then continue.
-
-Ask:
-
-- What target directory should receive the scaffold?
-- What should the framework or project be named?
-- Is this a new repo, an existing repo, or a training/example scaffold?
-- Should existing files be preserved, appended where safe, or overwritten with `--force`?
-- Should git be initialized if the target is not already a repo?
-- Which phases, skills, templates, catalogs, docs, or examples should be included?
-- Are there naming or folder conventions to follow?
-- Should generated files use default MAPS content or a custom variant?
-- What should happen if the target directory already contains work?
-- What should be the next action after scaffolding?
-
-If the target path or overwrite policy is unclear, ask before running the scaffold script.
-
-## Workflow
-
-1. Confirm or infer the target directory.
-2. Treat `templates/maps-scaffold-template.md` as the structure contract.
-3. Run `scripts/create_maps_scaffold.py <target-directory>`.
-4. Review the created, appended, and preserved file lists against the scaffold template.
-5. If the target should be a git repo, initialize git after scaffolding.
-6. Report the target path, key generated artifacts, existing files preserved, and any append-only updates.
-
-## Script
-
-```bash
-python scripts/create_maps_scaffold.py /path/to/target
-```
-
-Options:
-
-- `--force`: overwrite existing files generated by the scaffold.
-- `--name NAME`: set the framework name in generated content. Defaults to `MAPS`.
-
-Without `--force`, existing files are preserved and listed as preserved. The scaffold may append missing safe defaults to known append-only files such as `.gitignore`; it must not rewrite `project-foundation.md` or `.maps/foundation-preferences.json`.
-
-## Generated Structure
-
-The script creates:
-
-- `README.md`
-- `.gitignore`
-- `LICENSE`
-- `docs/phase0.html`
-- `docs/styles.css`
-- `docs/contributing.md`
-- `phases/00-phase-alignment.md` through `phases/08-improve.md`
-- `skills/phase-alignment` plus one phase skill per lifecycle phase
-- `templates/maps-scaffold-template.md`
-- `templates/` deliverable shells
-- `catalogs/repos.md`, `catalogs/skills.md`, and `catalogs/tools.md`
+- The user is routed to `/foundation`.
+- No separate Scaffold-specific plan or artifact is produced.
 
 ## Completion report
 
-When the skill is complete, tell the user explicitly. Do not end with only files changed or raw output.
+When a legacy `/scaffold` request is handled, report:
 
-Report:
-
-- Completion status: complete, blocked, or needs more answers.
-- Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
-- Key decisions or changes made.
-- Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
-- Next skill: report conditional A1 routing, not a fixed follow-up. Use `/foundation` only when this scaffold starts a new project or M0 foundation is missing/incomplete. Use `/shape` when a valid M0 `project-foundation.md` already exists. Use `/define-agent` when the scaffolded work is for an approved role moving into agent A1. Use no phase skill yet when the scaffold is only a reusable MAPS framework/template shell.
-
-If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
+- Completion status: routed.
+- Outcome: the request belongs to `/foundation`.
+- Memory update: none from `/scaffold`; Foundation owns any `maps_memory.py` update.
+- Next skill: `/foundation`.
 
 ## Output
 
-Create or update the target scaffold directory with the requested MAPS structure. The primary output is the scaffolded repository root containing phase guides, phase skills, templates, catalogs, docs, README, license, and gitignore.
+Create no independent Scaffold output.
 
-## Done Criteria
-- The target contains the MAPS repo structure.
-- Every phase has a guide, skill, and template where applicable.
-- Generated skills have valid `SKILL.md` frontmatter.
-- Existing project/Foundation artifacts were preserved unless `--force` was explicitly approved.
-- The completion report names created files, append-only updates, and preserved existing files.
-- The user knows the target path and next action.
+Expected output is a handoff to `/foundation`, which may then create or update:
+
+- `project-foundation.md`
+- portable path settings
+- notes/source/memory/RAG scaffold
+- optional full MAPS framework/org repo structure

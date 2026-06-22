@@ -1,4 +1,4 @@
 interface:
   display_name: "Scaffold"
-  short_description: "Build a MAPS repository scaffold."
-  default_prompt: "Use scaffold to create a MAPS repo structure with phase docs, skills, templates, catalogs, and docs."
+  short_description: "Deprecated alias; use Foundation for MAPS scaffolds."
+  default_prompt: "Route this request to Foundation. Foundation now creates MAPS project foundations, portable path settings, and optional full MAPS framework/org scaffolds."

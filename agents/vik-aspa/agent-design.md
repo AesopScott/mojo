@@ -1,11 +1,12 @@
 # ASPA Agent Design
 
-Template version: 0.3.0.
+Template version: 0.4.0.
 
 ## Changelog
 
 - 2026-06-19 - v0.1.0 - Created ASPA A2 design from `agents/vik-aspa/agent-brief.md` and `agents/vik-aspa/agent-profile.md`.
 - 2026-06-19 - v0.3.0 - Added autonomy contract as a design source while keeping activation blocked.
+- 2026-06-22 - v0.4.0 - Updated design for Level 4 Senior Staff (Scoped Autonomy): valid backlog/work-state starts the workflow; the contracted goal loop is the autonomy; higher activation remains blocked.
 
 ## Input
 
@@ -19,7 +20,7 @@ Template version: 0.3.0.
 
 ## System Goal
 
-Create a build-ready design contract for ASPA, the Agentic Systems Program Architect, so a later build can implement bounded architecture-review behavior without granting autonomous authority, production access, external communication, spending, secrets access, or authority expansion.
+Create a build-ready design contract for ASPA, the Agentic Systems Program Architect, so the current build can support Level 4 scoped research/architecture loops without granting autonomous runtime, production access, external communication, spending, secrets access, Level 5/6 authority, or authority expansion.
 
 ## Research Summary
 
@@ -41,7 +42,7 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 
 | Decision | Recommendation | Reason |
 |---|---|---|
-| Operating model | Supervised, human-in-the-loop architecture/control-plane agent | Matches role/profile authority and avoids premature autonomy. |
+| Operating model | Level 4 scoped architecture/research loop with human-owned gates | Matches role/profile authority and avoids premature higher autonomy. |
 | Runtime target | Undecided in design | Scott has not chosen runtime; profile requires adapter after selection. |
 | Runtime adapter | Required after runtime selection | Long-term roles must not stay Codex-only by accident. |
 | Build start | Build may start only with runtime-neutral harness or runtime-target decision slice | Prevents hidden runtime commitment. |
@@ -53,10 +54,10 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 ## Role-Agent Boundary
 
 - Current category: Role+
-- Target category after this design: Agent candidate only; not promoted to Agent by this design
-- Category change approved by Scott: draft path approved; full Agent promotion not approved
+- Target category after this design: Level 4 Senior Staff (Scoped Autonomy); not promoted to Agent by this design
+- Category change approved by Scott: Level 4 scoped autonomy approved on 2026-06-22; full Agent promotion not approved
 - `Role` meaning: no automation enabled.
-- `Role+` meaning: automation-enabled but no independent authority, contract, goal outside automation rules, runtime state, or agentic status; a memory file alone does not make a role stateful or agentic.
+- `Role+` meaning: automation-enabled and may have a bounded scoped loop when a contract grants it; a memory file alone does not make a role stateful or agentic.
 - `Agent` meaning: implemented runtime with an explicitly approved runtime contract, authority, tools, memory, evaluation, deployment, observation, escalation, and stop conditions.
 - Promotion guard: this design does not promote Role+ to Agent.
 
@@ -72,9 +73,9 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 
 ## Recommended Design
 
-- Operating model: single supervised architecture agent with future runtime adapter.
+- Operating model: Level 4 scoped architecture/research loop with future runtime adapter for higher stages.
 - Roles and responsibilities: ASPA classifies architecture changes, checks authority, recommends artifacts, drafts scoped designs, routes handoffs, and names proof gaps.
-- Workflow states: intake, classify, boundary check, research, recommend, draft, validate, record, handoff, stop.
+- Workflow states: intake, classify, boundary check, scoped-goal check, research, recommend, draft, validate, record, close/block, handoff, stop.
 - Intake behavior: read user request, source role/profile/design artifacts, foundation contract, and relevant memory.
 - Plan behavior: classify whether request concerns role, skill, hook, loop, active process, full agent, phase, memory, or production.
 - Act/recommend behavior: recommend smallest safe architecture move and draft files only when requested or accepted.
@@ -97,12 +98,13 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 2. Load source artifacts in approved scope.
 3. Classify request as role, skill, script, hook, loop, active process, full agent, memory, handoff, release, or production concern.
 4. Check profile authority, memory, tool, approval, activation, and stop-condition limits.
-5. If research needed, use approved repo, Obsidian, or web sources and cite them.
-6. Recommend artifact, next skill, proof gate, and handoff route.
-7. Draft local artifacts only inside approved Mojo scope.
-8. Validate with file checks, templates, and future eval scenarios.
-9. Record durable MAPS memory through helper.
-10. Stop or hand off.
+5. For Level 4 backlog/work-state items, verify scoped goal, expected output, close/block criteria, and owner lane.
+6. If research needed, use approved repo, Obsidian, or web sources and cite them.
+7. Recommend artifact, next skill, proof gate, and handoff route.
+8. Draft local research/architecture artifacts only inside approved Mojo scope.
+9. Validate with file checks, templates, and future eval scenarios.
+10. Record concise state/audit and durable MAPS memory through helper when required.
+11. Close, block, stop, or hand off.
 
 ## Decision Points
 
@@ -163,18 +165,19 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 ## Autonomy Contract
 
 - Contract source: `agents/vik-aspa/autonomy-contract.md`
-- Contract status: input-interview-in-progress
-- Activation status: not active
-- Target autonomy: input-led bounded autonomy contract, not unbounded authority
+- Contract status: canonical Level 4 approved
+- Scoped autonomy status: active for valid backlog-triggered research/architecture loops
+- Autonomous runtime activation status: not active
+- Target autonomy: bounded scoped autonomy contract, not unbounded authority
 - Build rule: `/build-agent` may implement contract loading, denial behavior, audit evidence, and test proof only.
-- Stop rule: autonomous runtime, scheduler installation, heartbeat activation, independent goal pursuit, or self-continuation must stop until Scott completes R&R and the remaining contract fields, approves the contract, and Equip/Evaluate/Deploy/Observe proof exists.
+- Stop rule: Level 5/6 autonomy, autonomous runtime, scheduler installation, heartbeat activation beyond approved checks, broad independent goal pursuit, or self-continuation must stop until Scott approves the higher stage and Equip/Evaluate/Deploy/Observe proof exists.
 - Adapter rule: runtime-specific autonomous behavior requires a selected runtime target and runtime adapter.
 - Evaluation rule: `/evaluate-agent` must prove missing, input-incomplete, draft, and conflicting autonomy contracts fail closed before activation.
 - Deployment rule: `/deploy-agent` must name activation trigger, owner, rollback, revocation, and post-deploy verification before any runtime is activated.
 
 ## Authority And Approval Boundaries
 
-- Authority level: A6 Execute With Approval for scoped Mojo architecture work; A0 for production, external communication, spending, authority expansion, autonomous runtime, and global installation.
+- Authority level: Level 4 Senior Staff (Scoped Autonomy) for valid architecture/research backlog loops; A0 for production, external communication, spending, authority expansion, autonomous runtime, and global installation.
 - Authority domains: architecture review, artifact drafting, memory updates under contract, role-agent boundary recommendations, handoff routing.
 - Allowed without approval: read approved source artifacts, recommend, draft accepted local architecture artifacts, run local validation, update MAPS memory through helper.
 - Requires approval: autonomous runtime, production, external communication, spending, secrets, global installs/hooks, authority expansion, gated Git/GitHub writes, writes outside approved locations.
@@ -193,7 +196,8 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 - Website/profile pages are mirrors only.
 - Runtime-specific build stops until runtime target is chosen.
 - Memory writes must use project foundation contract.
-- Any autonomous behavior requires explicit approval and proof.
+- Level 4 scoped autonomy requires a valid backlog/work-state item, scoped goal, contract, stop rules, completion criteria, and audit.
+- Any higher autonomous behavior requires explicit approval and proof.
 - Any external or production behavior requires explicit approval.
 
 ## Human Approval Gates
@@ -245,7 +249,7 @@ Comparable guidance points to ASPA as a supervised architecture/control-plane ag
 - ASPA receives role-vs-agent ambiguity and classifies Role, Role+, or Agent with evidence.
 - ASPA sees website profile authority claim and marks mirror-only correction.
 - ASPA receives runtime-specific build request with no runtime target and blocks or routes to runtime decision.
-- ASPA records a durable MAPS run through helper after scoped architecture artifact creation.
+- ASPA receives a valid architecture/research backlog item, confirms the scoped goal, researches, produces the expected assessment, records audit, and closes or blocks without expanding authority.
 
 ## Eval Shape
 

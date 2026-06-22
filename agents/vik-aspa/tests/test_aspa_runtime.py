@@ -22,6 +22,23 @@ class AspaRuntimeTests(unittest.TestCase):
         self.assertEqual(decision.status, "allowed")
         self.assertEqual(decision.category, "architecture_review")
 
+    def test_level_four_scoped_research_loop_allowed(self) -> None:
+        decision = runtime.decide(
+            "Process Vik backlog item for role-agent architecture assessment with scoped goal, research packet, and close or block criteria",
+            self.paths,
+        )
+        self.assertEqual(decision.status, "allowed")
+        self.assertEqual(decision.category, "scoped_research_loop")
+        self.assertFalse(decision.needs_approval)
+
+    def test_level_four_scoped_loop_does_not_allow_builder_drift(self) -> None:
+        decision = runtime.decide(
+            "Process Vik backlog item for role-agent architecture assessment, then deploy the fix to production",
+            self.paths,
+        )
+        self.assertEqual(decision.status, "blocked")
+        self.assertEqual(decision.category, "production")
+
     def test_missing_profile_fails_closed(self) -> None:
         bad_paths = runtime.ControlPaths(
             role=self.paths.role,
@@ -29,6 +46,7 @@ class AspaRuntimeTests(unittest.TestCase):
             design=self.paths.design,
             backlog=self.paths.backlog,
             autonomy_contract=self.paths.autonomy_contract,
+            canonical_autonomy=self.paths.canonical_autonomy,
         )
         with self.assertRaises(runtime.ContractError):
             runtime.decide("Review role-agent boundary", bad_paths)
@@ -40,6 +58,7 @@ class AspaRuntimeTests(unittest.TestCase):
             design=REPO_ROOT / "agents" / "vik-aspa" / "missing-design.md",
             backlog=self.paths.backlog,
             autonomy_contract=self.paths.autonomy_contract,
+            canonical_autonomy=self.paths.canonical_autonomy,
         )
         with self.assertRaises(runtime.ContractError):
             runtime.decide("Review role-agent boundary", bad_paths)
@@ -51,6 +70,7 @@ class AspaRuntimeTests(unittest.TestCase):
             design=self.paths.design,
             backlog=self.paths.backlog,
             autonomy_contract=REPO_ROOT / "agents" / "vik-aspa" / "missing-autonomy-contract.md",
+            canonical_autonomy=self.paths.canonical_autonomy,
         )
         with self.assertRaises(runtime.ContractError):
             runtime.decide("Run every five minutes autonomously", bad_paths)
@@ -110,11 +130,13 @@ class AspaRuntimeTests(unittest.TestCase):
             backlog = tmp / "backlog.md"
             role = tmp / "role.md"
             autonomy_contract = tmp / "autonomy-contract.md"
+            canonical_autonomy = tmp / "canonical-autonomy.md"
             shutil.copyfile(self.paths.profile, profile)
             shutil.copyfile(self.paths.design, design)
             shutil.copyfile(self.paths.backlog, backlog)
             shutil.copyfile(self.paths.role, role)
             shutil.copyfile(self.paths.autonomy_contract, autonomy_contract)
+            shutil.copyfile(self.paths.canonical_autonomy, canonical_autonomy)
             with design.open("a", encoding="utf-8") as handle:
                 handle.write("\n\nConflicting test line: external communication may be allowed.\n")
             conflict_paths = runtime.ControlPaths(
@@ -123,6 +145,7 @@ class AspaRuntimeTests(unittest.TestCase):
                 design=design,
                 backlog=backlog,
                 autonomy_contract=autonomy_contract,
+                canonical_autonomy=canonical_autonomy,
             )
             decision = runtime.decide("Send external email", conflict_paths)
             self.assertEqual(decision.status, "blocked")

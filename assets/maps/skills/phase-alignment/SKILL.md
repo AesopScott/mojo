@@ -79,7 +79,7 @@ Report:
 - Outcome: the concrete artifact, decision, scaffold, implementation, or plan produced.
 - Key decisions or changes made.
 - Memory update: whether the shared MAPS memory helper ran, what note/run log was updated, and what RAG or notes locations need syncing.
-- Next skill: `/scaffold` when a new MAPS repo should be created, or `/foundation` when starting a project inside the agreed structure.
+- Next skill: `/foundation` when a new MAPS repo should be created or when starting a project inside the agreed structure.
 
 If the skill is blocked, say what answer, artifact, access, approval, or tool is needed before the next skill can run.
 ## Output
