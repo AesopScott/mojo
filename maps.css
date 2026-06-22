@@ -1557,6 +1557,7 @@ body.maps-page {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   min-width: 112px;
   min-height: 34px;
   padding: 6px 10px;
@@ -1564,6 +1565,50 @@ body.maps-page {
   color: #fff;
   font-size: 13px;
   font-weight: 850;
+}
+
+.maps-role-swatch {
+  display: inline-block;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(12, 23, 33, 0.18);
+}
+
+.maps-role-status.human .maps-role-swatch {
+  background: #4f3b78;
+}
+
+.maps-role-status.candidate .maps-role-swatch,
+.maps-role-status.missing .maps-role-swatch {
+  background: #b83232;
+}
+
+.maps-role-status.new-hire .maps-role-swatch {
+  background: #6f5d2a;
+}
+
+.maps-role-status.trainee .maps-role-swatch {
+  background: #047481;
+}
+
+.maps-role-status.staff .maps-role-swatch {
+  background: #245ea8;
+}
+
+.maps-role-status.senior-staff .maps-role-swatch {
+  background: #6d5eb8;
+}
+
+.maps-role-status.principal .maps-role-swatch,
+.maps-role-status.executor .maps-role-swatch {
+  background: var(--maps-gold);
+}
+
+.maps-role-status.partner .maps-role-swatch {
+  background: #1f7a4d;
 }
 
 .maps-role-status.missing,
@@ -1735,6 +1780,54 @@ body.maps-page {
 .maps-role-name.partner {
   border-color: rgba(31, 122, 77, 0.44);
   background: #ecf8f1;
+}
+
+.maps-role-name.human .maps-role-person-name,
+.maps-role-name.human .maps-role-person-title,
+.maps-role-name.human .maps-role-person-stage {
+  color: #4f3b78;
+}
+
+.maps-role-name.candidate .maps-role-person-name,
+.maps-role-name.candidate .maps-role-person-title,
+.maps-role-name.candidate .maps-role-person-stage {
+  color: #b83232;
+}
+
+.maps-role-name.new-hire .maps-role-person-name,
+.maps-role-name.new-hire .maps-role-person-title,
+.maps-role-name.new-hire .maps-role-person-stage {
+  color: #6f5d2a;
+}
+
+.maps-role-name.trainee .maps-role-person-name,
+.maps-role-name.trainee .maps-role-person-title,
+.maps-role-name.trainee .maps-role-person-stage {
+  color: #047481;
+}
+
+.maps-role-name.staff .maps-role-person-name,
+.maps-role-name.staff .maps-role-person-title,
+.maps-role-name.staff .maps-role-person-stage {
+  color: #245ea8;
+}
+
+.maps-role-name.senior-staff .maps-role-person-name,
+.maps-role-name.senior-staff .maps-role-person-title,
+.maps-role-name.senior-staff .maps-role-person-stage {
+  color: #6d5eb8;
+}
+
+.maps-role-name.principal .maps-role-person-name,
+.maps-role-name.principal .maps-role-person-title,
+.maps-role-name.principal .maps-role-person-stage {
+  color: var(--maps-gold);
+}
+
+.maps-role-name.partner .maps-role-person-name,
+.maps-role-name.partner .maps-role-person-title,
+.maps-role-name.partner .maps-role-person-stage {
+  color: #1f7a4d;
 }
 
 a.maps-role-name {
