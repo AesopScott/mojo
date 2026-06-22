@@ -242,7 +242,11 @@ def scan_snapshot(cfg: dict, config_path: Path, automation_dir: Path, old_files:
         if not rec["exists"]:
             missing_count += 1
         old = old_files.get(path) or {}
-        if old.get("sha256") != rec.get("sha256") or bool(old.get("exists")) != bool(rec.get("exists")):
+        if (
+            old.get("sha256") != rec.get("sha256")
+            or old.get("size") != rec.get("size")
+            or bool(old.get("exists")) != bool(rec.get("exists"))
+        ):
             changes.append(
                 {
                     "path": path,
@@ -250,7 +254,9 @@ def scan_snapshot(cfg: dict, config_path: Path, automation_dir: Path, old_files:
                     "new_sha256": rec.get("sha256"),
                     "old_exists": bool(old.get("exists")),
                     "new_exists": bool(rec.get("exists")),
+                    "old_size": old.get("size"),
                     "new_size": rec.get("size"),
+                    "old_mtime": old.get("mtime"),
                     "new_mtime": rec.get("mtime"),
                 }
             )
@@ -303,7 +309,9 @@ def change_packet(cfg: dict, changes: list[dict], queue_output: list[str], packe
                 f"      <new_sha256>{change['new_sha256']}</new_sha256>",
                 f"      <old_exists>{change['old_exists']}</old_exists>",
                 f"      <new_exists>{change['new_exists']}</new_exists>",
+                f"      <old_size>{change['old_size']}</old_size>",
                 f"      <new_size>{change['new_size']}</new_size>",
+                f"      <old_mtime>{change['old_mtime']}</old_mtime>",
                 f"      <new_mtime>{change['new_mtime']}</new_mtime>",
                 "    </file>",
             ]
@@ -361,6 +369,7 @@ def make_pending(cfg: dict, packet_id: str, now: str, snapshot: dict, packet_tex
         "detected_new_files": snapshot["new_files"],
         "queue_guard_output": snapshot["queue_guard"]["output"],
         "queue_item_ids": snapshot["queue_item_ids"],
+        "changes": snapshot["changes"],
         "packet_signature": snapshot["packet_signature"],
         "prompt_packet_text": packet_text,
         "status": "pending",
@@ -485,7 +494,27 @@ def mark_resumed(automation_dir: Path, pending: dict, result: dict) -> None:
     save_json(automation_dir / "pending-change-packet.json", pending)
 
 
-def write_state(path: Path, cfg: dict, now: str, files: dict) -> None:
+def update_history(existing_state: dict | None, changes: list[dict] | None, now: str) -> list[dict]:
+    history = list((existing_state or {}).get("last_history") or [])
+    for change in changes or []:
+        history.append(
+            {
+                "checked_at": now,
+                "path": change.get("path"),
+                "old_sha256": change.get("old_sha256"),
+                "new_sha256": change.get("new_sha256"),
+                "old_exists": change.get("old_exists"),
+                "new_exists": change.get("new_exists"),
+                "old_size": change.get("old_size"),
+                "new_size": change.get("new_size"),
+                "old_mtime": change.get("old_mtime"),
+                "new_mtime": change.get("new_mtime"),
+            }
+        )
+    return history[-50:]
+
+
+def write_state(path: Path, cfg: dict, now: str, files: dict, existing_state: dict | None = None, changes: list[dict] | None = None) -> None:
     save_json(
         path,
         {
@@ -494,6 +523,7 @@ def write_state(path: Path, cfg: dict, now: str, files: dict) -> None:
             "last_checked_at": now,
             "baseline_on_first_run": bool(cfg.get("baseline_on_first_run")),
             "files": files,
+            "last_history": update_history(existing_state, changes, now),
         },
     )
 
@@ -624,7 +654,7 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             if has_ack and pending:
                 log(root, f"{cfg['automation_id']}: pending packet {pending_id} acknowledged, applying baseline and queue completion marks")
                 if not dry_run:
-                    write_state(state_path, cfg, now, pending.get("detected_new_files") or {})
+                    write_state(state_path, cfg, now, pending.get("detected_new_files") or {}, existing_state, pending.get("changes") or [])
                     queue_state = "queue_guard_state.json" if cfg["automation_id"] == "reid-handoff-check" else "channel_queue_guard_state.json"
                     if cfg["automation_id"] == "vik-handoff-check":
                         apply_queue_status(automation_dir, pending.get("queue_item_ids") or [], queue_state, "complete")
@@ -648,21 +678,19 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             ):
                 log(root, f"{cfg['automation_id']}: unchanged")
                 if not dry_run and not existing_state:
-                    write_state(state_path, cfg, now, snapshot["new_files"])
+                    write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
                 rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
                 continue
 
-            should_resume_clean_file_change = bool(cfg.get("resume_on_clean_file_change")) and len(snapshot["changes"]) > 0
-            if queue_guard_is_clean_no_open(snapshot) and snapshot["missing_count"] == 0 and not should_resume_clean_file_change:
-                if len(snapshot["changes"]) > 0:
-                    message = "changed files but queue guard clean; baseline advanced without thread resume"
-                elif pending:
+            has_file_changes = len(snapshot["changes"]) > 0
+            if queue_guard_is_clean_no_open(snapshot) and snapshot["missing_count"] == 0 and not has_file_changes:
+                if pending:
                     message = f"pending packet {pending_id} cleared because queue guard is now clean"
                 else:
                     message = "unchanged"
                 log(root, f"{cfg['automation_id']}: {message}")
                 if not dry_run:
-                    write_state(state_path, cfg, now, snapshot["new_files"])
+                    write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
                     if pending:
                         write_packet_log(automation_dir, pending, "cleared_no_open_queue")
                     (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
@@ -676,10 +704,10 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
                 if active_marker:
                     live_queue = invoke_queue_guard(cfg.get("queue_guard_path"), cfg, automation_dir, config_path, dry_run)
                     live_snapshot = {"queue_guard": live_queue}
-                    if queue_guard_is_clean_no_open(live_snapshot) and snapshot["missing_count"] == 0:
+                    if queue_guard_is_clean_no_open(live_snapshot) and snapshot["missing_count"] == 0 and len(snapshot["changes"]) == 0:
                         log(root, f"{cfg['automation_id']}: pending packet {pending_id} cleared because live queue guard is now clean")
                         if not dry_run:
-                            write_state(state_path, cfg, now, snapshot["new_files"])
+                            write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
                             write_packet_log(automation_dir, pending, "cleared_no_open_queue")
                             (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
                             (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
@@ -726,7 +754,7 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             if not existing_state and cfg.get("baseline_on_first_run") and not cfg.get("resume_on_first_run") and not snapshot["queue_guard"]["open"]:
                 log(root, f"{cfg['automation_id']}: baseline only, {len(snapshot['changes'])} files recorded")
                 if not dry_run:
-                    write_state(state_path, cfg, now, snapshot["new_files"])
+                    write_state(state_path, cfg, now, snapshot["new_files"], existing_state, snapshot["changes"])
                 continue
 
             packet_id = new_packet_id()

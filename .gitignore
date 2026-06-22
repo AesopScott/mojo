@@ -17,6 +17,10 @@ deploy.log
 meetup-oauth-token.json
 maps/backlog.json
 
+# Local org-chart draft/source artifacts; not production pages.
+maps/org-chart/agents/ana-recruiter-profile-artifacts/
+maps/org-chart/agents/ana-recruiter-status-draft/
+
 # Python/cache output
 __pycache__/
 *.py[cod]

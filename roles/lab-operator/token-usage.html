@@ -68,57 +68,62 @@
 <body>
   <main>
     <h1>Daily Token Usage</h1>
-    <p class="meta">Source <code>roles/lab-operator/token usage.md</code> | Data through 2026-06-22 11:09:25 MDT | Build 20260622111102</p>
-    <p class="version-banner">Report v11:11</p>
+    <p class="meta">Source <code>roles/lab-operator/token usage.md</code> | Data through 2026-06-22 15:17:22 MDT | Build 20260622151831</p>
+    <p class="version-banner">Report v15:18</p>
     <p class="live-status"><span class="pulse"></span><span>Live view refreshes every 60 seconds after hourly rebuilds.</span></p>
     <section class="panel">
       <h2>Summary</h2>
       <div class="stats">
-        <div class="stat codex"><div class="k">Codex total</div><div class="v">2,096,981</div></div>
-        <div class="stat claude"><div class="k">Claude total</div><div class="v">13,517,138</div></div>
-        <div class="stat"><div class="k">Grand total</div><div class="v">15,614,119</div></div>
-        <div class="stat"><div class="k">Hourly windows</div><div class="v">11</div></div>
+        <div class="stat codex"><div class="k">Codex total</div><div class="v">104,301,027</div></div>
+        <div class="stat claude"><div class="k">Claude total</div><div class="v">37,502,816</div></div>
+        <div class="stat"><div class="k">Grand total</div><div class="v">141,803,843</div></div>
+        <div class="stat"><div class="k">Hourly windows</div><div class="v">15</div></div>
       </div>
       <div class="split" style="margin-top:18px;">
         <div>
           <h3>Largest Claude sessions</h3>
           <ul>
-            <li><strong>1,980,802</strong> - 94189610-3bd7-4814-8c85-82e9f509857f <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
-<li><strong>1,199,676</strong> - d2c2bd88-174f-4ca2-9598-8f71bc1e809a <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
-<li><strong>763,130</strong> - a8244962-31f0-4684-a4ea-86cf8126f7f4 <span class="muted">(C:\Users\scott\Code\mindshare)</span></li>
+            <li><strong>13,226,355</strong> - a1c92d3a-0647-400b-99ef-daa6e4222cee <span class="muted">(C:\Users\scott\Code\Aesop\.claude\worktrees\modest-wozniak-41c6ce)</span></li>
+<li><strong>4,477,417</strong> - 94189610-3bd7-4814-8c85-82e9f509857f <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
+<li><strong>1,980,802</strong> - 94189610-3bd7-4814-8c85-82e9f509857f <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
           </ul>
         </div>
         <div class="lists">
           <div>
             <h3>Largest Codex rooms</h3>
             <ul>
-              <li><strong>1,248,434</strong> - C:\Users\scott\Code\mindshare <span class="muted">(019eec2c-bb6b-7b03-8c97-f73cf63dc7a8)</span></li>
-<li><strong>379,497</strong> - C:\Users\scott\Code\mojo <span class="muted">(019eedc7-9e34-78c2-9792-5e8c1787fd46)</span></li>
-<li><strong>354,973</strong> - C:\Users\scott\Code\mojo <span class="muted">(019eedc7-9e34-78c2-9792-5e8c1787fd46)</span></li>
+              <li><strong>20,418,760</strong> - C:\Users\scott\Code\mindshare <span class="muted">(019eec2c-bb6b-7b03-8c97-f73cf63dc7a8)</span></li>
+<li><strong>12,480,801</strong> - C:\Users\scott\Code\mindshare <span class="muted">(019ee143-3f32-7093-9a24-acd3558fc52e)</span></li>
+<li><strong>9,104,226</strong> - C:\Users\scott\Code\mojo <span class="muted">(019eedc7-9e34-78c2-9792-5e8c1787fd46)</span></li>
             </ul>
           </div>
-          <div class="note"><strong>Confidence:</strong> Codex rows come from visible-message estimates because exact thread token fields are unavailable. Claude rows use exact local JSONL usage fields including input, output, cache_create, and cache_read tokens. Confidence mix: estimate-visible: 14; exact: 11; exact-local-jsonl: 17; exact-local-jsonl-delta: 4; no-activity: 6.</div>
+          <div class="note"><strong>Confidence:</strong> Codex rows come from visible-message estimates because exact thread token fields are unavailable. Claude rows use exact local JSONL usage fields including input, output, cache_create, and cache_read tokens. Confidence mix: estimate-visible: 14; exact: 11; exact-local-jsonl: 25; exact-local-jsonl-delta: 27; exact-local-jsonl-last-usage-sum: 1; no-activity: 6.</div>
         </div>
       </div>
     </section>
     <section class="panel">
       <h2>Codex Usage By Room</h2>
-      <p class="meta">Rolling 24 hours ending 2026-06-22 11:09:25 MDT.</p>
+      <p class="meta">Rolling 24 hours ending 2026-06-22 15:17:22 MDT.</p>
       <table>
         <thead>
           <tr><th>Room / Role</th><th>Repo / CWD</th><th class="num">Input</th><th class="num">Output</th><th class="num">Cache Read</th><th class="num">Total</th><th class="num">Share</th><th class="num">Rows</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>Tess / Autonomy Engineer</strong><div class="muted">019eec2c-bb6b-7b03-8c97-f73cf63dc7a8</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">1,243,770</td><td class="num">5,564</td><td class="num">1,054,848</td><td class="num">1,251,134</td><td class="num">59.7%</td><td class="num">4</td></tr>
-<tr><td><strong>Lane / Mojo Lab Operator</strong><div class="muted">019eedc7-9e34-78c2-9792-5e8c1787fd46</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">732,459</td><td class="num">2,196</td><td class="num">608,000</td><td class="num">734,655</td><td class="num">35.0%</td><td class="num">3</td></tr>
-<tr><td><strong>Vik / MAPS ASPA</strong><div class="muted">019ee0cf-d067-7e60-92ae-41ea66a75746</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">92,338</td><td class="num">454</td><td class="num">49,408</td><td class="num">92,992</td><td class="num">4.4%</td><td class="num">3</td></tr>
-<tr><td><strong>Liz / Web Manager</strong><div class="muted">019eed9b-cb80-7311-989f-2bbc95605d8b</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">10,000</td><td class="num">0.5%</td><td class="num">2</td></tr>
-<tr><td><strong>Reid / Release Manager</strong><div class="muted">019ee143-3f32-7093-9a24-acd3558fc52e</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">5,500</td><td class="num">0.3%</td><td class="num">2</td></tr>
-<tr><td><strong>Bea / Mojo MAPS Engineer</strong><div class="muted">019ee18f-b082-7e82-89c5-47498b9ec97e</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">2,300</td><td class="num">0.1%</td><td class="num">2</td></tr>
-<tr><td><strong>June / Staff Writer</strong><div class="muted">019eed17-7348-7593-b2ae-661027ba9cb2</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">350</td><td class="num">0.0%</td><td class="num">1</td></tr>
+          <tr><td><strong>Tess / Autonomy Engineer</strong><div class="muted">019eec2c-bb6b-7b03-8c97-f73cf63dc7a8</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">32,788,687</td><td class="num">162,247</td><td class="num">29,992,448</td><td class="num">32,952,734</td><td class="num">31.6%</td><td class="num">7</td></tr>
+<tr><td><strong>Lane / Mojo Lab Operator</strong><div class="muted">019eedc7-9e34-78c2-9792-5e8c1787fd46</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">17,085,375</td><td class="num">61,915</td><td class="num">15,763,840</td><td class="num">17,147,290</td><td class="num">16.4%</td><td class="num">7</td></tr>
+<tr><td><strong>Reid / Release Manager</strong><div class="muted">019ee143-3f32-7093-9a24-acd3558fc52e</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">13,367,268</td><td class="num">24,993</td><td class="num">12,642,432</td><td class="num">13,397,761</td><td class="num">12.8%</td><td class="num">4</td></tr>
+<tr><td><strong>Liz / Web Manager</strong><div class="muted">019eed9b-cb80-7311-989f-2bbc95605d8b</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">11,939,058</td><td class="num">24,569</td><td class="num">11,084,544</td><td class="num">11,973,627</td><td class="num">11.5%</td><td class="num">4</td></tr>
+<tr><td><strong>Bea / Mojo MAPS Engineer</strong><div class="muted">019ee18f-b082-7e82-89c5-47498b9ec97e</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">9,600,938</td><td class="num">23,656</td><td class="num">8,708,992</td><td class="num">9,626,894</td><td class="num">9.2%</td><td class="num">5</td></tr>
+<tr><td><strong>Unknown Codex room</strong><div class="muted">019eedd2-9398-78f3-8d41-3c1a4d734f4d</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">6,940,312</td><td class="num">27,075</td><td class="num">6,111,616</td><td class="num">6,967,387</td><td class="num">6.7%</td><td class="num">2</td></tr>
+<tr><td><strong>Unknown Codex room</strong><div class="muted">019ee052-168c-7da3-a3c3-df936e5c1c92</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">4,567,284</td><td class="num">8,702</td><td class="num">3,946,112</td><td class="num">4,575,986</td><td class="num">4.4%</td><td class="num">2</td></tr>
+<tr><td><strong>Unknown Codex room</strong><div class="muted">019ef10a-7d93-7383-b8f1-607ac78d7c75</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">4,131,876</td><td class="num">29,751</td><td class="num">3,579,648</td><td class="num">4,161,627</td><td class="num">4.0%</td><td class="num">1</td></tr>
+<tr><td><strong>Unknown Codex room</strong><div class="muted">019ee122-4c9b-72b2-b506-bbd25466bf15</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">1,546,608</td><td class="num">598</td><td class="num">1,347,072</td><td class="num">1,547,206</td><td class="num">1.5%</td><td class="num">1</td></tr>
+<tr><td><strong>Unknown Codex room</strong><div class="muted">019ee1ba-4364-7900-99ea-48fe2452ee3c</div></td><td>C:\Users\scott\Code\watch</td><td class="num">1,075,579</td><td class="num">1,614</td><td class="num">813,312</td><td class="num">1,077,193</td><td class="num">1.0%</td><td class="num">1</td></tr>
+<tr><td><strong>Vik / MAPS ASPA</strong><div class="muted">019ee0cf-d067-7e60-92ae-41ea66a75746</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">673,626</td><td class="num">1,730</td><td class="num">602,880</td><td class="num">675,556</td><td class="num">0.6%</td><td class="num">5</td></tr>
+<tr><td><strong>June / Staff Writer</strong><div class="muted">019eed17-7348-7593-b2ae-661027ba9cb2</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">197,236</td><td class="num">130</td><td class="num">2,432</td><td class="num">197,716</td><td class="num">0.2%</td><td class="num">2</td></tr>
 <tr><td><strong>Paige / Executive Assistant</strong><div class="muted">019eedc1-b201-7fb2-a5bd-9e1c6957fa39</div></td><td></td><td class="num">15</td><td class="num">35</td><td class="num">0</td><td class="num">50</td><td class="num">0.0%</td><td class="num">1</td></tr>
 <tr><td><strong>(aggregate)</strong><div class="muted">(aggregate)</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.0%</td><td class="num">3</td></tr>
-          <tr class="total-row"><td>Last 24h Total</td><td></td><td></td><td></td><td></td><td class="num">2,096,981</td><td class="num">100.0%</td><td></td></tr>
+          <tr class="total-row"><td>Last 24h Total</td><td></td><td></td><td></td><td></td><td class="num">104,301,027</td><td class="num">100.0%</td><td></td></tr>
         </tbody>
       </table>
     </section>
@@ -128,50 +133,62 @@
         <line class="grid" x1="64" y1="308.00" x2="940" y2="308.00" />
 <text class="label" x="56" y="312.00" text-anchor="end">0</text>
 <line class="grid" x1="64" y1="238.00" x2="940" y2="238.00" />
-<text class="label" x="56" y="242.00" text-anchor="end">1,825,000</text>
+<text class="label" x="56" y="242.00" text-anchor="end">9,925,000</text>
 <line class="grid" x1="64" y1="168.00" x2="940" y2="168.00" />
-<text class="label" x="56" y="172.00" text-anchor="end">3,650,000</text>
+<text class="label" x="56" y="172.00" text-anchor="end">19,850,000</text>
 <line class="grid" x1="64" y1="98.00" x2="940" y2="98.00" />
-<text class="label" x="56" y="102.00" text-anchor="end">5,475,000</text>
+<text class="label" x="56" y="102.00" text-anchor="end">29,775,000</text>
 <line class="grid" x1="64" y1="28.00" x2="940" y2="28.00" />
-<text class="label" x="56" y="32.00" text-anchor="end">7,300,000</text>
+<text class="label" x="56" y="32.00" text-anchor="end">39,700,000</text>
         <line class="axis" x1="64" y1="308" x2="940" y2="308" />
         <line class="axis" x1="64" y1="28" x2="64" y2="308" />
-        <polyline class="series codex" points="64.00,307.99 151.60,308.00 239.20,307.97 326.80,307.99 414.40,308.00 502.00,308.00 589.60,307.61 677.20,307.62 764.80,260.11 852.40,290.84 940.00,293.44" />
-        <circle class="dot codex" cx="64.00" cy="307.99" r="3" />
-<circle class="dot codex" cx="151.60" cy="308.00" r="3" />
-<circle class="dot codex" cx="239.20" cy="307.97" r="3" />
-<circle class="dot codex" cx="326.80" cy="307.99" r="3" />
-<circle class="dot codex" cx="414.40" cy="308.00" r="3" />
-<circle class="dot codex" cx="502.00" cy="308.00" r="3" />
-<circle class="dot codex" cx="589.60" cy="307.61" r="3" />
-<circle class="dot codex" cx="677.20" cy="307.62" r="3" />
-<circle class="dot codex" cx="764.80" cy="260.11" r="3" />
-<circle class="dot codex" cx="852.40" cy="290.84" r="3" />
-<circle class="dot codex" cx="940.00" cy="293.44" r="3" />
-        <polyline class="series claude" points="64.00,308.00 151.60,308.00 239.20,308.00 326.80,308.00 414.40,308.00 502.00,308.00 589.60,145.19 677.20,230.89 764.80,29.45 852.40,308.00 940.00,308.00" />
+        <polyline class="series codex" points="64.00,308.00 126.57,308.00 189.14,307.99 251.71,308.00 314.29,308.00 376.86,308.00 439.43,307.93 502.00,307.93 564.57,299.19 627.14,304.84 689.71,305.32 752.29,305.13 814.86,68.39 877.43,28.45 940.00,109.19" />
+        <circle class="dot codex" cx="64.00" cy="308.00" r="3" />
+<circle class="dot codex" cx="126.57" cy="308.00" r="3" />
+<circle class="dot codex" cx="189.14" cy="307.99" r="3" />
+<circle class="dot codex" cx="251.71" cy="308.00" r="3" />
+<circle class="dot codex" cx="314.29" cy="308.00" r="3" />
+<circle class="dot codex" cx="376.86" cy="308.00" r="3" />
+<circle class="dot codex" cx="439.43" cy="307.93" r="3" />
+<circle class="dot codex" cx="502.00" cy="307.93" r="3" />
+<circle class="dot codex" cx="564.57" cy="299.19" r="3" />
+<circle class="dot codex" cx="627.14" cy="304.84" r="3" />
+<circle class="dot codex" cx="689.71" cy="305.32" r="3" />
+<circle class="dot codex" cx="752.29" cy="305.13" r="3" />
+<circle class="dot codex" cx="814.86" cy="68.39" r="3" />
+<circle class="dot codex" cx="877.43" cy="28.45" r="3" />
+<circle class="dot codex" cx="940.00" cy="109.19" r="3" />
+        <polyline class="series claude" points="64.00,308.00 126.57,308.00 189.14,308.00 251.71,308.00 314.29,308.00 376.86,308.00 439.43,278.06 502.00,293.82 564.57,256.78 627.14,308.00 689.71,308.00 752.29,308.00 814.86,138.83 877.43,308.00 940.00,308.00" />
         <circle class="dot claude" cx="64.00" cy="308.00" r="3" />
-<circle class="dot claude" cx="151.60" cy="308.00" r="3" />
-<circle class="dot claude" cx="239.20" cy="308.00" r="3" />
-<circle class="dot claude" cx="326.80" cy="308.00" r="3" />
-<circle class="dot claude" cx="414.40" cy="308.00" r="3" />
-<circle class="dot claude" cx="502.00" cy="308.00" r="3" />
-<circle class="dot claude" cx="589.60" cy="145.19" r="3" />
-<circle class="dot claude" cx="677.20" cy="230.89" r="3" />
-<circle class="dot claude" cx="764.80" cy="29.45" r="3" />
-<circle class="dot claude" cx="852.40" cy="308.00" r="3" />
+<circle class="dot claude" cx="126.57" cy="308.00" r="3" />
+<circle class="dot claude" cx="189.14" cy="308.00" r="3" />
+<circle class="dot claude" cx="251.71" cy="308.00" r="3" />
+<circle class="dot claude" cx="314.29" cy="308.00" r="3" />
+<circle class="dot claude" cx="376.86" cy="308.00" r="3" />
+<circle class="dot claude" cx="439.43" cy="278.06" r="3" />
+<circle class="dot claude" cx="502.00" cy="293.82" r="3" />
+<circle class="dot claude" cx="564.57" cy="256.78" r="3" />
+<circle class="dot claude" cx="627.14" cy="308.00" r="3" />
+<circle class="dot claude" cx="689.71" cy="308.00" r="3" />
+<circle class="dot claude" cx="752.29" cy="308.00" r="3" />
+<circle class="dot claude" cx="814.86" cy="138.83" r="3" />
+<circle class="dot claude" cx="877.43" cy="308.00" r="3" />
 <circle class="dot claude" cx="940.00" cy="308.00" r="3" />
         <text class="label" x="64.00" y="326" text-anchor="middle">00:56</text>
-<text class="label" x="151.60" y="326" text-anchor="middle">01:57</text>
-<text class="label" x="239.20" y="326" text-anchor="middle">02:59</text>
-<text class="label" x="326.80" y="326" text-anchor="middle">04:00</text>
-<text class="label" x="414.40" y="326" text-anchor="middle">05:00</text>
-<text class="label" x="502.00" y="326" text-anchor="middle">06:00</text>
-<text class="label" x="589.60" y="326" text-anchor="middle">07:00</text>
-<text class="label" x="677.20" y="326" text-anchor="middle">08:00</text>
-<text class="label" x="764.80" y="326" text-anchor="middle">09:00</text>
-<text class="label" x="852.40" y="326" text-anchor="middle">10:00</text>
-<text class="label" x="940.00" y="326" text-anchor="middle">11:00</text>
+<text class="label" x="126.57" y="326" text-anchor="middle">01:57</text>
+<text class="label" x="189.14" y="326" text-anchor="middle">02:59</text>
+<text class="label" x="251.71" y="326" text-anchor="middle">04:00</text>
+<text class="label" x="314.29" y="326" text-anchor="middle">05:00</text>
+<text class="label" x="376.86" y="326" text-anchor="middle">06:00</text>
+<text class="label" x="439.43" y="326" text-anchor="middle">07:00</text>
+<text class="label" x="502.00" y="326" text-anchor="middle">08:00</text>
+<text class="label" x="564.57" y="326" text-anchor="middle">09:00</text>
+<text class="label" x="627.14" y="326" text-anchor="middle">10:00</text>
+<text class="label" x="689.71" y="326" text-anchor="middle">11:00</text>
+<text class="label" x="752.29" y="326" text-anchor="middle">12:00</text>
+<text class="label" x="814.86" y="326" text-anchor="middle">13:00</text>
+<text class="label" x="877.43" y="326" text-anchor="middle">14:00</text>
+<text class="label" x="940.00" y="326" text-anchor="middle">15:00</text>
       </svg>
       <div class="legend">
         <span><span class="swatch codex"></span>Codex</span>
@@ -196,7 +213,11 @@
 <tr><td>08:00–09:00</td><td class="num">1,248,434</td><td class="num">7,262,210</td><td class="num">8,510,644</td></tr>
 <tr><td>09:00–10:00</td><td class="num">447,505</td><td class="num">0</td><td class="num">447,505</td></tr>
 <tr><td>10:00–11:00</td><td class="num">379,497</td><td class="num">0</td><td class="num">379,497</td></tr>
-          <tr class="total-row"><td>Total</td><td class="num">2,096,981</td><td class="num">13,517,138</td><td class="num">15,614,119</td></tr>
+<tr><td>11:00–12:00</td><td class="num">406,916</td><td class="num">0</td><td class="num">406,916</td></tr>
+<tr><td>12:00–13:00</td><td class="num">33,973,017</td><td class="num">23,985,678</td><td class="num">57,958,695</td></tr>
+<tr><td>13:00–14:00</td><td class="num">39,635,760</td><td class="num">0</td><td class="num">39,635,760</td></tr>
+<tr><td>14:00–15:00</td><td class="num">28,188,353</td><td class="num">0</td><td class="num">28,188,353</td></tr>
+          <tr class="total-row"><td>Total</td><td class="num">104,301,027</td><td class="num">37,502,816</td><td class="num">141,803,843</td></tr>
         </tbody>
       </table>
     </section>
@@ -204,7 +225,7 @@
   <script>
     window.setTimeout(function () {
       var url = new URL(window.location.href);
-      url.searchParams.set('v', '20260622111102');
+      url.searchParams.set('v', '20260622151831');
       url.searchParams.set('r', Date.now().toString());
       window.location.replace(url.toString());
     }, 60000);

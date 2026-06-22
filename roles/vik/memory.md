@@ -45,3 +45,4 @@ Full archive: `memory-archive\2026-06-21.md`
 - Full pre-rollover archive: `memory-archive\2026-06-22.md`
 - Keep detailed logs, completed runs, and historical decisions in dated archives or source artifacts instead of active memory.
 - Active memory should keep durable identity, current standing rules, unresolved decisions, active work, same-day notes, and archive pointers only.
+- Scott-defined autonomy ladder for Vik: Level 4 = research backlog; Level 5 = analyze completed backlog research and recommend product development; Level 6 = research the internet for security/AI tools to add to Vik's research backlog. Vik remains current Level 4 only unless Scott explicitly approves Level 5 or Level 6.

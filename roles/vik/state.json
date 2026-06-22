@@ -9,8 +9,18 @@
   ],
   "status": "active-local-guidance",
   "authorization": "operating-authorized-for-mojo-maps-architecture-guidance",
-  "agent_build_status": "agent-ready-draft",
-  "last_updated": "2026-06-19",
+  "agent_build_status": "agent-ready-draft; Level 4 research backlog active; Level 5/6 capability contract defined but not approved",
+  "last_updated": "2026-06-22",
+  "autonomy_stage": {
+    "current_level": 4,
+    "current_stage": "Level 4 Senior Staff (Scoped Autonomy)",
+    "level_4_capability": "research backlog",
+    "level_5_capability": "analyze backlog research and recommend product development",
+    "level_6_capability": "research the internet for security and AI tools to add to Vik's research backlog",
+    "level_5_status": "defined-not-approved",
+    "level_6_status": "defined-not-approved",
+    "contract": "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\Autonomy.md"
+  },
   "open_questions": [
     "Should Vik become an installable /vik or /aspa skill in the MAPS source repo?",
     "What hook mechanism should load Vik across Codex and Claude Code sessions?",
@@ -31,7 +41,9 @@
     "Approve automatic hook installation.",
     "Approve scheduled loop execution.",
     "Approve global skill packaging.",
-    "Approve any production publication of Vik documentation."
+    "Approve any production publication of Vik documentation.",
+    "Approve or reject Vik Level 5 Principal policy autonomy: analyze completed backlog research and recommend product development.",
+    "Approve or reject Vik Level 6 Partner native autonomy: research the internet for security and AI tools to add to Vik's research backlog."
   ],
   "next_recommended_skill": "/define-agent"
 }
