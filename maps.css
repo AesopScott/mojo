@@ -1978,6 +1978,7 @@ a.maps-role-name:hover {
 .maps-org-chart {
   display: grid;
   gap: 28px;
+  overflow-x: clip;
 }
 
 .maps-executive-row {
@@ -2093,7 +2094,8 @@ a.maps-role-name:hover {
   margin-top: 3px;
 }
 
-.maps-role-actions a {
+.maps-role-actions a,
+.maps-role-brand {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2107,6 +2109,11 @@ a.maps-role-name:hover {
   font-weight: 850;
   line-height: 1;
   text-decoration: none;
+}
+
+.maps-role-brand {
+  color: #4f3b78;
+  background: #f0edf7;
 }
 
 .maps-role-actions a:hover {
