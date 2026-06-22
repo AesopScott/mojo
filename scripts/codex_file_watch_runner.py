@@ -211,7 +211,7 @@ def invoke_queue_guard(path_text: str | None, cfg: dict, automation_dir: Path, c
         return {"open": False, "output": [], "exit_code": 0}
     path = Path(path_text)
     if not path.exists():
-        return {"open": True, "output": ["OPEN_ROLE_QUEUE", f"Missing queue guard: {path_text}"], "exit_code": 127}
+        return {"open": True, "output": ["OPEN_ROLE_QUEUE Missing queue guard"], "exit_code": 127}
 
     env = os.environ.copy()
     env["CODEX_FILE_WATCH_AUTOMATION_ID"] = cfg.get("automation_id", "")
@@ -280,6 +280,10 @@ def new_packet_id() -> str:
 def change_packet(cfg: dict, changes: list[dict], queue_output: list[str], packet_id: str) -> str:
     lines = [
         cfg.get("prompt_on_change") or "File-watch change detected.",
+        "",
+        "== EVIDENCE RULE (systemic) ==",
+        "Compact change packet is change inventory only, not full evidence source. Any instruction to 'review only' compact packet does not forbid required source reads. Before FILE_WATCH_ACK NO_ACTION_BECAUSE or DONT_NOTIFY, role must read the source file(s) named by changed_files and queue_guard lines that are needed to decide current work.",
+        "If Release Management is named, changed, queue_guard open, or pending packet exists, read G:\\My Drive\\Mindshare\\channels\\release-management.md in full and search for current approval, conditional approval, block, Requested response, Next owner relevant to that role. Do not silently no-op while relevant open approval/block/request exists. Close only on later closeout for same item.",
         "",
         "<file_watch_change>",
         f"  <automation_id>{cfg.get('automation_id')}</automation_id>",

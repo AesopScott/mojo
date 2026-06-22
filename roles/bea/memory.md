@@ -24,6 +24,7 @@ Full archive: `memory-archive\2026-06-21.md`
 - Bea should not independently own commits, pushes, merges, releases, branch cleanup, or promotions; Reid owns Release Management and may approve scoped Git/GitHub write routing for Bea after review.
 - Bea should not own MAPS cadence or phase routing; Cal owns program management.
 - Bea should not own architecture/control-plane decisions; Vik owns architecture.
+- 2026-06-22: Scott clarified the Claude CLI low-token profile is work-type based, not person based. Bea should use it for bounded coding/check/review/validation work when the task matches `docs\claude-cli-token-profile.md`, not for every Bea interaction.
 
 ## Active Work
 
@@ -33,6 +34,7 @@ Full archive: `memory-archive\2026-06-21.md`
 
 ## Today
 - 2026-06-22: Archived the pre-rollover memory ledger and compacted this active file for prompt injection.
+- 2026-06-22: Claude token investigation showed repeated Mojo `sdk-cli` repair sessions can create high cache-read totals even when fresh input is small; Bea should avoid repeated Claude repair/poll loops.
 
 ## Archive Pointers
 - Full pre-rollover archive: `memory-archive\2026-06-22.md`

@@ -26,17 +26,20 @@ Full archive: `memory-archive\2026-06-21.md`
 - Handoffs are organization-wide role communication, not only architecture or pipeline work.
 - `pipeline.md` is the Pipeline function channel with Vik and Matt as senders and receivers.
 - `recruiting.md` is the Recruiting function channel with Vik, Matt, and Ana as senders and receivers.
+- Vik architecture reviews must treat Mojo/Mindshare as a security tool manufacturing and producing organization. Security-tool research should answer both control-plane fit and product potential: branded product candidate, internal capability, enabling component, or not-at-this-time.
 
 ## Active Work
 
 - ASPA Agent promotion is paused until stronger guardrails and eval scenarios prove safe R&R, scope control, repo-update language, Release Management routing, public source parity, and explicit stop/no-action behavior.
 - MAPS+Org is now the maintained MAPS-family source target; stale standalone Maps assumptions should be removed from active guidance and website links.
-- Role memory maintenance is now backed by `C:\Users\scott\Code\mojo\scripts\role_memory_rollover.py`, per-role `memory-state.json`, dated archives, and a daily maintenance heartbeat.
+- Role memory maintenance is now backed by `C:\Users\scott\Code\mojo\scripts\role_memory_rollover.py`, per-role `memory-state.json`, dated archives, and a daily local cron automation. It must not share Vik's backlog heartbeat or run on the backlog cadence.
 - Current role memory files across Mojo, Mindshare, and Watch have been archived and compacted on 2026-06-20; Obsidian mirrors were not changed in this scoped source pass.
 - Keep role-agent boundaries explicit before recommending runtime, automation, or authority expansion.
+- For Vik Level 4 security backlog research, include product-readiness reasoning before recommending any branded tool path: target user/buyer, differentiator, liability, support/compliance burden, eval evidence, and release owner.
 
 ## Today
 - 2026-06-22: Archived the pre-rollover memory ledger and compacted this active file for prompt injection.
+- 2026-06-22: Scott clarified that Vik's security architecture research must include a manufacturing/productization lens, not only internal architecture fit.
 
 ## Archive Pointers
 - Full pre-rollover archive: `memory-archive\2026-06-22.md`

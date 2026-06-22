@@ -29,6 +29,14 @@ For each active item, record:
 - Current blocker, if any.
 - Next handoff.
 
+## Claude CLI Token Profile
+
+For lab work types that use Claude CLI and match `docs\claude-cli-token-profile.md`, use the low-token profile. This is a work-type rule, not a Lane-only or role-only rule.
+
+`scripts\invoke-claude-low-token.ps1`
+
+Use the wrapper for bounded coding, checks, scoped review, research-adapter work, release-risk analysis, token/log inspection, and deterministic validation support. Do not apply it blanketly to every interaction from a named role when broader context is actually needed.
+
 ## Completion
 
 Close a lab item only when the requested artifact, proof, and handoff are recorded. If proof is missing, mark it blocked or needs validation instead of calling it done.

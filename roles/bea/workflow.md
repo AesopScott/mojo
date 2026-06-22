@@ -79,9 +79,17 @@ Route before acting:
 
 Make the smallest coherent patch. Prefer existing patterns. Use structured parsers and local helpers where available. Keep changes scoped to the assigned work.
 
+When Claude CLI is used for a work type covered by `docs\claude-cli-token-profile.md`, use Mojo's low-token wrapper by default:
+
+`scripts\invoke-claude-low-token.ps1`
+
+Use it for bounded coding, code checks, scoped review, token/log inspection, and deterministic validation support. Do not apply it blanketly to all Bea work. Use `-AllowEdits` only when Scott or the routed handoff has approved scoped implementation, and keep Git/GitHub/web tools disallowed unless Reid or Scott has explicitly approved that boundary.
+
 ### 6. Validate
 
 Run relevant tests, validators, type checks, or focused verification. If validation cannot run, record why and name residual risk.
+
+Prefer deterministic local checks outside Claude for parsing, tests, validators, token math, and status inspection. Use Claude for bounded reasoning or review, not repeated polling loops.
 
 ### 7. Record
 

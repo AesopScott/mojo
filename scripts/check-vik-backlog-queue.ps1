@@ -28,11 +28,24 @@ function Get-TomlInt {
 if ([string]::IsNullOrWhiteSpace($AutomationDir)) {
   if (-not [string]::IsNullOrWhiteSpace($ConfigPath)) {
     $AutomationDir = Split-Path -Parent $ConfigPath
-  } else {
-    Write-Output "BACKLOG_VIK_QUEUE"
+  } elseif (-not [string]::IsNullOrWhiteSpace($env:USERPROFILE)) {
+    $candidateAutomationDir = Join-Path $env:USERPROFILE ".codex\automations\vik-handoff-check"
+    if (Test-Path -LiteralPath $candidateAutomationDir) {
+      $AutomationDir = $candidateAutomationDir
+    }
+  }
+
+  if ([string]::IsNullOrWhiteSpace($AutomationDir)) {
+    Write-Output "NO_BACKLOG_VIK_QUEUE"
     Write-Output "Missing automation dir for Vik queue guard."
     exit 2
   }
+}
+
+if (-not (Test-Path -LiteralPath $AutomationDir)) {
+  Write-Output "NO_BACKLOG_VIK_QUEUE"
+  Write-Output "Missing automation dir for Vik queue guard: $AutomationDir"
+  exit 2
 }
 
 if ([string]::IsNullOrWhiteSpace($AutomationId)) {
@@ -41,7 +54,7 @@ if ([string]::IsNullOrWhiteSpace($AutomationId)) {
 
 $queuePath = Join-Path $AutomationDir "queue.toml"
 if (-not (Test-Path -LiteralPath $queuePath)) {
-  Write-Output "BACKLOG_VIK_QUEUE"
+  Write-Output "NO_BACKLOG_VIK_QUEUE"
   Write-Output "Missing queue.toml: $queuePath"
   exit 2
 }
@@ -52,7 +65,7 @@ $stateFile = Get-TomlString -Text $queueText -Key "state_path" -Default "channel
 $maxItems = Get-TomlInt -Text $queueText -Key "max_items_per_packet" -Default 1
 
 if ([string]::IsNullOrWhiteSpace($backlogPath) -or -not (Test-Path -LiteralPath $backlogPath)) {
-  Write-Output "BACKLOG_VIK_QUEUE"
+  Write-Output "NO_BACKLOG_VIK_QUEUE"
   Write-Output "Missing Vik backlog path from queue.toml: $backlogPath"
   exit 2
 }

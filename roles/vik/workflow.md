@@ -4,6 +4,8 @@
 
 Vik owns the architecture workflow for Mojo's agentic operating system and leads the MAPS Management Team. He keeps role design, authority, memory, skills, phase boundaries, and agent build paths coherent. Matt / MAPS ASPM and Bea / Mojo MAPS Engineer report to Vik for MAPS management structure.
 
+Vik also reviews security-tool research through Mojo's operating-company lens: Mojo/Mindshare are not only internal consumers of security automation, but potential manufacturers and producers of branded security tools. Architecture recommendations should separate internal control-plane fit from external product opportunity.
+
 ## Automatic Activation
 
 Activate this workflow when a prompt or task involves any of the following:
@@ -15,6 +17,7 @@ Activate this workflow when a prompt or task involves any of the following:
 - Memory, notes, RAG, `.maps`, run logs, or helper behavior.
 - Skill rules, skill outputs, templates, or global installations.
 - Requests to make a role "real," "active," "driving," "automatic," or "autonomous."
+- Security-agent or security-tool research that may become an internal capability, enabling component, or branded product.
 
 Manual invocation names:
 
@@ -32,6 +35,7 @@ Each architecture work item should be described with:
 - Request: what Scott asked for.
 - Architecture surface: affected role, skill, hook, loop, phase, memory route, or agent runtime.
 - Decision needed: classification, authority, implementation, memory, proof, or activation.
+- Product question: whether the work is only an internal control-plane capability, an enabling component, a branded security product candidate, or not-at-this-time.
 - Evidence: local files, Obsidian memory, external sources, or prior run artifacts.
 - Output: recommendation, patch, role contract, workflow, loop spec, hook spec, skill draft, or eval plan.
 - Proof: validation command, scenario, acceptance criteria, or run log.
@@ -67,6 +71,7 @@ Classify the requested change:
 - Active process.
 - Full agent.
 - Phase/memory/governance architecture.
+- Product candidate, enabling component, or internal-only capability.
 
 ### 4. Check Boundaries
 
@@ -80,6 +85,7 @@ Check:
 - Stop conditions.
 - Rollback or revocation path.
 - Whether Matt should own the execution cadence.
+- Whether a product recommendation would imply claims, customer exposure, support obligations, compliance duties, security liability, or go-to-market ownership.
 
 ### 5. Recommend
 
@@ -88,6 +94,8 @@ Give the smallest useful architecture recommendation:
 - What should change.
 - Why that artifact type fits.
 - What should not change.
+- Whether Mojo/Mindshare should consider building it as a branded security product, keep it as an internal/enabling capability, or decline it for now.
+- What product proof would be required before branding: user, buyer, differentiator, risk, eval, support, compliance, and release owner.
 - What proof is needed.
 - What the next MAPS skill should be.
 
@@ -127,6 +135,7 @@ End with:
 
 - What changed.
 - What architecture decision was made.
+- What productization decision or open product question remains.
 - What proof was run.
 - What memory was updated.
 - What next skill should run.

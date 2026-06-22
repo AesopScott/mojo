@@ -3,370 +3,211 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="refresh" content="60">
   <title>Lane Token Usage</title>
   <style>
     :root {
       color-scheme: light;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --ink: #17202a;
-      --muted: #5d6975;
-      --line: #d7dde3;
-      --codex: #1f6feb;
-      --claude: #b45309;
-      --bg: #f7f9fb;
-      --bg-alt: #f0f3f7;
+      --bg: #f4f1ea;
+      --panel: #fffdf8;
+      --ink: #1f2933;
+      --muted: #6b7280;
+      --line: #d8d2c4;
+      --codex: #0f766e;
+      --claude: #c2410c;
+      --accent: #e7decf;
     }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-    }
-
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 20px;
-    }
-
-    h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    .meta {
-      margin: 0 0 24px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .panel {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 24px;
-    }
-
-    .panel h2 {
-      margin: 0 0 16px;
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-      display: block;
-      background: #fafbfc;
-      border-radius: 4px;
-    }
-
-    .axis,
-    .grid {
-      stroke: var(--line);
-      stroke-width: 1;
-    }
-
-    .grid {
-      stroke-dasharray: 2,4;
-      opacity: 0.5;
-    }
-
-    .codex {
-      stroke: var(--codex);
-    }
-
-    .claude {
-      stroke: var(--claude);
-    }
-
-    .series {
-      fill: none;
-      stroke-width: 2.5;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-
-    .dot {
-      fill: white;
-      stroke-width: 2;
-    }
-
-    .label {
-      font-size: 12px;
-      fill: var(--muted);
-    }
-
-    .legend {
-      display: flex;
-      gap: 20px;
-      margin-top: 14px;
-      font-size: 13px;
-    }
-
-    .key {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .swatch {
-      width: 18px;
-      height: 2px;
-      display: inline-block;
-      border-radius: 1px;
-    }
-
-    .swatch.codex {
-      background: var(--codex);
-    }
-
-    .swatch.claude {
-      background: var(--claude);
-    }
-
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
-
-    .stat {
-      background: var(--bg-alt);
-      padding: 12px;
-      border-radius: 6px;
-      border-left: 3px solid var(--line);
-    }
-
-    .stat.codex {
-      border-left-color: var(--codex);
-    }
-
-    .stat.claude {
-      border-left-color: var(--claude);
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      font-size: 18px;
-      font-weight: 600;
-      font-family: 'Monaco', 'Menlo', monospace;
-    }
-
-    .note {
-      margin-top: 16px;
-      padding: 12px;
-      background: #f5f1ed;
-      border-left: 3px solid var(--muted);
-      border-radius: 4px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-      margin-top: 16px;
-    }
-
-    th {
-      background: var(--bg-alt);
-      padding: 8px;
-      text-align: left;
-      font-weight: 600;
-      border: 1px solid var(--line);
-      color: var(--muted);
-    }
-
-    td {
-      padding: 8px;
-      border: 1px solid var(--line);
-    }
-
-    tr:nth-child(odd) {
-      background: #fafbfc;
-    }
-
-    .num {
-      text-align: right;
-      font-family: 'Monaco', 'Menlo', monospace;
-    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: linear-gradient(180deg, #efe7da 0%, #f7f4ee 240px, #f4f1ea 100%); color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 18px 40px; }
+    h1, h2, h3 { margin: 0; }
+    h1 { font-size: 30px; letter-spacing: 0.01em; }
+    h2 { font-size: 18px; margin-bottom: 14px; }
+    p { margin: 0; }
+    .meta { margin-top: 8px; color: var(--muted); font-size: 13px; }
+    .version-banner { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; padding: 8px 12px; border: 1px solid var(--codex); border-radius: 8px; background: rgba(15,118,110,0.08); color: var(--ink); font-family: Consolas, "SFMono-Regular", monospace; font-size: 13px; font-weight: 700; }
+    .live-status { display: inline-flex; gap: 8px; align-items: center; margin-top: 10px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; background: #fffaf2; color: var(--muted); font-size: 12px; }
+    .pulse { width: 8px; height: 8px; border-radius: 999px; background: var(--codex); box-shadow: 0 0 0 4px rgba(15,118,110,0.12); }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-top: 22px; box-shadow: 0 10px 30px rgba(31,41,51,0.05); }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 16px; }
+    .stat { background: var(--accent); border-radius: 10px; padding: 14px; border-left: 4px solid var(--line); }
+    .stat.codex { border-left-color: var(--codex); }
+    .stat.claude { border-left-color: var(--claude); }
+    .stat .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat .v { margin-top: 6px; font-size: 22px; font-weight: 700; font-family: Consolas, "SFMono-Regular", monospace; }
+    .split { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; align-items: start; }
+    .lists { display: grid; gap: 14px; }
+    ul { margin: 10px 0 0; padding-left: 18px; }
+    li { margin: 6px 0; }
+    .muted { color: var(--muted); font-size: 12px; }
+    svg { width: 100%; height: auto; display: block; background: #fffaf2; border-radius: 10px; border: 1px solid var(--line); }
+    .axis, .grid { stroke: var(--line); stroke-width: 1; }
+    .grid { stroke-dasharray: 3 5; }
+    .series { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .codex { stroke: var(--codex); }
+    .claude { stroke: var(--claude); }
+    .dot { fill: #fff; stroke-width: 2; }
+    .label { fill: var(--muted); font-size: 12px; }
+    .legend { display: flex; gap: 18px; margin-top: 12px; color: var(--muted); font-size: 13px; }
+    .swatch { width: 20px; height: 3px; display: inline-block; vertical-align: middle; margin-right: 8px; border-radius: 999px; }
+    .swatch.codex { background: var(--codex); }
+    .swatch.claude { background: var(--claude); }
+    .note { margin-top: 14px; padding: 12px 14px; background: #fbf7ef; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+    th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); }
+    th { text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .num { text-align: right; font-family: Consolas, "SFMono-Regular", monospace; }
+    .total-row td { border-top: 2px solid var(--line); font-weight: 700; }
+    code { font-family: Consolas, "SFMono-Regular", monospace; font-size: 12px; }
+    @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <main>
-    <h1>Token Usage – Mojo Lab Operator</h1>
-    <p class="meta">From <code>roles/lab-operator/token usage.md</code> | Updated 2026-06-22 08:00:28 MDT</p>
-
+    <h1>Daily Token Usage</h1>
+    <p class="meta">Source <code>roles/lab-operator/token usage.md</code> | Data through 2026-06-22 11:09:25 MDT | Build 20260622111102</p>
+    <p class="version-banner">Report v11:11</p>
+    <p class="live-status"><span class="pulse"></span><span>Live view refreshes every 60 seconds after hourly rebuilds.</span></p>
     <section class="panel">
-      <h2>Hourly Token Usage</h2>
-      <svg viewBox="0 0 960 360" role="img" aria-label="Hourly token usage line graph comparing Codex and Claude">
-        <!-- Grid lines -->
-        <line class="grid" x1="56" y1="288" x2="940" y2="288" />
-        <line class="grid" x1="56" y1="272" x2="940" y2="272" />
-        <line class="grid" x1="56" y1="256" x2="940" y2="256" />
-
-        <!-- Axes -->
-        <line class="axis" x1="56" y1="304" x2="940" y2="304" />
-        <line class="axis" x1="56" y1="32" x2="56" y2="304" />
-
-        <!-- Y-axis labels -->
-        <text class="label" x="48" y="308" text-anchor="end">0</text>
-        <text class="label" x="48" y="276" text-anchor="end">1M</text>
-        <text class="label" x="48" y="244" text-anchor="end">2M</text>
-        <text class="label" x="48" y="212" text-anchor="end">3M</text>
-        <text class="label" x="48" y="180" text-anchor="end">4M</text>
-
-        <!-- Codex series -->
-        <polyline class="series codex" points="166,303.98 277,304 388,303.94 498,303.98 609,304 719,304 830,303.27 940,303.27" />
-        <circle class="dot codex" cx="166" cy="303.98" r="3" />
-        <circle class="dot codex" cx="277" cy="304" r="3" />
-        <circle class="dot codex" cx="388" cy="303.94" r="3" />
-        <circle class="dot codex" cx="498" cy="303.98" r="3" />
-        <circle class="dot codex" cx="609" cy="304" r="3" />
-        <circle class="dot codex" cx="719" cy="304" r="3" />
-        <circle class="dot codex" cx="830" cy="303.27" r="3" />
-        <circle class="dot codex" cx="940" cy="303.27" r="3" />
-
-        <!-- Claude series -->
-        <polyline class="series claude" points="166,304 277,304 388,304 498,304 609,304 719,304 830,32.34 940,175.34" />
-        <circle class="dot claude" cx="166" cy="304" r="3" />
-        <circle class="dot claude" cx="277" cy="304" r="3" />
-        <circle class="dot claude" cx="388" cy="304" r="3" />
-        <circle class="dot claude" cx="498" cy="304" r="3" />
-        <circle class="dot claude" cx="609" cy="304" r="3" />
-        <circle class="dot claude" cx="719" cy="304" r="3" />
-        <circle class="dot claude" cx="830" cy="32.34" r="3" />
-        <circle class="dot claude" cx="940" cy="175.34" r="3" />
-
-        <!-- X-axis labels (window end times, MDT) -->
-        <text class="label" x="166" y="320">00:56</text>
-        <text class="label" x="277" y="320">01:57</text>
-        <text class="label" x="388" y="320">02:59</text>
-        <text class="label" x="498" y="320">04:00</text>
-        <text class="label" x="609" y="320">05:00</text>
-        <text class="label" x="719" y="320">06:00</text>
-        <text class="label" x="830" y="320">07:00</text>
-        <text class="label" x="940" y="320">08:00</text>
-
-        <!-- Title -->
-        <text x="56" y="24" font-size="12" fill="var(--muted)" font-weight="600">Window end (MDT)</text>
-      </svg>
-      <div class="legend">
-        <span class="key"><span class="swatch codex"></span>Codex (estimate)</span>
-        <span class="key"><span class="swatch claude"></span>Claude (exact)</span>
+      <h2>Summary</h2>
+      <div class="stats">
+        <div class="stat codex"><div class="k">Codex total</div><div class="v">2,096,981</div></div>
+        <div class="stat claude"><div class="k">Claude total</div><div class="v">13,517,138</div></div>
+        <div class="stat"><div class="k">Grand total</div><div class="v">15,614,119</div></div>
+        <div class="stat"><div class="k">Hourly windows</div><div class="v">11</div></div>
       </div>
-      <div class="note">
-        <strong>Note:</strong> Codex values are visible-message estimates from thread API. Claude values include input, output, cache_create, and cache_read tokens (exact from local JSONL logs).
-      </div>
-    </section>
-
-    <section class="panel">
-      <h2>Summary Totals</h2>
-      <div class="summary">
-        <div class="stat codex">
-          <div class="stat-label">Codex Total (all hours)</div>
-          <div class="stat-value">21,545</div>
+      <div class="split" style="margin-top:18px;">
+        <div>
+          <h3>Largest Claude sessions</h3>
+          <ul>
+            <li><strong>1,980,802</strong> - 94189610-3bd7-4814-8c85-82e9f509857f <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
+<li><strong>1,199,676</strong> - d2c2bd88-174f-4ca2-9598-8f71bc1e809a <span class="muted">(C:\Users\scott\Code\mojo)</span></li>
+<li><strong>763,130</strong> - a8244962-31f0-4684-a4ea-86cf8126f7f4 <span class="muted">(C:\Users\scott\Code\mindshare)</span></li>
+          </ul>
         </div>
-        <div class="stat claude">
-          <div class="stat-label">Claude Total (all hours)</div>
-          <div class="stat-value">6,254,928</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Grand Total</div>
-          <div class="stat-value">6,276,473</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Largest Claude Session</div>
-          <div class="stat-value">1,980,802</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Largest Codex Room</div>
-          <div class="stat-value">5,500</div>
+        <div class="lists">
+          <div>
+            <h3>Largest Codex rooms</h3>
+            <ul>
+              <li><strong>1,248,434</strong> - C:\Users\scott\Code\mindshare <span class="muted">(019eec2c-bb6b-7b03-8c97-f73cf63dc7a8)</span></li>
+<li><strong>379,497</strong> - C:\Users\scott\Code\mojo <span class="muted">(019eedc7-9e34-78c2-9792-5e8c1787fd46)</span></li>
+<li><strong>354,973</strong> - C:\Users\scott\Code\mojo <span class="muted">(019eedc7-9e34-78c2-9792-5e8c1787fd46)</span></li>
+            </ul>
+          </div>
+          <div class="note"><strong>Confidence:</strong> Codex rows come from visible-message estimates because exact thread token fields are unavailable. Claude rows use exact local JSONL usage fields including input, output, cache_create, and cache_read tokens. Confidence mix: estimate-visible: 14; exact: 11; exact-local-jsonl: 17; exact-local-jsonl-delta: 4; no-activity: 6.</div>
         </div>
       </div>
     </section>
-
     <section class="panel">
-      <h2>Hourly Aggregates</h2>
+      <h2>Codex Usage By Room</h2>
+      <p class="meta">Rolling 24 hours ending 2026-06-22 11:09:25 MDT.</p>
       <table>
         <thead>
-          <tr>
-            <th>Window (MDT)</th>
-            <th class="num">Codex Tokens</th>
-            <th class="num">Claude Tokens</th>
-            <th class="num">Total</th>
-          </tr>
+          <tr><th>Room / Role</th><th>Repo / CWD</th><th class="num">Input</th><th class="num">Output</th><th class="num">Cache Read</th><th class="num">Total</th><th class="num">Share</th><th class="num">Rows</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>23:56–00:56</td>
-            <td class="num">235</td>
-            <td class="num">0</td>
-            <td class="num">235</td>
-          </tr>
-          <tr>
-            <td>00:57–01:57</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td>01:59–02:59</td>
-            <td class="num">900</td>
-            <td class="num">0</td>
-            <td class="num">900</td>
-          </tr>
-          <tr>
-            <td>03:00–04:00</td>
-            <td class="num">260</td>
-            <td class="num">0</td>
-            <td class="num">260</td>
-          </tr>
-          <tr>
-            <td>04:00–05:00</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td>05:00–06:00</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-            <td class="num">0</td>
-          </tr>
-          <tr>
-            <td>06:00–07:00</td>
-            <td class="num">10,200</td>
-            <td class="num">4,244,670</td>
-            <td class="num">4,254,870</td>
-          </tr>
-          <tr>
-            <td>07:00–08:00</td>
-            <td class="num">9,950</td>
-            <td class="num">2,010,258</td>
-            <td class="num">2,020,208</td>
-          </tr>
-          <tr style="border-top: 2px solid var(--line);">
-            <td><strong>Total</strong></td>
-            <td class="num"><strong>21,545</strong></td>
-            <td class="num"><strong>6,254,928</strong></td>
-            <td class="num"><strong>6,276,473</strong></td>
-          </tr>
+          <tr><td><strong>Tess / Autonomy Engineer</strong><div class="muted">019eec2c-bb6b-7b03-8c97-f73cf63dc7a8</div></td><td>C:\Users\scott\Code\mindshare</td><td class="num">1,243,770</td><td class="num">5,564</td><td class="num">1,054,848</td><td class="num">1,251,134</td><td class="num">59.7%</td><td class="num">4</td></tr>
+<tr><td><strong>Lane / Mojo Lab Operator</strong><div class="muted">019eedc7-9e34-78c2-9792-5e8c1787fd46</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">732,459</td><td class="num">2,196</td><td class="num">608,000</td><td class="num">734,655</td><td class="num">35.0%</td><td class="num">3</td></tr>
+<tr><td><strong>Vik / MAPS ASPA</strong><div class="muted">019ee0cf-d067-7e60-92ae-41ea66a75746</div></td><td>C:\Users\scott\Code\mojo</td><td class="num">92,338</td><td class="num">454</td><td class="num">49,408</td><td class="num">92,992</td><td class="num">4.4%</td><td class="num">3</td></tr>
+<tr><td><strong>Liz / Web Manager</strong><div class="muted">019eed9b-cb80-7311-989f-2bbc95605d8b</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">10,000</td><td class="num">0.5%</td><td class="num">2</td></tr>
+<tr><td><strong>Reid / Release Manager</strong><div class="muted">019ee143-3f32-7093-9a24-acd3558fc52e</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">5,500</td><td class="num">0.3%</td><td class="num">2</td></tr>
+<tr><td><strong>Bea / Mojo MAPS Engineer</strong><div class="muted">019ee18f-b082-7e82-89c5-47498b9ec97e</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">2,300</td><td class="num">0.1%</td><td class="num">2</td></tr>
+<tr><td><strong>June / Staff Writer</strong><div class="muted">019eed17-7348-7593-b2ae-661027ba9cb2</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">350</td><td class="num">0.0%</td><td class="num">1</td></tr>
+<tr><td><strong>Paige / Executive Assistant</strong><div class="muted">019eedc1-b201-7fb2-a5bd-9e1c6957fa39</div></td><td></td><td class="num">15</td><td class="num">35</td><td class="num">0</td><td class="num">50</td><td class="num">0.0%</td><td class="num">1</td></tr>
+<tr><td><strong>(aggregate)</strong><div class="muted">(aggregate)</div></td><td></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0.0%</td><td class="num">3</td></tr>
+          <tr class="total-row"><td>Last 24h Total</td><td></td><td></td><td></td><td></td><td class="num">2,096,981</td><td class="num">100.0%</td><td></td></tr>
         </tbody>
       </table>
     </section>
-
+    <section class="panel">
+      <h2>Hourly Totals By Interface</h2>
+      <svg viewBox="0 0 960 340" role="img" aria-label="Hourly token totals for Codex and Claude">
+        <line class="grid" x1="64" y1="308.00" x2="940" y2="308.00" />
+<text class="label" x="56" y="312.00" text-anchor="end">0</text>
+<line class="grid" x1="64" y1="238.00" x2="940" y2="238.00" />
+<text class="label" x="56" y="242.00" text-anchor="end">1,825,000</text>
+<line class="grid" x1="64" y1="168.00" x2="940" y2="168.00" />
+<text class="label" x="56" y="172.00" text-anchor="end">3,650,000</text>
+<line class="grid" x1="64" y1="98.00" x2="940" y2="98.00" />
+<text class="label" x="56" y="102.00" text-anchor="end">5,475,000</text>
+<line class="grid" x1="64" y1="28.00" x2="940" y2="28.00" />
+<text class="label" x="56" y="32.00" text-anchor="end">7,300,000</text>
+        <line class="axis" x1="64" y1="308" x2="940" y2="308" />
+        <line class="axis" x1="64" y1="28" x2="64" y2="308" />
+        <polyline class="series codex" points="64.00,307.99 151.60,308.00 239.20,307.97 326.80,307.99 414.40,308.00 502.00,308.00 589.60,307.61 677.20,307.62 764.80,260.11 852.40,290.84 940.00,293.44" />
+        <circle class="dot codex" cx="64.00" cy="307.99" r="3" />
+<circle class="dot codex" cx="151.60" cy="308.00" r="3" />
+<circle class="dot codex" cx="239.20" cy="307.97" r="3" />
+<circle class="dot codex" cx="326.80" cy="307.99" r="3" />
+<circle class="dot codex" cx="414.40" cy="308.00" r="3" />
+<circle class="dot codex" cx="502.00" cy="308.00" r="3" />
+<circle class="dot codex" cx="589.60" cy="307.61" r="3" />
+<circle class="dot codex" cx="677.20" cy="307.62" r="3" />
+<circle class="dot codex" cx="764.80" cy="260.11" r="3" />
+<circle class="dot codex" cx="852.40" cy="290.84" r="3" />
+<circle class="dot codex" cx="940.00" cy="293.44" r="3" />
+        <polyline class="series claude" points="64.00,308.00 151.60,308.00 239.20,308.00 326.80,308.00 414.40,308.00 502.00,308.00 589.60,145.19 677.20,230.89 764.80,29.45 852.40,308.00 940.00,308.00" />
+        <circle class="dot claude" cx="64.00" cy="308.00" r="3" />
+<circle class="dot claude" cx="151.60" cy="308.00" r="3" />
+<circle class="dot claude" cx="239.20" cy="308.00" r="3" />
+<circle class="dot claude" cx="326.80" cy="308.00" r="3" />
+<circle class="dot claude" cx="414.40" cy="308.00" r="3" />
+<circle class="dot claude" cx="502.00" cy="308.00" r="3" />
+<circle class="dot claude" cx="589.60" cy="145.19" r="3" />
+<circle class="dot claude" cx="677.20" cy="230.89" r="3" />
+<circle class="dot claude" cx="764.80" cy="29.45" r="3" />
+<circle class="dot claude" cx="852.40" cy="308.00" r="3" />
+<circle class="dot claude" cx="940.00" cy="308.00" r="3" />
+        <text class="label" x="64.00" y="326" text-anchor="middle">00:56</text>
+<text class="label" x="151.60" y="326" text-anchor="middle">01:57</text>
+<text class="label" x="239.20" y="326" text-anchor="middle">02:59</text>
+<text class="label" x="326.80" y="326" text-anchor="middle">04:00</text>
+<text class="label" x="414.40" y="326" text-anchor="middle">05:00</text>
+<text class="label" x="502.00" y="326" text-anchor="middle">06:00</text>
+<text class="label" x="589.60" y="326" text-anchor="middle">07:00</text>
+<text class="label" x="677.20" y="326" text-anchor="middle">08:00</text>
+<text class="label" x="764.80" y="326" text-anchor="middle">09:00</text>
+<text class="label" x="852.40" y="326" text-anchor="middle">10:00</text>
+<text class="label" x="940.00" y="326" text-anchor="middle">11:00</text>
+      </svg>
+      <div class="legend">
+        <span><span class="swatch codex"></span>Codex</span>
+        <span><span class="swatch claude"></span>Claude</span>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Hourly Aggregate Table</h2>
+      <table>
+        <thead>
+          <tr><th>Window (MDT)</th><th class="num">Codex</th><th class="num">Claude</th><th class="num">Total</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>23:56–00:56</td><td class="num">235</td><td class="num">0</td><td class="num">235</td></tr>
+<tr><td>00:57–01:57</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>01:59–02:59</td><td class="num">900</td><td class="num">0</td><td class="num">900</td></tr>
+<tr><td>03:00–04:00</td><td class="num">260</td><td class="num">0</td><td class="num">260</td></tr>
+<tr><td>04:00–05:00</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>05:00–06:00</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>06:00–07:00</td><td class="num">10,200</td><td class="num">4,244,670</td><td class="num">4,254,870</td></tr>
+<tr><td>07:00–08:00</td><td class="num">9,950</td><td class="num">2,010,258</td><td class="num">2,020,208</td></tr>
+<tr><td>08:00–09:00</td><td class="num">1,248,434</td><td class="num">7,262,210</td><td class="num">8,510,644</td></tr>
+<tr><td>09:00–10:00</td><td class="num">447,505</td><td class="num">0</td><td class="num">447,505</td></tr>
+<tr><td>10:00–11:00</td><td class="num">379,497</td><td class="num">0</td><td class="num">379,497</td></tr>
+          <tr class="total-row"><td>Total</td><td class="num">2,096,981</td><td class="num">13,517,138</td><td class="num">15,614,119</td></tr>
+        </tbody>
+      </table>
+    </section>
   </main>
+  <script>
+    window.setTimeout(function () {
+      var url = new URL(window.location.href);
+      url.searchParams.set('v', '20260622111102');
+      url.searchParams.set('r', Date.now().toString());
+      window.location.replace(url.toString());
+    }, 60000);
+  </script>
 </body>
 </html>

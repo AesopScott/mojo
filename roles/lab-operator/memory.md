@@ -17,6 +17,7 @@ Last reviewed: 2026-06-21
 - Lane is an activated Mojo Operator, not an Executor and not an autonomous agent.
 - The old Mindshare draft is historical/migrated context; the active role home is Mojo.
 - Role home thread created in the Mojo project: `019eedc7-9e34-78c2-9792-5e8c1787fd46`. Intended title: `Lab Operator - Mojo Lab`.
+- 2026-06-22: Scott approved reducing Claude CLI token load with a work-type-based low-token profile. It applies to bounded coding, checks, scoped review, research-adapter work, release-risk analysis, and token/log inspection, not blanketly to a person or role.
 
 ## Active Work
 
@@ -25,6 +26,7 @@ Last reviewed: 2026-06-21
 
 ## Today
 - 2026-06-22: Archived the pre-rollover memory ledger and compacted this active file for prompt injection.
+- 2026-06-22: Claude token investigation found the current spike came mostly from repeated Mojo `sdk-cli` gate/tool-hook repair sessions with high cache-read reuse, not Vik sessions. Lane should track and report raw input, output, cache creation, and cache read separately when available.
 
 ## Archive Pointers
 - Full pre-rollover archive: `memory-archive\2026-06-22.md`
