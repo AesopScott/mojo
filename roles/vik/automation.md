@@ -5,29 +5,20 @@ Generated from current local Codex automation runtime files.
 ## Current Status
 
 - Automation id: `vik-handoff-check`
-- Display name: `Vik handoff check`
+- Display name: `Vik backlog queue check`
 - Legacy heartbeat status: `DELETED`
 - Legacy heartbeat LLM wake: `DELETED`; heartbeat prompts visibly print in chat before role code can silence them.
 - Replacement config: `file-watch.toml` beside the runtime automation.
+- Queue config: `queue.toml` beside the runtime automation.
+- Queue guard: `C:\Users\scott\Code\mojo\scripts\check-vik-backlog-queue.ps1`
 - Watch state: `watch_state.json` beside the runtime automation.
-- Watched paths: `7`
+- Cadence: `FREQ=MINUTELY;INTERVAL=3`
+- Watched paths: `0`
 - Missing watched paths: `0`
 
 ## Watched Paths
 
-- `C:\Users\scott\Code\mojo\roles\vik\memory.md`
-- `G:\My Drive\Mojo\channels\pipeline.md`
-- `G:\My Drive\Mindshare\channels\recruiting.md`
-- `G:\My Drive\Mindshare\channels\communications.md`
-- `G:\My Drive\Mindshare\channels\release-management.md`
-- `G:\My Drive\Mojo\05 Role Handoffs\org-chart-development-2026-06-19.md`
-- `G:\My Drive\Mojo\vik.md`- `C:\Users\scott\Code\mojo\roles\vik\memory.md`
-- `G:\My Drive\Mojo\channels\pipeline.md`
-- `G:\My Drive\Mindshare\channels\recruiting.md`
-- `G:\My Drive\Mindshare\channels\communications.md`
-- `G:\My Drive\Mindshare\channels\release-management.md`
-- `G:\My Drive\Mojo\05 Role Handoffs\org-chart-development-2026-06-19.md`
-- `G:\My Drive\Mojo\vik.md`
+Queue check is occupancy-based, not watched-path hash based. `queue.toml` points to the backlog source.
 
 ## File-Watch Runtime Contract
 
@@ -39,62 +30,70 @@ Generated from current local Codex automation runtime files.
 ## file-watch.toml
 
 ```toml
-# Generated deterministic file-watch config for this heartbeat automation.
-# Runtime rule: check watched_paths and watch_state before any broad role read.
+# Deterministic queue-backed file-watch config for Vik Level 4 scoped autonomy.
+# Runtime rule: queue guard may open work even when watched file hashes are unchanged.
 kind = "file_watch"
 automation_id = "vik-handoff-check"
-name = "Vik handoff check"
+name = "Vik backlog queue check"
 status = "ACTIVE"
-rrule = "FREQ=MINUTELY;INTERVAL=1"
+rrule = "FREQ=MINUTELY;INTERVAL=3"
 target_thread_id = "019ee0cf-d067-7e60-92ae-41ea66a75746"
-source_heartbeat_status = "ACTIVE"
+source_heartbeat_status = "DELETED"
 watch_state_path = "watch_state.json"
 baseline_on_first_run = true
 resume_on_first_run = false
 max_diff_bytes_per_file = 8192
 max_change_packet_bytes = 24576
 dedupe_by_hash = true
+queue_guard_path = "C:\Users\scott\Code\mojo\scripts\check-vik-backlog-queue.ps1"
 
-watched_paths = [
-  "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\memory.md",
-  "G:\\My Drive\\Mojo\\channels\\pipeline.md",
-  "G:\\My Drive\\Mindshare\\channels\\recruiting.md",
-  "G:\\My Drive\\Mindshare\\channels\\communications.md",
-  "G:\\My Drive\\Mindshare\\channels\\release-management.md",
-  "G:\\My Drive\\Mojo\\05 Role Handoffs\\org-chart-development-2026-06-19.md",
-  "G:\\My Drive\\Mojo\\vik.md",
-]
+watched_paths = []
 
 prompt_on_change = """
-File-watch change detected.
+Vik Level 4 backlog queue check.
 
-Review only the compact change packet below. Always check whether Release Management contains a Reid approval, conditional approval, or block relevant to this role.
-If no action is needed, do not print an EMPTY heartbeat. If the runtime requires an envelope, use DONT_NOTIFY only with one short quiet message.
-If action is needed, respond with the action taken, needed action, or one blocker question.
+Review only compact change packet and queue guard output below. If BACKLOG_VIK_QUEUE appears, run the scoped research through Claude CLI as the approved research adapter, then paste the final scoped research/architecture result visibly in this same response.
+
+Visible reporting rule: before running Claude CLI, post one visible sentence naming the exact backlog item and research question, for example "I am starting VA-012: <source use case>." The final answer must start with "Completed <item id>: <source use case>" and include the research output, Vik's architecture-owner interpretation, boundaries held, and next queue state. The ACK must be the last line only after that visible completion report exists.
+
+Claude CLI prompt rule: do not send the file-watch envelope, acknowledgement instructions, XML, queue metadata, or control-plane wrapper to Claude. Send only a concise research brief containing the item id, source use case, research question, likely output, priority, and Vik's Level 4 boundaries. Use stdin or a prompt file; do not pass large prompts as a single command argument.
+
+Vik keeps responsibility for interpreting Claude output, enforcing boundaries, producing the final visible answer, and ACKing. Do not answer NO_ACTION_BECAUSE for an eligible backlog item. End with FILE_WATCH_ACK ACTION_TAKEN only after Claude CLI has returned usable output and the visible result is present. If Claude CLI errors, stalls, or the session is interrupted before usable output is visible, do not emit ACTION_TAKEN.
+
+Stop at implementation, Git/release, production, external communication, spending, secrets, authority expansion, runtime activation, or promotion boundaries. If no eligible backlog item exists or work is outside Vik's lane, do not print EMPTY. If runtime requires envelope, use DONT_NOTIFY with one short quiet reason.
 """
 ```
 ## Legacy automation.toml
 
-```toml
-version = 1
-id = "vik-handoff-check"
-kind = "heartbeat"
-name = "Vik handoff check"
-prompt = "Vik minute heartbeat. Keep this check silent when there is no user-visible work. Do not print an EMPTY heartbeat to the screen. Always include Release Management queue in the watch/read scope so this role can detect Reid approvals, conditional approvals, or blocks for its queued changes. Before any broad role read, use deterministic file-watch state; act only on concrete changed-file work, explicit assignments, or Release Management decisions relevant to this role. If runtime requires a heartbeat envelope and nothing relevant changed, use DONT_NOTIFY only with one short quiet message."
-status = "ACTIVE"
-rrule = "FREQ=MINUTELY;INTERVAL=1"
-target_thread_id = "019ee0cf-d067-7e60-92ae-41ea66a75746"
-created_at = 1781885673168
-updated_at = 1781929155000
-```
+Deleted. Vik's old visible minute heartbeat is no longer the active runtime path.
+
 ## Watch State Summary
 
 ```json
 {
   "version": 1,
   "automation_id": "vik-handoff-check",
+  "last_checked_at": "2026-06-22T14:50:20.384409Z",
   "baseline_on_first_run": true,
-  "watched_count": 7,
-  "missing_count": 0
+  "files": {}
+}
+```
+
+## Queue State Summary
+
+```json
+{
+  "version": 1,
+  "checked_at": "2026-06-22T14:50:20.392868Z",
+  "valid_statuses": [
+    "backlog",
+    "complete",
+    "cancelled",
+    "errored"
+  ],
+  "item_statuses": {
+    "VA-008": "complete",
+    "VA-010": "complete"
+  }
 }
 ```

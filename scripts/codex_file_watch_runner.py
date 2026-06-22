@@ -24,6 +24,15 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def parse_utc(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
 def local_now() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -219,7 +228,7 @@ def invoke_queue_guard(path_text: str | None, cfg: dict, automation_dir: Path, c
     )
     output = proc.stdout.splitlines()
     first = output[0] if output else ""
-    return {"open": bool(re.match(r"^OPEN_[A-Z_]*QUEUE$", first)), "output": output, "exit_code": proc.returncode}
+    return {"open": bool(re.match(r"^(OPEN|BACKLOG)_[A-Z_]*QUEUE$", first)), "output": output, "exit_code": proc.returncode}
 
 
 def scan_snapshot(cfg: dict, config_path: Path, automation_dir: Path, old_files: dict, now: str, dry_run: bool) -> dict:
@@ -372,7 +381,7 @@ def acknowledged(automation_dir: Path, packet_id: str) -> bool:
             continue
     if not output:
         return False
-    return re.search(rf"(?i)FILE_WATCH_ACK:\s*{re.escape(packet_id)}\s+(ACTION_TAKEN|NO_ACTION_BECAUSE\s+\S+)", output) is not None
+    return re.search(rf"(?im)^\s*FILE_WATCH_ACK:\s*{re.escape(packet_id)}\s+(ACTION_TAKEN|NO_ACTION_BECAUSE\s+\S+)", output) is not None
 
 
 def start_resume(root: Path, automation_dir: Path, cfg: dict, packet_text: str, codex_exe: str, dry_run: bool) -> dict:
@@ -485,7 +494,22 @@ def write_state(path: Path, cfg: dict, now: str, files: dict) -> None:
     )
 
 
-def apply_queue_seen(automation_dir: Path, queue_ids: list[str], state_file: str) -> None:
+def apply_queue_status(automation_dir: Path, queue_ids: list[str], state_file: str, status: str) -> None:
+    if not queue_ids:
+        return
+    path = automation_dir / state_file
+    state = load_json(path) or {}
+    item_statuses = state.get("item_statuses") or {}
+    for item in queue_ids:
+        item_statuses[item] = status
+    state["checked_at"] = utc_now()
+    state["valid_statuses"] = ["backlog", "complete", "cancelled", "errored"]
+    state["item_statuses"] = dict(sorted(item_statuses.items()))
+    state.pop("seen_items", None)
+    save_json(path, state)
+
+
+def apply_queue_seen_legacy(automation_dir: Path, queue_ids: list[str], state_file: str) -> None:
     if not queue_ids:
         return
     path = automation_dir / state_file
@@ -514,7 +538,25 @@ def write_packet_log(automation_dir: Path, pending: dict, status: str = "acknowl
 def queue_guard_is_clean_no_open(snapshot: dict) -> bool:
     output = snapshot.get("queue_guard", {}).get("output") or []
     first = output[0] if output else ""
-    return snapshot.get("queue_guard", {}).get("exit_code") == 0 and first.startswith("NO_OPEN")
+    return snapshot.get("queue_guard", {}).get("exit_code") == 0 and (first.startswith("NO_OPEN") or first.startswith("NO_BACKLOG"))
+
+
+def cadence_due(cfg: dict, existing_state: dict | None, now: str) -> bool:
+    rrule = cfg.get("rrule") or ""
+    match = re.search(r"FREQ=MINUTELY;INTERVAL=(\d+)", rrule)
+    if not match:
+        return True
+
+    last = parse_utc((existing_state or {}).get("last_checked_at"))
+    if last is None:
+        return True
+
+    current = parse_utc(now)
+    if current is None:
+        return True
+
+    interval_seconds = max(1, int(match.group(1))) * 60
+    return (current - last).total_seconds() >= interval_seconds
 
 
 def write_status(root: Path, rows: list[dict]) -> None:
@@ -570,12 +612,20 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             pending_id = pending.get("packet_id") if pending else None
             has_ack = acknowledged(automation_dir, pending_id) if pending_id else False
 
+            if not pending and not cadence_due(cfg, existing_state, now):
+                log(root, f"{cfg['automation_id']}: cadence wait")
+                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
+                continue
+
             if has_ack and pending:
-                log(root, f"{cfg['automation_id']}: pending packet {pending_id} acknowledged, applying baseline and queue marks")
+                log(root, f"{cfg['automation_id']}: pending packet {pending_id} acknowledged, applying baseline and queue completion marks")
                 if not dry_run:
                     write_state(state_path, cfg, now, pending.get("detected_new_files") or {})
                     queue_state = "queue_guard_state.json" if cfg["automation_id"] == "reid-handoff-check" else "channel_queue_guard_state.json"
-                    apply_queue_seen(automation_dir, pending.get("queue_item_ids") or [], queue_state)
+                    if cfg["automation_id"] == "vik-handoff-check":
+                        apply_queue_status(automation_dir, pending.get("queue_item_ids") or [], queue_state, "complete")
+                    else:
+                        apply_queue_seen_legacy(automation_dir, pending.get("queue_item_ids") or [], queue_state)
                     write_packet_log(automation_dir, pending)
                     (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
                     (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
@@ -620,6 +670,18 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             if pending and not has_ack:
                 active_marker = active_resume_marker(automation_dir)
                 if active_marker:
+                    live_queue = invoke_queue_guard(cfg.get("queue_guard_path"), cfg, automation_dir, config_path, dry_run)
+                    live_snapshot = {"queue_guard": live_queue}
+                    if queue_guard_is_clean_no_open(live_snapshot) and snapshot["missing_count"] == 0:
+                        log(root, f"{cfg['automation_id']}: pending packet {pending_id} cleared because live queue guard is now clean")
+                        if not dry_run:
+                            write_state(state_path, cfg, now, snapshot["new_files"])
+                            write_packet_log(automation_dir, pending, "cleared_no_open_queue")
+                            (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
+                            (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
+                            (automation_dir / "resume-process.json").unlink(missing_ok=True)
+                        rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
+                        continue
                     log(root, f"{cfg['automation_id']}: resume already running pid={active_marker.get('pid')}, pending packet {pending_id} not superseded")
                     rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
                     continue
