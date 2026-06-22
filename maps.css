@@ -2243,6 +2243,14 @@ a.maps-role-name:hover {
     padding-left: 4px;
   }
 
+  .maps-role-person {
+    width: 230px;
+  }
+
+  .maps-role-person--wide {
+    width: 260px;
+  }
+
   .maps-nav {
     align-items: flex-start;
     flex-direction: column;
