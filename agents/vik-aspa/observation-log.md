@@ -10,8 +10,8 @@ Trace execution log for vik-aspa agent autonomy observation. Records setup, trac
 
 ### 2026-06-23 — LangSmith Observation Framework Activated
 
-**Owner:** Bea  
-**Status:** Framework ready for validation; no traces recorded yet  
+**Owner:** Bea
+**Status:** Framework ready for validation; no traces recorded yet
 **Authority:** Configuration only (no runtime activation, no production deployment, no spending)
 
 #### Setup Actions Completed
