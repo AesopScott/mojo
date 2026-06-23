@@ -402,23 +402,8 @@ window.MAPS_SITE = {
         download: true,
         note: "Base Phase 8 Improve skill for evidence review, classification, routing, prioritization, splitting, proof, and next-iteration handoff."
       },
-      {
-        name: "/maps",
-        url: "https://github.com/AesopScott/maps-plus-org",
-        note: "Source repository for the MAPS program and plugin, including skills, templates, global install definitions, catalogs, and rule contracts."
-      },
-      {
-        name: "/maps+org",
-        url: "https://github.com/AesopScott/maps-plus-org",
-        note: "Source repository for the repo-local organization bootstrap kit: roles, channels, project-local skills, validators, automation source, and Role+ wiring."
-      }
     ],
     repos: [
-      {
-        name: "AesopScott/maps-plus-org",
-        url: "https://github.com/AesopScott/maps-plus-org",
-        note: "MAPS+Org repository for MAPS-family source updates."
-      },
       {
         name: "NotebookLM",
         url: "https://notebooklm.google/",
@@ -1306,133 +1291,133 @@ window.MAPS_SITE = {
   phaseResources: {
     "m0": {
       skills: ["/foundation", "/role"],
-      repos: ["AesopScott/maps-plus-org", "garrytan/gstack", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
+      repos: ["garrytan/gstack", "NotebookLM", "Obsidian", "LlamaIndex", "Atlassian Project Kickoff", "NN/g Service Blueprints", "Logseq", "Anytype", "AFFiNE", "AppFlowy", "SiYuan", "Dovetail Research Repository", "Productboard Feedback", "RAGFlow", "Haystack", "Qdrant", "Weaviate", "Chroma"],
       tools: ["Markdown notes", "MAPS skill contract validator", "Shared MAPS memory helper", "Per-skill run notes", "Source inventory", "RAG readiness", "Service blueprinting", "EventStorming Lite"],
       templates: ["templates/project-foundation.md"]
     },
     "m1": {
       skills: ["/shape"],
-      repos: ["AesopScott/maps-plus-org", "EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph"],
+      repos: ["EventStorming", "BPMN", "Team Topologies", "OpenAI Agent Orchestration", "OpenAI Swarm", "OpenAI Cookbook Routines and Handoffs", "LangGraph"],
       tools: ["BPMN Lite", "Role-pressure checks", "Service blueprinting", "Agent handoff mapping"],
       templates: ["templates/system-shape.md"]
     },
     "m2": {
       skills: ["/multi-agent-roster", "/role"],
-      repos: ["AesopScott/maps-plus-org", "OpenAI Agents Handoffs", "A2A Protocol", "NIST AI RMF", "Team Topologies"],
+      repos: ["OpenAI Agents Handoffs", "A2A Protocol", "NIST AI RMF", "Team Topologies"],
       tools: ["Role-pressure checks", "Agent handoff mapping", "Shared MAPS memory helper", "Per-skill run notes"],
       templates: ["templates/multi-agent-roster.md"]
     },
     "m3": {
       skills: ["/multi-agent-contracts"],
-      repos: ["AesopScott/maps-plus-org", "OpenAI Agents Handoffs", "OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF"],
+      repos: ["OpenAI Agents Handoffs", "OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF"],
       tools: ["Agent handoff mapping", "BPMN Lite", "Release gate checklist", "Shared MAPS memory helper"],
       templates: ["templates/multi-agent-contracts.md"]
     },
     "m4": {
       skills: ["/multi-agent-coordination"],
-      repos: ["AesopScott/maps-plus-org", "BPMN", "OpenAI Agent Orchestration", "LangGraph", "A2A Protocol"],
+      repos: ["BPMN", "OpenAI Agent Orchestration", "LangGraph", "A2A Protocol"],
       tools: ["BPMN Lite", "Agent handoff mapping", "Service blueprinting", "Shared MAPS memory helper"],
       templates: ["templates/multi-agent-coordination.md"]
     },
     "m5": {
       skills: ["/multi-agent-buildout", "/define-agent", "/design-agent", "/build-agent"],
-      repos: ["AesopScott/maps-plus-org", "OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "LangGraph", "NIST AI RMF"],
+      repos: ["OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "LangGraph", "NIST AI RMF"],
       tools: ["Backlog planning", "Test runner", "Agent runtime", "Optional code review"],
       templates: ["templates/multi-agent-buildout.md", "templates/agent-definition-template.md", "templates/workflow-spec.md", "templates/agent-build-plan.md"]
     },
     "m6": {
       skills: ["/multi-agent-capabilities", "/equip-agent"],
-      repos: ["AesopScott/maps-plus-org", "MCP Specification", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
+      repos: ["MCP Specification", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
       tools: ["MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
       templates: ["templates/multi-agent-capabilities.md", "templates/capability-map.md"]
     },
     "m7": {
       skills: ["/multi-agent-orchestration"],
-      repos: ["AesopScott/maps-plus-org", "OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "A2A Protocol", "LangGraph", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python"],
+      repos: ["OpenAI Agent Orchestration", "OpenAI Agents Handoffs", "A2A Protocol", "LangGraph", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python"],
       tools: ["Agent handoff mapping", "Agent runtime", "OpenAI Agents SDK tracing", "OpenTelemetry GenAI conventions"],
       templates: ["templates/multi-agent-orchestration.md"]
     },
     "m8": {
       skills: ["/design-experience++", "/design-experience"],
-      repos: ["AesopScott/maps-plus-org", "NN/g Service Blueprints", "WCAG 2.2", "shadcn-ui/ui", "radix-ui/primitives", "assistant-ui/assistant-ui"],
+      repos: ["NN/g Service Blueprints", "WCAG 2.2", "shadcn-ui/ui", "radix-ui/primitives", "assistant-ui/assistant-ui"],
       tools: ["Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "Agent interaction surface references"],
       templates: ["templates/experience-design.md"]
     },
     "m9": {
       skills: ["/multi-agent-evaluate", "/evaluate-agent", "/evaluate-agent++"],
-      repos: ["AesopScott/maps-plus-org", "OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF", "WCAG 2.2", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "Arize-ai/phoenix"],
+      repos: ["OpenAI Agents Guardrails", "A2A Protocol", "NIST AI RMF", "WCAG 2.2", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "Arize-ai/phoenix"],
       tools: ["System evaluation matrix", "Release gate checklist", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
       templates: ["templates/multi-agent-evaluate.md", "templates/eval-suite.md", "templates/eval-report.md"]
     },
     "m10": {
       skills: ["/multi-agent-deploy-observe", "/deploy-agent", "/observe-agent"],
-      repos: ["AesopScott/maps-plus-org", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "langfuse/langfuse", "cloudflare/agents", "cloudflare/workers-sdk"],
+      repos: ["open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "langfuse/langfuse", "cloudflare/agents", "cloudflare/workers-sdk"],
       tools: ["Release gate checklist", "GitHub Actions environments", "Runtime packaging", "OpenAI Agents SDK tracing", "OpenTelemetry GenAI conventions", "Incident review loop"],
       templates: ["templates/multi-agent-deploy-observe.md", "templates/deploy-plan.md", "templates/deployment-record.md", "templates/observation-plan.md", "templates/observation-log.md"]
     },
     "m11": {
       skills: ["/multi-agent-improve", "/improve-agent"],
-      repos: ["AesopScott/maps-plus-org", "NIST AI RMF", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix"],
+      repos: ["NIST AI RMF", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix"],
       tools: ["Incident review loop", "Backlog planning", "System evaluation matrix", "Release gate checklist"],
       templates: ["templates/multi-agent-improve.md", "templates/improvement-review.md", "templates/improvement-backlog.md"]
     },
     "0": {
       skills: ["/foundation", "phase-alignment"],
-      repos: ["AesopScott/maps-plus-org", "VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
+      repos: ["VoltAgent/awesome-agent-skills", "hqhq1025/skill-optimizer"],
       tools: ["Python", "GitHub CLI", "Git"],
       templates: ["templates/project-foundation.md", "templates/phase-alignment-brief.md"]
     },
     "1": {
       skills: ["/define-agent"],
-      repos: ["AesopScott/maps-plus-org"],
+      repos: [],
       tools: ["Git", "Agent Skills"],
       templates: ["templates/agent-definition-template.md", "templates/agent-profile-template.md"]
     },
     "2": {
       skills: ["/design-agent"],
-      repos: ["AesopScott/maps-plus-org"],
+      repos: [],
       tools: ["Git", "Agent Skills", "Web and repository research", "Backlog planning", "Addy Osmani agent spec guidance", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues"],
       templates: ["templates/workflow-spec.md", "templates/agent-backlog.md"]
     },
     "2a": {
       skills: ["/design-experience++", "/design-experience"],
-      repos: ["AesopScott/maps-plus-org", "shadcn-ui/ui", "radix-ui/primitives", "NN/g Service Blueprints", "tailwindlabs/headlessui", "mui/material-ui", "ant-design/ant-design", "chakra-ui/chakra-ui", "mantinedev/mantine", "heroui-inc/heroui", "adobe/react-spectrum", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui", "open-webui/open-webui", "lobehub/lobehub", "mckaywrigley/chatbot-ui", "vercel/chatbot", "vercel/ai", "Chainlit/chainlit", "gradio-app/gradio", "streamlit/streamlit"],
+      repos: ["shadcn-ui/ui", "radix-ui/primitives", "NN/g Service Blueprints", "tailwindlabs/headlessui", "mui/material-ui", "ant-design/ant-design", "chakra-ui/chakra-ui", "mantinedev/mantine", "heroui-inc/heroui", "adobe/react-spectrum", "uswds/uswds", "alphagov/govuk-frontend", "microsoft/fluentui", "primer/react", "assistant-ui/assistant-ui", "CopilotKit/CopilotKit", "langchain-ai/agent-chat-ui", "open-webui/open-webui", "lobehub/lobehub", "mckaywrigley/chatbot-ui", "vercel/chatbot", "vercel/ai", "Chainlit/chainlit", "gradio-app/gradio", "streamlit/streamlit"],
       tools: ["Git", "Agent Skills", "Experience design research", "Journey mapping", "Information architecture", "Interaction state modeling", "Accessibility and inclusive design", "UI design system references", "Agent interaction surface references", "Responsive website design", "Component pattern selection"],
       templates: ["templates/experience-design.md"]
     },
     "3": {
       skills: ["/build-agent++", "/build-agent"],
-      repos: ["AesopScott/maps-plus-org", "addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
+      repos: ["addyosmani/agent-skills", "github/spec-kit", "openai/openai-agents-python", "crewAIInc/crewAI", "google/adk-python", "VoltAgent/awesome-agent-skills", "davila7/claude-code-templates", "microsoft/ai-agents-for-beginners"],
       tools: ["Git", "Agent Skills", "Backlog planning", "GitHub sub-issues", "Test runner", "Agent runtime", "Browser/runtime verifier", "Optional code review"],
       templates: ["templates/agent-backlog.md", "templates/agent-build-plan.md", "templates/build-log.md"]
     },
     "4": {
       skills: ["/equip-agent"],
-      repos: ["AesopScott/maps-plus-org", "modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
+      repos: ["modelcontextprotocol/modelcontextprotocol", "openai/openai-agents-python", "pydantic/pydantic-ai"],
       tools: ["Git", "Agent Skills", "MCP servers", "Connectors", "Secrets and environment configuration", "Memory and retrieval stores"],
       templates: ["templates/capability-map.md"]
     },
     "5": {
       skills: ["/evaluate-agent", "/evaluate-agent++"],
-      repos: ["AesopScott/maps-plus-org", "langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "UKGovernmentBEIS/inspect_evals", "Arize-ai/phoenix"],
+      repos: ["langchain-ai/langsmith-sdk", "UKGovernmentBEIS/inspect_ai", "UKGovernmentBEIS/inspect_evals", "Arize-ai/phoenix"],
       tools: ["Git", "Agent Skills", "Test runner", "LangSmith", "Inspect AI", "Phoenix"],
       templates: ["templates/eval-suite.md", "templates/eval-report.md"]
     },
     "6": {
       skills: ["/deploy-agent", "/deploy-agent++"],
-      repos: ["AesopScott/maps-plus-org", "cloudflare/agents", "cloudflare/workers-sdk", "modelcontextprotocol/mcpb", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "temporalio/sdk-python", "temporal-community/openai-agents-demos", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
+      repos: ["cloudflare/agents", "cloudflare/workers-sdk", "modelcontextprotocol/mcpb", "GoogleCloudPlatform/agent-starter-pack", "google/adk-python", "openai/openai-agents-python", "openai/openai-agents-js", "temporalio/sdk-python", "temporal-community/openai-agents-demos", "openclaw/openclaw", "datopian/autoclaw.sh", "NousResearch/hermes-agent", "electron/forge", "electron-userland/electron-builder"],
       tools: ["Git", "Agent Skills", "GitHub Actions environments", "Cloudflare Wrangler", "Cloudflare rollback", "Runtime packaging", "MCPB", "Temporal durable execution"],
       templates: ["templates/deploy-plan.md", "templates/deployment-record.md"]
     },
     "7": {
       skills: ["/observe-agent", "/observe-agent+smith", "/observe-agent+fuse", "/observe-agent+phoenix"],
-      repos: ["AesopScott/maps-plus-org", "langchain-ai/langsmith-sdk", "Arize-ai/phoenix", "langfuse/langfuse", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "traceloop/openllmetry"],
+      repos: ["langchain-ai/langsmith-sdk", "Arize-ai/phoenix", "langfuse/langfuse", "open-telemetry/opentelemetry-js", "open-telemetry/opentelemetry-python", "openai/openai-agents-python", "openai/openai-agents-js", "traceloop/openllmetry"],
       tools: ["Git", "Agent Skills", "LangSmith observability", "Phoenix tracing", "Langfuse", "OpenTelemetry GenAI conventions", "OpenAI Agents SDK tracing", "Cloudflare Workers observability"],
       templates: ["templates/observation-plan.md", "templates/observation-log.md", "templates/improvement-backlog.md"]
     },
     "8": {
       skills: ["/improve-agent"],
-      repos: ["AesopScott/maps-plus-org"],
+      repos: [],
       tools: ["Git", "Agent Skills", "Backlog planning", "Scrum Guide product backlog", "Atlassian product backlog guide", "GitHub sub-issues", "Google SRE postmortem culture", "Google SRE embracing risk", "Atlassian postmortems"],
       templates: ["templates/improvement-review.md", "templates/improvement-backlog.md"]
     }
