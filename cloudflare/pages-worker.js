@@ -26,6 +26,10 @@ export default {
       return handleSmsReminders(request, env);
     }
 
+    if (url.pathname === "/api/zoom-webhook" || url.pathname === "/api/zoom-webhook.php") {
+      return handleZoomWebhook(request, env);
+    }
+
     if (url.pathname === "/api/submit-product" || url.pathname === "/api/submit-product.php") {
       return handleSubmitProduct(request, env, ctx);
     }
@@ -267,6 +271,56 @@ async function handleSmsReminders(request, env) {
     message: "SMS reminders saved.",
     phoneLast4: phoneLast4(phone),
   });
+}
+
+async function handleZoomWebhook(request, env) {
+  if (request.method !== "POST") {
+    return json({ ok: false, message: "Method not allowed." }, 405);
+  }
+
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return json({ ok: false, message: "Expected JSON body." }, 400);
+  }
+
+  const event = String(payload.event || "");
+
+  if (event === "endpoint.url_validation") {
+    const plainToken = String(payload.payload?.plainToken || "");
+    const secretToken = String(env.ZOOM_SECRET_TOKEN || "").trim();
+
+    if (!plainToken) {
+      return json({ message: "Missing plainToken." }, 400);
+    }
+
+    if (!secretToken) {
+      return json({ message: "Zoom secret token is not configured." }, 500);
+    }
+
+    return json({
+      plainToken,
+      encryptedToken: await hmacSha256Hex(secretToken, plainToken),
+    });
+  }
+
+  return json({ ok: true });
+}
+
+async function hmacSha256Hex(secret, value) {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(value));
+  return [...new Uint8Array(signature)]
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 function isAuthorized(request, env, url) {

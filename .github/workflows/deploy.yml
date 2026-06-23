@@ -107,6 +107,7 @@ jobs:
           TWILIO_AUTH_TOKEN:     ${{ secrets.TWILIO_AUTH_TOKEN }}
           TWILIO_FROM_NUMBER:    ${{ secrets.TWILIO_FROM_NUMBER }}
           RESEND_API_KEY:        ${{ secrets.RESEND_API_KEY }}
+          ZOOM_SECRET_TOKEN:     ${{ secrets.ZOOM_SECRET_TOKEN }}
         run: |
           node - <<'NODE'
           const fs = require('fs');
@@ -116,6 +117,7 @@ jobs:
             'TWILIO_AUTH_TOKEN',
             'TWILIO_FROM_NUMBER',
             'RESEND_API_KEY',
+            'ZOOM_SECRET_TOKEN',
           ];
           const secrets = {};
           for (const name of required) {
