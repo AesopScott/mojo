@@ -1,14 +1,29 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import importlib.util
 import json
+import os
 import re
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
+
+def env_true(name: str) -> bool:
+    return (os.getenv(name) or "").strip().lower() in {"1", "true", "yes", "on"}
+
+
+if env_true("LANGSMITH_TRACING") and not os.getenv("LANGSMITH_TRACING_V2"):
+    os.environ["LANGSMITH_TRACING_V2"] = "true"
+
+
+try:
+    from langsmith import traceable
+except Exception:
+    traceable = None
 
 
 mojo_root = Path(__file__).resolve().parents[3]
@@ -164,6 +179,53 @@ def detect_scoped_research_loop_request(request: str) -> bool:
     return has_work_state and has_role_lane and has_loop_language
 
 
+def compute_source_hash(path: Path) -> str:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except Exception:
+        return "unavailable"
+
+
+def trace_source_hashes(paths: ControlPaths) -> dict[str, str]:
+    return {
+        "role": compute_source_hash(paths.role),
+        "profile": compute_source_hash(paths.profile),
+        "design": compute_source_hash(paths.design),
+        "backlog": compute_source_hash(paths.backlog),
+        "autonomy_contract": compute_source_hash(paths.autonomy_contract),
+        "canonical_autonomy": compute_source_hash(paths.canonical_autonomy),
+    }
+
+
+def sanitize_trace_inputs(inputs: dict[str, Any]) -> dict[str, Any]:
+    request = inputs.get("request", "")
+    paths = inputs.get("paths")
+    sanitized: dict[str, Any] = {
+        "agent": "vik-aspa",
+        "autonomy_level": "4_scoped",
+        "request": request,
+    }
+    if isinstance(paths, ControlPaths):
+        sanitized["source_hashes"] = trace_source_hashes(paths)
+    return sanitized
+
+
+def sanitize_trace_outputs(outputs: Any) -> dict[str, Any]:
+    if isinstance(outputs, Decision):
+        return {
+            "status": outputs.status,
+            "category": outputs.category,
+            "needs_approval": outputs.needs_approval,
+            "message": outputs.message,
+            "source_count": len(outputs.sources),
+        }
+    return {"output_type": type(outputs).__name__}
+
+
+def langsmith_enabled() -> bool:
+    return traceable is not None and env_true("LANGSMITH_TRACING") and bool(os.getenv("LANGSMITH_API_KEY"))
+
+
 def detect_category(request: str) -> str:
     text = normalize(request)
     for category, patterns in DENIED_PATTERNS.items():
@@ -228,7 +290,7 @@ def validate_contracts(role_text: str, profile_text: str, design_text: str, back
         raise ContractError("Role contract missing external communication boundary.")
 
 
-def decide(request: str, paths: ControlPaths) -> Decision:
+def _decide_impl(request: str, paths: ControlPaths) -> Decision:
     role_text = read_required(paths.role, "source role contract")
     profile_text = read_required(paths.profile, "agent profile")
     design_text = read_required(paths.design, "agent design")
@@ -285,6 +347,35 @@ def decide(request: str, paths: ControlPaths) -> Decision:
         needs_approval=False,
         sources=sources,
     )
+
+
+if traceable is not None:
+    _decide_traced = traceable(
+        name="vik_aspa_decision",
+        run_type="chain",
+        project_name=os.getenv("LANGSMITH_PROJECT") or "vik-aspa",
+        tags=["vik-aspa", "observe-agent-smith", "level-4-scoped"],
+        metadata={
+            "agent": "vik-aspa",
+            "autonomy_level": "4_scoped",
+            "runtime": "local_proof_harness",
+        },
+        process_inputs=sanitize_trace_inputs,
+        process_outputs=sanitize_trace_outputs,
+    )(_decide_impl)
+else:
+    _decide_traced = None
+
+
+def decide(request: str, paths: ControlPaths) -> Decision:
+    if langsmith_enabled() and _decide_traced is not None:
+        try:
+            return _decide_traced(request, paths)
+        except ContractError:
+            raise
+        except Exception:
+            return _decide_impl(request, paths)
+    return _decide_impl(request, paths)
 
 
 def write_artifacts(decision: Decision, artifact_dir: Path) -> None:

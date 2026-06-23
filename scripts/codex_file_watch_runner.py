@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Deterministic Codex file-watch runner.
 
-This runner intentionally avoids process-tree control. It keeps a per-role
-pending packet until the role acknowledges it, but supersedes that packet when
-newer watched-file or queue state appears. That prevents Release Management
-approvals from being hidden behind stale "waiting for Reid" packets.
+This runner intentionally avoids durable pending packets. The role queue and
+watched files are the source of truth; each run snapshots current state, wakes
+the role when work is visible, writes the new baseline, and moves on.
 """
 
 from __future__ import annotations
@@ -185,14 +184,6 @@ def packet_signature(files: dict, queue_output: list[str]) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def pending_signature(pending: dict | None) -> str | None:
-    if not pending:
-        return None
-    if pending.get("packet_signature"):
-        return pending["packet_signature"]
-    return packet_signature(pending.get("detected_new_files") or {}, pending.get("queue_guard_output") or [])
-
-
 def load_json(path: Path) -> dict | None:
     if not path.exists():
         return None
@@ -288,16 +279,13 @@ def change_packet(cfg: dict, changes: list[dict], queue_output: list[str], packe
         cfg.get("prompt_on_change") or "File-watch change detected.",
         "",
         "== EVIDENCE RULE (systemic) ==",
-        "Compact change packet is change inventory only, not full evidence source. Any instruction to 'review only' compact packet does not forbid required source reads. Before FILE_WATCH_ACK NO_ACTION_BECAUSE or DONT_NOTIFY, role must read the source file(s) named by changed_files and queue_guard lines that are needed to decide current work.",
-        "If Release Management is named, changed, queue_guard open, or pending packet exists, read G:\\My Drive\\Mindshare\\channels\\release-management.md in full and search for current approval, conditional approval, block, Requested response, Next owner relevant to that role. Do not silently no-op while relevant open approval/block/request exists. Close only on later closeout for same item.",
+        "Compact change packet is change inventory only, not full evidence source. The role must read its queue and the source files needed to decide current work.",
+        "If Release Management is named, changed, or queue_guard open, read G:\\My Drive\\Mindshare\\channels\\release-management.md in full and search for current approval, conditional approval, block, Requested response, Next owner relevant to that role. Do not silently no-op while relevant open approval/block/request exists. Close only on later closeout for same item.",
         "",
         "<file_watch_change>",
         f"  <automation_id>{cfg.get('automation_id')}</automation_id>",
-        f"  <packet_id>{packet_id}</packet_id>",
+        f"  <event_id>{packet_id}</event_id>",
         f"  <checked_at>{utc_now()}</checked_at>",
-        "  <acknowledgement_instructions>",
-        f"    Include in your output ONE of: FILE_WATCH_ACK: {packet_id} ACTION_TAKEN or FILE_WATCH_ACK: {packet_id} NO_ACTION_BECAUSE <reason>",
-        "  </acknowledgement_instructions>",
         "  <changed_files>",
     ]
     for change in changes:
@@ -324,77 +312,6 @@ def change_packet(cfg: dict, changes: list[dict], queue_output: list[str], packe
         lines.append("  </queue_guard>")
     lines.append("</file_watch_change>")
     return "\n".join(lines)
-
-
-def save_pending_md(automation_dir: Path, automation_id: str, packet_id: str, packet_text: str) -> None:
-    text = "\n".join(
-        [
-            "# Pending File-Watch Change Packet",
-            "",
-            f"- **automation_id**: {automation_id}",
-            f"- **packet_id**: {packet_id}",
-            "- **status**: pending",
-            f"- **created_at**: {utc_now()}",
-            "",
-            "## Instructions",
-            "",
-            "Role must acknowledge by including in output:",
-            "",
-            "```",
-            f"FILE_WATCH_ACK: {packet_id} ACTION_TAKEN",
-            "```",
-            "",
-            "OR if no action needed:",
-            "",
-            "```",
-            f"FILE_WATCH_ACK: {packet_id} NO_ACTION_BECAUSE <brief reason>",
-            "```",
-            "",
-            "## Packet Content",
-            "",
-            "```",
-            packet_text,
-            "```",
-            "",
-        ]
-    )
-    write_text(automation_dir / "pending-change-packet.md", text)
-
-
-def make_pending(cfg: dict, packet_id: str, now: str, snapshot: dict, packet_text: str, supersedes: str | None = None) -> dict:
-    data = {
-        "automation_id": cfg.get("automation_id"),
-        "packet_id": packet_id,
-        "first_detected_at": now,
-        "detected_new_files": snapshot["new_files"],
-        "queue_guard_output": snapshot["queue_guard"]["output"],
-        "queue_item_ids": snapshot["queue_item_ids"],
-        "changes": snapshot["changes"],
-        "packet_signature": snapshot["packet_signature"],
-        "prompt_packet_text": packet_text,
-        "status": "pending",
-        "resume_count": 0,
-        "last_resumed_at": None,
-    }
-    if supersedes:
-        data["supersedes_packet_id"] = supersedes
-        data["superseded_at"] = utc_now()
-    return data
-
-
-def acknowledged(automation_dir: Path, packet_id: str) -> bool:
-    output = ""
-    for name in ("last-resume-output.txt", "last-resume-error.txt"):
-        path = automation_dir / name
-        if not path.exists():
-            continue
-        try:
-            output += "\n" + read_text(path)
-        except Exception:
-            continue
-    if not output:
-        return False
-    return re.search(rf"(?im)^\s*FILE_WATCH_ACK:\s*{re.escape(packet_id)}\s+(ACTION_TAKEN|NO_ACTION_BECAUSE\s+\S+)", output) is not None
 
 
 def start_resume(root: Path, automation_dir: Path, cfg: dict, packet_text: str, codex_exe: str, dry_run: bool) -> dict:
@@ -458,42 +375,6 @@ def start_resume(root: Path, automation_dir: Path, cfg: dict, packet_text: str, 
     return {"started": True, "already_running": False, "pid": proc.pid}
 
 
-def active_resume_marker(automation_dir: Path) -> dict | None:
-    marker_path = automation_dir / "resume-process.json"
-    if not marker_path.exists():
-        return None
-    marker = load_json(marker_path) or {}
-    try:
-        started = datetime.fromisoformat(str(marker.get("started_at", "")).replace("Z", "+00:00"))
-        if (datetime.now(timezone.utc) - started).total_seconds() < 15 * 60:
-            return marker
-    except Exception:
-        pass
-    marker_path.unlink(missing_ok=True)
-    return None
-
-
-def retry_due(pending: dict | None, seconds: int = 5 * 60) -> bool:
-    if not pending:
-        return True
-    last = pending.get("last_resumed_at")
-    if not last:
-        return True
-    try:
-        last_dt = datetime.fromisoformat(str(last).replace("Z", "+00:00"))
-        return (datetime.now(timezone.utc) - last_dt).total_seconds() >= seconds
-    except Exception:
-        return True
-
-
-def mark_resumed(automation_dir: Path, pending: dict, result: dict) -> None:
-    if result.get("already_running"):
-        return
-    pending["resume_count"] = int(pending.get("resume_count") or 0) + 1
-    pending["last_resumed_at"] = utc_now()
-    save_json(automation_dir / "pending-change-packet.json", pending)
-
-
 def update_history(existing_state: dict | None, changes: list[dict] | None, now: str) -> list[dict]:
     history = list((existing_state or {}).get("last_history") or [])
     for change in changes or []:
@@ -528,34 +409,6 @@ def write_state(path: Path, cfg: dict, now: str, files: dict, existing_state: di
     )
 
 
-def apply_queue_status(automation_dir: Path, queue_ids: list[str], state_file: str, status: str) -> None:
-    if not queue_ids:
-        return
-    path = automation_dir / state_file
-    state = load_json(path) or {}
-    item_statuses = state.get("item_statuses") or {}
-    for item in queue_ids:
-        item_statuses[item] = status
-    state["checked_at"] = utc_now()
-    state["valid_statuses"] = ["backlog", "complete", "cancelled", "errored"]
-    state["item_statuses"] = dict(sorted(item_statuses.items()))
-    state.pop("seen_items", None)
-    save_json(path, state)
-
-
-def apply_queue_seen_legacy(automation_dir: Path, queue_ids: list[str], state_file: str) -> None:
-    if not queue_ids:
-        return
-    path = automation_dir / state_file
-    state = load_json(path) or {}
-    seen = state.get("seen_items") or {}
-    for item in queue_ids:
-        seen[item] = True
-    state["checked_at"] = utc_now()
-    state["seen_items"] = dict(sorted(seen.items()))
-    save_json(path, state)
-
-
 def write_packet_log(automation_dir: Path, pending: dict, status: str = "acknowledged") -> None:
     entry = {
         "packet_id": pending.get("packet_id"),
@@ -567,12 +420,6 @@ def write_packet_log(automation_dir: Path, pending: dict, status: str = "acknowl
     }
     with (automation_dir / "change-packet-log.jsonl").open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(entry, separators=(",", ":")) + "\n")
-
-
-def queue_guard_is_clean_no_open(snapshot: dict) -> bool:
-    output = snapshot.get("queue_guard", {}).get("output") or []
-    first = output[0] if output else ""
-    return snapshot.get("queue_guard", {}).get("exit_code") == 0 and (first.startswith("NO_OPEN") or first.startswith("NO_BACKLOG"))
 
 
 def cadence_due(cfg: dict, existing_state: dict | None, now: str) -> bool:
@@ -642,135 +489,54 @@ def run(root: Path, codex_exe: str, dry_run: bool) -> int:
             state_path = automation_dir / cfg.get("watch_state_path", "watch_state.json")
             existing_state = load_json(state_path)
             old_files = (existing_state or {}).get("files") or {}
-            pending = load_json(automation_dir / "pending-change-packet.json")
-            pending_id = pending.get("packet_id") if pending else None
-            has_ack = acknowledged(automation_dir, pending_id) if pending_id else False
 
-            if not pending and not cadence_due(cfg, existing_state, now):
+            stale_pending = load_json(automation_dir / "pending-change-packet.json")
+            if stale_pending and not dry_run:
+                write_packet_log(automation_dir, stale_pending, "cleared_pending_disabled")
+                (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
+                (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
+                (automation_dir / "resume-process.json").unlink(missing_ok=True)
+                log(root, f"{cfg['automation_id']}: cleared stale pending packet {stale_pending.get('packet_id')} because pending packets are disabled")
+
+            if not cadence_due(cfg, existing_state, now):
                 log(root, f"{cfg['automation_id']}: cadence wait")
                 rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
                 continue
 
-            if has_ack and pending:
-                log(root, f"{cfg['automation_id']}: pending packet {pending_id} acknowledged, applying baseline and queue completion marks")
-                if not dry_run:
-                    write_state(state_path, cfg, now, pending.get("detected_new_files") or {}, existing_state, pending.get("changes") or [])
-                    queue_state = "queue_guard_state.json" if cfg["automation_id"] == "reid-handoff-check" else "channel_queue_guard_state.json"
-                    if cfg["automation_id"] == "vik-handoff-check":
-                        apply_queue_status(automation_dir, pending.get("queue_item_ids") or [], queue_state, "complete")
-                    else:
-                        apply_queue_seen_legacy(automation_dir, pending.get("queue_item_ids") or [], queue_state)
-                    write_packet_log(automation_dir, pending)
-                    (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
-                    (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
-                    (automation_dir / "resume-process.json").unlink(missing_ok=True)
-                log(root, f"{cfg['automation_id']}: acknowledged packet {pending_id} processed")
-                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
-                continue
-
             snapshot = scan_snapshot(cfg, config_path, automation_dir, old_files, now, dry_run)
+            changed_count = len(snapshot["changes"])
+            queue_open = bool(snapshot["queue_guard"]["open"])
 
             if (
-                not pending
-                and len(snapshot["changes"]) == 0
+                changed_count == 0
                 and snapshot["missing_count"] == 0
-                and not snapshot["queue_guard"]["open"]
+                and not queue_open
             ):
                 log(root, f"{cfg['automation_id']}: unchanged")
-                if not dry_run and not existing_state:
+                if not dry_run:
                     write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
                 rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": 0, "missing_count": 0, "files": cfg.get("watched_paths", [])})
                 continue
 
-            has_file_changes = len(snapshot["changes"]) > 0
-            if queue_guard_is_clean_no_open(snapshot) and snapshot["missing_count"] == 0 and not has_file_changes:
-                if pending:
-                    message = f"pending packet {pending_id} cleared because queue guard is now clean"
-                else:
-                    message = "unchanged"
-                log(root, f"{cfg['automation_id']}: {message}")
-                if not dry_run:
-                    write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
-                    if pending:
-                        write_packet_log(automation_dir, pending, "cleared_no_open_queue")
-                    (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
-                    (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
-                    (automation_dir / "resume-process.json").unlink(missing_ok=True)
-                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
-                continue
-
-            if pending and not has_ack:
-                active_marker = active_resume_marker(automation_dir)
-                if active_marker:
-                    live_queue = invoke_queue_guard(cfg.get("queue_guard_path"), cfg, automation_dir, config_path, dry_run)
-                    live_snapshot = {"queue_guard": live_queue}
-                    if queue_guard_is_clean_no_open(live_snapshot) and snapshot["missing_count"] == 0 and len(snapshot["changes"]) == 0:
-                        log(root, f"{cfg['automation_id']}: pending packet {pending_id} cleared because live queue guard is now clean")
-                        if not dry_run:
-                            write_state(state_path, cfg, now, snapshot["new_files"], existing_state, [])
-                            write_packet_log(automation_dir, pending, "cleared_no_open_queue")
-                            (automation_dir / "pending-change-packet.json").unlink(missing_ok=True)
-                            (automation_dir / "pending-change-packet.md").unlink(missing_ok=True)
-                            (automation_dir / "resume-process.json").unlink(missing_ok=True)
-                        rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
-                        continue
-                    log(root, f"{cfg['automation_id']}: resume already running pid={active_marker.get('pid')}, pending packet {pending_id} not superseded")
-                    rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
-                    continue
-
-                if snapshot["packet_signature"] != pending_signature(pending):
-                    packet_id = new_packet_id()
-                    packet_text = change_packet(cfg, snapshot["changes"], snapshot["queue_guard"]["output"], packet_id)
-                    pending_data = make_pending(cfg, packet_id, now, snapshot, packet_text, supersedes=pending_id)
-                    if not dry_run:
-                        save_json(automation_dir / "pending-change-packet.json", pending_data)
-                        save_pending_md(automation_dir, cfg["automation_id"], packet_id, packet_text)
-                        log(root, f"{cfg['automation_id']}: superseded pending packet {pending_id} with {packet_id} after newer file/queue state")
-                        result = start_resume(root, automation_dir, cfg, packet_text, codex_exe, dry_run)
-                        if result["already_running"]:
-                            log(root, f"{cfg['automation_id']}: resume already running pid={result['pid']}, superseded packet remains pending")
-                        else:
-                            mark_resumed(automation_dir, pending_data, result)
-                            log(root, f"{cfg['automation_id']}: superseded packet {packet_id} pid={result['pid']} started")
-                    else:
-                        log(root, f"{cfg['automation_id']}: dry-run would supersede pending packet {pending_id} with {packet_id}")
-                else:
-                    if not retry_due(pending):
-                        log(root, f"{cfg['automation_id']}: pending packet {pending_id} waiting for ack; retry cooldown active")
-                        rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
-                        continue
-                    log(root, f"{cfg['automation_id']}: re-sending pending packet {pending_id} (resume_count={int(pending.get('resume_count') or 0) + 1})")
-                    if not dry_run:
-                        result = start_resume(root, automation_dir, cfg, pending.get("prompt_packet_text") or "", codex_exe, dry_run)
-                        if result["already_running"]:
-                            log(root, f"{cfg['automation_id']}: resume already running pid={result['pid']}, packet remains pending")
-                        else:
-                            mark_resumed(automation_dir, pending, result)
-                            log(root, f"{cfg['automation_id']}: re-sent pending packet pid={result['pid']} started")
-                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
-                continue
-
-            rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": len(snapshot["changes"]), "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
             if not existing_state and cfg.get("baseline_on_first_run") and not cfg.get("resume_on_first_run") and not snapshot["queue_guard"]["open"]:
-                log(root, f"{cfg['automation_id']}: baseline only, {len(snapshot['changes'])} files recorded")
+                log(root, f"{cfg['automation_id']}: baseline only, {changed_count} files recorded")
                 if not dry_run:
                     write_state(state_path, cfg, now, snapshot["new_files"], existing_state, snapshot["changes"])
+                rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": changed_count, "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
                 continue
 
             packet_id = new_packet_id()
             packet_text = change_packet(cfg, snapshot["changes"], snapshot["queue_guard"]["output"], packet_id)
-            pending_data = make_pending(cfg, packet_id, now, snapshot, packet_text)
             if not dry_run:
-                save_json(automation_dir / "pending-change-packet.json", pending_data)
-                save_pending_md(automation_dir, cfg["automation_id"], packet_id, packet_text)
                 result = start_resume(root, automation_dir, cfg, packet_text, codex_exe, dry_run)
                 if result["already_running"]:
-                    log(root, f"{cfg['automation_id']}: resume already running pid={result['pid']}, packet saved pending")
+                    log(root, f"{cfg['automation_id']}: work visible changed={changed_count} queue_open={queue_open} event={packet_id}; resume already running pid={result['pid']}; no pending stored")
                 else:
-                    mark_resumed(automation_dir, pending_data, result)
-                    log(root, f"{cfg['automation_id']}: pending changed={len(snapshot['changes'])} queue_open={snapshot['queue_guard']['open']} packet={packet_id} pid={result['pid']} started")
+                    log(root, f"{cfg['automation_id']}: work visible changed={changed_count} queue_open={queue_open} event={packet_id} pid={result['pid']} started; no pending stored")
+                write_state(state_path, cfg, now, snapshot["new_files"], existing_state, snapshot["changes"])
             else:
-                log(root, f"{cfg['automation_id']}: dry-run changed={len(snapshot['changes'])} queue_open={snapshot['queue_guard']['open']} packet={packet_id}")
+                log(root, f"{cfg['automation_id']}: dry-run changed={changed_count} queue_open={queue_open} event={packet_id}; no pending stored")
+            rows.append({"automation_id": cfg["automation_id"], "rrule": cfg.get("rrule", ""), "last_check_local": local_now(), "changed_count": changed_count, "missing_count": snapshot["missing_count"], "files": cfg.get("watched_paths", [])})
         write_status(root, rows)
         return 0
     finally:
