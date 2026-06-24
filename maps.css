@@ -885,6 +885,11 @@ body.maps-page {
   padding: 0 10% 80px;
 }
 
+.maps-main--org-chart {
+  padding-right: clamp(16px, 2.5vw, 48px);
+  padding-left: clamp(16px, 2.5vw, 48px);
+}
+
 .maps-path-chooser {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -2089,7 +2094,9 @@ a.maps-role-name:hover {
 .maps-org-chart {
   display: grid;
   gap: 28px;
-  overflow-x: clip;
+  width: min(100%, 1720px);
+  margin: 0 auto;
+  overflow-x: visible;
 }
 
 .maps-executive-row {
@@ -2164,6 +2171,15 @@ a.maps-role-name:hover {
 .maps-role-person--wide {
   width: 312px;
   height: 92px;
+}
+
+.maps-org-function .maps-role-person,
+.maps-org-function .maps-role-person--wide {
+  width: 100%;
+  height: auto;
+  min-height: 74px;
+  padding: 8px 9px;
+  gap: 8px;
 }
 
 .maps-role-copy {
@@ -2257,8 +2273,8 @@ a.maps-role-name:hover {
 .maps-org-branches {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(5, minmax(210px, 1fr));
+  gap: 12px;
 }
 
 .maps-org-branches::before {
@@ -2273,7 +2289,8 @@ a.maps-role-name:hover {
 
 .maps-org-function {
   position: relative;
-  padding: 18px;
+  min-width: 0;
+  padding: 12px;
 }
 
 .maps-org-function::before {
@@ -2287,27 +2304,41 @@ a.maps-role-name:hover {
 }
 
 .maps-org-function h3 {
-  min-height: 52px;
-  color: var(--maps-ink);
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  margin: -12px -12px 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(35, 61, 77, 0.16);
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(180deg, #f4fbfb 0%, #edf6f3 100%);
+  color: #183b3f;
+  font-size: 17px;
   line-height: 1.18;
 }
 
 .maps-org-function ul {
   display: grid;
-  gap: 10px;
-  margin: 14px 0 0;
+  gap: 8px;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
 .maps-org-function li {
-  min-height: 56px;
-  padding: 4px 8px;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px;
   border: 1px solid rgba(217, 224, 220, 0.82);
   border-radius: 7px;
   background: #fbfbf8;
   line-height: 1.25;
+}
+
+.maps-org-function li > ul {
+  margin-top: 8px;
+  padding-left: 12px;
+  border-left: 1px solid rgba(35, 61, 77, 0.14);
 }
 
 @media (max-width: 900px) {
