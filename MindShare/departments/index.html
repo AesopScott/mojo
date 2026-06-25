@@ -42,6 +42,14 @@
         .section-collapse {
             transition: max-height 0.3s ease-out, opacity 0.2s ease;
         }
+        #division-select {
+            background-color: #0c1324;
+            color: #dce1fb;
+        }
+        #division-select option {
+            background-color: #ffffff;
+            color: #111827;
+        }
     </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -169,7 +177,7 @@
 <div class="w-full flex flex-col items-start gap-2 group/nav">
 <label class="font-display-lg text-headline-md text-primary leading-none group-hover/nav:text-primary-fixed transition-colors" for="division-select">Departments</label>
 <div class="relative w-full">
-<select id="division-select" class="w-full appearance-none bg-transparent border border-white/10 rounded-lg py-2 pl-3 pr-10 font-label-sm text-on-surface-variant opacity-90 focus:border-primary focus:ring-primary">
+<select id="division-select" class="w-full appearance-none border border-white/10 rounded-lg py-2 pl-3 pr-10 font-label-sm focus:border-primary focus:ring-primary">
 <option value="strategy-and-operations">Strategy &amp; Operations</option>
 <option value="product-and-design">Product &amp; Design</option>
 <option value="technology-and-data">Technology &amp; Data</option>
