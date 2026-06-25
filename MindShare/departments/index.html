@@ -131,199 +131,291 @@
         }
     </script>
 </head>
-<body class="bg-background text-on-surface flex flex-col min-h-screen overflow-hidden">
-<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm h-20">
+<body class="bg-background text-on-surface flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm dark:shadow-none h-20">
 <div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-full max-w-container-max mx-auto">
 <div class="flex items-center gap-4">
-<a class="font-display-lg text-headline-md tracking-wider text-primary uppercase" href="/MindShare/">Mind Share Media</a>
+<span class="font-display-lg text-headline-md tracking-wider text-primary dark:text-primary-fixed uppercase">Mind Share Media</span>
 </div>
 <nav class="hidden md:flex space-x-8 items-center h-full">
-<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="/MindShare/">Home</a>
-<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="/MindShare/our-team/">Our Team</a>
-<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="/MindShare/services/">Services</a>
-<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="/MindShare/services/#contact">Contact</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="#">Home</a>
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 font-body-md" href="#">Our Team</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="#">Services</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary font-body-md transition-colors duration-300" href="#">Contact</a>
 </nav>
-<div class="flex items-center space-x-4">
-<a class="hidden md:inline-flex items-center justify-center h-10 px-5 border border-primary/40 text-primary hover:bg-primary hover:text-on-primary transition-all text-label-sm uppercase tracking-widest" href="/MindShare/our-team/">Back to Team</a>
-<button class="md:hidden text-on-surface" aria-label="Open menu"><span class="material-symbols-outlined">menu</span></button>
+<div class="flex items-center space-x-6">
+<div class="hidden md:flex items-center bg-surface-container-high/50 px-4 py-1.5 rounded-full border border-white/5">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-32 placeholder-on-surface-variant" placeholder="Global Search..." type="text">
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-80 transition-all hover:bg-white/5 p-2 rounded-full">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:opacity-80 transition-all hover:bg-white/5 p-2 rounded-full">settings</span>
+<img class="w-10 h-10 rounded-full border border-primary/30 object-cover" data-alt="A professional headshot of a senior executive in a high-end corporate office setting. The individual is wearing a charcoal grey tailored suit, standing against a backdrop of a blurred metropolitan skyline through floor-to-ceiling glass windows at twilight. The lighting is cold, architectural, and sophisticated, emphasizing sharp features and a confident expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD_cxPZsVB4O7i12grMj-WbNmCB5vVqdElOUuV6-KBqr1VI1NZH78c05urWijL-JGSFxtzXShk-YyXR0VGi5byrI-N2S1i28FdHMfyIixIInxAtx33T8-8BCH7ciuBhJfdMsMSUVw0zcgHBd2PBBCgxCwRSlfy-DSueDCUq8THa_j3I0Bc5I7Kp0-5LJ3vFj-nAqjGjnuua_3E4VPRUOBgWD1A4XCe6lE_jeJegxeTFvi1T5N74Ovw0f5qNhh25TNBmHDvJioa8z57">
+</div>
 </div>
 </div>
 </header>
-
+<!-- Main Workspace Container -->
 <main class="flex flex-1 pt-20 overflow-hidden">
-<aside class="w-full md:w-[380px] lg:w-[420px] h-[calc(100vh-80px)] bg-surface-container-lowest border-r border-white/10 flex flex-col overflow-y-auto custom-scrollbar">
-<div class="p-8 border-b border-white/10">
-<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest">Organization Directory</span>
-<h1 class="text-headline-md font-headline-md mt-3">Departments</h1>
-<p class="text-on-surface-variant text-body-md mt-3">Select a division to load its operating departments.</p>
+<!-- SideNavBar (Strategy & Operations) -->
+<aside class="w-1/4 h-full bg-surface-container-low dark:bg-surface-container-lowest backdrop-blur-2xl border-r border-white/10 shadow-2xl flex flex-col p-6 space-y-6 overflow-y-auto custom-scrollbar">
+<div class="mb-4">
+<div class="flex items-center gap-3 mb-2"><div class="p-2 bg-secondary-container rounded-lg">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">insights</span>
 </div>
-<nav id="divisionNav" class="p-4 space-y-3" aria-label="Division departments"></nav>
+<div class="flex-1">
+<div class="w-full flex flex-col items-start gap-2 group/nav">
+<label class="font-display-lg text-headline-md text-primary leading-none group-hover/nav:text-primary-fixed transition-colors" for="division-select">Departments</label>
+<div class="relative w-full">
+<select id="division-select" class="w-full appearance-none bg-transparent border border-white/10 rounded-lg py-2 pl-3 pr-10 font-label-sm text-on-surface-variant opacity-90 focus:border-primary focus:ring-primary">
+<option value="strategy-and-operations">Strategy &amp; Operations</option>
+<option value="product-and-design">Product &amp; Design</option>
+<option value="technology-and-data">Technology &amp; Data</option>
+<option value="revenue-and-market">Revenue &amp; Market</option>
+<option value="finance">Finance</option>
+<option value="administration">Administration</option>
+</select>
+<span class="material-symbols-outlined text-on-surface-variant pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">expand_more</span>
+</div>
+</div>
+</div></div>
+<div class="h-[1px] w-full bg-white/10 mt-4"></div></div>
+<!-- Collapsible Sections -->
+<div class="flex flex-col space-y-2" id="department-sections">
+<!-- Department sections are populated from the selected division. -->
+</div>
+<!-- Holding Spaces -->
+<div class="mt-auto space-y-4 pt-6 flex-1">
+<h3 class="font-label-sm text-on-surface-variant uppercase tracking-widest text-[10px]">ACTIVE SESSIONS</h3>
+<div class="h-16 glass-panel-heavy rounded-xl silver-edge flex items-center justify-center border-dashed border-white/10 group cursor-pointer hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-white/10 group-hover:text-primary/40 transition-colors">add_box</span>
+</div>
+<div class="h-16 glass-panel-heavy rounded-xl silver-edge flex items-center justify-center border-dashed border-white/10 group cursor-pointer hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-white/10 group-hover:text-primary/40 transition-colors">add_box</span>
+</div>
+<div class="h-16 glass-panel-heavy rounded-xl silver-edge flex items-center justify-center border-dashed border-white/10 group cursor-pointer hover:border-primary/40 transition-colors">
+<span class="material-symbols-outlined text-white/10 group-hover:text-primary/40 transition-colors">add_box</span>
+</div>
+</div>
+<!-- Footer CTA -->
+
 </aside>
-
-<section class="hidden md:flex flex-1 h-[calc(100vh-80px)] overflow-y-auto custom-scrollbar bg-background relative">
-<div class="absolute inset-0 opacity-30 pointer-events-none" style="background: radial-gradient(circle at 70% 10%, rgba(190,198,224,0.18), transparent 35%), linear-gradient(135deg, rgba(21,27,45,0.35), transparent 45%);"></div>
-<div class="relative w-full p-10 lg:p-14 max-w-5xl">
-<div class="flex items-start justify-between gap-8 mb-10">
-<div>
-<span id="divisionEyebrow" class="text-label-sm font-label-sm text-primary uppercase tracking-widest">Division</span>
-<h2 id="divisionTitle" class="text-display-lg-mobile lg:text-display-lg font-display-lg text-on-surface mt-4"></h2>
-<p id="divisionDescription" class="text-body-lg font-body-lg text-on-surface-variant mt-5 max-w-3xl"></p>
+<!-- Main Content (Neural Suite Interface) -->
+<section class="w-3/4 p-12 bg-surface relative overflow-hidden flex flex-col">
+<!-- Background Decoration -->
+<div class="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/4 pointer-events-none"></div>
+<!-- Interface Frame -->
+<div class="relative flex-1 flex flex-col glass-panel rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+<!-- Frame Header -->
+<div class="h-16 px-8 flex items-center justify-between border-b border-white/10 glass-panel-heavy z-10">
+<div class="flex items-center gap-4">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/40 border border-error/50"></div>
+<div class="w-3 h-3 rounded-full bg-secondary-fixed-dim/40 border border-secondary/50"></div>
+<div class="w-3 h-3 rounded-full bg-primary/40 border border-primary/50"></div>
 </div>
-<div class="glass-panel p-5 min-w-[180px] text-right">
-<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">Departments</span>
-<div id="departmentCount" class="text-display-lg-mobile font-display-lg text-primary mt-2">0</div>
+<div class="h-6 w-[1px] bg-white/10 mx-2"></div>
+<span class="font-display-lg text-body-lg text-primary font-bold tracking-tight">NEURAL SUITE v.4.2</span>
 </div>
-</div>
-
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-<div class="glass-panel-heavy p-6">
-<span class="material-symbols-outlined text-primary mb-5">account_tree</span>
-<h3 class="text-xl font-semibold mb-3">Division Map</h3>
-<p class="text-on-surface-variant text-body-md">A selected division opens by default from the Our Team card route.</p>
-</div>
-<div class="glass-panel-heavy p-6">
-<span class="material-symbols-outlined text-primary mb-5">fact_check</span>
-<h3 class="text-xl font-semibold mb-3">Role Coverage</h3>
-<p class="text-on-surface-variant text-body-md">Departments are sourced from the MindShare org chart structure.</p>
-</div>
-<div class="glass-panel-heavy p-6">
-<span class="material-symbols-outlined text-primary mb-5">hub</span>
-<h3 class="text-xl font-semibold mb-3">Office Routing</h3>
-<p class="text-on-surface-variant text-body-md">This page becomes the entrance layer for department and office pages.</p>
+<div class="flex items-center gap-6">
+<span class="font-label-sm text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SYSTEM ENCRYPTED
+                        </span>
+<div class="flex items-center gap-2 glass-panel px-3 py-1 rounded-md border border-white/5">
+<span class="material-symbols-outlined text-[16px] text-primary">memory</span>
+<span class="font-label-sm text-primary">O-1 EXECUTION</span>
 </div>
 </div>
-
-<section class="glass-panel-heavy p-8 mb-10">
-<div class="flex items-center justify-between mb-6">
-<h3 class="text-headline-md font-headline-md">Departments</h3>
-<span id="selectedDivisionBadge" class="text-label-sm font-label-sm text-primary uppercase tracking-widest"></span>
 </div>
-<div id="departmentGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
-</section>
-
-<section class="glass-panel p-6">
-<label class="text-label-sm font-label-sm text-primary uppercase tracking-widest" for="divisionQuery">Ask this division</label>
-<div class="mt-4 flex items-center gap-3 border border-white/10 bg-surface-container-lowest/70 px-4 py-3">
-<span class="material-symbols-outlined text-on-surface-variant">chat</span>
-<input id="divisionQuery" class="bg-transparent border-none focus:ring-0 flex-1 text-on-surface placeholder-on-surface-variant" placeholder="Query department operations..." type="text">
-<button class="h-10 px-5 bg-primary text-on-primary text-label-sm uppercase tracking-widest hover:bg-primary-fixed transition-colors">Send</button>
+<!-- Chat Canvas -->
+<div class="flex-1 overflow-y-auto p-12 custom-scrollbar space-y-12">
+<!-- System Message -->
+<div class="max-w-3xl mx-auto flex gap-6 animate-fade-in">
+<div class="w-10 h-10 rounded-lg glass-panel-heavy border border-primary/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
 </div>
-</section>
+<div class="space-y-4">
+<div class="glass-panel-heavy p-6 rounded-2xl rounded-tl-none silver-edge shadow-xl">
+<p class="font-body-md text-on-surface leading-relaxed">
+                                    Strategic Analysis Complete. I have cross-referenced the current property portfolio development timelines with the operational risk assessments for the Q3 pipeline. 
+                                </p>
+<div class="mt-4 grid grid-cols-2 gap-4">
+<div class="glass-panel p-4 rounded-lg border border-white/5">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Risk Exposure</p>
+<p class="text-xl font-display-lg text-primary">Low (0.12%)</p>
+</div>
+<div class="glass-panel p-4 rounded-lg border border-white/5">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Execution Velocity</p>
+<p class="text-xl font-display-lg text-primary">+14.2%</p>
+</div>
+</div>
+</div>
+<span class="text-[10px] text-on-surface-variant pl-2">09:42 AM · NEURAL ANALYTICS</span>
+</div>
+</div>
+<!-- User Message -->
+<div class="max-w-3xl mx-auto flex flex-row-reverse gap-6">
+<div class="w-10 h-10 rounded-lg metallic-silver flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary">person</span>
+</div>
+<div class="space-y-4 flex flex-col items-end">
+<div class="bg-primary-container p-6 rounded-2xl rounded-tr-none border border-primary/20 shadow-xl max-w-lg">
+<p class="font-body-md text-primary-fixed leading-relaxed">
+                                    Recalculate the NPV for the Metropolitan Square project assuming a 2.5% increase in structural steel costs and a 4-month zoning delay.
+                                </p>
+</div>
+<span class="text-[10px] text-on-surface-variant pr-2">09:44 AM · EXECUTIVE USER</span>
+</div>
+</div>
+<!-- Thinking State -->
+<div class="max-w-3xl mx-auto flex gap-6 opacity-60">
+<div class="w-10 h-10 rounded-lg glass-panel-heavy border border-white/10 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant animate-spin">sync</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-on-surface-variant">Synthesizing market data and structural blueprints...</span>
+<span class="flex gap-1">
+<span class="w-1 h-1 rounded-full bg-primary animate-bounce"></span>
+<span class="w-1 h-1 rounded-full bg-primary animate-bounce" style="animation-delay: 0.1s"></span>
+<span class="w-1 h-1 rounded-full bg-primary animate-bounce" style="animation-delay: 0.2s"></span>
+</span>
+</div>
+</div>
+</div>
+<!-- Input Zone -->
+<div class="p-8 border-t border-white/10 glass-panel-heavy z-10">
+<div class="max-w-4xl mx-auto relative group">
+<textarea class="w-full bg-surface-container-low border border-white/10 rounded-xl px-6 py-4 pr-32 focus:border-primary transition-all focus:ring-0 text-on-surface font-body-md resize-none custom-scrollbar" placeholder="Query Neural Suite..." rows="1"></textarea>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attachment</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="metallic-silver p-2 rounded-lg text-on-primary">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<div class="max-w-4xl mx-auto mt-4 flex items-center justify-between">
+<div class="flex gap-4">
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">keyboard_command_key</span> + K Search
+                            </span>
+<span class="text-[10px] text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">keyboard_return</span> Send
+                            </span>
+</div>
+<p class="text-[10px] text-on-surface-variant/40">Secure End-to-End Enterprise Interface</p>
+</div>
+</div>
 </div>
 </section>
 </main>
-
+<!-- Footer (Suppressed based on Transactional Shell Logic, but provided for branding) -->
+<footer class="w-full py-4 mt-auto bg-surface-dim dark:bg-surface-container-lowest border-t border-white/5 flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop z-50">
+<p class="font-label-sm text-on-surface-variant text-[10px]">© 2024 Mind Share Media. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="font-label-sm text-on-surface-variant hover:text-primary text-[10px] transition-all" href="#">Privacy Policy</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary text-[10px] transition-all" href="#">Terms of Service</a>
+<a class="font-label-sm text-on-surface-variant hover:text-primary text-[10px] transition-all" href="#">Cookie Policy</a>
+</div>
+</footer>
 <script>
-const divisions = {
-  "strategy-and-operations": {
-    number: "01",
-    name: "Strategy and Operations",
-    description: "Executive leadership, planning, role lifecycle, recruiting, and operational risk coverage for the organization.",
-    departments: ["Executive Leadership", "Program Management Office", "Human Resources", "Recruiting", "Risk Management"]
-  },
-  "product-and-design": {
-    number: "02",
-    name: "Product and Design",
-    description: "Product direction, service design, experience design, and research practices that shape MindShare's user-facing systems.",
-    departments: ["Product Management", "Service Design", "Experience Design", "User Research"]
-  },
-  "technology-and-data": {
-    number: "03",
-    name: "Technology and Data",
-    description: "Engineering, platform, data, AI, and security functions that build and maintain the operating environment.",
-    departments: ["Engineering", "Platform Engineering", "Data Engineering", "AI Engineering", "Security"]
-  },
-  "revenue-and-market": {
-    number: "04",
-    name: "Revenue and Market",
-    description: "Sales, marketing, partnerships, customer success, and support functions that connect the system to its market.",
-    departments: ["Sales", "Marketing", "Partnerships", "Customer Success", "Support"]
-  },
-  "finance": {
-    number: "05",
-    name: "Finance",
-    description: "Accounting, payables, receivables, purchasing, and tax operations for financial stewardship and controls.",
-    departments: ["Accounting", "Accounts Payable", "Accounts Receivable", "Purchasing", "Tax"]
-  },
-  "administration": {
-    number: "06",
-    name: "Administration",
-    description: "People operations, legal, compliance, and vendor management services that keep the organization governed and supported.",
-    departments: ["People Operations", "Legal", "Compliance", "Vendor Management"]
-  }
-};
+        function toggleSection(id, iconId) {
+            const section = document.getElementById(id);
+            const icon = document.getElementById(iconId);
+            const isExpanded = section.style.maxHeight !== '0px';
 
-const divisionNav = document.getElementById("divisionNav");
-const title = document.getElementById("divisionTitle");
-const eyebrow = document.getElementById("divisionEyebrow");
-const description = document.getElementById("divisionDescription");
-const count = document.getElementById("departmentCount");
-const grid = document.getElementById("departmentGrid");
-const badge = document.getElementById("selectedDivisionBadge");
+            if (isExpanded) {
+                section.style.maxHeight = '0px';
+                section.style.opacity = '0';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Approximate max-height for content
+                section.style.maxHeight = '500px'; 
+                section.style.opacity = '1';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
 
-function renderNav() {
-  divisionNav.innerHTML = Object.entries(divisions).map(([slug, division]) => `
-    <section class="division-section border border-white/10 bg-surface-container-low/60" data-slug="${slug}">
-      <button class="division-toggle w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-white/5 transition-colors" type="button" aria-expanded="false" data-slug="${slug}">
-        <span>
-          <span class="block text-label-sm font-label-sm text-primary uppercase tracking-widest">Division ${division.number}</span>
-          <span class="block text-body-md font-body-md text-on-surface mt-2">${division.name}</span>
-        </span>
-        <span class="material-symbols-outlined transition-transform">expand_more</span>
-      </button>
-      <div class="department-list hidden px-4 pb-4 space-y-2">
-        ${division.departments.map(department => `
-          <button class="w-full flex items-center justify-between gap-3 px-3 py-3 text-left border border-white/5 bg-surface-container-lowest/60 hover:border-primary/40 hover:bg-white/5 transition-all" type="button">
-            <span class="text-sm text-on-surface-variant">${department}</span>
-            <span class="material-symbols-outlined text-sm text-primary">arrow_forward</span>
-          </button>
-        `).join("")}
-      </div>
-    </section>
-  `).join("");
+        const divisionDepartments = {
+            "strategy-and-operations": {
+                label: "Strategy & Operations",
+                departments: ["Executive Leadership", "Program Management Office", "Human Resources", "Recruiting", "Risk Management"]
+            },
+            "product-and-design": {
+                label: "Product & Design",
+                departments: ["Product Management", "Service Design", "Experience Design", "User Research"]
+            },
+            "technology-and-data": {
+                label: "Technology & Data",
+                departments: ["Engineering", "Platform Engineering", "Data Engineering", "AI Engineering", "Security"]
+            },
+            "revenue-and-market": {
+                label: "Revenue & Market",
+                departments: ["Sales", "Marketing", "Partnerships", "Customer Success", "Support"]
+            },
+            "finance": {
+                label: "Finance",
+                departments: ["Accounting", "Accounts Payable", "Accounts Receivable", "Purchasing", "Tax"]
+            },
+            "administration": {
+                label: "Administration",
+                departments: ["People Operations", "Legal", "Compliance", "Vendor Management"]
+            }
+        };
 
-  divisionNav.querySelectorAll(".division-toggle").forEach(button => {
-    button.addEventListener("click", () => selectDivision(button.dataset.slug, true));
-  });
-}
+        const departmentIcons = ["corporate_fare", "account_tree", "groups_2", "person_search", "shield"];
 
-function selectDivision(slug, updateUrl = false) {
-  const normalized = divisions[slug] ? slug : "strategy-and-operations";
-  const division = divisions[normalized];
-  title.textContent = division.name;
-  eyebrow.textContent = `Division ${division.number}`;
-  description.textContent = division.description;
-  count.textContent = division.departments.length;
-  badge.textContent = division.name;
-  grid.innerHTML = division.departments.map((department, index) => `
-    <article class="border border-white/10 bg-surface-container-low/60 p-5 hover:border-primary/40 transition-colors">
-      <span class="text-label-sm font-label-sm text-primary uppercase tracking-widest">Department ${String(index + 1).padStart(2, "0")}</span>
-      <h4 class="text-xl font-semibold text-on-surface mt-3">${department}</h4>
-      <p class="text-on-surface-variant text-sm mt-3">Role coverage and office routing for ${department}.</p>
-    </article>
-  `).join("");
+        function renderDepartmentSections(divisionSlug) {
+            const selected = divisionDepartments[divisionSlug] || divisionDepartments["strategy-and-operations"];
+            const container = document.getElementById('department-sections');
+            container.innerHTML = selected.departments.map((department, index) => {
+                const listId = `${divisionSlug}-dept-${index}-list`;
+                const iconId = `${divisionSlug}-dept-${index}-icon`;
+                const icon = departmentIcons[index] || "business_center";
+                return `
+                    <div class="group">
+                        <button class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-all silver-edge" onclick="toggleSection('${listId}', '${iconId}')">
+                            <div class="flex items-center gap-3">
+                                <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">${icon}</span>
+                                <span class="font-body-md font-semibold text-on-surface">${department}</span>
+                            </div>
+                            <span class="material-symbols-outlined text-on-surface-variant transition-transform" id="${iconId}">expand_more</span>
+                        </button>
+                        <div class="max-height-0 overflow-hidden section-collapse opacity-0" id="${listId}" style="max-height: 0px; opacity: 0;">
+                            <div class="pl-12 py-2 space-y-3">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-medium text-primary">${department}</span>
+                                    <span class="text-xs text-on-surface-variant">${selected.label}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
 
-  document.querySelectorAll(".division-section").forEach(section => {
-    const active = section.dataset.slug === normalized;
-    section.classList.toggle("border-primary", active);
-    section.classList.toggle("bg-surface-container-high", active);
-    const list = section.querySelector(".department-list");
-    const toggle = section.querySelector(".division-toggle");
-    const icon = section.querySelector(".material-symbols-outlined");
-    list.classList.toggle("hidden", !active);
-    toggle.setAttribute("aria-expanded", String(active));
-    icon.classList.toggle("rotate-180", active);
-  });
+        document.addEventListener('DOMContentLoaded', () => {
+            const divisionSelect = document.getElementById('division-select');
+            const requestedDivision = new URLSearchParams(window.location.search).get('division') || 'strategy-and-operations';
+            const selectedSlug = divisionDepartments[requestedDivision] ? requestedDivision : 'strategy-and-operations';
+            divisionSelect.value = selectedSlug;
+            renderDepartmentSections(selectedSlug);
 
-  if (updateUrl) {
-    const url = new URL(window.location.href);
-    url.searchParams.set("division", normalized);
-    history.replaceState(null, "", url.toString());
-  }
-}
+            divisionSelect.addEventListener('change', () => {
+                const slug = divisionSelect.value;
+                renderDepartmentSections(slug);
+                const url = new URL(window.location.href);
+                url.searchParams.set('division', slug);
+                history.replaceState(null, '', url.toString());
+            });
+        });
+    </script>
 
-renderNav();
-const requestedDivision = new URLSearchParams(window.location.search).get("division") || "strategy-and-operations";
-selectDivision(requestedDivision);
-</script>
+
 </body></html>
