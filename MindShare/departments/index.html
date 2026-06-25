@@ -444,7 +444,7 @@
             transcript.scrollTop = transcript.scrollHeight;
 
             row.querySelector('#install-mindshare-extension-button').addEventListener('click', () => {
-                addChatMessage('system', 'Development install: open chrome://extensions, enable Developer mode, choose Load unpacked, and select C:\\Users\\scott\\Code\\mindshare\\local-client\\chrome-extension. Then run local-client\\native-host\\install-chrome-native-host.ps1 with the extension ID Chrome shows you.');
+                addChatMessage('system', 'Development install: download MindShare into %USERPROFILE%\\MindShare, open chrome://extensions, enable Developer mode, choose Load unpacked, and select %USERPROFILE%\\MindShare\\local-client\\chrome-extension. Then run %USERPROFILE%\\MindShare\\local-client\\native-host\\install-chrome-native-host.ps1 with the extension ID Chrome shows you.');
             });
         }
 
