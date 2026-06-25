@@ -427,7 +427,11 @@
             }
 
             const bridgeMessage = await sendMindShareLocalBridgeSocketRequest(method, payload, Math.min(timeoutMs, 5000));
-            return bridgeMessage;
+            if (bridgeMessage?.ok || bridgeMessage?.action !== 'installExtension') {
+                return bridgeMessage;
+            }
+
+            return sendMindShareLocalBridgeRequest(method, payload, Math.min(timeoutMs, 15000));
         }
 
         function sendMindShareExtensionRequest(method, payload, timeoutMs) {
@@ -523,6 +527,8 @@
             try {
                 const response = await fetch(`${mindShareLocalBridge}${route}`, {
                     method: 'POST',
+                    mode: 'cors',
+                    targetAddressSpace: 'loopback',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload || {}),
                     signal: controller.signal
