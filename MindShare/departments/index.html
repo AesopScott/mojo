@@ -384,9 +384,56 @@
         }
 
         let codexSessionId = null;
+        const pendingMindShareRequests = new Map();
 
         function mindShareLocalClient() {
-            return window.MindShareLocalClient || null;
+            if (window.MindShareLocalClient) {
+                return window.MindShareLocalClient;
+            }
+
+            return {
+                connectCodex() {
+                    return sendMindShareExtensionRequest('connectCodex', {}, 30000);
+                },
+                sendCodexMessage(payload) {
+                    return sendMindShareExtensionRequest('sendCodexMessage', payload, 300000);
+                }
+            };
+        }
+
+        window.addEventListener('message', (event) => {
+            if (event.source !== window) return;
+            if (!event.data || event.data.type !== 'MINDSHARE_LOCAL_CLIENT_RESPONSE') return;
+
+            const request = pendingMindShareRequests.get(event.data.id);
+            if (!request) return;
+
+            clearTimeout(request.timer);
+            pendingMindShareRequests.delete(event.data.id);
+            request.resolve(event.data);
+        });
+
+        function sendMindShareExtensionRequest(method, payload, timeoutMs) {
+            const id = crypto.randomUUID();
+            return new Promise((resolve) => {
+                const timer = setTimeout(() => {
+                    pendingMindShareRequests.delete(id);
+                    resolve({
+                        id,
+                        ok: false,
+                        action: 'installExtension',
+                        message: 'MindShare extension did not answer from this browser.'
+                    });
+                }, timeoutMs);
+
+                pendingMindShareRequests.set(id, { resolve, timer });
+                window.postMessage({
+                    type: 'MINDSHARE_LOCAL_CLIENT_REQUEST',
+                    id,
+                    method,
+                    payload: payload || {}
+                }, '*');
+            });
         }
 
         function clearChatPlaceholder() {
