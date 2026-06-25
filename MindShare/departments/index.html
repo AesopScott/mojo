@@ -387,6 +387,9 @@
         const mindShareExtensionId = 'fomlcadcldjpnlbapddpmlikinmdiiji';
         const mindShareLocalBridge = 'http://127.0.0.1:8765';
         const pendingMindShareRequests = new Map();
+        const pendingMindShareRelayRequests = new Map();
+        let mindShareRelayWindow = null;
+        let mindShareRelayReady = false;
 
         function mindShareLocalClient() {
             if (window.MindShareLocalClient) {
@@ -415,7 +418,31 @@
             request.resolve(event.data);
         });
 
+        window.addEventListener('message', (event) => {
+            if (event.origin !== mindShareLocalBridge) return;
+            if (!event.data) return;
+
+            if (event.data.type === 'MINDSHARE_LOCAL_RELAY_READY') {
+                mindShareRelayReady = true;
+                return;
+            }
+
+            if (event.data.type !== 'MINDSHARE_LOCAL_RELAY_RESPONSE') return;
+
+            const request = pendingMindShareRelayRequests.get(event.data.id);
+            if (!request) return;
+
+            clearTimeout(request.timer);
+            pendingMindShareRelayRequests.delete(event.data.id);
+            request.resolve(event.data);
+        });
+
         async function sendMindShareLocalRequest(method, payload, timeoutMs) {
+            const relayMessage = await sendMindShareRelayRequest(method, payload, Math.min(timeoutMs, 30000));
+            if (relayMessage?.ok || relayMessage?.action !== 'installExtension') {
+                return relayMessage;
+            }
+
             const pageMessage = await sendMindSharePageMessage(method, payload, 1500);
             if (pageMessage?.ok || pageMessage?.action !== 'installExtension') {
                 return pageMessage;
@@ -432,6 +459,80 @@
             }
 
             return sendMindShareLocalBridgeRequest(method, payload, Math.min(timeoutMs, 15000));
+        }
+
+        function openMindShareRelayWindow() {
+            if (mindShareRelayWindow && !mindShareRelayWindow.closed) {
+                return true;
+            }
+
+            mindShareRelayReady = false;
+            mindShareRelayWindow = window.open(
+                `${mindShareLocalBridge}/bridge-window`,
+                'mindshare-local-bridge',
+                'popup,width=460,height=360'
+            );
+
+            return !!mindShareRelayWindow;
+        }
+
+        function waitForMindShareRelayReady(timeoutMs) {
+            if (mindShareRelayReady && mindShareRelayWindow && !mindShareRelayWindow.closed) {
+                return Promise.resolve(true);
+            }
+
+            return new Promise((resolve) => {
+                const startedAt = Date.now();
+                const interval = setInterval(() => {
+                    if (mindShareRelayReady && mindShareRelayWindow && !mindShareRelayWindow.closed) {
+                        clearInterval(interval);
+                        resolve(true);
+                    } else if (Date.now() - startedAt > timeoutMs) {
+                        clearInterval(interval);
+                        resolve(false);
+                    }
+                }, 100);
+            });
+        }
+
+        async function sendMindShareRelayRequest(method, payload, timeoutMs) {
+            if (!openMindShareRelayWindow()) {
+                return {
+                    ok: false,
+                    action: 'installExtension',
+                    message: 'MindShare Local could not open the local bridge window.'
+                };
+            }
+
+            const ready = await waitForMindShareRelayReady(Math.min(timeoutMs, 5000));
+            if (!ready) {
+                return {
+                    ok: false,
+                    action: 'installExtension',
+                    message: 'MindShare Local bridge did not answer from this browser.'
+                };
+            }
+
+            const id = crypto.randomUUID();
+            return new Promise((resolve) => {
+                const timer = setTimeout(() => {
+                    pendingMindShareRelayRequests.delete(id);
+                    resolve({
+                        id,
+                        ok: false,
+                        action: 'installExtension',
+                        message: 'MindShare Local bridge timed out.'
+                    });
+                }, timeoutMs);
+
+                pendingMindShareRelayRequests.set(id, { resolve, timer });
+                mindShareRelayWindow.postMessage({
+                    type: 'MINDSHARE_LOCAL_RELAY_REQUEST',
+                    id,
+                    method,
+                    payload: payload || {}
+                }, mindShareLocalBridge);
+            });
         }
 
         function sendMindShareExtensionRequest(method, payload, timeoutMs) {
