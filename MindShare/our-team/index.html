@@ -109,11 +109,15 @@
         }
         .architectural-card {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: 1px solid rgba(218, 226, 253, 0.55);
+            outline-offset: -1px;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset, 0 18px 42px rgba(0, 0, 0, 0.36);
         }
         .architectural-card:hover {
             transform: translateY(-8px);
-            border-color: rgba(190, 198, 224, 0.6);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(218, 226, 253, 0.86);
+            outline-color: rgba(218, 226, 253, 0.86);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14) inset, 0 26px 54px rgba(0, 0, 0, 0.46);
         }
         .metallic-silver-gradient {
             background: linear-gradient(135deg, #bec6e0 0%, #e2e8f0 50%, #94a3b8 100%);
