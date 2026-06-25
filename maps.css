@@ -2310,6 +2310,14 @@ a.maps-role-name:hover {
   line-height: 1.25;
 }
 
+.maps-org-function .maps-role-name.trainee.maps-role-person--wide {
+  width: 100%;
+  max-width: 290px;
+  height: auto;
+  min-height: 64px;
+  padding: 8px 10px;
+}
+
 @media (max-width: 900px) {
   .maps-hero,
   .maps-section-header,
