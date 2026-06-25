@@ -232,7 +232,7 @@
       return;
     }
 
-    if (window.matchMedia("(max-width: 640px)").matches) {
+    if (window.matchMedia("(max-width: 1280px)").matches) {
       document.documentElement.style.removeProperty("--maps-source-button-left");
       document.documentElement.style.removeProperty("--maps-source-button-top");
       document.documentElement.style.removeProperty("--maps-source-button-right");
