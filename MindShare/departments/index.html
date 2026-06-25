@@ -427,11 +427,7 @@
             }
 
             const bridgeMessage = await sendMindShareLocalBridgeSocketRequest(method, payload, Math.min(timeoutMs, 5000));
-            if (bridgeMessage?.ok || bridgeMessage?.action !== 'installExtension') {
-                return bridgeMessage;
-            }
-
-            return sendMindShareLocalBridgeRequest(method, payload, Math.min(timeoutMs, 5000));
+            return bridgeMessage;
         }
 
         function sendMindShareExtensionRequest(method, payload, timeoutMs) {
@@ -609,7 +605,7 @@
                     <span class="material-symbols-outlined text-[20px]">extension</span>
                 </div>
                 <div class="glass-panel-heavy text-on-surface rounded-tl-none silver-edge max-w-3xl p-5 rounded-2xl leading-relaxed font-body-md">
-                    <p>MindShare could not connect to Codex CLI from this browser. Make sure the MindShare extension is installed and reload this page.</p>
+                    <p>MindShare could not connect to Codex CLI from this browser. Install or enable MindShare Local for this browser, then reload this page.</p>
                 </div>
             `;
             transcript.appendChild(row);
