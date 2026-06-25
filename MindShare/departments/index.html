@@ -426,6 +426,28 @@
             addChatMessage('system', text);
         }
 
+        function showLocalClientInstallPrompt() {
+            const transcript = document.getElementById('chat-transcript');
+            clearChatPlaceholder();
+            const row = document.createElement('div');
+            row.className = 'max-w-4xl mx-auto mb-6 flex gap-4';
+            row.innerHTML = `
+                <div class="glass-panel-heavy border border-primary/30 text-primary w-9 h-9 rounded-lg flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">extension</span>
+                </div>
+                <div class="glass-panel-heavy text-on-surface rounded-tl-none silver-edge max-w-3xl p-5 rounded-2xl leading-relaxed font-body-md">
+                    <p class="mb-4">MindShare could not find the Chrome extension on this machine. Install the MindShare Chrome extension to connect this browser to the local Codex CLI.</p>
+                    <button class="metallic-silver text-on-primary px-4 py-2 rounded-md text-sm font-bold tracking-wide uppercase" id="install-mindshare-extension-button" type="button">Install Extension</button>
+                </div>
+            `;
+            transcript.appendChild(row);
+            transcript.scrollTop = transcript.scrollHeight;
+
+            row.querySelector('#install-mindshare-extension-button').addEventListener('click', () => {
+                addChatMessage('system', 'Development install: open chrome://extensions, enable Developer mode, choose Load unpacked, and select C:\\Users\\scott\\Code\\mindshare\\local-client\\chrome-extension. Then run local-client\\native-host\\install-chrome-native-host.ps1 with the extension ID Chrome shows you.');
+            });
+        }
+
         async function connectCodex() {
             const button = document.getElementById('connect-codex-button');
             button.disabled = true;
@@ -435,12 +457,14 @@
             try {
                 const client = mindShareLocalClient();
                 if (!client?.connectCodex) {
-                    addChatError('MindShare Local Client is not connected. Install or start the local client on this machine, then reconnect. The web page only owns communication and error handling; the local client owns Codex CLI access.');
+                    showLocalClientInstallPrompt();
                     return;
                 }
                 const payload = await client.connectCodex();
                 if (!payload.ok) {
-                    if (payload.action === 'install') {
+                    if (payload.action === 'installExtension' || payload.action === 'installNativeHost') {
+                        showLocalClientInstallPrompt();
+                    } else if (payload.action === 'install') {
                         addChatError('Codex CLI was not found on this machine. Install Codex locally, restart the MindShare Local Client, then reconnect.');
                     } else if (payload.action === 'login') {
                         addChatError('Codex CLI is installed but not logged in. Run `codex login` locally, then reconnect.');
