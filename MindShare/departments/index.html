@@ -395,10 +395,10 @@
 
             return {
                 connectCodex() {
-                    return sendMindShareExtensionRequest('connectCodex', {}, 30000);
+                    return sendMindShareLocalRequest('connectCodex', {}, 30000);
                 },
                 sendCodexMessage(payload) {
-                    return sendMindShareExtensionRequest('sendCodexMessage', payload, 300000);
+                    return sendMindShareLocalRequest('sendCodexMessage', payload, 300000);
                 }
             };
         }
@@ -415,6 +415,25 @@
             request.resolve(event.data);
         });
 
+        async function sendMindShareLocalRequest(method, payload, timeoutMs) {
+            const pageMessage = await sendMindSharePageMessage(method, payload, 1500);
+            if (pageMessage?.ok || pageMessage?.action !== 'installExtension') {
+                return pageMessage;
+            }
+
+            const extensionMessage = await sendMindShareExtensionRequest(method, payload, 1500);
+            if (extensionMessage?.ok || extensionMessage?.action !== 'installExtension') {
+                return extensionMessage;
+            }
+
+            const bridgeMessage = await sendMindShareLocalBridgeSocketRequest(method, payload, Math.min(timeoutMs, 5000));
+            if (bridgeMessage?.ok || bridgeMessage?.action !== 'installExtension') {
+                return bridgeMessage;
+            }
+
+            return sendMindShareLocalBridgeRequest(method, payload, Math.min(timeoutMs, 5000));
+        }
+
         function sendMindShareExtensionRequest(method, payload, timeoutMs) {
             if (window.chrome?.runtime?.sendMessage) {
                 return new Promise((resolve) => {
@@ -422,7 +441,7 @@
                     const timer = setTimeout(() => {
                         if (settled) return;
                         settled = true;
-                        resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
+                        resolve({ ok: false, action: 'installExtension', message: 'MindShare Chrome extension is not installed for this page.' });
                     }, 1500);
 
                     try {
@@ -441,19 +460,63 @@
                                 if (response) {
                                     resolve(response);
                                 } else {
-                                    resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
+                                    resolve({ ok: false, action: 'installExtension', message: 'MindShare Chrome extension is not installed for this page.' });
                                 }
                             }
                         );
                     } catch {
                         clearTimeout(timer);
                         settled = true;
-                        resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
+                        resolve({ ok: false, action: 'installExtension', message: 'MindShare Chrome extension is not installed for this page.' });
                     }
                 });
             }
 
-            return sendMindShareLocalBridgeRequest(method, payload, timeoutMs);
+            return Promise.resolve({ ok: false, action: 'installExtension', message: 'MindShare Chrome extension is not installed for this page.' });
+        }
+
+        function sendMindShareLocalBridgeSocketRequest(method, payload, timeoutMs) {
+            return new Promise((resolve) => {
+                let settled = false;
+                const timer = setTimeout(() => {
+                    if (settled) return;
+                    settled = true;
+                    resolve({ ok: false, action: 'installExtension', message: 'MindShare local bridge WebSocket is not reachable from this browser.' });
+                }, timeoutMs);
+
+                try {
+                    const socket = new WebSocket('ws://127.0.0.1:8765/socket');
+                    socket.addEventListener('open', () => {
+                        socket.send(JSON.stringify({
+                            id: crypto.randomUUID(),
+                            method,
+                            payload: payload || {}
+                        }));
+                    });
+                    socket.addEventListener('message', (event) => {
+                        if (settled) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        try {
+                            resolve(JSON.parse(event.data));
+                        } catch {
+                            resolve({ ok: false, error: 'MindShare local bridge returned invalid WebSocket JSON.' });
+                        } finally {
+                            socket.close();
+                        }
+                    });
+                    socket.addEventListener('error', () => {
+                        if (settled) return;
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve({ ok: false, action: 'installExtension', message: 'MindShare local bridge WebSocket is not reachable from this browser.' });
+                    });
+                } catch {
+                    clearTimeout(timer);
+                    settled = true;
+                    resolve({ ok: false, action: 'installExtension', message: 'MindShare local bridge WebSocket is not reachable from this browser.' });
+                }
+            });
         }
 
         async function sendMindShareLocalBridgeRequest(method, payload, timeoutMs) {
