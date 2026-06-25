@@ -384,6 +384,7 @@
         }
 
         let codexSessionId = null;
+        const mindShareExtensionId = 'fignfifoniblkonapihmkfakmlgkbkcf';
         const pendingMindShareRequests = new Map();
 
         function mindShareLocalClient() {
@@ -414,6 +415,47 @@
         });
 
         function sendMindShareExtensionRequest(method, payload, timeoutMs) {
+            if (window.chrome?.runtime?.sendMessage) {
+                return new Promise((resolve) => {
+                    let settled = false;
+                    const timer = setTimeout(() => {
+                        if (settled) return;
+                        settled = true;
+                        resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                    }, 1500);
+
+                    try {
+                        window.chrome.runtime.sendMessage(
+                            mindShareExtensionId,
+                            {
+                                type: 'MINDSHARE_LOCAL_CLIENT_REQUEST',
+                                id: crypto.randomUUID(),
+                                method,
+                                payload: payload || {}
+                            },
+                            (response) => {
+                                if (settled) return;
+                                settled = true;
+                                clearTimeout(timer);
+                                if (response) {
+                                    resolve(response);
+                                } else {
+                                    resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                                }
+                            }
+                        );
+                    } catch {
+                        clearTimeout(timer);
+                        settled = true;
+                        resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                    }
+                });
+            }
+
+            return sendMindSharePageMessage(method, payload, timeoutMs);
+        }
+
+        function sendMindSharePageMessage(method, payload, timeoutMs) {
             const id = crypto.randomUUID();
             return new Promise((resolve) => {
                 const timer = setTimeout(() => {
