@@ -302,6 +302,35 @@
 </div>
 </footer>
 <script>
+
+        const divisionRoutes = {
+            "Strategy and Operations": "/MindShare/departments/?division=strategy-and-operations",
+            "Product and Design": "/MindShare/departments/?division=product-and-design",
+            "Technology and Data": "/MindShare/departments/?division=technology-and-data",
+            "Revenue and Market": "/MindShare/departments/?division=revenue-and-market",
+            "Finance": "/MindShare/departments/?division=finance",
+            "Administration": "/MindShare/departments/?division=administration"
+        };
+
+        document.querySelectorAll('.architectural-card').forEach(card => {
+            const title = card.querySelector('h3')?.textContent.trim();
+            const route = divisionRoutes[title];
+            if (!route) return;
+            card.setAttribute('role', 'link');
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('aria-label', `View ${title} departments`);
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                window.location.href = route;
+            });
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    window.location.href = route;
+                }
+            });
+        });
+
         // Micro-interaction for hover states and potentially parallax
         document.querySelectorAll('.architectural-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
