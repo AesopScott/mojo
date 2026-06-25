@@ -43,12 +43,24 @@
             transition: max-height 0.3s ease-out, opacity 0.2s ease;
         }
         #division-select {
-            background-color: #0c1324;
-            color: #dce1fb;
+            color-scheme: dark;
+            background-color: #121826;
+            color: #f3efe7;
+            border-color: rgba(214, 161, 93, 0.55);
+            box-shadow: 0 0 0 1px rgba(214, 161, 93, 0.12) inset;
         }
         #division-select option {
-            background-color: #ffffff;
-            color: #111827;
+            background-color: #121826;
+            color: #f3efe7;
+        }
+        .department-toggle {
+            background: rgba(18, 24, 38, 0.92);
+            border: 1px solid rgba(214, 161, 93, 0.24);
+            color: #f3efe7;
+        }
+        .department-toggle:hover {
+            background: rgba(214, 161, 93, 0.12);
+            border-color: rgba(214, 161, 93, 0.58);
         }
     </style>
 <script id="tailwind-config">
@@ -349,7 +361,7 @@
                 `;
                 return `
                     <div class="group">
-                        <button class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-all silver-edge" onclick="toggleSection('${listId}', '${iconId}')">
+                        <button class="department-toggle w-full flex items-center justify-between p-3 rounded-lg transition-all" onclick="toggleSection('${listId}', '${iconId}')">
                             <div class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">${icon}</span>
                                 <span class="font-body-md font-semibold text-on-surface">${department}</span>
