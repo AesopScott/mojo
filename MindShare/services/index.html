@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -114,6 +113,16 @@
         .metallic-gradient {
             background: linear-gradient(135deg, #bec6e0 0%, #798098 100%);
         }
+        .metallic-silver {
+            background: linear-gradient(135deg, #bec6e0 0%, #798098 100%);
+        }
+        .brand-home-link {
+            text-shadow: 0 0 0 rgba(190, 198, 224, 0);
+        }
+        .brand-home-link:hover {
+            color: #dae2fd;
+            text-shadow: 0 0 20px rgba(190, 198, 224, 0.55);
+        }
         .text-gradient-silver {
             background: linear-gradient(to right, #ffffff, #bec6e0);
             -webkit-background-clip: text;
@@ -126,188 +135,203 @@
 </head>
 <body class="dark selection:bg-primary selection:text-primary-container">
 <!-- TopNavBar -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 dark:border-white/5 shadow-2xl shadow-background/50">
-<nav class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<div class="font-display-lg text-headline-md tracking-tighter text-on-surface dark:text-on-surface font-bold">
-                Mind Share Media
-            </div>
+<header class="fixed top-0 w-full z-50 bg-surface/10 backdrop-blur-xl dark:bg-background/20 border-b border-white/10 transition-all duration-500 ease-in-out">
+<nav class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex justify-between items-center h-20">
+<a class="brand-home-link font-display-lg text-headline-md tracking-tighter text-on-surface dark:text-primary transition-all duration-300" href="/MindShare/" aria-label="Mind Share Media home">
+                MIND SHARE MEDIA
+            </a>
 <div class="hidden md:flex items-center gap-8">
-<a class="font-body-md text-body-md text-on-surface/70 dark:text-on-surface/60 hover:text-on-surface transition-all duration-300" href="#">Portfolio</a>
-<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary pb-1 transition-all duration-300" href="#">Departments</a>
-<a class="font-body-md text-body-md text-on-surface/70 dark:text-on-surface/60 hover:text-on-surface transition-all duration-300" href="#">Insights</a>
-<a class="font-body-md text-body-md text-on-surface/70 dark:text-on-surface/60 hover:text-on-surface transition-all duration-300" href="#">Connect</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-on-surface/70 hover:text-on-surface transition-colors" href="/MindShare/">Home</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-on-surface/70 hover:text-on-surface transition-colors" href="/MindShare/our-team/">Our Team</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-primary font-bold border-b-2 border-primary pb-1" href="/MindShare/services/">Services</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-on-surface/70 hover:text-on-surface transition-colors" href="#contact">Contact</a>
 </div>
-<button class="bg-primary text-on-primary px-6 py-2 rounded font-bold hover:backdrop-brightness-125 transition-all duration-300 scale-[0.98] active:duration-75">
-                Partner Login
+<button class="metallic-silver text-on-primary-fixed px-6 py-2 rounded-none font-bold font-body-md uppercase tracking-wider hover:opacity-90 transition-all shadow-lg shadow-primary/20">
+                Book Tour
             </button>
 </nav>
 </header>
 <main>
 <!-- Hero Section -->
-<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+<section class="relative min-h-[80vh] flex items-center pt-20 overflow-hidden">
 <div class="absolute inset-0 z-0">
-<div class="w-full h-full bg-cover bg-center brightness-[0.3]" data-alt="A cinematic, high-contrast architectural photograph of a modern glass skyscraper corner at dusk, with sharp structural lines and internal lighting reflecting off metallic surfaces. The color palette is dominated by deep blues, silvers, and blacks, evoking a premium executive atmosphere of precision and permanence." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNdOrqu3hRbFqcDrV8YFVAKla6MUml3oNIp7cfY1SItUwOEGmvAqLY4O2udLu2YZS9MIxzDAAOz5EmhLQirwIdoBF799miC7JPGrKR2RONY851hAiUbFBRybGhm8p6ibtVR5ScSptkblqhqKSeJtTxyNaY7ZZIsJZZCLf5iJDdFW85h8GH7WFCCG8z5Ece9FqsLQVTLR_QEkGBrdwivnj_CraLbEQedPj6a_XEiInm9EqeCbz_KnsJMgZoH-ijMV1oqqmdJmptyHuI')"></div>
+<div class="w-full h-full bg-cover bg-center brightness-[0.3]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNdOrqu3hRbFqcDrV8YFVAKla6MUml3oNIp7cfY1SItUwOEGmvAqLY4O2udLu2YZS9MIxzDAAOz5EmhLQirwIdoBF799miC7JPGrKR2RONY851hAiUbFBRybGhm8p6ibtVR5ScSptkblqhqKSeJtTxyNaY7ZZIsJZZCLf5iJDdFW85h8GH7WFCCG8z5Ece9FqsLQVTLR_QEkGBrdwivnj_CraLbEQedPj6a_XEiInm9EqeCbz_KnsJMgZoH-ijMV1oqqmdJmptyHuI')"></div>
 <div class="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background"></div>
 </div>
 <div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop w-full grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <div class="md:col-span-8 flex flex-col justify-center">
 <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-white mb-6 leading-tight">
-                        Local-first AI <br/><span class="text-gradient-silver">operating systems.</span>
+                    Local-first AI <br/><span class="text-gradient-silver">operating systems.</span>
 </h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10 leading-relaxed">
-                        Public interfaces, private execution, role-based automation, and authority-aware AI workflows for teams that want real AI operations without handing their company to a cloud backend.
-                    </p>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-8 leading-relaxed">
+                    Public interfaces, private execution, role-based automation, and authority-aware AI workflows for teams that demand absolute operational sovereignty.
+                </p>
 <div class="flex flex-wrap gap-4">
 <button class="metallic-gradient text-on-primary px-8 py-4 rounded font-bold text-body-md hover:brightness-110 transition-all arch-shadow">
-                            Explore the system
-                        </button>
+                        Explore the system
+                    </button>
 <button class="border border-white/20 text-white px-8 py-4 rounded font-bold text-body-md hover:bg-white/10 transition-all backdrop-blur-md">
-                            View role offices
-                        </button>
+                        View role offices
+                    </button>
 </div>
 </div>
 </div>
 </section>
 <!-- Core Philosophy Callout -->
-<section class="py-24 relative overflow-hidden bg-surface-container-lowest">
+<section class="py-20 relative overflow-hidden bg-surface-container-lowest">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="glass-panel p-12 md:p-20 rounded-xl glass-edge relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none grayscale">
-<div class="w-full h-full bg-cover bg-center" data-alt="A microscopic view of high-tech server circuits and data pathways glowing with a soft silver light, representing internal processing and technical precision in a dark, architectural style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDjVpGYCFjLC-UjHlmNFDxhtFv7nn86x3nGdrGQ8VBmPSKLAJEd253KbFu0dEcuqR9M1nbOECYI6mqkUHtupEDVn4EZ5554j_isrpQooawbTqJsR54rhadXQD0DYS_CvxvVmXku36uaGgVI9GI_Cy3tcplT2xkuonE06vgm8aK7Oa8MuVfe6Ca6IRcpDtyIqyKy7-_epawnduvQSCyCDAHwn0N-bwFmD_Rbqyx0jbD1H8i3QIr-LmZSdKLQ2xn3GOaFfUPrX_Ks0B7q')"></div>
-</div>
+<div class="glass-panel p-10 md:p-16 rounded-xl glass-edge relative overflow-hidden group">
 <div class="relative z-10 flex flex-col md:flex-row gap-12 items-center">
 <div class="md:w-1/2">
 <h2 class="font-display-lg text-display-lg-mobile md:text-[56px] font-extrabold text-white leading-none mb-4">
-                                "The website is the front door."
-                            </h2>
+                            "The website is the front door."
+                        </h2>
 <h2 class="font-display-lg text-display-lg-mobile md:text-[56px] font-extrabold text-primary leading-none">
-                                "The local machine is the office."
-                            </h2>
+                            "The local machine is the office."
+                        </h2>
 </div>
 <div class="md:w-1/2">
 <p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
-                                We decouple interface from execution. Your public site hosts the role catalog and dashboard, while the local bridge handles the heavy lifting: role memory, secure automation, file queues, and verifiable proof of work.
-                            </p>
+                            We decouple interface from execution. Your site hosts the role catalog; the local bridge handles role memory, secure automation, and verifiable proof of work.
+                        </p>
 <div class="flex items-center gap-3 text-primary font-bold tracking-widest text-label-sm uppercase">
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
-                                Sovereignty is the Default
-                            </div>
+                            Sovereignty is the Default
+                        </div>
 </div>
 </div>
 </div>
 </div>
 </section>
 <!-- Section 1: Local AI Office -->
-<section class="py-32">
+<section class="py-24">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
-<div class="order-2 md:order-1">
-<div class="relative">
+<div class="order-2 md:order-1 relative">
 <div class="aspect-square rounded-lg overflow-hidden glass-edge arch-shadow">
-<div class="w-full h-full bg-cover bg-center" data-alt="A sleek, dark command center interface displayed on ultra-wide glass monitors. The screen shows complex node-based org charts and real-time data streams in a minimalist silver and slate-blue aesthetic. The environment is a dimly lit, professional executive office." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrhhZqZ-rENniz2yhNdaYCDTgdJxnu0VsTsmUO3fEKFGCmGQNUWFnxJHd_EStCjInKrtiQ91uCp-hKvjc9CEkzK7dU4mLgyFD9R_ZQwDkXIrjdYQWU_RG8Bg2J2eZef_gdf7mwK_w9pMtvbsSdGcxcfISDINs_L12XqMjbKbBB0VG7SoNBBp0u6VG4AA2zq5TWGoL5MOkv-cmv13g0XZFINt1K79BuE_Lk2qFZrof2vPnhFGKnM2mYXw0HD-3-C7qGepqAFUc7St7p')"></div>
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrhhZqZ-rENniz2yhNdaYCDTgdJxnu0VsTsmUO3fEKFGCmGQNUWFnxJHd_EStCjInKrtiQ91uCp-hKvjc9CEkzK7dU4mLgyFD9R_ZQwDkXIrjdYQWU_RG8Bg2J2eZef_gdf7mwK_w9pMtvbsSdGcxcfISDINs_L12XqMjbKbBB0VG7SoNBBp0u6VG4AA2zq5TWGoL5MOkv-cmv13g0XZFINt1K79BuE_Lk2qFZrof2vPnhFGKnM2mYXw0HD-3-C7qGepqAFUc7St7p')"></div>
 </div>
-<div class="absolute -bottom-8 -right-8 glass-panel p-8 rounded-lg glass-edge max-w-xs hidden md:block">
+<div class="absolute -bottom-8 -right-8 glass-panel p-6 rounded-lg glass-edge max-w-xs hidden md:block">
 <div class="text-primary font-bold text-headline-md mb-2">01</div>
-<div class="text-white font-bold mb-2">Local Runtime</div>
-<p class="text-on-surface-variant text-body-md">AI chat and task execution happen exclusively on your local hardware.</p>
-</div>
+<div class="text-white font-bold mb-1">Local Runtime</div>
+<p class="text-on-surface-variant text-body-md">Execution stays on your physical hardware.</p>
 </div>
 </div>
 <div class="order-1 md:order-2">
 <h3 class="font-label-sm text-label-sm text-primary uppercase mb-4">Architecture</h3>
-<h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-8 leading-tight">Local AI Office</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-10">
-                        Experience a professional AI office where each digital employee has a dedicated workspace, but the cognitive engine stays in your physical control.
-                    </p>
-<ul class="space-y-6">
-                        {[
-                            {icon: "account_tree", title: "Org chart to role-office interface"},
-                            {icon: "settings_input_component", title: "Local bridge setup"},
-                            {icon: "terminal", title: "Claude CLI / Codex CLI routing"},
-                            {icon: "history_edu", title: "Role session management"},
-                            {icon: "verified", title: "Proof and status surfaces"},
-                            {icon: "visibility", title: "One visible office at a time"}
-                        ].map(item =&gt; (
-                            <li class="flex items-center gap-4 group cursor-default" key="{item.title}">
-<div class="w-10 h-10 rounded-full flex items-center justify-center glass-panel border-white/5 group-hover:bg-primary group-hover:text-on-primary transition-colors">
-<span class="material-symbols-outlined text-[20px]">directions</span>
-</div>
-<span class="text-body-md font-medium text-on-surface group-hover:text-primary transition-colors">${item.title}</span>
+<h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-6 leading-tight">Local AI Office</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+                    A professional environment where cognitive engines stay in your physical control, powering dedicated digital workspaces.
+                </p>
+<ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">account_tree</span>
+<span class="text-body-md font-medium">Role-office interfaces</span>
 </li>
-                        ))}
-                    </ul>
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="text-body-md font-medium">CLI routing</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span class="text-body-md font-medium">Proof surfaces</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">settings_input_component</span>
+<span class="text-body-md font-medium">Local bridge setup</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">history_edu</span>
+<span class="text-body-md font-medium">Session management</span>
+</li>
+<li class="flex items-center gap-3 text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="text-body-md font-medium">Focused visibility</span>
+</li>
+</ul>
 </div>
 </div>
 </section>
 <!-- Section 2: Role Packages -->
-<section class="py-32 bg-surface-container-low">
+<section class="py-24 bg-surface-container-low">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="mb-16">
+<div class="mb-12">
 <h3 class="font-label-sm text-label-sm text-primary uppercase mb-4">Modules</h3>
 <h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white leading-tight">Role Packages</h2>
 <p class="text-body-lg text-on-surface-variant mt-4 max-w-2xl">
-                        Downloadable identities that instantly populate your local environment with specialized operational capacity.
-                    </p>
+                    Downloadable identities that populate your local environment with specialized operational capacity.
+                </p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                    {[
-                        {title: "The Identity Layer", list: ["Role templates", "WhoAmI cards", "Autonomy contracts"]},
-                        {title: "The Execution Layer", list: ["Local automation scripts", "Validation checklists", "Custom file watches"]},
-                        {title: "The Security Layer", list: ["Private memory silos", "No external sync", "Zero-trust routing"]}
-                    ].map((card, i) =&gt; (
-                        <div class="glass-panel p-10 rounded-xl glass-edge group hover:border-primary/40 transition-all duration-500" key="{card.title}">
-<h4 class="text-white font-bold text-headline-md mb-6">${card.title}</h4>
-<div class="space-y-4">
-                                ${card.list.map(l =&gt; `
-                                    <div class="flex items-center gap-3 text-on-surface-variant">
-<div class="w-1.5 h-1.5 bg-primary rounded-full"></div>
-<span class="text-body-md">${l}</span>
+<div class="glass-panel p-8 rounded-xl glass-edge group hover:border-primary/40 transition-all duration-500">
+<h4 class="text-white font-bold text-headline-md mb-6">Identity Layer</h4>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Role templates</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>WhoAmI cards</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Autonomy contracts</li>
+</ul>
 </div>
-                                `).join('')}
-                            </div>
+<div class="glass-panel p-8 rounded-xl glass-edge group hover:border-primary/40 transition-all duration-500">
+<h4 class="text-white font-bold text-headline-md mb-6">Execution Layer</h4>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Automation scripts</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Validation checklists</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Custom file watches</li>
+</ul>
 </div>
-                    ))}
-                </div>
-<div class="mt-12 p-8 glass-panel rounded-xl glass-edge flex flex-col md:flex-row justify-between items-center gap-8">
-<p class="text-body-lg text-white font-medium italic">"Install locally without connecting to centralized private instances."</p>
+<div class="glass-panel p-8 rounded-xl glass-edge group hover:border-primary/40 transition-all duration-500">
+<h4 class="text-white font-bold text-headline-md mb-6">Security Layer</h4>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Private memory silos</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>No external sync</li>
+<li class="flex items-center gap-3 text-on-surface-variant"><div class="w-1.5 h-1.5 bg-primary rounded-full"></div>Zero-trust routing</li>
+</ul>
+</div>
+</div>
+<div class="mt-12 p-6 glass-panel rounded-xl glass-edge flex flex-col md:flex-row justify-between items-center gap-8">
+<p class="text-body-md text-white font-medium italic">"Install locally without connecting to centralized private instances."</p>
 <div class="flex -space-x-4">
-                        {[1,2,3,4].map(i =&gt; `
-                            <div class="w-14 h-14 rounded-full border-4 border-background overflow-hidden">
-<div class="w-full h-full bg-cover bg-center" data-alt="A stylized professional portrait of an AI role avatar, depicted with clean architectural lines and subtle silver highlights in a dark, corporate aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDk6_kQJVxVTYIdkjd8qBYdq6otRXZIk9nbe5__03IPRRE87TbepMZ78NHxyFCQJxZtC7fDTliAqI5ngk48ybW9IDd3u_sckHNk9X-i7FpW0lE5Rw1noQHdQc8396LNLHTZLqnSOL-zp2r4XF2MLxtxxIPk0oSy7-3U--csff30KG7lDohvzGNkgyZobJAMK2gOjW7_PUgBpOSKGsIiueVu4nhXfSdPgZ_r6iV-ZjzSwLmNEhIWWpP56GUxEh4QT96zTFbcJRlVK70t')"></div>
+<div class="w-12 h-12 rounded-full border-2 border-background overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDk6_kQJVxVTYIdkjd8qBYdq6otRXZIk9nbe5__03IPRRE87TbepMZ78NHxyFCQJxZtC7fDTliAqI5ngk48ybW9IDd3u_sckHNk9X-i7FpW0lE5Rw1noQHdQc8396LNLHTZLqnSOL-zp2r4XF2MLxtxxIPk0oSy7-3U--csff30KG7lDohvzGNkgyZobJAMK2gOjW7_PUgBpOSKGsIiueVu4nhXfSdPgZ_r6iV-ZjzSwLmNEhIWWpP56GUxEh4QT96zTFbcJRlVK70t')"></div>
 </div>
-                        `).join('')}
-                    </div>
+<div class="w-12 h-12 rounded-full border-2 border-background overflow-hidden bg-surface-bright flex items-center justify-center text-primary text-xs font-bold">+12</div>
+</div>
 </div>
 </div>
 </section>
 <!-- Section 3: Automation & Autonomy -->
-<section class="py-32 overflow-hidden relative">
+<section class="py-24 overflow-hidden relative">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
 <div class="md:col-span-6">
-<h3 class="font-label-sm text-label-sm text-primary uppercase mb-4">The Spectrum of Action</h3>
+<h3 class="font-label-sm text-label-sm text-primary uppercase mb-4">Authority</h3>
 <h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-8 leading-tight">Automation &amp; Autonomy Design</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant mb-10">
-                        We don't just automate; we architect authority. Define exactly where your AI agents have the right to act and where they must seek the human gatekeeper.
-                    </p>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        {[
-                            {title: "Autonomy Taxonomy", desc: "Level-based capability contracts."},
-                            {title: "Runtime Proof", desc: "Verifiable logs of every decision."},
-                            {title: "Gate Boundaries", desc: "Hard-coded authority stops."},
-                            {title: "Drift Monitoring", desc: "Detection of role divergence."}
-                        ].map(item =&gt; (
-                            <div class="p-6 border-l-2 border-primary/20 hover:border-primary transition-all bg-white/5" key="{item.title}">
-<div class="text-white font-bold mb-1">${item.title}</div>
-<div class="text-on-surface-variant text-label-sm">${item.desc}</div>
+                    Define exactly where your agents have the right to act and where they must seek the human gatekeeper.
+                </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-4 border-l-2 border-primary/20 hover:border-primary transition-all bg-white/5">
+<div class="text-white font-bold mb-1">Autonomy Taxonomy</div>
+<div class="text-on-surface-variant text-label-sm">Capability contracts.</div>
 </div>
-                        ))}
-                    </div>
+<div class="p-4 border-l-2 border-primary/20 hover:border-primary transition-all bg-white/5">
+<div class="text-white font-bold mb-1">Runtime Proof</div>
+<div class="text-on-surface-variant text-label-sm">Verifiable logs.</div>
+</div>
+<div class="p-4 border-l-2 border-primary/20 hover:border-primary transition-all bg-white/5">
+<div class="text-white font-bold mb-1">Gate Boundaries</div>
+<div class="text-on-surface-variant text-label-sm">Authority stops.</div>
+</div>
+<div class="p-4 border-l-2 border-primary/20 hover:border-primary transition-all bg-white/5">
+<div class="text-white font-bold mb-1">Drift Monitoring</div>
+<div class="text-on-surface-variant text-label-sm">Divergence detection.</div>
+</div>
+</div>
 </div>
 <div class="md:col-span-6 relative flex justify-center">
-<div class="w-full max-w-md aspect-[4/5] glass-panel rounded-2xl glass-edge overflow-hidden relative arch-shadow rotate-3 group hover:rotate-0 transition-transform duration-700">
-<div class="w-full h-full bg-cover bg-center" data-alt="A blueprint-style technical drawing of an AI decision tree, rendered with white glowing lines on a deep blue-black glass surface. The design is precise, architectural, and complex, showing gates, authority levels, and feedback loops." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ-YkGTJO0Z4TNxCHOmmJ_-3yKvnUdzuDlYhzEXtEr2Xm8JDtGmuc-8RSuR_khAfo27NpXZStQC55iUjSLvTyIMtfVkhlgrMIOa-dkiCgHUc0xdhb-vtnjjb5nzDLkET-CFW1ZuD6XiPEpgX0W1oWpLLvjMDXI2IcY0xfKT5K1F4cG3xEMQgQPTEcXy_FETWXXiqfddATH280rjGqwcuUig2XyFMfSqfusLuTdWJ7HfjvtCZOYkj8yHy5on6bLn9Vi1PIFJ4Ao0ZfY')"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60"></div>
-<div class="absolute bottom-8 left-8 right-8">
-<div class="text-primary font-bold tracking-widest text-label-sm uppercase mb-2">Capability Level 5</div>
+<div class="w-full max-w-sm aspect-[4/5] glass-panel rounded-2xl glass-edge overflow-hidden relative arch-shadow rotate-2 group hover:rotate-0 transition-transform duration-700">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ-YkGTJO0Z4TNxCHOmmJ_-3yKvnUdzuDlYhzEXtEr2Xm8JDtGmuc-8RSuR_khAfo27NpXZStQC55iUjSLvTyIMtfVkhlgrMIOa-dkiCgHUc0xdhb-vtnjjb5nzDLkET-CFW1ZuD6XiPEpgX0W1oWpLLvjMDXI2IcY0xfKT5K1F4cG3xEMQgQPTEcXy_FETWXXiqfddATH280rjGqwcuUig2XyFMfSqfusLuTdWJ7HfjvtCZOYkj8yHy5on6bLn9Vi1PIFJ4Ao0ZfY')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-70"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="text-primary font-bold tracking-widest text-label-sm uppercase mb-1">Level 5</div>
 <div class="text-white text-headline-md font-bold">Scoped Autonomy</div>
 </div>
 </div>
@@ -315,96 +339,93 @@
 </div>
 </section>
 <!-- Section 4: MAPS Agentic Systems -->
-<section class="py-32 bg-surface-container-lowest">
+<section class="py-24 bg-surface-container-lowest">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="text-center max-w-3xl mx-auto mb-20">
-<h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-6">MAPS Agentic Systems</h2>
-<p class="text-body-lg text-on-surface-variant">Our proprietary methodology for the lifecycle of role-based AI operations.</p>
+<div class="text-center max-w-3xl mx-auto mb-16">
+<h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-4">MAPS Agentic Systems</h2>
+<p class="text-body-lg text-on-surface-variant mb-6">Our proprietary methodology for the lifecycle of role-based AI operations.</p>
+<p class="text-body-md text-primary font-medium border-y border-white/10 py-4">MAPS is our build methodology for designing, evaluating, deploying, observing, and improving AI roles and multi-agent systems.</p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                    {[
-                        {step: "01", title: "Design &amp; Build", desc: "Designing roles and agentic structures with repeatable methodology."},
-                        {step: "02", title: "Evaluate &amp; Deploy", desc: "Rigorous planning and evaluation before local deployment."},
-                        {step: "03", title: "Observe &amp; Improve", desc: "Multi-agent coordination and architectural reviews for performance."}
-                    ].map(item =&gt; (
-                        <div class="relative p-12 glass-panel glass-edge group" key="{item.step}">
-<div class="text-[120px] font-black absolute -top-10 -right-4 opacity-5 text-white select-none transition-opacity group-hover:opacity-10">${item.step}</div>
-<h4 class="text-white font-bold text-headline-md mb-4">${item.title}</h4>
-<p class="text-on-surface-variant text-body-md leading-relaxed">${item.desc}</p>
-<div class="mt-8 h-1 w-12 bg-primary group-hover:w-full transition-all duration-500"></div>
+<div class="relative p-10 glass-panel glass-edge group">
+<div class="text-7xl font-black absolute -top-6 -right-2 opacity-5 text-white select-none">01</div>
+<h4 class="text-white font-bold text-headline-md mb-3">Design &amp; Build</h4>
+<p class="text-on-surface-variant text-body-md leading-relaxed">Designing roles and agentic structures with repeatable methodology.</p>
+<div class="mt-6 h-1 w-12 bg-primary group-hover:w-full transition-all duration-500"></div>
 </div>
-                    ))}
-                </div>
+<div class="relative p-10 glass-panel glass-edge group">
+<div class="text-7xl font-black absolute -top-6 -right-2 opacity-5 text-white select-none">02</div>
+<h4 class="text-white font-bold text-headline-md mb-3">Evaluate &amp; Deploy</h4>
+<p class="text-on-surface-variant text-body-md leading-relaxed">Rigorous planning and evaluation before local deployment.</p>
+<div class="mt-6 h-1 w-12 bg-primary group-hover:w-full transition-all duration-500"></div>
+</div>
+<div class="relative p-10 glass-panel glass-edge group">
+<div class="text-7xl font-black absolute -top-6 -right-2 opacity-5 text-white select-none">03</div>
+<h4 class="text-white font-bold text-headline-md mb-3">Observe &amp; Improve</h4>
+<p class="text-on-surface-variant text-body-md leading-relaxed">Multi-agent coordination and architectural performance reviews.</p>
+<div class="mt-6 h-1 w-12 bg-primary group-hover:w-full transition-all duration-500"></div>
+</div>
+</div>
 </div>
 </section>
 <!-- Section 5: Private Operating System Setup -->
-<section class="py-32">
+<section class="py-24">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="flex flex-col md:flex-row gap-20 items-center">
+<div class="flex flex-col md:flex-row gap-16 items-center">
 <div class="md:w-1/2">
-<div class="w-full aspect-video rounded-lg glass-edge arch-shadow bg-cover bg-center" data-alt="A wide-angle interior shot of a high-end, minimalist corporate server room with brushed steel panels and subtle blue indicator lights. The aesthetic is clean, industrial, and hyper-modern, conveying a sense of secure, local high-performance computing." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDb6nz25DuFh6YLg-oYB7h9WjGczxBahMf5bGwENveVoZjh2gjfgWUvtF3lLWXqir49_3GXek1WjqZXfUFLYX5srPT36oPQzRNTKQFbf_yz_DyOvfj5J74lmPSvDBqWS0OtkG4kThrFK2PabK0J3FvEIxjuZkB0A25Sp2LCywYpNaSLeYZLBCilN67F9PdO17fNAu-4BnxQUVaRqj0C0W4RjmpVCpCPfzDh22IHCFm_97kJ2U197M-C8SietnlsAEKZ9FAgPXefK6Lg')"></div>
+<div class="w-full aspect-video rounded-lg glass-edge arch-shadow bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDb6nz25DuFh6YLg-oYB7h9WjGczxBahMf5bGwENveVoZjh2gjfgWUvtF3lLWXqir49_3GXek1WjqZXfUFLYX5srPT36oPQzRNTKQFbf_yz_DyOvfj5J74lmPSvDBqWS0OtkG4kThrFK2PabK0J3FvEIxjuZkB0A25Sp2LCywYpNaSLeYZLBCilN67F9PdO17fNAu-4BnxQUVaRqj0C0W4RjmpVCpCPfzDh22IHCFm_97kJ2U197M-C8SietnlsAEKZ9FAgPXefK6Lg')"></div>
 </div>
 <div class="md:w-1/2">
-<h2 class="font-display-lg text-headline-md md:text-[48px] font-bold text-white mb-8 leading-tight">Private Operating System Setup</h2>
-<div class="space-y-4">
-                            {[
-                                "Local repository scaffold &amp; role directory setup",
-                                "File-watch and automated queue workflows",
-                                "Custom local website and executive dashboard",
-                                "Cloudflare public UI deployment",
-                                "Private files and memory remain strictly local"
-                            ].map(text =&gt; (
-                                <div class="flex items-start gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors border border-transparent hover:border-white/10" key="{text}">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<span class="text-on-surface text-body-md">${text}</span>
-</div>
-                            ))}
-                        </div>
+<h2 class="font-display-lg text-headline-md md:text-[40px] font-bold text-white mb-6 leading-tight">Private Operating System Setup</h2>
+<ul class="space-y-3">
+<li class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface text-body-md">Local repository &amp; role directory scaffold</span>
+</li>
+<li class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface text-body-md">File-watch &amp; automated queue workflows</span>
+</li>
+<li class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface text-body-md">Local dashboard &amp; executive surfaces</span>
+</li>
+<li class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors border border-transparent">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-on-surface text-body-md">Secure Cloudflare public UI deployment</span>
+</li>
+</ul>
 </div>
 </div>
 </div>
 </section>
 <!-- Closing CTA -->
-<section class="py-40 relative overflow-hidden">
-<div class="absolute inset-0 z-0 opacity-20">
-<div class="w-full h-full bg-cover bg-center" data-alt="Abstract geometric overlay of steel beams and glass planes intersecting in a dark, atmospheric space. The perspective is looking up, creating a sense of massive architectural scale and structural integrity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD618sOmalIz37dNzJ9x5FyWhgACptM-9U24KBGetOvz47W_1iPyZ7jynMmms4xpZPKsVszF5a0bPVgjRKBxUEAy3R9HgPr6XnEEQExqJ_Ma8nfxaM9B6WJcBTsdcgD3cEv4wYFDO79FlBTMupxPUVql7NJpwyOXI03aOVWzmIIvi5TN_9lmLPwDUar386wpLWyEUqQNwuhdJIZX395LBfLb8EPSqxpHoEYBgX2C0IOyuVctLWHR72_u9bhZ6DMGmM979SSft4qlGoZ')"></div>
+<section class="py-32 relative overflow-hidden" id="contact">
+<div class="absolute inset-0 z-0 opacity-10">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD618sOmalIz37dNzJ9x5FyWhgACptM-9U24KBGetOvz47W_1iPyZ7jynMmms4xpZPKsVszF5a0bPVgjRKBxUEAy3R9HgPr6XnEEQExqJ_Ma8nfxaM9B6WJcBTsdcgD3cEv4wYFDO79FlBTMupxPUVql7NJpwyOXI03aOVWzmIIvi5TN_9lmLPwDUar386wpLWyEUqQNwuhdJIZX395LBfLb8EPSqxpHoEYBgX2C0IOyuVctLWHR72_u9bhZ6DMGmM979SSft4qlGoZ')"></div>
 </div>
-<div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center">
-<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-white mb-8">Build the office.<br/>Keep the authority local.</h2>
-<p class="text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-12">
-                    Mind Share Media helps teams create AI organizations that are visible, structured, and useful without surrendering execution, memory, or authority to someone else’s server.
-                </p>
-<button class="metallic-gradient text-on-primary px-12 py-5 rounded font-bold text-body-lg hover:scale-105 transition-all arch-shadow">
-                    Start with the local office
-                </button>
-</div>
+<div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center"><h2 class="font-display-lg text-display-lg-mobile md:text-display-lg font-bold text-white mb-6">Contact Mind Share Media</h2><p class="text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">Start with the local office. We will help you design the public interface, local bridge, role packages, and authority-aware automation system that fits your team.</p><button class="metallic-gradient text-on-primary px-10 py-5 rounded font-bold text-body-lg hover:scale-105 transition-all arch-shadow">Start Local</button></div>
 </section>
 </main>
 <!-- Footer -->
-<footer class="w-full py-12 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/20">
+<footer class="w-full py-10 bg-surface-container-lowest border-t border-outline-variant/10">
 <div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-gutter max-w-container-max mx-auto">
 <div class="flex flex-col items-center md:items-start">
-<div class="font-display-lg text-body-lg font-bold text-on-surface mb-2">Mind Share Media</div>
-<div class="font-body-md text-label-sm text-on-surface-variant opacity-80">© 2024 Mind Share Media. All rights reserved.</div>
+<div class="font-display-lg text-body-md font-bold text-on-surface mb-1">Mind Share Media</div>
+<div class="font-body-md text-xs text-on-surface-variant/50">© 2024 Mind Share Media.</div>
 </div>
-<div class="flex gap-8">
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface underline underline-offset-4 decoration-primary/30 transition-opacity opacity-80 hover:opacity-100" href="#">Privacy</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface underline underline-offset-4 decoration-primary/30 transition-opacity opacity-80 hover:opacity-100" href="#">Terms</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface underline underline-offset-4 decoration-primary/30 transition-opacity opacity-80 hover:opacity-100" href="#">Sustainability</a>
-<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface underline underline-offset-4 decoration-primary/30 transition-opacity opacity-80 hover:opacity-100" href="#">Press</a>
-</div>
+<div class="flex gap-6"><a class="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant/30 hover:text-on-surface transition-colors" href="../">Home</a><a class="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant/30 hover:text-on-surface transition-colors" href="../our-team/">Our Team</a><a class="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant/30 hover:text-on-surface transition-colors" href="./">Services</a><a class="font-label-sm text-[10px] uppercase tracking-widest text-on-surface-variant/30 hover:text-on-surface transition-colors" href="#contact">Contact</a></div>
 </div>
 </footer>
 <script>
-        // Micro-interaction for glass panels
-        document.querySelectorAll('.glass-panel').forEach(panel => {
-            panel.addEventListener('mousemove', e => {
-                const rect = panel.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                panel.style.setProperty('--mouse-x', `${x}px`);
-                panel.style.setProperty('--mouse-y', `${y}px`);
-            });
+    document.querySelectorAll('.glass-panel').forEach(panel => {
+        panel.addEventListener('mousemove', e => {
+            const rect = panel.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            panel.style.setProperty('--mouse-x', `${x}px`);
+            panel.style.setProperty('--mouse-y', `${y}px`);
         });
-    </script>
+    });
+</script>
 </body></html>
