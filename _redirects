@@ -15,5 +15,8 @@
 /request /request/ 301
 /development /request/ 301
 /development/* /request/:splat 301
+/mindshare /MindShare/ 301
+/mindshare/* /MindShare/:splat 301
+/MindShare /MindShare/ 301
 /learn /watch/ 200
 /learn/* /watch/:splat 200
