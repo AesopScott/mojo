@@ -385,6 +385,7 @@
 
         let codexSessionId = null;
         const mindShareExtensionId = 'fomlcadcldjpnlbapddpmlikinmdiiji';
+        const mindShareLocalBridge = 'http://127.0.0.1:8765';
         const pendingMindShareRequests = new Map();
 
         function mindShareLocalClient() {
@@ -421,7 +422,7 @@
                     const timer = setTimeout(() => {
                         if (settled) return;
                         settled = true;
-                        resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                        resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
                     }, 1500);
 
                     try {
@@ -440,19 +441,39 @@
                                 if (response) {
                                     resolve(response);
                                 } else {
-                                    resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                                    resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
                                 }
                             }
                         );
                     } catch {
                         clearTimeout(timer);
                         settled = true;
-                        resolve(sendMindSharePageMessage(method, payload, timeoutMs));
+                        resolve(sendMindShareLocalBridgeRequest(method, payload, timeoutMs));
                     }
                 });
             }
 
-            return sendMindSharePageMessage(method, payload, timeoutMs);
+            return sendMindShareLocalBridgeRequest(method, payload, timeoutMs);
+        }
+
+        async function sendMindShareLocalBridgeRequest(method, payload, timeoutMs) {
+            const route = method === 'connectCodex' ? '/connect-codex' : '/send-codex-message';
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+            try {
+                const response = await fetch(`${mindShareLocalBridge}${route}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload || {}),
+                    signal: controller.signal
+                });
+                return await response.json();
+            } catch {
+                return sendMindSharePageMessage(method, payload, timeoutMs);
+            } finally {
+                clearTimeout(timer);
+            }
         }
 
         function sendMindSharePageMessage(method, payload, timeoutMs) {
