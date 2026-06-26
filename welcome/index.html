@@ -239,6 +239,9 @@
 <span class="block font-label-caps text-primary-fixed">Graphify</span>
 <span class="mt-1 block text-xs text-on-surface-variant">Ranked Repo Graph Memory Injection</span>
 </a>
+<button aria-controls="other-repositories-modal" aria-haspopup="dialog" class="w-full border border-primary/40 px-4 py-3 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="other-repositories-trigger" type="button">
+Other Repositories
+</button>
 </div>
 </div>
 </div>
@@ -706,6 +709,89 @@
 </ol>
 </div>
 </div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="other-repositories-modal" role="dialog">
+<div class="w-full max-w-5xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Repository Handoff</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Other Repositories</h2>
+<p class="mt-3 max-w-3xl text-sm text-on-surface-variant">Use these repositories as teaching references for multi-agent orchestration, communication, contracts, state, routing, handoffs, and production-oriented agent system design.</p>
+</div>
+<button aria-label="Close Other Repositories detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="other-repositories-close" type="button">Close</button>
+</div>
+<div class="max-h-[70vh] space-y-8 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<section class="grid gap-4 md:grid-cols-2">
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/langchain-ai/langgraph" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">LangGraph</span>
+<span class="mt-1 block text-xs">Use for: Stateful orchestration, graph-based workflows, routing, supervisor patterns, memory-aware agent systems, durable task flow.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Strongest example for serious orchestration: nodes, edges, state, routing, retries, and human approval gates.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/langchain-ai/langgraph-supervisor-py" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">LangGraph Supervisor</span>
+<span class="mt-1 block text-xs">Use for: Supervisor-agent patterns, delegation, centralized routing, controlled communication between specialized agents.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Shows how one coordinator can manage specialized agents without every agent talking to everything.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/crewAIInc/crewAI" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">CrewAI</span>
+<span class="mt-1 block text-xs">Use for: Roles, tasks, crews, agent collaboration, structured multi-agent work.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Maps well to &ldquo;define the work before you build the agent&rdquo; with role/task/crew vocabulary.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/crewAIInc/crewAI-examples" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">CrewAI Examples</span>
+<span class="mt-1 block text-xs">Use for: Concrete examples and demos.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Practical workflows when students need examples instead of only abstract framework concepts.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/openai/swarm" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">OpenAI Swarm</span>
+<span class="mt-1 block text-xs">Use for: Lightweight handoffs, agent transfer patterns, educational multi-agent examples.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Good for simple handoff mechanics. Frame as educational and lightweight, not the default production recommendation.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/microsoft/agent-framework" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Microsoft Agent Framework</span>
+<span class="mt-1 block text-xs">Use for: Enterprise agent architecture, multi-agent workflows, Python/.NET agent development, production-oriented patterns.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Shows where enterprise agent frameworks are heading.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/microsoft/autogen" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Microsoft AutoGen</span>
+<span class="mt-1 block text-xs">Use for: Historical and conceptual multi-agent patterns, agent conversations, collaborative workflows.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Useful conceptually, while noting Microsoft is moving toward Agent Framework as the newer direction.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/aws-solutions-library-samples/guidance-for-multi-agent-orchestration-langgraph-on-aws" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">AWS Multi-Agent Orchestration With LangGraph</span>
+<span class="mt-1 block text-xs">Use for: Cloud deployment thinking, customer support examples, production architecture, AWS service integration.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Orchestration is infrastructure, services, routing, persistence, and operations, not only prompts.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/VRSEN/agency-swarm" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Agency Swarm</span>
+<span class="mt-1 block text-xs">Use for: Agency-style agent structures, organizational metaphors, specialized agent collaboration.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Useful for discussing whether agents should mirror departments, roles, workflows, or capabilities.</span>
+</a>
+</section>
+<section class="grid gap-4 md:grid-cols-2">
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Class Framing</span>
+<ul class="mt-3 space-y-2 text-xs">
+<li>Swarm = lightweight handoffs.</li>
+<li>CrewAI = roles, tasks, and teams.</li>
+<li>LangGraph = stateful orchestration.</li>
+<li>Microsoft Agent Framework = enterprise agent direction.</li>
+<li>AWS guidance = production/cloud architecture.</li>
+<li>Agency Swarm = organization-style agent design.</li>
+</ul>
+</div>
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Suggested Demo Workflow</span>
+<p class="mt-3 text-xs">Customer request -> Intake Agent -> Router -> Research Agent -> Drafting Agent -> Reviewer Agent -> Human Approval -> Send/Publish</p>
+<ul class="mt-3 space-y-2 text-xs">
+<li>CrewAI: roles, tasks, crew.</li>
+<li>Swarm: handoffs.</li>
+<li>LangGraph: nodes, edges, state, approval gates.</li>
+</ul>
+</div>
+</section>
+</div>
+</div>
+</div>
 <!-- Interactive Layer: Ambient Glow Tracker -->
 <div class="fixed inset-0 pointer-events-none z-[100] transition-opacity duration-1000 opacity-0" id="ambient-tracker"></div>
 <script>
@@ -761,6 +847,9 @@
         const realWorkflowTopic = document.getElementById('real-workflow-topic');
         const realWorkflowModal = document.getElementById('real-workflow-modal');
         const realWorkflowClose = document.getElementById('real-workflow-close');
+        const otherRepositoriesTrigger = document.getElementById('other-repositories-trigger');
+        const otherRepositoriesModal = document.getElementById('other-repositories-modal');
+        const otherRepositoriesClose = document.getElementById('other-repositories-close');
 
         function openModal(modal, closeButton) {
             modal.classList.remove('hidden');
@@ -799,6 +888,7 @@
         bindModalTrigger(governanceTopic, governanceModal, governanceClose);
         bindModalTrigger(testingEvaluationTopic, testingEvaluationModal, testingEvaluationClose);
         bindModalTrigger(realWorkflowTopic, realWorkflowModal, realWorkflowClose);
+        bindModalTrigger(otherRepositoriesTrigger, otherRepositoriesModal, otherRepositoriesClose);
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (rolesModal.getAttribute('aria-hidden') === 'false') closeModal(rolesModal, rolesTopic);
@@ -810,9 +900,11 @@
                 if (governanceModal.getAttribute('aria-hidden') === 'false') closeModal(governanceModal, governanceTopic);
                 if (testingEvaluationModal.getAttribute('aria-hidden') === 'false') closeModal(testingEvaluationModal, testingEvaluationTopic);
                 if (realWorkflowModal.getAttribute('aria-hidden') === 'false') closeModal(realWorkflowModal, realWorkflowTopic);
+                if (otherRepositoriesModal.getAttribute('aria-hidden') === 'false') closeModal(otherRepositoriesModal, otherRepositoriesTrigger);
             }
         });
     </script>
 </body></html>
+
 
 
