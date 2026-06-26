@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEURAL_ORCHESTRATOR_V1.0 | AI Agent Orchestration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#b6c4ff",
+                        "primary-fixed": "#7df4ff",
+                        "primary-container": "#00f0ff",
+                        "surface-container-lowest": "#0c0e12",
+                        "background": "#111318",
+                        "outline-variant": "#3b494b",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-bright": "#37393e",
+                        "on-secondary": "#3c0090",
+                        "on-tertiary-container": "#004eeb",
+                        "surface-variant": "#333539",
+                        "on-tertiary-fixed": "#001551",
+                        "surface-container-high": "#282a2e",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface": "#111318",
+                        "inverse-primary": "#006970",
+                        "tertiary-container": "#d0d8ff",
+                        "on-primary-container": "#006970",
+                        "on-background": "#e2e2e8",
+                        "on-tertiary-fixed-variant": "#0039b3",
+                        "on-secondary-container": "#ddcdff",
+                        "surface-tint": "#00dbe9",
+                        "inverse-on-surface": "#2f3035",
+                        "secondary-fixed": "#e9ddff",
+                        "secondary-container": "#7000ff",
+                        "tertiary": "#f6f5ff",
+                        "on-secondary-fixed": "#23005b",
+                        "on-tertiary": "#002780",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "primary": "#dbfcff",
+                        "outline": "#849495",
+                        "surface-container": "#1e2024",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-fixed": "#dce1ff",
+                        "surface-container-low": "#1a1c20",
+                        "on-secondary-fixed-variant": "#5700c9",
+                        "on-surface": "#e2e2e8",
+                        "on-surface-variant": "#b9cacb",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "secondary": "#d1bcff",
+                        "on-primary-fixed": "#002022",
+                        "surface-dim": "#111318",
+                        "inverse-surface": "#e2e2e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "body-md": ["JetBrains Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-pane {
+            background: rgba(17, 19, 24, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(125, 244, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.3);
+        }
+        .glow-pulse-cyan:active {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.6);
+            transform: scale(0.98);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #00dbe9; border-radius: 2px; }
+        .data-flow-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7000ff, #00dbe9, transparent);
+            width: 100%;
+        }
+        .modal-steps {
+            counter-reset: modal-step;
+        }
+        .modal-steps li {
+            counter-increment: modal-step;
+            display: grid;
+            grid-template-columns: 2.5rem minmax(0, 1fr);
+            column-gap: 0.75rem;
+            align-items: start;
+        }
+        .modal-steps li::before {
+            content: counter(modal-step) ".";
+            color: #7df4ff;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Background Layer -->
+<div class="fixed inset-0 z-[-1] opacity-20">
+
+</div>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/40 backdrop-blur-xl border-b border-primary/20 shadow-[0_0_20px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center w-full px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-6">
+<img class="h-10 w-auto drop-shadow-[0_0_10px_rgba(0,219,233,0.5)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCITOorq7Is_pT3XlFUWxJrElk9bfPOBuEXzmT4CEhUuYJXtzHOMvtdvSvL7_-OgkRmYNmafCdjMM5P-Qm4zlzrIvx7Ur7kezYfmMJ-3WdBkLhOmzd7g_y5xH2sqyJmAjvOeq4i5kCABUB1GIg5xQ9FA08CAzyoxrby5XATAcWqbQ38QAN_kTGVL86CJGHZJaDbJY6tPL9UJpbeUtMZ3YTlcMb8A8BPWBVwOc6Sv95jGEMoMoYotlQDJ1O13ve-zTiljkmpx7J2ww8"/>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter text-primary-fixed">Advanced AI Concepts: Multi-Agent Pipelines</h1>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col pt-24 pb-8 w-80 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-outline-variant/30 hidden lg:flex">
+<div class="flex flex-col flex-1 gap-1 px-4">
+<div class="flex items-center gap-3 p-4 mb-6 glass-pane rounded-lg">
+<div class="w-[60px] h-[60px] rounded-full border border-primary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" src="/assets/scotts2-04.png"/>
+</div>
+<div>
+<p class="font-label-caps text-primary-fixed">Mojo Scott</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Lead Architect</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-start gap-4 px-4 py-3 bg-primary-container/10 text-primary-fixed border-r-4 border-primary-fixed font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined">hub</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps">Mojo AI Studio</span>
+<span class="text-[10px] uppercase tracking-wide text-on-surface-variant">(Tonight's Class)</span>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://MojoAIStudio.com/welcome" rel="noopener" target="_blank">/welcome</a>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://MojoAIStudio.com/maps" rel="noopener" target="_blank">/maps</a>
+</div>
+</div>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://MojoAIStudio.com/Learn" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">psychology</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">Mojo AI Studio</span><span class="text-[10px] uppercase tracking-wide">(Recordings)</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://aesopacademy.org" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">memory</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">Aesop AI Academy</span><span class="text-[10px] uppercase tracking-wide">Course-Driven Education</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://theladderai.com" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">terminal</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">The Ladder AI</span><span class="text-[10px] uppercase tracking-wide">AI-Driven Education &amp; Certification</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://25experts.com/videos.html" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">25 Experts</span><span class="text-[10px] uppercase tracking-wide">Curated AI Videos</span></span>
+</a>
+<div class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined">shield</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps">GitHub Star History</span>
+<span class="text-[10px] uppercase tracking-wide">Top Repositories</span>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://www.star-history.com/" rel="noopener" target="_blank">star-history.com</a>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://join.slack.com/t/mojoaistudio/shared_invite/zt-3zaqcz81j-yvZBTBsCBHESzJ00ykwEbA" rel="noopener" target="_blank">Slack Access</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto px-4 space-y-1">
+<button class="w-full py-4 mb-4 bg-primary-container text-on-primary font-label-caps glow-pulse-cyan transition-all">SYNC_NEURAL_LINK</button>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm uppercase cursor-pointer" href="mailto:Scott@MojoAIStudio.com">
+<span class="material-symbols-outlined">help</span>
+<span>Contact Me</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="lg:pl-80 pt-24 pb-12 px- gutter min-h-screen">
+<div class="max-w-container-max mx-auto space-y-8 px-gutter">
+<!-- Global Timer & Status Hero -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 glass-pane p-8 flex flex-col justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 font-code-sm text-primary-fixed-dim/30">ID: ORCH_001_A</div>
+<div class="flex flex-col md:flex-row items-baseline gap-4">
+<span class="font-label-caps text-secondary-fixed-dim">SYSTEM STARTUP:</span>
+<div class="font-display-lg text-6xl md:text-8xl text-primary-fixed drop-shadow-[0_0_15px_rgba(0,219,233,0.4)] tracking-tighter" id="countdown">
+                            18:00:00
+                        </div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-container rounded-full animate-pulse shadow-[0_0_10px_#00f0ff]"></span>
+<span class="font-code-sm text-on-surface-variant">T-MINUS UNTIL NEURAL LINK STABILIZATION</span>
+</div>
+</div>
+<div class="md:col-span-4 flex items-start justify-center">
+<div class="glass-pane w-full px-6 py-5 border border-primary/40 rounded-sm">
+<span class="block text-center font-label-caps text-primary-fixed text-lg">VALUABLE REPOSITORIES</span>
+<div class="mt-5 space-y-4 text-left">
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/AesopScott/obsidianify" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Obsidianify</span>
+<span class="mt-1 block text-xs text-on-surface-variant">Ranked RAG Graph Memory Injection</span>
+<span class="mt-1 block text-[10px] uppercase tracking-wide text-secondary-fixed-dim">Better than OKF and LLM Wiki</span>
+</a>
+<a class="block border-l-2 border-secondary-fixed-dim/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/safishamsi/graphify" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Graphify</span>
+<span class="mt-1 block text-xs text-on-surface-variant">Ranked Repo Graph Memory Injection</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Class Agenda Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-12 flex items-center gap-4">
+<h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Class_Agenda</h2>
+<div class="flex-grow data-flow-line"></div>
+</div>
+<!-- 9 equal agenda topic tiles -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div aria-controls="roles-vs-agents-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="roles-vs-agents-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">01 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Roles vs. Agents</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Define the difference between a job, a responsibility, a prompt, an agent, a tool, and an autonomous actor. This prevents the whole class from becoming &ldquo;just make more chatbots.&rdquo;</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 3 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[30%] h-full w-[70%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="agent-contracts-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="agent-contracts-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">02 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Agent Contracts</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">What every agent needs before it can be trusted: purpose, inputs, outputs, tools, authority, boundaries, escalation rules, and failure modes.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 9 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[90%] h-full w-[10%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="orchestration-patterns-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="orchestration-patterns-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">03 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Orchestration Patterns</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Cover supervisor/router, planner-executor, peer-to-peer handoff, queue-based workflows, critic/reviewer loops, and swarm-style coordination.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 10 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500"></div>
+</div>
+</div>
+<div aria-controls="communication-protocols-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="communication-protocols-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">04 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Communication Protocols</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">How agents pass work: structured messages, handoff packets, task state, confidence, citations, assumptions, blockers, and &ldquo;what I need next.&rdquo;</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 7 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[70%] h-full w-[30%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="shared-memory-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="shared-memory-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">05 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Shared Memory and Context Injection</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Short-term context, long-term memory, retrieval, source maps, role memory, project memory, and how to avoid turning memory into a junk drawer.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 8 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[80%] h-full w-[20%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="tool-use-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="tool-use-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">06 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Tool Use and Capability Boundaries</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">How agents use tools safely: APIs, browsers, files, databases, MCP servers, Zapier, scripts, and why tool access should follow authority instead of excitement.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 6 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[60%] h-full w-[40%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="governance-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="governance-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">07 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Governance and Human Approval Gates</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Where humans stay in the loop: external communication, spending, secrets, production changes, deletion, legal/medical/HR decisions, and public claims.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 6 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[60%] h-full w-[40%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="testing-evaluation-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="testing-evaluation-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">08 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Testing, Evaluation, and Observability</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Scenario tests, eval rubrics, traces, logs, regression checks, quality signals, cost/latency monitoring, and how to know whether the system is improving or just becoming louder.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 8 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[80%] h-full w-[20%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+<div aria-controls="real-workflow-modal" aria-haspopup="dialog" class="glass-pane h-64 p-5 group hover:border-primary/50 transition-all cursor-pointer flex flex-col justify-between gap-4" id="real-workflow-topic" role="button" tabindex="0">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">09 // TOPIC</span>
+<h3 class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">Building a Real Multi-Agent Workflow</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Walk through a practical example: intake -> planner -> researcher -> builder -> reviewer -> release manager -> human approval. Show the artifacts each agent produces and how the work moves.</p>
+</div>
+<div class="space-y-2">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Difficulty</span>
+<div aria-label="Difficulty approximately 7 of 10" class="h-2 w-full overflow-hidden bg-gradient-to-r from-emerald-400 via-yellow-300 to-red-500">
+<div class="ml-[70%] h-full w-[30%] bg-surface-container-lowest/90"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="roles-vs-agents-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">01 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Roles vs. Agents</h2>
+</div>
+<button aria-label="Close Roles vs. Agents detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="roles-vs-agents-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Do not start by asking, &ldquo;What agent should I build?&rdquo;</li>
+<li>Start by asking, &ldquo;What work needs to be done?&rdquo;</li>
+<li>That work may be described as a task, role, function, workflow, process, job, responsibility, or capability.</li>
+<li>The label matters less than the boundary.</li>
+<li>Before building an agent, define the unit of work.</li>
+<li>A unit of work needs a purpose.</li>
+<li>It needs inputs.</li>
+<li>It needs outputs.</li>
+<li>It needs success criteria.</li>
+<li>It needs authority limits.</li>
+<li>It needs escalation rules.</li>
+<li>It needs a human owner.</li>
+<li>Only then should you decide whether that work should be handled by a prompt, a tool, a workflow, an assistant, an agent, or a multi-agent system.</li>
+<li>An agent is not the work itself.</li>
+<li>It is one possible execution mechanism for the work.</li>
+<li>The mistake is turning every useful task into &ldquo;an agent&rdquo; before you understand the task.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="agent-contracts-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">02 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Agent Contracts</h2>
+</div>
+<button aria-label="Close Agent Contracts detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="agent-contracts-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>A contract defines the agreement between the work and the worker.</li>
+<li>It says what the agent is expected to do and what it is not allowed to do.</li>
+<li>A contract can apply to a task, workflow, role, capability, assistant, agent, or service.</li>
+<li>The point is not the label. The point is explicit expectations.</li>
+<li>A contract starts with purpose. Why does this unit of work exist?</li>
+<li>A contract defines inputs. What information, files, messages, events, tickets, prompts, or data does the agent need?</li>
+<li>A contract defines outputs. What should the agent produce: draft, summary, decision support, ticket update, report, code, recommendation, or handoff?</li>
+<li>A contract defines authority. What can the agent decide or do on its own?</li>
+<li>A contract defines boundaries. What must the agent never do, even if it technically can?</li>
+<li>A contract defines escalation rules. When should the agent stop and ask a human, supervisor, or another system?</li>
+<li>A contract defines success criteria. How do we know the work was done well?</li>
+<li>A contract defines failure conditions. What does &ldquo;bad output,&rdquo; &ldquo;unsafe action,&rdquo; &ldquo;low confidence,&rdquo; or &ldquo;incomplete work&rdquo; look like?</li>
+<li>A contract defines tool permissions. Which tools, APIs, files, databases, browsers, or systems may the agent access?</li>
+<li>A contract defines data rules. What data can be used, stored, shared, summarized, retrieved, or excluded?</li>
+<li>A contract defines communication rules. How should the agent hand off work, cite sources, report blockers, express confidence, and preserve context?</li>
+<li>A contract defines review and approval points. What requires human review before it becomes official, external, published, sent, deployed, or paid for?</li>
+<li>A contract turns &ldquo;the AI should help&rdquo; into an operating agreement.</li>
+<li>Without a contract, you have vibes and tool access. With a contract, you have accountable automation.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="orchestration-patterns-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">03 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Orchestration Patterns</h2>
+</div>
+<button aria-label="Close Orchestration Patterns detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="orchestration-patterns-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Orchestration is how work moves through the system.</li>
+<li>It defines who starts, who decides, who acts, who reviews, and where the work goes next.</li>
+<li>The simplest pattern is single-agent execution. One agent receives a task, uses its tools, produces an output, and stops.</li>
+<li>A supervisor pattern uses one coordinator to route work. The supervisor decides which agent or tool should handle each part of the task.</li>
+<li>A planner-executor pattern separates strategy from action. One agent creates the plan; another agent or set of agents performs the steps.</li>
+<li>A router pattern classifies the request and sends it to the right worker. This is useful when different tasks need different skills, tools, risks, or approval paths.</li>
+<li>A peer-to-peer handoff pattern lets agents pass work directly. Each agent completes its part, packages the state, and hands it to the next agent.</li>
+<li>A queue-based pattern turns work into durable tasks. Agents pick up jobs from a queue, process them, update status, and leave an audit trail.</li>
+<li>A critic/reviewer pattern separates creation from evaluation. One agent drafts; another checks for correctness, safety, quality, or policy fit.</li>
+<li>A debate pattern uses multiple agents to test competing interpretations. This is useful for ambiguous decisions, but it can become noisy if not bounded.</li>
+<li>A consensus pattern requires agreement before action. It can improve confidence, but it adds latency and should be reserved for higher-risk work.</li>
+<li>A human-in-the-loop pattern places approval gates at key points. Humans approve external messages, production changes, spending, legal/medical/HR decisions, or anything with real-world consequence.</li>
+<li>A tool-calling pattern lets agents use external systems. The orchestration must define which tools are available, when they can be used, and what requires approval.</li>
+<li>A memory-augmented pattern injects context before action. The system retrieves relevant notes, history, documents, policies, or prior decisions so the agent is not operating from scratch.</li>
+<li>A fallback pattern defines what happens when confidence is low or a tool fails. The agent may retry, escalate, ask for clarification, switch tools, or stop safely.</li>
+<li>A good orchestration pattern is chosen by risk, complexity, and handoff needs.</li>
+<li>Do not use five agents where one tool call is enough. Use more structure only when the work requires coordination, review, memory, or authority boundaries.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="communication-protocols-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">04 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Communication Protocols</h2>
+</div>
+<button aria-label="Close Communication Protocols detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="communication-protocols-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>A communication protocol defines how work is passed between agents, tools, systems, and humans.</li>
+<li>It prevents handoffs from becoming vague conversation.</li>
+<li>A good protocol makes every message actionable.</li>
+<li>The receiver should know what happened, what is needed, what is blocked, and what to do next.</li>
+<li>Every handoff should include task identity. What task, ticket, request, workflow, customer, file, or project is this about?</li>
+<li>Every handoff should include source context. What information was used, where did it come from, and what should the next worker trust or verify?</li>
+<li>Every handoff should include current state. Is the work new, in progress, blocked, waiting for review, approved, rejected, or complete?</li>
+<li>Every handoff should include the requested next action. Summarize, draft, review, approve, execute, investigate, escalate, test, publish, deploy, or stop.</li>
+<li>Every handoff should include assumptions. Agents should say what they are treating as true, especially when the source material is incomplete.</li>
+<li>Every handoff should include confidence. The system should distinguish between &ldquo;verified,&rdquo; &ldquo;likely,&rdquo; &ldquo;uncertain,&rdquo; and &ldquo;needs human review.&rdquo;</li>
+<li>Every handoff should include blockers. Missing data, failed tools, unclear authority, policy conflicts, or low confidence should be explicit.</li>
+<li>Every handoff should include boundaries. The receiver needs to know what actions are allowed, prohibited, or approval-gated.</li>
+<li>Communication should be structured when reliability matters. Use fields like task_id, source, status, next_action, confidence, blockers, and approval_required.</li>
+<li>Communication can be conversational when exploration matters. Brainstorming, coaching, creative work, and early discovery may need looser exchange before structure is useful.</li>
+<li>Protocols should separate facts from recommendations. Facts say what is known. Recommendations say what the agent thinks should happen.</li>
+<li>Protocols should preserve traceability. A later reviewer should be able to tell who did what, why, from what source, and under what authority.</li>
+<li>The goal is not more messages. The goal is cleaner handoffs.</li>
+<li>A good communication protocol reduces ambiguity, repeated work, unsafe assumptions, and lost context.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="shared-memory-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">05 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Shared Memory and Context Injection</h2>
+</div>
+<button aria-label="Close Shared Memory and Context Injection detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="shared-memory-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Shared memory is what the system can remember across tasks.</li>
+<li>Context injection is how the right memory gets brought into the current task.</li>
+<li>Memory and context are not the same thing.</li>
+<li>Memory is stored information. Context is the selected information given to the agent right now.</li>
+<li>Good systems do not inject everything.</li>
+<li>They inject the smallest useful set of notes, facts, files, policies, examples, and decisions.</li>
+<li>Shared memory should have ownership.</li>
+<li>Someone or some process must decide what gets stored, updated, trusted, deprecated, or deleted.</li>
+<li>Memory should be source-aware.</li>
+<li>Agents need to know where information came from: user input, policy, database, transcript, ticket, document, code, or prior agent output.</li>
+<li>Memory should have trust levels.</li>
+<li>A signed policy, a draft note, an old chat summary, and an unverified model output should not carry the same weight.</li>
+<li>Memory should be scoped.</li>
+<li>Personal memory, project memory, customer memory, role memory, organization memory, and system memory should not be treated as one giant pile.</li>
+<li>Context injection should match the task.</li>
+<li>A writing agent needs different context than a release agent, support agent, security agent, or coding agent.</li>
+<li>Context injection should include constraints, not just facts.</li>
+<li>Policies, boundaries, approval rules, data rules, and failure conditions are often more important than background information.</li>
+<li>Memory can improve continuity, but it can also preserve mistakes.</li>
+<li>Bad memory creates confident repetition of old errors.</li>
+<li>Agents should say what memory they used.</li>
+<li>This makes outputs easier to audit and helps humans catch stale or irrelevant context.</li>
+<li>Memory needs update rules.</li>
+<li>Define when an agent may propose a memory update, when a human must approve it, and when a memory should expire.</li>
+<li>Retrieval quality matters more than storage volume.</li>
+<li>A huge memory store is not useful if the wrong context is injected at the wrong time.</li>
+<li>Shared memory requires privacy and access control.</li>
+<li>Not every agent should see every note, customer record, internal decision, secret, or personal detail.</li>
+<li>The goal is not to make agents remember everything.</li>
+<li>The goal is to make them remember the right thing at the right moment, with the right boundaries.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="tool-use-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">06 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Tool Use and Capability Boundaries</h2>
+</div>
+<button aria-label="Close Tool Use and Capability Boundaries detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="tool-use-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Tool use is what lets an agent affect the world outside the chat.</li>
+<li>Reading a file, calling an API, sending an email, updating a ticket, running code, or changing a database are tool actions.</li>
+<li>A capability is broader than a tool.</li>
+<li>A tool is the mechanism. A capability is what the agent can actually accomplish with it.</li>
+<li>Tool access should follow the work, not curiosity.</li>
+<li>Do not give an agent a browser, email, database, shell, or CRM just because it might be useful.</li>
+<li>Every tool should have a reason.</li>
+<li>The contract should explain why the agent needs the tool and what work the tool supports.</li>
+<li>Every tool should have a boundary.</li>
+<li>Define what the agent may read, write, create, edit, send, delete, purchase, approve, or execute.</li>
+<li>Read access and write access are different risks.</li>
+<li>Reading a calendar is not the same as scheduling a meeting. Reading a draft is not the same as sending it.</li>
+<li>External actions need stronger controls.</li>
+<li>Sending emails, posting content, submitting forms, messaging customers, publishing pages, or changing cloud systems should usually require approval.</li>
+<li>Production tools should be gated.</li>
+<li>Deployments, database writes, infrastructure changes, access-control changes, and security settings need explicit authority and audit trails.</li>
+<li>Secrets should not be casually exposed to agents.</li>
+<li>API keys, passwords, tokens, private credentials, and signing keys require strict handling or should stay outside agent reach.</li>
+<li>Agents should use least privilege.</li>
+<li>Give the smallest set of tools, scopes, records, and actions needed to complete the work.</li>
+<li>Tool calls should be observable.</li>
+<li>Log what tool was used, with what input, for what task, and what result came back.</li>
+<li>Tool failures need defined behavior.</li>
+<li>The agent should know whether to retry, switch tools, ask for help, escalate, or stop.</li>
+<li>Tool outputs are not automatically truth.</li>
+<li>Search results, API responses, scraped pages, OCR, and database records may be stale, partial, wrong, or misinterpreted.</li>
+<li>Capability boundaries should be tested, not assumed.</li>
+<li>Try scenarios where the agent is asked to overreach: send without approval, access restricted data, delete records, or bypass policy.</li>
+<li>The goal is useful power under control.</li>
+<li>An agent with no tools may be harmless but limited. An agent with too many tools may be productive and dangerous. The engineering problem is matching capability to authority.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="governance-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">07 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Governance and Human Approval Gates</h2>
+</div>
+<button aria-label="Close Governance and Human Approval Gates detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="governance-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Governance defines what the system is allowed to do.</li>
+<li>It turns broad AI capability into controlled operating behavior.</li>
+<li>Human approval gates define where automation must stop.</li>
+<li>They mark the points where an agent, workflow, or tool must wait for a person before continuing.</li>
+<li>Approval gates should match consequence, not complexity.</li>
+<li>A simple action can still need approval if it affects customers, money, production, compliance, or reputation.</li>
+<li>External communication usually needs a gate.</li>
+<li>Emails, customer messages, social posts, legal notices, public claims, and partner communications should not be sent without the right approval.</li>
+<li>Production changes need explicit approval.</li>
+<li>Deployments, database writes, infrastructure changes, security settings, and access-control changes should be gated.</li>
+<li>Spending and financial actions need approval.</li>
+<li>Purchases, renewals, refunds, invoices, pricing changes, and financial commitments should not be delegated casually.</li>
+<li>Sensitive data requires special handling.</li>
+<li>Medical, legal, HR, financial, customer, security, and personal data should have clear access, use, retention, and sharing rules.</li>
+<li>Agents should know when to stop.</li>
+<li>A good system defines stop conditions for uncertainty, policy conflict, missing authority, high-risk data, or failed validation.</li>
+<li>Governance should define who can approve what.</li>
+<li>Approval is not generic. Different decisions may require a manager, legal reviewer, security owner, clinician, release manager, or executive.</li>
+<li>Approval gates should be visible in the workflow.</li>
+<li>Humans should be able to see what is waiting, why it is waiting, who owns it, and what decision is needed.</li>
+<li>Approvals should preserve context.</li>
+<li>A human approver needs the recommendation, supporting facts, source material, risks, assumptions, and proposed next action.</li>
+<li>Governance should be testable.</li>
+<li>The system should be tested against overreach: sending without approval, accessing restricted data, making claims, spending money, or changing production.</li>
+<li>Governance should include audit trails.</li>
+<li>Record who approved, what was approved, when it happened, what evidence was used, and what action followed.</li>
+<li>Human approval should not become meaningless rubber-stamping.</li>
+<li>If every tiny action requires approval, people stop reviewing carefully. Gate the actions that actually carry risk.</li>
+<li>The goal is not to slow the system down.</li>
+<li>The goal is to let useful automation move quickly while keeping consequential decisions accountable.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="testing-evaluation-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">08 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Testing, Evaluation, and Observability</h2>
+</div>
+<button aria-label="Close Testing, Evaluation, and Observability detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="testing-evaluation-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Testing asks whether the system works.</li>
+<li>It checks expected behavior against known scenarios.</li>
+<li>Evaluation asks whether the system is good enough.</li>
+<li>It measures quality, usefulness, safety, correctness, and consistency.</li>
+<li>Observability asks what actually happened.</li>
+<li>It gives you traces, logs, metrics, costs, failures, and decisions after the system runs.</li>
+<li>Test scenarios should reflect real work.</li>
+<li>Use actual task types, edge cases, bad inputs, missing information, conflicting instructions, and high-risk requests.</li>
+<li>Each agent needs unit-style tests.</li>
+<li>Test whether the agent follows its contract, respects boundaries, produces the right output shape, and escalates when required.</li>
+<li>The full workflow needs end-to-end tests.</li>
+<li>Multi-agent systems fail at handoffs, routing, memory injection, tool calls, review gates, and state transitions.</li>
+<li>Evaluation needs a rubric.</li>
+<li>Define what good means: accurate, complete, sourced, concise, safe, useful, policy-compliant, and appropriate for the audience.</li>
+<li>Outputs should be evaluated separately from actions.</li>
+<li>A good draft and a safe tool action are different quality problems.</li>
+<li>Trace every important step.</li>
+<li>Record which agent acted, what context it received, what tool it used, what it produced, and what happened next.</li>
+<li>Measure failure modes directly.</li>
+<li>Track hallucinations, missed escalations, bad routing, stale memory, tool failures, policy violations, and low-confidence outputs.</li>
+<li>Watch cost and latency.</li>
+<li>A system that is accurate but too slow or expensive may still fail operationally.</li>
+<li>Use regression tests.</li>
+<li>When you fix a failure, add it to the test set so the system does not quietly relearn the same mistake.</li>
+<li>Human feedback should become evaluation data.</li>
+<li>Approvals, rejections, edits, complaints, and corrections are signals the system can learn from.</li>
+<li>Observability should support accountability.</li>
+<li>A reviewer should be able to reconstruct what happened, why it happened, and who approved the consequential steps.</li>
+<li>The goal is not to prove the system is perfect.</li>
+<li>The goal is to know where it is reliable, where it is risky, and when it needs human judgment.</li>
+</ol>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="real-workflow-modal" role="dialog">
+<div class="w-full max-w-4xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">09 // TOPIC DETAIL</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Building a Real Multi-Agent Workflow</h2>
+</div>
+<button aria-label="Close Building a Real Multi-Agent Workflow detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="real-workflow-close" type="button">Close</button>
+</div>
+<ol class="modal-steps grid max-h-[70vh] gap-3 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<li>Start with the work, not the agents.</li>
+<li>Define the actual business process before naming workers or tools.</li>
+<li>Choose one concrete workflow.</li>
+<li>Use something specific: intake a customer request, draft a proposal, review a pull request, triage an incident, create training content, or prepare a release.</li>
+<li>Define the trigger.</li>
+<li>What starts the workflow: a form submission, email, ticket, Slack message, file change, scheduled event, or human request?</li>
+<li>Define the first state.</li>
+<li>The system needs to know what &ldquo;new work&rdquo; looks like before anyone touches it.</li>
+<li>Break the workflow into stages.</li>
+<li>Common stages are intake, classification, research, planning, execution, review, approval, delivery, and follow-up.</li>
+<li>Assign each stage to a worker.</li>
+<li>The worker may be a human, prompt, tool, script, workflow, assistant, agent, or another system.</li>
+<li>Write a contract for each worker.</li>
+<li>Define purpose, inputs, outputs, tools, authority, boundaries, escalation rules, and success criteria.</li>
+<li>Define the handoff packet.</li>
+<li>Each stage should pass forward task ID, source context, current state, output, assumptions, blockers, confidence, and next action.</li>
+<li>Add memory and context injection deliberately.</li>
+<li>Decide what project notes, policies, examples, prior decisions, or customer history should be injected at each stage.</li>
+<li>Add tool access only where needed.</li>
+<li>Do not give every worker every tool. Match tools to the stage and authority of the worker.</li>
+<li>Place human approval gates before consequential actions.</li>
+<li>Gate external communication, production changes, spending, sensitive data use, public claims, legal/medical/HR decisions, and final release.</li>
+<li>Define failure and fallback behavior.</li>
+<li>If a worker is uncertain, blocked, missing data, or sees policy risk, it should know whether to retry, escalate, ask for clarification, or stop.</li>
+<li>Track state across the workflow.</li>
+<li>Use statuses like new, assigned, in progress, blocked, waiting for review, approved, rejected, delivered, and complete.</li>
+<li>Test the workflow end to end.</li>
+<li>Run normal cases, edge cases, tool failures, bad inputs, missing approvals, and attempts to bypass boundaries.</li>
+<li>Observe and improve the workflow after it runs.</li>
+<li>Review traces, handoffs, cost, latency, failures, edits, approvals, and human feedback so the system gets more reliable over time.</li>
+</ol>
+</div>
+</div>
+<!-- Interactive Layer: Ambient Glow Tracker -->
+<div class="fixed inset-0 pointer-events-none z-[100] transition-opacity duration-1000 opacity-0" id="ambient-tracker"></div>
+<script>
+        // Simple countdown logic for 6:00 PM MST (placeholder behavior)
+        function updateCountdown() {
+            const now = new Date();
+            const target = new Date();
+            target.setHours(18, 0, 0, 0); // 6:00 PM
+            
+            let diff = target - now;
+            if (diff < 0) diff = 0;
+
+            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+
+            document.getElementById('countdown').innerText = `${h}:${m}:${s}`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Mouse ambient glow effect
+        const tracker = document.getElementById('ambient-tracker');
+        document.addEventListener('mousemove', (e) => {
+            tracker.style.opacity = '1';
+            tracker.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0, 219, 233, 0.05), transparent 80%)`;
+        });
+
+        const rolesTopic = document.getElementById('roles-vs-agents-topic');
+        const rolesModal = document.getElementById('roles-vs-agents-modal');
+        const rolesClose = document.getElementById('roles-vs-agents-close');
+        const contractsTopic = document.getElementById('agent-contracts-topic');
+        const contractsModal = document.getElementById('agent-contracts-modal');
+        const contractsClose = document.getElementById('agent-contracts-close');
+        const orchestrationTopic = document.getElementById('orchestration-patterns-topic');
+        const orchestrationModal = document.getElementById('orchestration-patterns-modal');
+        const orchestrationClose = document.getElementById('orchestration-patterns-close');
+        const communicationTopic = document.getElementById('communication-protocols-topic');
+        const communicationModal = document.getElementById('communication-protocols-modal');
+        const communicationClose = document.getElementById('communication-protocols-close');
+        const sharedMemoryTopic = document.getElementById('shared-memory-topic');
+        const sharedMemoryModal = document.getElementById('shared-memory-modal');
+        const sharedMemoryClose = document.getElementById('shared-memory-close');
+        const toolUseTopic = document.getElementById('tool-use-topic');
+        const toolUseModal = document.getElementById('tool-use-modal');
+        const toolUseClose = document.getElementById('tool-use-close');
+        const governanceTopic = document.getElementById('governance-topic');
+        const governanceModal = document.getElementById('governance-modal');
+        const governanceClose = document.getElementById('governance-close');
+        const testingEvaluationTopic = document.getElementById('testing-evaluation-topic');
+        const testingEvaluationModal = document.getElementById('testing-evaluation-modal');
+        const testingEvaluationClose = document.getElementById('testing-evaluation-close');
+        const realWorkflowTopic = document.getElementById('real-workflow-topic');
+        const realWorkflowModal = document.getElementById('real-workflow-modal');
+        const realWorkflowClose = document.getElementById('real-workflow-close');
+
+        function openModal(modal, closeButton) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.setAttribute('aria-hidden', 'false');
+            closeButton.focus();
+        }
+
+        function closeModal(modal, focusTarget) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modal.setAttribute('aria-hidden', 'true');
+            focusTarget.focus();
+        }
+
+        function bindModalTrigger(topic, modal, closeButton) {
+            topic.addEventListener('click', () => openModal(modal, closeButton));
+            topic.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                    openModal(modal, closeButton);
+            }
+        });
+            closeButton.addEventListener('click', () => closeModal(modal, topic));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal, topic);
+        });
+        }
+
+        bindModalTrigger(rolesTopic, rolesModal, rolesClose);
+        bindModalTrigger(contractsTopic, contractsModal, contractsClose);
+        bindModalTrigger(orchestrationTopic, orchestrationModal, orchestrationClose);
+        bindModalTrigger(communicationTopic, communicationModal, communicationClose);
+        bindModalTrigger(sharedMemoryTopic, sharedMemoryModal, sharedMemoryClose);
+        bindModalTrigger(toolUseTopic, toolUseModal, toolUseClose);
+        bindModalTrigger(governanceTopic, governanceModal, governanceClose);
+        bindModalTrigger(testingEvaluationTopic, testingEvaluationModal, testingEvaluationClose);
+        bindModalTrigger(realWorkflowTopic, realWorkflowModal, realWorkflowClose);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (rolesModal.getAttribute('aria-hidden') === 'false') closeModal(rolesModal, rolesTopic);
+                if (contractsModal.getAttribute('aria-hidden') === 'false') closeModal(contractsModal, contractsTopic);
+                if (orchestrationModal.getAttribute('aria-hidden') === 'false') closeModal(orchestrationModal, orchestrationTopic);
+                if (communicationModal.getAttribute('aria-hidden') === 'false') closeModal(communicationModal, communicationTopic);
+                if (sharedMemoryModal.getAttribute('aria-hidden') === 'false') closeModal(sharedMemoryModal, sharedMemoryTopic);
+                if (toolUseModal.getAttribute('aria-hidden') === 'false') closeModal(toolUseModal, toolUseTopic);
+                if (governanceModal.getAttribute('aria-hidden') === 'false') closeModal(governanceModal, governanceTopic);
+                if (testingEvaluationModal.getAttribute('aria-hidden') === 'false') closeModal(testingEvaluationModal, testingEvaluationTopic);
+                if (realWorkflowModal.getAttribute('aria-hidden') === 'false') closeModal(realWorkflowModal, realWorkflowTopic);
+            }
+        });
+    </script>
+</body></html>
+
+
