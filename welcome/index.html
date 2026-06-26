@@ -149,6 +149,7 @@
 <img class="h-10 w-auto drop-shadow-[0_0_10px_rgba(0,219,233,0.5)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCITOorq7Is_pT3XlFUWxJrElk9bfPOBuEXzmT4CEhUuYJXtzHOMvtdvSvL7_-OgkRmYNmafCdjMM5P-Qm4zlzrIvx7Ur7kezYfmMJ-3WdBkLhOmzd7g_y5xH2sqyJmAjvOeq4i5kCABUB1GIg5xQ9FA08CAzyoxrby5XATAcWqbQ38QAN_kTGVL86CJGHZJaDbJY6tPL9UJpbeUtMZ3YTlcMb8A8BPWBVwOc6Sv95jGEMoMoYotlQDJ1O13ve-zTiljkmpx7J2ww8"/>
 <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter text-primary-fixed">Advanced AI Concepts: Multi-Agent Pipelines</h1>
 </div>
+<button aria-controls="build-primer-modal" aria-haspopup="dialog" class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" id="build-primer-trigger" type="button">Comprehensive Build Primer</button>
 </div>
 </header>
 <!-- SideNavBar -->
@@ -709,6 +710,143 @@ Other Repositories
 </ol>
 </div>
 </div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="build-primer-modal" role="dialog">
+<div class="w-full max-w-5xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Multi-Agent System Primer</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Comprehensive Build Primer</h2>
+<p class="mt-3 max-w-4xl text-sm text-on-surface-variant">A multi-agent system is not built by naming agents first. It is built by defining the work, dividing responsibility, writing contracts, controlling tools, injecting the right context, placing approval gates, and testing the system until the handoffs are reliable.</p>
+</div>
+<button aria-label="Close Comprehensive Build Primer" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="build-primer-close" type="button">Close</button>
+</div>
+<div class="max-h-[70vh] space-y-4 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Purpose</span>
+<p class="mt-3 text-xs leading-relaxed">Use these nine collapsible steps to walk through the process of designing a multi-agent system. The primer guides users to define the work, break it into stages, assign responsibilities, write contracts, design handoffs, define memory/context, assign tools, add governance gates, and test the system.</p>
+</div>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 1: Define The Work</summary>
+<p class="mt-4 text-xs leading-relaxed">Start with the business process, task, workflow, or outcome. Do not start by naming agents.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-1" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-1">Help me define the work before I build agents. Ask me what business process, task, workflow, or outcome I want to improve. Then summarize the work in plain language, including the purpose, users, trigger, expected result, and why this may need an agentic system instead of a simple prompt or automation.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A clear description of the work, not yet a list of agents.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 2: Break The Work Into Stages</summary>
+<p class="mt-4 text-xs leading-relaxed">Turn the work into a practical sequence of stages.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-2" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-2">Break this workflow into clear stages. For each stage, identify what happens, what information is needed, what output should be produced, and what decision or handoff happens next. Keep the stages practical and avoid creating unnecessary agents.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A staged workflow such as intake, classify, research, plan, execute, review, approve, deliver, and follow up.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 3: Identify Workers, Roles, Or Capabilities</summary>
+<p class="mt-4 text-xs leading-relaxed">Decide what kind of worker belongs at each stage. A worker may be human, AI, scripted, tool-based, or external.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-3" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-3">For each stage of this workflow, identify what kind of worker is needed. The worker may be a human, prompt, tool, script, workflow, assistant, agent, or external system. Explain why each worker is needed and whether it should be automated, human-owned, or human-reviewed.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A participant map that does not turn everything into an agent by default.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 4: Write The Contract For Each Worker</summary>
+<p class="mt-4 text-xs leading-relaxed">Define responsibility, authority, boundaries, and failure behavior before implementation.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-4" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-4">Create an operating contract for each worker in this workflow. For each one, define purpose, inputs, outputs, tools, authority, boundaries, escalation rules, success criteria, and failure conditions. Be explicit about what each worker may not do.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> Clear contracts that define responsibility and limits before implementation.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 5: Design The Handoff Protocol</summary>
+<p class="mt-4 text-xs leading-relaxed">Specify how work moves from one stage or worker to the next.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-5" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-5">Design the handoff protocol for this multi-agent workflow. Define exactly what information must be passed from one stage to the next, including task ID, source context, current state, output, assumptions, blockers, confidence, approval requirements, and next action.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A reusable handoff packet format.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 6: Define Memory And Context Injection</summary>
+<p class="mt-4 text-xs leading-relaxed">Decide what each stage needs to know and what should stay out of context.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-6" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-6">For each stage of this workflow, define what context should be injected. Include policies, examples, prior decisions, user history, project notes, source documents, constraints, and approval rules. Also identify what information should not be injected for privacy, security, or relevance reasons.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A context map that says what each worker needs to know and what it should not see.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 7: Assign Tools And Capability Boundaries</summary>
+<p class="mt-4 text-xs leading-relaxed">Give each worker only the tools and permissions required for its stage.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-7" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-7">Map the tools and capabilities needed for each worker. For each tool, define whether access is read-only or write-capable, what actions are allowed, what actions are prohibited, what requires approval, and what should be logged.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A tool permission map based on least privilege.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 8: Add Governance And Human Approval Gates</summary>
+<p class="mt-4 text-xs leading-relaxed">Place human review before consequential action.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-8" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-8">Identify every point in this workflow where human approval is required. Pay special attention to external communication, production changes, spending, sensitive data, legal/medical/HR decisions, public claims, and final delivery. For each gate, define who approves, what they review, and what evidence they need.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A governance map with clear stop points.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 9: Test, Observe, And Improve The System</summary>
+<p class="mt-4 text-xs leading-relaxed">Validate the system before trusting it with real work, then observe it after it runs.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-9" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-9">Create a testing, evaluation, and observability plan for this multi-agent workflow. Include normal test cases, edge cases, unsafe requests, failed tool calls, bad handoffs, stale memory, missed approval gates, quality rubrics, logs, traces, cost/latency signals, and improvement loops.</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A practical validation plan before trusting the system with real work.</p>
+</details>
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Design Notes</span>
+<ul class="mt-3 space-y-2 text-xs">
+<li>Make the modal usable as a working guide, not just a reading experience.</li>
+<li>Each collapsible step should be independently scannable.</li>
+<li>Use copy buttons for each AI prompt.</li>
+<li>Keep the prompt text in monospace/code styling.</li>
+<li>Keep explanations short enough for a pop-up.</li>
+<li>Emphasize that multi-agent systems are designed from work, contracts, handoffs, memory, tools, governance, and tests, not from agent names alone.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 <div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="other-repositories-modal" role="dialog">
 <div class="w-full max-w-5xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
 <div class="mb-6 flex items-start justify-between gap-6">
@@ -847,6 +985,9 @@ Other Repositories
         const realWorkflowTopic = document.getElementById('real-workflow-topic');
         const realWorkflowModal = document.getElementById('real-workflow-modal');
         const realWorkflowClose = document.getElementById('real-workflow-close');
+        const buildPrimerTrigger = document.getElementById('build-primer-trigger');
+        const buildPrimerModal = document.getElementById('build-primer-modal');
+        const buildPrimerClose = document.getElementById('build-primer-close');
         const otherRepositoriesTrigger = document.getElementById('other-repositories-trigger');
         const otherRepositoriesModal = document.getElementById('other-repositories-modal');
         const otherRepositoriesClose = document.getElementById('other-repositories-close');
@@ -888,7 +1029,19 @@ Other Repositories
         bindModalTrigger(governanceTopic, governanceModal, governanceClose);
         bindModalTrigger(testingEvaluationTopic, testingEvaluationModal, testingEvaluationClose);
         bindModalTrigger(realWorkflowTopic, realWorkflowModal, realWorkflowClose);
+        bindModalTrigger(buildPrimerTrigger, buildPrimerModal, buildPrimerClose);
         bindModalTrigger(otherRepositoriesTrigger, otherRepositoriesModal, otherRepositoriesClose);
+        document.querySelectorAll('.copy-primer-prompt').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const target = document.getElementById(button.dataset.copyTarget);
+                if (!target) return;
+                await navigator.clipboard.writeText(target.innerText);
+                button.innerText = 'Copied';
+                setTimeout(() => {
+                    button.innerText = 'Copy';
+                }, 1200);
+            });
+        });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 if (rolesModal.getAttribute('aria-hidden') === 'false') closeModal(rolesModal, rolesTopic);
@@ -900,6 +1053,7 @@ Other Repositories
                 if (governanceModal.getAttribute('aria-hidden') === 'false') closeModal(governanceModal, governanceTopic);
                 if (testingEvaluationModal.getAttribute('aria-hidden') === 'false') closeModal(testingEvaluationModal, testingEvaluationTopic);
                 if (realWorkflowModal.getAttribute('aria-hidden') === 'false') closeModal(realWorkflowModal, realWorkflowTopic);
+                if (buildPrimerModal.getAttribute('aria-hidden') === 'false') closeModal(buildPrimerModal, buildPrimerTrigger);
                 if (otherRepositoriesModal.getAttribute('aria-hidden') === 'false') closeModal(otherRepositoriesModal, otherRepositoriesTrigger);
             }
         });
