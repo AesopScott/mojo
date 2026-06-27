@@ -416,6 +416,12 @@ function recordingsMarkup() {
             <a href="https://us06web.zoom.us/rec/share/ZstIwbjzSRNdhLuXZArzRll4mBtkT87wrYd0DV5cvPz6zoFk6k-9AuDcFEKvNdZr.bcXGGJirBiS9HPur" target="_blank" rel="noopener">
               <b>Memory Optimization</b>
             </a>
+            <a href="https://us06web.zoom.us/rec/share/gRbF4qKdHeINaI4-x443oywFDgM7TwkL5zClkrpyBWNdbmmxCh6sXSSyCfbl0pJu.8VO9RJa4iFWLNnT_" target="_blank" rel="noopener">
+              <b>Building Agentic Pipelines I</b>
+            </a>
+            <a href="https://us06web.zoom.us/rec/share/4ftkrnvu4CLYJx2rpxGV5TUWhH3CEP6ctiHSUtTruQABPjVAcnleUSQTQhbYOFTP.8OU90dklGyCDA728" target="_blank" rel="noopener">
+              <b>Multi-Agent Systems</b>
+            </a>
             <a href="/assets/advanced-ai-concepts/optimizing-ai-memory.zip" download>
               <b>Optimizing AI Memory.zip</b>
             </a>
