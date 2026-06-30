@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEURAL_ORCHESTRATOR_V1.0 | AI Agent Orchestration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#b6c4ff",
+                        "primary-fixed": "#7df4ff",
+                        "primary-container": "#00f0ff",
+                        "surface-container-lowest": "#0c0e12",
+                        "background": "#111318",
+                        "outline-variant": "#3b494b",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-bright": "#37393e",
+                        "on-secondary": "#3c0090",
+                        "on-tertiary-container": "#004eeb",
+                        "surface-variant": "#333539",
+                        "on-tertiary-fixed": "#001551",
+                        "surface-container-high": "#282a2e",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface": "#111318",
+                        "inverse-primary": "#006970",
+                        "tertiary-container": "#d0d8ff",
+                        "on-primary-container": "#006970",
+                        "on-background": "#e2e2e8",
+                        "on-tertiary-fixed-variant": "#0039b3",
+                        "on-secondary-container": "#ddcdff",
+                        "surface-tint": "#00dbe9",
+                        "inverse-on-surface": "#2f3035",
+                        "secondary-fixed": "#e9ddff",
+                        "secondary-container": "#7000ff",
+                        "tertiary": "#f6f5ff",
+                        "on-secondary-fixed": "#23005b",
+                        "on-tertiary": "#002780",
+                        "secondary-fixed-dim": "#d1bcff",
+                        "primary": "#dbfcff",
+                        "outline": "#849495",
+                        "surface-container": "#1e2024",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-fixed": "#dce1ff",
+                        "surface-container-low": "#1a1c20",
+                        "on-secondary-fixed-variant": "#5700c9",
+                        "on-surface": "#e2e2e8",
+                        "on-surface-variant": "#b9cacb",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "secondary": "#d1bcff",
+                        "on-primary-fixed": "#002022",
+                        "surface-dim": "#111318",
+                        "inverse-surface": "#e2e2e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "body-md": ["JetBrains Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["13px", {"lineHeight": "18px", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-pane {
+            background: rgba(17, 19, 24, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(125, 244, 255, 0.1);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.3);
+        }
+        .glow-pulse-cyan:active {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.6);
+            transform: scale(0.98);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #00dbe9; border-radius: 2px; }
+        .data-flow-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7000ff, #00dbe9, transparent);
+            width: 100%;
+        }
+        .modal-steps {
+            counter-reset: modal-step;
+        }
+        .modal-steps li {
+            counter-increment: modal-step;
+            display: grid;
+            grid-template-columns: 2.5rem minmax(0, 1fr);
+            column-gap: 0.75rem;
+            align-items: start;
+        }
+        .modal-steps li::before {
+            content: counter(modal-step) ".";
+            color: #7df4ff;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Background Layer -->
+<div class="fixed inset-0 z-[-1] opacity-20">
+
+</div>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/40 backdrop-blur-xl border-b border-primary/20 shadow-[0_0_20px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center w-full px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-6">
+<a href="https://mojoaistudio.com/learn" rel="noopener" target="_blank">
+<img class="h-10 w-auto drop-shadow-[0_0_10px_rgba(0,219,233,0.5)]" src="/assets/logo.png"/>
+</a>
+<h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter text-primary-fixed">Advanced AI Concepts: Multi-Agent Pipelines</h1>
+</div>
+<button aria-controls="build-primer-modal" aria-haspopup="dialog" class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" id="build-primer-trigger" type="button">Comprehensive Build Primer</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col pt-24 pb-8 w-80 bg-surface-container-lowest/60 backdrop-blur-2xl border-r border-outline-variant/30 hidden lg:flex">
+<div class="flex flex-col flex-1 gap-1 px-4">
+<div class="flex items-center gap-3 p-4 mb-6 glass-pane rounded-lg">
+<div class="w-[60px] h-[60px] rounded-full border border-primary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" src="/assets/scotts2-04.png"/>
+</div>
+<div>
+<p class="font-label-caps text-primary-fixed">Mojo Scott</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Lead Architect</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-start gap-4 px-4 py-3 bg-primary-container/10 text-primary-fixed border-r-4 border-primary-fixed font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined">hub</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps">Mojo AI Studio</span>
+<span class="text-[10px] uppercase tracking-wide text-on-surface-variant">(Tonight's Class)</span>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://MojoAIStudio.com/welcome" rel="noopener" target="_blank">/welcome</a>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://MojoAIStudio.com/maps" rel="noopener" target="_blank">/maps</a>
+</div>
+</div>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://MojoAIStudio.com/Learn" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">psychology</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">Mojo AI Studio</span><span class="text-[10px] uppercase tracking-wide">(Recordings)</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://aesopacademy.org" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">memory</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">Aesop AI Academy</span><span class="text-[10px] uppercase tracking-wide">Course-Driven Education</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://theladderai.com" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">terminal</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">The Ladder AI</span><span class="text-[10px] uppercase tracking-wide">AI-Driven Education &amp; Certification</span></span>
+</a>
+<a class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors" href="https://25experts.com/videos.html" rel="noopener" target="_blank">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="flex flex-col gap-1"><span class="font-label-caps">25 Experts</span><span class="text-[10px] uppercase tracking-wide">Curated AI Videos</span></span>
+</a>
+<div class="flex items-start gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm cursor-pointer hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined">shield</span>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps">GitHub Star History</span>
+<span class="text-[10px] uppercase tracking-wide">Top Repositories</span>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://www.star-history.com/" rel="noopener" target="_blank">star-history.com</a>
+<a class="text-[10px] text-primary-fixed-dim hover:text-primary-container" href="https://join.slack.com/t/mojoaistudio/shared_invite/zt-3zaqcz81j-yvZBTBsCBHESzJ00ykwEbA" rel="noopener" target="_blank">Slack Access</a>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto px-4 space-y-1">
+<button class="w-full py-4 mb-4 bg-primary-container text-on-primary font-label-caps glow-pulse-cyan transition-all">SYNC_NEURAL_LINK</button>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface font-code-sm uppercase cursor-pointer" href="mailto:Scott@MojoAIStudio.com">
+<span class="material-symbols-outlined">help</span>
+<span>Contact Me</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="lg:pl-80 pt-24 pb-12 px- gutter min-h-screen">
+<div class="max-w-container-max mx-auto space-y-8 px-gutter">
+<!-- Global Timer & Status Hero -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 glass-pane p-8 flex flex-col justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 font-code-sm text-primary-fixed-dim/30">ID: ORCH_001_A</div>
+<div class="flex flex-col md:flex-row items-baseline gap-4">
+<span class="font-label-caps text-secondary-fixed-dim">SYSTEM STARTUP:</span>
+<div class="font-display-lg text-6xl md:text-8xl text-primary-fixed drop-shadow-[0_0_15px_rgba(0,219,233,0.4)] tracking-tighter" id="countdown">
+                            18:00:00
+                        </div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-container rounded-full animate-pulse shadow-[0_0_10px_#00f0ff]"></span>
+<span class="font-code-sm text-on-surface-variant" id="countdown-status">T-MINUS UNTIL 8:00 AM CLASS START</span>
+</div>
+</div>
+<div class="md:col-span-4 flex items-start justify-center">
+<div class="glass-pane w-full px-6 py-5 border border-primary/40 rounded-sm">
+<span class="block text-center font-label-caps text-primary-fixed text-lg">VALUABLE REPOSITORIES</span>
+<div class="mt-5 space-y-4 text-left">
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/AesopScott/obsidianify" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Obsidianify</span>
+<span class="mt-1 block text-xs text-on-surface-variant">Ranked RAG Graph Memory Injection</span>
+<span class="mt-1 block text-[10px] uppercase tracking-wide text-secondary-fixed-dim">Better than OKF and LLM Wiki</span>
+</a>
+<a class="block border-l-2 border-secondary-fixed-dim/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/safishamsi/graphify" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Graphify</span>
+<span class="mt-1 block text-xs text-on-surface-variant">Ranked Repo Graph Memory Injection</span>
+</a>
+<button aria-controls="other-repositories-modal" aria-haspopup="dialog" class="w-full border border-primary/40 px-4 py-3 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="other-repositories-trigger" type="button">
+Other Repositories
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Class Agenda Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-12 flex items-center gap-4">
+<h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Class_Agenda</h2>
+<div class="flex-grow data-flow-line"></div>
+</div>
+<!-- Harness skill buttons: one per skill, grouped by harness. Click opens the harness detail modal (mirrors MindShare Central). -->
+<div class="md:col-span-12" id="harness-skills-root"></div>
+</section>
+</div>
+</main>
+<!-- Harness detail modal: mirrors the MindShare Central harness card modal -->
+<div aria-hidden="true" class="hidden fixed inset-0 z-[90] items-center justify-center bg-black/80 px-6" id="harness-detail-modal" role="dialog" aria-modal="true" aria-labelledby="harness-detail-title">
+<div class="absolute inset-0" id="harness-detail-backdrop"></div>
+<div class="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto border border-primary/50 bg-surface-container-lowest shadow-[0_0_40px_rgba(0,219,233,0.25)]" id="harness-detail-card"></div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="build-primer-modal" role="dialog">
+<div class="w-full max-w-5xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Multi-Agent System Primer</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Comprehensive Build Primer</h2>
+<p class="mt-3 max-w-4xl text-sm text-on-surface-variant">A multi-agent system is not built by naming agents first. It is built by defining the work, dividing responsibility, writing contracts, controlling tools, injecting the right context, placing approval gates, and testing the system until the handoffs are reliable.</p>
+</div>
+<button aria-label="Close Comprehensive Build Primer" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="build-primer-close" type="button">Close</button>
+</div>
+<div class="max-h-[70vh] space-y-4 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Purpose</span>
+<p class="mt-3 text-xs leading-relaxed">Build a website pop-up or modal experience with nine collapsible steps. Each step should help a user walk through the process of designing a multi-agent system.</p>
+<p class="mt-3 text-xs leading-relaxed">The user should not be asked to start by naming agents. The primer should guide them to define the work, break it into stages, assign responsibilities, write contracts, design handoffs, define memory/context, assign tools, add governance gates, and test the system.</p>
+</div>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 1: Define The Work</summary>
+<p class="mt-4 text-xs leading-relaxed">Start with the business process, task, workflow, or outcome. Do not start by naming agents.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-1" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-1">Help me define the work before I build agents. Ask me what business process, task, workflow, or outcome I want to improve. Then produce a 15-item work-definition checklist that answers:
+1. What work needs to be done?
+2. What business problem does it solve?
+3. Who benefits from the work?
+4. Who owns the outcome?
+5. What starts the work?
+6. What is the expected result?
+7. What inputs are required?
+8. What outputs should be produced?
+9. What decisions must be made?
+10. What can be automated safely?
+11. What should remain human-owned?
+12. What risks or constraints exist?
+13. What would make this work successful?
+14. What would make this work fail?
+15. Why might this need an agentic system instead of a simple prompt, script, or automation?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A clear description of the work, not yet a list of agents.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 2: Break The Work Into Stages</summary>
+<p class="mt-4 text-xs leading-relaxed">Turn the work into a practical sequence of stages.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-2" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-2">Break this workflow into clear stages. For the full workflow, produce a 15-item stage map that answers:
+1. What is the first stage?
+2. What is the final stage?
+3. What happens in each stage?
+4. What information is needed at each stage?
+5. What output is produced at each stage?
+6. What decision happens at each stage?
+7. What handoff happens after each stage?
+8. Which stages are simple enough for a prompt or tool?
+9. Which stages may need an agent?
+10. Which stages need human ownership?
+11. Which stages need human review?
+12. Where can the workflow get blocked?
+13. Where can the workflow branch?
+14. Where should state be tracked?
+15. Which stages are unnecessary or should be combined?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A staged workflow such as intake, classify, research, plan, execute, review, approve, deliver, and follow up.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 3: Identify Workers, Roles, Or Capabilities</summary>
+<p class="mt-4 text-xs leading-relaxed">Decide what kind of worker belongs at each stage. A worker may be human, AI, scripted, tool-based, or external.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-3" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-3">For each stage of this workflow, identify what kind of worker is needed. The worker may be a human, prompt, tool, script, workflow, assistant, agent, or external system. Produce a 15-item worker map that answers:
+1. What work must be done at this stage?
+2. What kind of worker fits the work?
+3. Why is that worker needed?
+4. Could a simple prompt handle it?
+5. Could a script or automation handle it?
+6. Does it need an agent?
+7. Does it need multiple agents?
+8. Does it need a human owner?
+9. Does it need human review?
+10. What capability does the worker need?
+11. What domain knowledge does the worker need?
+12. What tools might the worker need?
+13. What should the worker not be allowed to do?
+14. What output should the worker produce?
+15. How does this worker hand off to the next stage?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A participant map that does not turn everything into an agent by default.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 4: Write The Contract For Each Worker</summary>
+<p class="mt-4 text-xs leading-relaxed">Define responsibility, authority, boundaries, and failure behavior before implementation.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-4" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-4">Create an operating contract for each worker in this workflow. For each worker, answer these 15 contract questions:
+1. What is the worker&#39;s purpose?
+2. What task, role, workflow, or capability does it support?
+3. What inputs does it require?
+4. What outputs must it produce?
+5. What tools may it use?
+6. What data may it access?
+7. What authority does it have?
+8. What actions are prohibited?
+9. What requires human approval?
+10. When must it escalate?
+11. What does successful work look like?
+12. What does failure look like?
+13. What communication format should it use?
+14. What memory or context may it use?
+15. Who owns or reviews its output?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> Clear contracts that define responsibility and limits before implementation.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 5: Design The Handoff Protocol</summary>
+<p class="mt-4 text-xs leading-relaxed">Specify how work moves from one stage or worker to the next.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-5" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-5">Design the handoff protocol for this multi-agent workflow. Produce a 15-field handoff packet that includes:
+1. Task ID
+2. Workflow name
+3. Source or trigger
+4. Current stage
+5. Current status
+6. Worker sending the handoff
+7. Worker receiving the handoff
+8. Source context used
+9. Output produced
+10. Assumptions made
+11. Confidence level
+12. Blockers or missing information
+13. Boundaries or prohibited actions
+14. Approval requirements
+15. Requested next action</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A reusable handoff packet format.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 6: Define Memory And Context Injection</summary>
+<p class="mt-4 text-xs leading-relaxed">Decide what each stage needs to know and what should stay out of context.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-6" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-6">For each stage of this workflow, define what memory and context should be injected. Produce a 15-item context-injection plan that answers:
+1. What context does this stage need?
+2. What memory source should provide it?
+3. Who owns that memory?
+4. How trustworthy is the source?
+5. Is the context personal, project, customer, role, organization, or system memory?
+6. What policies or constraints must be injected?
+7. What examples should be injected?
+8. What prior decisions matter?
+9. What source documents matter?
+10. What should not be injected?
+11. What privacy or security limits apply?
+12. How much context is enough?
+13. How should the worker cite or report memory use?
+14. When should memory be updated?
+15. When should memory expire or be reviewed?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A context map that says what each worker needs to know and what it should not see.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 7: Assign Tools And Capability Boundaries</summary>
+<p class="mt-4 text-xs leading-relaxed">Give each worker only the tools and permissions required for its stage.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-7" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-7">Map the tools and capabilities needed for each worker. Produce a 15-item tool and boundary plan that answers:
+1. What tool or capability is needed?
+2. Which worker needs it?
+3. Why is the tool needed?
+4. Is access read-only or write-capable?
+5. What actions are allowed?
+6. What actions are prohibited?
+7. What actions require human approval?
+8. What data can the tool access?
+9. What data must stay out of the tool?
+10. What credentials or secrets are involved?
+11. What least-privilege limit should apply?
+12. What should be logged?
+13. What should happen if the tool fails?
+14. How should tool outputs be verified?
+15. How should boundary violations be tested?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A tool permission map based on least privilege.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 8: Add Governance And Human Approval Gates</summary>
+<p class="mt-4 text-xs leading-relaxed">Place human review before consequential action.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-8" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-8">Identify every point in this workflow where governance or human approval is required. Produce a 15-item approval-gate plan that answers:
+1. What actions have real-world consequence?
+2. What external communications need approval?
+3. What production changes need approval?
+4. What spending or financial actions need approval?
+5. What sensitive data requires special handling?
+6. What legal, medical, HR, or security decisions need escalation?
+7. What public claims need review?
+8. What final deliverables need approval?
+9. Who can approve each gate?
+10. What evidence does the approver need?
+11. What context must be preserved for approval?
+12. What happens if approval is denied?
+13. What happens if approval is delayed?
+14. What audit trail is required?
+15. How do we avoid meaningless rubber-stamp approval?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A governance map with clear stop points.</p>
+</details>
+<details class="border border-outline-variant/40 p-4">
+<summary class="cursor-pointer font-label-caps text-primary-fixed">Step 9: Test, Observe, And Improve The System</summary>
+<p class="mt-4 text-xs leading-relaxed">Validate the system before trusting it with real work, then observe it after it runs.</p>
+<div class="mt-4 border border-outline-variant/40 p-4">
+<div class="mb-2 flex items-center justify-between gap-4">
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
+<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-9" type="button">Copy</button>
+</div>
+<pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-9">Create a testing, evaluation, and observability plan for this multi-agent workflow. Produce a 15-item validation plan that answers:
+1. What normal test cases should pass?
+2. What edge cases should be tested?
+3. What unsafe requests should be tested?
+4. What bad inputs should be tested?
+5. What tool failures should be simulated?
+6. What handoff failures should be simulated?
+7. What stale memory cases should be tested?
+8. What missed approval-gate cases should be tested?
+9. What rubric defines quality?
+10. What logs should be captured?
+11. What traces should be captured?
+12. What cost and latency signals matter?
+13. What human feedback should be collected?
+14. What regression tests should be created?
+15. How will failures become improvement work?</pre>
+</div>
+<p class="mt-4 text-xs"><span class="font-label-caps text-primary-fixed">Successful Output:</span> A practical validation plan before trusting the system with real work.</p>
+</details>
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Design Notes</span>
+<ul class="mt-3 space-y-2 text-xs">
+<li>Make the modal usable as a working guide, not just a reading experience.</li>
+<li>Each collapsible step should be independently scannable.</li>
+<li>Use copy buttons for each AI prompt if available.</li>
+<li>Keep the prompt text in monospace/code styling.</li>
+<li>Keep explanations short enough for a pop-up.</li>
+<li>The page should emphasize that multi-agent systems are designed from work, contracts, handoffs, memory, tools, governance, and tests, not from agent names alone.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="fixed inset-0 z-[90] hidden items-center justify-center bg-black/80 px-6" id="other-repositories-modal" role="dialog">
+<div class="w-full max-w-5xl border border-primary/50 bg-surface-container-lowest p-8 shadow-[0_0_40px_rgba(0,219,233,0.25)]">
+<div class="mb-6 flex items-start justify-between gap-6">
+<div>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Repository Handoff</span>
+<h2 class="mt-2 font-headline-lg text-primary-fixed">Other Repositories</h2>
+<p class="mt-3 max-w-3xl text-sm text-on-surface-variant">Use these repositories as teaching references for multi-agent orchestration, communication, contracts, state, routing, handoffs, and production-oriented agent system design.</p>
+</div>
+<button aria-label="Close Other Repositories detail" class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="other-repositories-close" type="button">Close</button>
+</div>
+<div class="max-h-[70vh] space-y-8 overflow-y-auto pr-4 font-body-sm text-on-surface-variant">
+<section class="grid gap-4 md:grid-cols-2">
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/langchain-ai/langgraph" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">LangGraph</span>
+<span class="mt-1 block text-xs">Use for: Stateful orchestration, graph-based workflows, routing, supervisor patterns, memory-aware agent systems, durable task flow.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Strongest example for serious orchestration: nodes, edges, state, routing, retries, and human approval gates.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/langchain-ai/langgraph-supervisor-py" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">LangGraph Supervisor</span>
+<span class="mt-1 block text-xs">Use for: Supervisor-agent patterns, delegation, centralized routing, controlled communication between specialized agents.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Shows how one coordinator can manage specialized agents without every agent talking to everything.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/crewAIInc/crewAI" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">CrewAI</span>
+<span class="mt-1 block text-xs">Use for: Roles, tasks, crews, agent collaboration, structured multi-agent work.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Maps well to &ldquo;define the work before you build the agent&rdquo; with role/task/crew vocabulary.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/crewAIInc/crewAI-examples" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">CrewAI Examples</span>
+<span class="mt-1 block text-xs">Use for: Concrete examples and demos.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Practical workflows when students need examples instead of only abstract framework concepts.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/openai/swarm" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">OpenAI Swarm</span>
+<span class="mt-1 block text-xs">Use for: Lightweight handoffs, agent transfer patterns, educational multi-agent examples.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Good for simple handoff mechanics. Frame as educational and lightweight, not the default production recommendation.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/microsoft/agent-framework" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Microsoft Agent Framework</span>
+<span class="mt-1 block text-xs">Use for: Enterprise agent architecture, multi-agent workflows, Python/.NET agent development, production-oriented patterns.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Shows where enterprise agent frameworks are heading.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/microsoft/autogen" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Microsoft AutoGen</span>
+<span class="mt-1 block text-xs">Use for: Historical and conceptual multi-agent patterns, agent conversations, collaborative workflows.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Useful conceptually, while noting Microsoft is moving toward Agent Framework as the newer direction.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/aws-solutions-library-samples/guidance-for-multi-agent-orchestration-langgraph-on-aws" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">AWS Multi-Agent Orchestration With LangGraph</span>
+<span class="mt-1 block text-xs">Use for: Cloud deployment thinking, customer support examples, production architecture, AWS service integration.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Orchestration is infrastructure, services, routing, persistence, and operations, not only prompts.</span>
+</a>
+<a class="block border-l-2 border-primary-fixed/70 pl-4 hover:border-primary-container transition-colors" href="https://github.com/VRSEN/agency-swarm" rel="noopener" target="_blank">
+<span class="block font-label-caps text-primary-fixed">Agency Swarm</span>
+<span class="mt-1 block text-xs">Use for: Agency-style agent structures, organizational metaphors, specialized agent collaboration.</span>
+<span class="mt-1 block text-xs text-secondary-fixed-dim">Teaching angle: Useful for discussing whether agents should mirror departments, roles, workflows, or capabilities.</span>
+</a>
+</section>
+<section class="grid gap-4 md:grid-cols-2">
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Class Framing</span>
+<ul class="mt-3 space-y-2 text-xs">
+<li>Swarm = lightweight handoffs.</li>
+<li>CrewAI = roles, tasks, and teams.</li>
+<li>LangGraph = stateful orchestration.</li>
+<li>Microsoft Agent Framework = enterprise agent direction.</li>
+<li>AWS guidance = production/cloud architecture.</li>
+<li>Agency Swarm = organization-style agent design.</li>
+</ul>
+</div>
+<div class="border border-outline-variant/40 p-4">
+<span class="font-label-caps text-primary-fixed">Suggested Demo Workflow</span>
+<p class="mt-3 text-xs">Customer request -> Intake Agent -> Router -> Research Agent -> Drafting Agent -> Reviewer Agent -> Human Approval -> Send/Publish</p>
+<ul class="mt-3 space-y-2 text-xs">
+<li>CrewAI: roles, tasks, crew.</li>
+<li>Swarm: handoffs.</li>
+<li>LangGraph: nodes, edges, state, approval gates.</li>
+</ul>
+</div>
+</section>
+</div>
+</div>
+</div>
+<!-- Interactive Layer: Ambient Glow Tracker -->
+<div class="fixed inset-0 pointer-events-none z-[100] transition-opacity duration-1000 opacity-0" id="ambient-tracker"></div>
+<script>
+        // Class timer for the June 28 training window: count down to 8:00 AM Mountain,
+        // then count up through the two-hour class until 10:00 AM Mountain.
+        function updateCountdown() {
+            const now = new Date();
+            const classStart = new Date('2026-06-28T08:00:00-06:00');
+            const classEnd = new Date('2026-06-28T10:00:00-06:00');
+            const countdown = document.getElementById('countdown');
+            const status = document.getElementById('countdown-status');
+
+            let diff;
+            if (now < classStart) {
+                diff = classStart - now;
+                status.innerText = 'T-MINUS UNTIL 8:00 AM CLASS START';
+            } else if (now < classEnd) {
+                diff = now - classStart;
+                status.innerText = 'CLASS IN SESSION / ELAPSED UNTIL 10:00 AM END';
+            } else {
+                diff = classEnd - classStart;
+                status.innerText = 'CLASS WINDOW COMPLETE';
+            }
+
+            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+
+            countdown.innerText = `${h}:${m}:${s}`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Mouse ambient glow effect
+        const tracker = document.getElementById('ambient-tracker');
+        document.addEventListener('mousemove', (e) => {
+            tracker.style.opacity = '1';
+            tracker.style.background = `radial-gradient(600px circle at ${e.clientX}px ${e.clientY}px, rgba(0, 219, 233, 0.05), transparent 80%)`;
+        });
+
+        const buildPrimerTrigger = document.getElementById('build-primer-trigger');
+        const buildPrimerModal = document.getElementById('build-primer-modal');
+        const buildPrimerClose = document.getElementById('build-primer-close');
+        const otherRepositoriesTrigger = document.getElementById('other-repositories-trigger');
+        const otherRepositoriesModal = document.getElementById('other-repositories-modal');
+        const otherRepositoriesClose = document.getElementById('other-repositories-close');
+
+        function openModal(modal, closeButton) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modal.setAttribute('aria-hidden', 'false');
+            closeButton.focus();
+        }
+
+        function closeModal(modal, focusTarget) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modal.setAttribute('aria-hidden', 'true');
+            focusTarget.focus();
+        }
+
+        function bindModalTrigger(topic, modal, closeButton) {
+            topic.addEventListener('click', () => openModal(modal, closeButton));
+            topic.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                    openModal(modal, closeButton);
+            }
+        });
+            closeButton.addEventListener('click', () => closeModal(modal, topic));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal, topic);
+        });
+        }
+
+        bindModalTrigger(buildPrimerTrigger, buildPrimerModal, buildPrimerClose);
+        bindModalTrigger(otherRepositoriesTrigger, otherRepositoriesModal, otherRepositoriesClose);
+        document.querySelectorAll('.copy-primer-prompt').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const target = document.getElementById(button.dataset.copyTarget);
+                if (!target) return;
+                await navigator.clipboard.writeText(target.innerText);
+                button.innerText = 'Copied';
+                setTimeout(() => {
+                    button.innerText = 'Copy';
+                }, 1200);
+            });
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (buildPrimerModal.getAttribute('aria-hidden') === 'false') closeModal(buildPrimerModal, buildPrimerTrigger);
+                if (otherRepositoriesModal.getAttribute('aria-hidden') === 'false') closeModal(otherRepositoriesModal, otherRepositoriesTrigger);
+            }
+        });
+        // === Harness skills, mirrored from MindShare Central (data verbatim) ===
+        const HARNESS_ORCHESTRATOR = [
+            { name: 'Orchestrator', sub: 'Core', icon: '<circle cx="32" cy="32" r="16"></circle><path d="M32 10v10M32 44v10M10 32h10M44 32h10"></path>', desc: 'Top-level orchestrator. Holds intent, priority arbitration, and the "why this next" decision across active work.' },
+            { name: 'Interface', sub: 'UI', icon: '<path d="M14 42c9-18 27-18 36 0"></path><path d="M18 48h28"></path><path d="M24 36h16"></path>', desc: 'Command-center interface and presentation layer. Renders harness and session state to the operator.' },
+            { name: 'Model Router', sub: 'Models', icon: '<path d="M14 32h14"></path><path d="M36 20l14 12-14 12"></path><path d="M28 20l14 12-14 12"></path>', desc: 'Routes work to the right model/provider path: selection, fallback, and route-quality learning.' },
+            { name: 'Health Monitor', sub: 'Heartbeat', icon: '<circle cx="32" cy="32" r="20"></circle><path d="M14 34h10l4-10 7 20 5-14h10"></path>', desc: 'Liveness and health monitoring. Watches sessions and workers for stalls and heartbeat anomalies.' },
+            { name: 'Guardrails', sub: 'Guardrails', icon: '<path d="M32 11l6 15 16 2-12 10 4 16-14-8-14 8 4-16-12-10 16-2z"></path><circle cx="32" cy="32" r="6"></circle>', desc: 'Guardrail runtime: secret scanning, permission policy, risky-action approval gates, credential boundaries.' },
+            { name: 'Proof Authority', sub: 'Proofs', icon: '<path d="M32 10l18 8v13c0 12-8 20-18 23-10-3-18-11-18-23V18z"></path><path d="M24 32l6 6 12-14"></path>', desc: 'Proof and crosscheck authority. Scores evidence sufficiency before work is trusted; manages waivers.' },
+            { name: 'Project Scope', sub: 'Projects', icon: '<circle cx="32" cy="32" r="18"></circle><path d="M32 14l7 25-7-4-7 4z"></path><path d="M32 14v21"></path>', desc: 'Project ontology and scope. Tracks objectives, drift, and cross-project dependencies and handoffs.' },
+            { name: 'Session Manager', sub: 'Sessions', icon: '<path d="M12 27h30l10 8H37l-6 8H17l5-8H12z"></path><path d="M20 43h22"></path><path d="M24 50h14"></path><path d="M27 43l-3 7M37 43l3 7"></path>', desc: 'Session lifecycle: open, close/write-through, suspend/resume, recovery, and safe migration across worktrees.' },
+            { name: 'Knowledge Retrieval', sub: 'Knowledge', icon: '<circle cx="32" cy="32" r="18"></circle><path d="M14 32h36M32 14c7 8 7 28 0 36M32 14c-7-8-7-28 0-36"></path>', desc: 'Knowledge retrieval and context packing. Semantic search, citation ranking, and chunk lineage.' },
+            { name: 'File Navigation', sub: 'Navigation', icon: '<path d="M32 10l15 39-15-8-15 8z"></path><path d="M32 10v31"></path><path d="M18 53c8-6 20-6 28 0"></path><circle cx="20" cy="52" r="3"></circle><circle cx="44" cy="52" r="3"></circle>', desc: 'FileMap navigation: ownership graph, impact analysis, and capability-to-code-to-proof paths.' },
+            { name: 'Review Queue', sub: 'Reviews', icon: '<path d="M17 16h30v32H17z"></path><path d="M23 25h18M23 33h18M23 41h10"></path><path d="M14 20h6M14 44h6"></path>', desc: 'Review queue: severity calibration, duplicate-finding collapse, assignment, and repair verification.' },
+            { name: 'Sub-agent Dispatch', sub: 'Sub-agents', icon: '<circle cx="18" cy="32" r="6"></circle><circle cx="32" cy="18" r="6"></circle><circle cx="46" cy="32" r="6"></circle><path d="M23 28l5-6M37 22l5 6M24 32h16"></path>', desc: 'Sub-agent dispatch and task planning. Lane capacity, worker handoff, and result ingestion.' },
+            { name: 'Network Protocol', sub: 'Network', icon: '<circle cx="32" cy="32" r="5"></circle><circle cx="18" cy="20" r="5"></circle><circle cx="46" cy="20" r="5"></circle><circle cx="32" cy="49" r="5"></circle><path d="M22 23l6 6M42 23l-6 6M32 37v7"></path>', desc: 'Multi-node protocol: trust handshake, remote capability discovery, packet signing, degraded behavior.' },
+            { name: 'Memory', sub: 'Memory', icon: '<rect x="18" y="18" width="28" height="28" rx="6"></rect><rect x="26" y="26" width="12" height="12" rx="2"></rect><path d="M24 10v8M32 10v8M40 10v8M24 46v8M32 46v8M40 46v8M10 24h8M10 32h8M10 40h8M46 24h8M46 32h8M46 40h8"></path>', desc: 'Durable memory: writeable recall, decay/expiry, conflict handling, and memory provenance.' },
+            { name: 'Tool Registry', sub: 'Tools', icon: '<path d="M41 13a11 11 0 0 0-13 13L15 39a7 7 0 0 0 10 10l13-13a11 11 0 0 0 13-13l-8 8-8-8z"></path><circle cx="20" cy="44" r="2"></circle>', desc: 'Tool registry and permissioned execution. Dry-run, reversible-action planning, and sandbox policy.' },
+            { name: 'Git Control', sub: 'Git', icon: '<circle cx="20" cy="20" r="5"></circle><circle cx="44" cy="32" r="5"></circle><circle cx="20" cy="44" r="5"></circle><path d="M25 20h8a11 11 0 0 1 11 11v1M20 25v14M25 44h9a10 10 0 0 0 10-10v-2"></path>', desc: 'Git control: branch leases, merge-conflict planning, diff risk scoring, and main-write safety.' },
+            { name: 'Browser Capture', sub: 'Browser', icon: '<rect x="13" y="16" width="38" height="32" rx="4"></rect><path d="M13 25h38"></path><circle cx="20" cy="21" r="1.5"></circle><circle cx="26" cy="21" r="1.5"></circle><path d="M24 37h16M32 29l8 8-8 8"></path>', desc: 'Browser/page capture: visual diffing, screenshot evidence, DOM/action planning, safe navigation.' },
+            { name: 'Release Readiness', sub: 'Release', icon: '<path d="M34 12c8 2 14 8 16 16L36 42 22 28z"></path><path d="M22 28l-8 2 6 6M36 42l-2 8-6-6"></path><circle cx="38" cy="24" r="4"></circle><path d="M20 44c-4 1-7 4-8 8 4-1 7-4 8-8z"></path>', desc: 'Release readiness: deployment plans, changelog/proof packaging, rollback gates, and release risk forecast.' }
+        ];
+        const HARNESS_MODEL = [
+            { name: 'Provider', sub: 'Adapter', icon: '<path d="M32 12l16 9v18L32 48l-16-9V21z"></path><path d="M32 12v18l16 9M32 30L16 21M32 30v18"></path>', desc: 'Connects to a model or vendor through a controlled boundary.' },
+            { name: 'Identity', sub: 'Model ID', icon: '<rect x="16" y="17" width="32" height="30" rx="5"></rect><path d="M24 27h16M24 35h10"></path><circle cx="42" cy="38" r="4"></circle><path d="M42 42v7"></path>', desc: 'Preserves exact provider, model, and version identity.' },
+            { name: 'Select', sub: 'Match', icon: '<circle cx="22" cy="24" r="7"></circle><circle cx="42" cy="24" r="7"></circle><path d="M18 44h28"></path><path d="M32 31v13"></path><path d="M24 36l8 8 8-8"></path>', desc: 'Chooses candidate models by task, tier, capability, and trust.' },
+            { name: 'Route', sub: 'Dispatch', icon: '<path d="M14 22h15"></path><path d="M38 16l12 12-12 12"></path><path d="M14 44h20"></path><path d="M42 36l8 8-8 8"></path>', desc: 'Sends approved work to the selected model path.' },
+            { name: 'Fallback', sub: 'Recover', icon: '<path d="M45 22a17 17 0 1 0 2 18"></path><path d="M45 14v8h-8"></path><path d="M31 24v11l8 4"></path>', desc: 'Handles blocked, failed, degraded, or unavailable routes.' },
+            { name: 'Verify', sub: 'Proof', icon: '<path d="M32 11l18 8v12c0 11-7 18-18 22-11-4-18-11-18-22V19z"></path><path d="M23 33l7 7 13-17"></path>', desc: 'Confirms provider, response, route, and output evidence.' },
+            { name: 'Cost', sub: 'Budget', icon: '<path d="M18 46h28"></path><path d="M22 46V24l10-8 10 8v22"></path><path d="M27 30h10M27 38h10"></path>', desc: 'Tracks spend posture and token/call economics.' },
+            { name: 'Latency', sub: 'Speed', icon: '<circle cx="32" cy="34" r="18"></circle><path d="M32 16v18l10 6"></path><path d="M24 10h16"></path><path d="M16 18l-5-5M48 18l5-5"></path>', desc: 'Measures response time and availability behavior.' },
+            { name: 'Context', sub: 'Window', icon: '<path d="M18 16h28v32H18z"></path><path d="M24 24h16M24 32h16M24 40h10"></path><path d="M14 20h4M14 44h4"></path>', desc: 'Enforces model context limits and fit.' },
+            { name: 'Prompt', sub: 'Payload', icon: '<path d="M16 18h32v22H27l-11 8z"></path><path d="M24 27h16M24 34h10"></path>', desc: 'Holds the exact admitted input sent to the model.' },
+            { name: 'Policy', sub: 'Rules', icon: '<path d="M22 14h20l8 8v28H14V22z"></path><path d="M42 14v10h10"></path><path d="M23 33h18M23 41h14"></path>', desc: 'Applies route, task, tier, and provider constraints.' },
+            { name: 'Safety', sub: 'Guard', icon: '<path d="M32 10l18 8v13c0 12-8 20-18 23-10-3-18-11-18-23V18z"></path><path d="M32 22v14"></path><path d="M32 44h.1"></path>', desc: 'Blocks unsafe or unauthorized model use.' },
+            { name: 'Privacy', sub: 'Data', icon: '<rect x="18" y="29" width="28" height="20" rx="4"></rect><path d="M24 29v-7a8 8 0 0 1 16 0v7"></path><circle cx="32" cy="39" r="2"></circle>', desc: 'Prevents secret, credential, or sensitive-data leakage.' },
+            { name: 'Tools', sub: 'Calls', icon: '<path d="M41 13a11 11 0 0 0-13 13L15 39a7 7 0 0 0 10 10l13-13a11 11 0 0 0 13-13l-8 8-8-8z"></path><circle cx="20" cy="44" r="2"></circle>', desc: 'Controls whether model/tool-call behavior is allowed.' },
+            { name: 'Compare', sub: 'Council', icon: '<circle cx="22" cy="32" r="12"></circle><circle cx="42" cy="32" r="12"></circle><path d="M32 20v24"></path>', desc: 'Supports multi-model or multi-lane comparison.' },
+            { name: 'Trace', sub: 'Audit', icon: '<circle cx="18" cy="20" r="5"></circle><circle cx="32" cy="32" r="5"></circle><circle cx="46" cy="44" r="5"></circle><path d="M22 23l6 6M36 35l6 6"></path><path d="M18 25v20h23"></path>', desc: 'Records route, payload hash, response, and evidence.' },
+            { name: 'Goal', sub: 'Intent', icon: '<circle cx="32" cy="32" r="20"></circle><circle cx="32" cy="32" r="10"></circle><circle cx="32" cy="32" r="3"></circle><path d="M46 18l6-6M46 18h8M46 18v-8"></path>', desc: 'Binds model work to the orchestrator objective.' },
+            { name: 'Payload', sub: 'Hash', icon: '<rect x="16" y="18" width="32" height="28" rx="4"></rect><path d="M22 27h20M22 35h14"></path><path d="M20 52l24-40"></path>', desc: 'Creates a verifiable fingerprint of the exact prompt sent.' },
+            { name: 'Response', sub: 'Output', icon: '<path d="M15 18h34v20H29l-14 10z"></path><path d="M23 27h18M23 34h10"></path><path d="M41 44h8M45 40v8"></path>', desc: 'Captures the model-returned content as a controlled artifact.' },
+            { name: 'Evidence', sub: 'Proof', icon: '<path d="M18 14h24l8 8v28H18z"></path><path d="M42 14v10h8"></path><path d="M25 35l5 5 11-14"></path>', desc: 'Links model output to tests, citations, reviews, or validation records.' },
+            { name: 'Trust', sub: 'State', icon: '<path d="M32 10l18 8v14c0 11-8 18-18 22-10-4-18-11-18-22V18z"></path><path d="M24 33h16"></path><path d="M28 27h8"></path><path d="M28 39h8"></path>', desc: 'Tracks whether a provider/model route is direct, reviewed, blocked, or expired.' }
+        ];
+
+        // --- Harness detail: function + the knobs that move performance / cost / capability ---
+        // Keyed by harness name. Read-only reference: describes WHAT can be tuned, not a live control.
+        // Levers are written so skills / plugins / scripts / config can later map onto them.
+        const HARNESS_DETAIL = {
+            // Orchestrator harnesses
+            'Orchestrator': { fn: 'Owns the "why this next" decision across all active work — holds intent, arbitrates priority, and decides which session or task earns the next slice of attention.',
+                perf: ['Priority weighting model (recency vs. blast-radius vs. deadline)', 'Parallel-lane cap and preemption rules for stalled work', 'Attention slice size per tick'],
+                cost: ['Attention budget per project', 'Ceiling on concurrent high-cost reasoning sessions', 'Idle-session reclaim timer'],
+                cap: ['Pluggable arbitration strategy (skill)', 'Objective-source inputs (Project Scope / Goal feeds)', 'Operator override hooks'] },
+            'Interface': { fn: 'Renders harness, session, and work state to the operator — the command-center surface you are looking at now.',
+                perf: ['Render cadence / refresh throttle', 'Virtualized lists for large session counts', 'Lazy panel hydration'],
+                cost: ['Poll-vs-push state sync', 'Snapshot interval', 'Suppress redundant repaint'],
+                cap: ['Custom panels / widgets (plugin)', 'Layout presets', 'Drawer extensions like this one'] },
+            'Model Router': { fn: 'Routes each unit of work to the right model / provider path — selection, fallback, and route-quality learning.',
+                perf: ['Route scoring weights (latency vs. quality)', 'Warm-pool / keepalive', 'Speculative routing'],
+                cost: ['Tier-down policy for cheap tasks', 'Per-route token ceilings', 'Cache-hit reuse before dispatch'],
+                cap: ['Provider adapter set (plugin)', 'Fallback chain depth', 'Route-learning feedback source'] },
+            'Health Monitor': { fn: 'Watches sessions and workers for stalls and heartbeat anomalies — liveness and health monitoring.',
+                perf: ['Heartbeat interval', 'Stall-detection threshold', 'Anomaly-window sizing'],
+                cost: ['Probe frequency vs. idle backoff', 'Sampling instead of per-tick polling'],
+                cap: ['Custom health checks (script)', 'Alert routing hooks', 'Auto-recovery trigger wiring'] },
+            'Guardrails': { fn: 'Guardrail runtime — secret scanning, permission policy, risky-action approval gates, credential boundaries.',
+                perf: ['Scan scope (diff-only vs. full)', 'Rule-set precompile', 'Gate-eval caching'],
+                cost: ['Scan trigger points (pre-commit vs. continuous)', 'Rule batching'],
+                cap: ['Custom rule packs / secret patterns (plugin)', 'Approval-gate definitions', 'Credential-boundary policy'] },
+            'Proof Authority': { fn: 'Proof and crosscheck authority — scores evidence sufficiency before work is trusted; manages waivers.',
+                perf: ['Evidence-scoring depth', 'Parallel crosscheck lanes', 'Proof cache'],
+                cost: ['Required-proof tiering by risk', 'Waiver shortcuts for low-risk paths'],
+                cap: ['Proof-type registry (plugin)', 'Sufficiency thresholds', 'Waiver policy authoring'] },
+            'Project Scope': { fn: 'Project ontology and scope — tracks objectives, drift, and cross-project dependencies and handoffs.',
+                perf: ['Drift-recompute interval', 'Dependency-graph caching'],
+                cost: ['Scope-scan frequency', 'Incremental vs. full ontology rebuild'],
+                cap: ['Objective schema (config)', 'Dependency-source connectors', 'Handoff templates'] },
+            'Session Manager': { fn: 'Session lifecycle — open, close / write-through, suspend / resume, recovery, and safe migration across worktrees.',
+                perf: ['Write-through batching', 'Resume-state prefetch', 'Migration parallelism'],
+                cost: ['Snapshot retention', 'Idle-suspend timer', 'State-compaction policy'],
+                cap: ['Recovery strategy (script)', 'Worktree-isolation rules', 'Lifecycle hooks'] },
+            'Knowledge Retrieval': { fn: 'Knowledge retrieval and context packing — semantic search, citation ranking, chunk lineage.',
+                perf: ['Index type / embedding model', 'Top-k and rerank depth', 'Chunk-size tuning'],
+                cost: ['Retrieval breadth vs. context budget', 'Cache embeddings', 'Cheap-recall-first'],
+                cap: ['Source connectors (plugin)', 'Ranking strategy', 'Lineage / provenance depth'] },
+            'File Navigation': { fn: 'FileMap navigation — ownership graph, impact analysis, and capability-to-code-to-proof paths.',
+                perf: ['Graph-build incrementality', 'Impact-walk depth cap', 'Path cache'],
+                cost: ['Re-index trigger', 'Partial-graph updates'],
+                cap: ['Ownership-rule source', 'Capability-mapping schema', 'Custom path queries (script)'] },
+            'Review Queue': { fn: 'Review queue — severity calibration, duplicate-finding collapse, assignment, and repair verification.',
+                perf: ['Dedup algorithm', 'Parallel reviewer lanes', 'Finding-cluster batching'],
+                cost: ['Review depth by severity', 'Reviewer-model tier', 'Skip-on-trivial'],
+                cap: ['Severity rubric (config)', 'Reviewer-agent set (plugin)', 'Repair-verify gate'] },
+            'Sub-agent Dispatch': { fn: 'Sub-agent dispatch and task planning — lane capacity, worker handoff, and result ingestion.',
+                perf: ['Lane concurrency cap', 'Fan-out width', 'Pipeline vs. barrier stages'],
+                cost: ['Worker-model tier per stage', 'Agent-count ceiling', 'Early-exit on empty'],
+                cap: ['Custom agent types (plugin)', 'Planning strategy (skill)', 'Result-schema enforcement'] },
+            'Network Protocol': { fn: 'Multi-node protocol — trust handshake, remote capability discovery, packet signing, degraded behavior.',
+                perf: ['Handshake cache', 'Discovery interval', 'Signature-verify batching'],
+                cost: ['Remote-call budgeting', 'Local-first preference', 'Degraded-mode fallbacks'],
+                cap: ['Node-trust policy', 'Capability-advertisement schema', 'Transport adapters (plugin)'] },
+            'Memory': { fn: 'Durable memory — writeable recall, decay / expiry, conflict handling, and memory provenance.',
+                perf: ['Recall index', 'Decay-sweep interval', 'Write-batch'],
+                cost: ['Retention / expiry policy', 'Memory-size caps', 'Dedup on write'],
+                cap: ['Memory schema (config)', 'Conflict-resolution strategy', 'Provenance depth'] },
+            'Tool Registry': { fn: 'Tool registry and permissioned execution — dry-run, reversible-action planning, and sandbox policy.',
+                perf: ['Tool-result cache', 'Parallel safe-tool exec', 'Warm sandboxes'],
+                cost: ['Tool-call ceilings', 'Dry-run-before-spend', 'Sandbox reuse'],
+                cap: ['Tool registry (plugin)', 'Permission policy', 'Reversibility / rollback definitions'] },
+            'Git Control': { fn: 'Git control — branch leases, merge-conflict planning, diff risk scoring, and main-write safety.',
+                perf: ['Diff-risk model', 'Conflict-predict precompute', 'Shallow-fetch tuning'],
+                cost: ['Lease-scope minimization', 'CI-trigger gating', 'Rebase-vs-merge policy'],
+                cap: ['Branch-lease rules (config)', 'Risk-scoring weights', 'Main-write gate (script)'] },
+            'Browser Capture': { fn: 'Browser / page capture — visual diffing, screenshot evidence, DOM / action planning, safe navigation.',
+                perf: ['Capture resolution', 'Visual-diff sensitivity', 'Headless-pool warmup'],
+                cost: ['Screenshot frequency', 'Capture-on-change only', 'Session reuse'],
+                cap: ['Navigation-allow policy', 'Action-planner strategy', 'Evidence-store connectors'] },
+            'Release Readiness': { fn: 'Release readiness — deployment plans, changelog / proof packaging, rollback gates, and release risk forecast.',
+                perf: ['Risk-forecast model', 'Parallel proof-package build'],
+                cost: ['Gate-check scope by release size', 'Reuse prior proof bundles'],
+                cap: ['Rollback-gate policy (config)', 'Changelog templates', 'Release-risk inputs'] },
+            // Model-harness layer
+            Provider: { fn: 'Connects to a model or vendor through a controlled boundary.',
+                perf: ['Connection pooling', 'Keepalive', 'Region selection'],
+                cost: ['Endpoint tier (batch vs. realtime)', 'Payload compression'],
+                cap: ['Adapter set per vendor (plugin)', 'Auth-mode config'] },
+            Identity: { fn: 'Preserves exact provider, model, and version identity.',
+                perf: ['Pin to fast model variants'],
+                cost: ['Pin cheaper version when adequate'],
+                cap: ['Version allowlist (config)', 'Identity-record schema'] },
+            Select: { fn: 'Chooses candidate models by task, tier, capability, and trust.',
+                perf: ['Capability-match weighting toward speed'],
+                cost: ['Default to lowest sufficient tier'],
+                cap: ['Selection rubric (skill)', 'Capability catalog'] },
+            Route: { fn: 'Sends approved work to the selected model path.',
+                perf: ['Dispatch concurrency', 'Warm route'],
+                cost: ['Per-route token cap'],
+                cap: ['Route table (config)', 'Dispatch hooks'] },
+            Fallback: { fn: 'Handles blocked, failed, degraded, or unavailable routes.',
+                perf: ['Fast-fail timeout', 'Pre-warmed standby'],
+                cost: ["Fallback-tier cap (don't escalate to pricier on retry unless needed)"],
+                cap: ['Fallback chain definition (config)', 'Retry policy'] },
+            Verify: { fn: 'Confirms provider, response, route, and output evidence.',
+                perf: ['Verify sampling vs. every-call'],
+                cost: ['Risk-tiered verification'],
+                cap: ['Verification checks (script)', 'Evidence schema'] },
+            Cost: { fn: 'Tracks spend posture and token / call economics.',
+                perf: ['Budget pre-check before dispatch'],
+                cost: ['Per-project / per-task budgets', 'Alert / halt thresholds', 'Token-accounting granularity'],
+                cap: ['Budget policy (config)', 'Cost model per provider'] },
+            Latency: { fn: 'Measures response time and availability behavior.',
+                perf: ['Latency-SLO targets', 'Slow-route demotion'],
+                cost: ['Trade latency for cheaper batch where allowed'],
+                cap: ['SLO config', 'Availability probes'] },
+            Context: { fn: 'Enforces model context limits and fit.',
+                perf: ['Context-pack compaction', 'Window-size selection'],
+                cost: ['Trim / summarize to reduce tokens', 'Chunk reuse'],
+                cap: ['Packing strategy (skill)', 'Per-model window map'] },
+            Prompt: { fn: 'Holds the exact admitted input sent to the model.',
+                perf: ['Prompt-template precompile', 'Cache-prefix reuse'],
+                cost: ['Prompt-cache hits', 'Redundant-context removal'],
+                cap: ['Template library (plugin)', 'Injection-order rules'] },
+            Policy: { fn: 'Applies route, task, tier, and provider constraints.',
+                perf: ['Rule precompile / cache'],
+                cost: ['Constraint that forces cheap tier when allowed'],
+                cap: ['Policy authoring (config)', 'Constraint packs'] },
+            Safety: { fn: 'Blocks unsafe or unauthorized model use.',
+                perf: ['Guard-eval cache'],
+                cost: ['Scope guard checks by risk'],
+                cap: ['Safety rule packs (plugin)', 'Block / allow policy'] },
+            Privacy: { fn: 'Prevents secret, credential, or sensitive-data leakage.',
+                perf: ['Redaction precompile'],
+                cost: ['Scan scope tuning'],
+                cap: ['Redaction patterns (plugin)', 'Data-class policy'] },
+            Tools: { fn: 'Controls whether model / tool-call behavior is allowed.',
+                perf: ['Tool-result cache', 'Parallel safe calls'],
+                cost: ['Tool-call ceilings'],
+                cap: ['Allowed-tool set (config)', 'Tool-call policy'] },
+            Compare: { fn: 'Supports multi-model or multi-lane comparison.',
+                perf: ['Parallel lane exec', 'Early-consensus exit'],
+                cost: ['Lane-count cap', 'Cheap-juror tier'],
+                cap: ['Comparison / voting strategy (skill)', 'Juror set'] },
+            Trace: { fn: 'Records route, payload hash, response, and evidence.',
+                perf: ['Async trace write'],
+                cost: ['Trace retention / sampling'],
+                cap: ['Trace schema (config)', 'Export connectors'] },
+            Goal: { fn: 'Binds model work to the orchestrator objective.',
+                perf: ['Goal-context caching'],
+                cost: ['Drop off-goal context to save tokens'],
+                cap: ['Objective binding source', 'Goal schema'] },
+            Payload: { fn: 'Creates a verifiable fingerprint of the exact prompt sent.',
+                perf: ['Hash-algorithm choice'],
+                cost: ['Hash-only metadata (cheap audit)'],
+                cap: ['Hash / sign scheme (config)'] },
+            Response: { fn: 'Captures the model-returned content as a controlled artifact.',
+                perf: ['Stream vs. block capture'],
+                cost: ['Store deltas only', 'Compress artifacts'],
+                cap: ['Artifact schema', 'Post-process hooks (script)'] },
+            Evidence: { fn: 'Links model output to tests, citations, reviews, or validation records.',
+                perf: ['Parallel evidence collection'],
+                cost: ['Evidence depth by risk tier'],
+                cap: ['Evidence-source connectors (plugin)', 'Link schema'] },
+            Trust: { fn: 'Tracks whether a provider / model route is direct, reviewed, blocked, or expired.',
+                perf: ['Trust-state cache'],
+                cost: ['Skip re-review while trust valid'],
+                cap: ['Trust-state machine (config)', 'Expiry policy'] }
+        };
+
+        // --- Proposed skills: one per lever axis (performance / cost / capability) per harness. ---
+        // Reference only — these are candidate skills that COULD be built to move each harness on
+        // that axis. Keyed by harness name. { perf|cost|cap: { name, desc } }. Nothing is wired.
+        const HARNESS_SKILLS = {
+            // Orchestrator harnesses
+            'Orchestrator': {
+                perf: { cmd: '/priority-tuner', name: 'Priority Tuner', desc: 'Learns priority weights (recency, blast-radius, deadline) from past arbitration outcomes and retunes the weighting model so the next-best work is chosen with fewer wasted attention slices.' },
+                cost: { cmd: '/attention-governor', name: 'Attention Governor', desc: 'Caps concurrent high-cost reasoning sessions per project and reclaims idle slices, holding total attention spend under a set ceiling.' },
+                cap: { cmd: '/arbitration-strategy', name: 'Arbitration Strategy', desc: 'Lets operators swap the "why this next" decision logic (round-robin, risk-first, deadline-first) without touching the orchestrator core.' } },
+            'Interface': {
+                perf: { cmd: '/session-renderer', name: 'Session Renderer', desc: 'Virtualizes large session lists and throttles refresh cadence so the command center stays responsive at high session counts.' },
+                cost: { cmd: '/sync-optimizer', name: 'Sync Optimizer', desc: 'Replaces redundant polling with change-driven push updates and tuned snapshot intervals to cut wasted repaint and state-sync work.' },
+                cap: { cmd: '/panel-kit', name: 'Panel Kit', desc: 'Provides a plugin surface for operator-authored panels, widgets, and layout presets like this harness drawer.' } },
+            'Model Router': {
+                perf: { cmd: '/route-tuner', name: 'Route Tuner', desc: 'Continuously retunes latency-vs-quality route weights and keeps warm pools ready so dispatch picks the fastest adequate path.' },
+                cost: { cmd: '/tier-down', name: 'Tier Down', desc: 'Routes cheap tasks to lower tiers, enforces per-route token ceilings, and reuses cache hits before any paid dispatch.' },
+                cap: { cmd: '/provider-adapters', name: 'Provider Adapters', desc: 'Adds new vendor/model adapters and configurable fallback-chain depth without changing the routing core.' } },
+            'Health Monitor': {
+                perf: { cmd: '/stall-tuner', name: 'Stall Tuner', desc: 'Calibrates heartbeat interval, stall threshold, and anomaly window so genuine stalls surface fast without false alarms.' },
+                cost: { cmd: '/probe-backoff', name: 'Probe Backoff', desc: 'Backs off probe frequency on idle sessions and samples instead of per-tick polling to cut monitoring overhead.' },
+                cap: { cmd: '/recovery-hooks', name: 'Recovery Hooks', desc: 'Wires custom health checks and recovery triggers so a detected stall can route to a defined repair action.' } },
+            'Guardrails': {
+                perf: { cmd: '/diff-scanner', name: 'Diff Scanner', desc: 'Limits secret and permission scans to changed surfaces and precompiles rule sets so gate evaluation stays fast.' },
+                cost: { cmd: '/trigger-optimizer', name: 'Trigger Optimizer', desc: 'Moves scans to high-value trigger points (pre-commit over continuous) and batches rules to reduce guardrail compute.' },
+                cap: { cmd: '/guardrail-packs', name: 'Guardrail Packs', desc: 'Lets teams author secret patterns, approval-gate definitions, and credential-boundary policy as installable packs.' } },
+            'Proof Authority': {
+                perf: { cmd: '/crosscheck-lanes', name: 'Crosscheck Lanes', desc: 'Runs evidence crosschecks across lanes and caches prior proofs so sufficiency scoring returns faster.' },
+                cost: { cmd: '/proof-policy', name: 'Proof Policy', desc: 'Scales required proof to risk tier and allows waiver shortcuts on low-risk paths to avoid over-proving cheap work.' },
+                cap: { cmd: '/proof-registry', name: 'Proof Registry', desc: 'Registers new evidence types and sufficiency thresholds so the authority can score domains it could not before.' } },
+            'Project Scope': {
+                perf: { cmd: '/drift-recompute', name: 'Drift Recompute', desc: 'Recomputes only changed scope regions and caches the dependency graph so drift checks stay cheap and current.' },
+                cost: { cmd: '/scan-scheduler', name: 'Scan Scheduler', desc: 'Tunes scope-scan frequency and prefers incremental over full ontology rebuilds to limit recompute cost.' },
+                cap: { cmd: '/scope-connectors', name: 'Scope Connectors', desc: 'Adds connectors and handoff templates so scope tracking spans new project and cross-project sources.' } },
+            'Session Manager': {
+                perf: { cmd: '/state-prefetch', name: 'State Prefetch', desc: 'Batches write-through and prefetches resume state so session open, resume, and worktree migration run with less stall.' },
+                cost: { cmd: '/idle-suspend', name: 'Idle Suspend', desc: 'Suspends idle sessions on a timer and compacts state with retention limits to shrink storage and live cost.' },
+                cap: { cmd: '/lifecycle-hooks', name: 'Lifecycle Hooks', desc: 'Exposes recovery-strategy scripts, worktree-isolation rules, and open/close lifecycle hooks for custom session behavior.' } },
+            'Knowledge Retrieval': {
+                perf: { cmd: '/rerank-tuner', name: 'Rerank Tuner', desc: 'Tunes embedding model, top-k, rerank depth, and chunk size so retrieval returns the right context with less latency.' },
+                cost: { cmd: '/cheap-recall', name: 'Cheap Recall', desc: 'Tries cached embeddings and cheap recall before broad search, bounding retrieval breadth to the context budget.' },
+                cap: { cmd: '/knowledge-connectors', name: 'Knowledge Connectors', desc: 'Adds source connectors, ranking strategies, and provenance depth so retrieval reaches new corpora with traceable lineage.' } },
+            'File Navigation': {
+                perf: { cmd: '/graph-builder', name: 'Graph Builder', desc: 'Builds the ownership graph incrementally, caps impact-walk depth, and caches paths so navigation stays fast on large trees.' },
+                cost: { cmd: '/partial-reindex', name: 'Partial Reindex', desc: 'Re-indexes only changed regions and applies partial graph updates to avoid full-rebuild cost.' },
+                cap: { cmd: '/path-queries', name: 'Path Queries', desc: 'Adds ownership-rule sources, a capability-mapping schema, and custom capability-to-code-to-proof queries.' } },
+            'Review Queue': {
+                perf: { cmd: '/finding-dedup', name: 'Finding Dedup', desc: 'Collapses duplicate findings and batches clusters across parallel reviewer lanes so the queue clears faster.' },
+                cost: { cmd: '/scaled-review', name: 'Scaled Review', desc: 'Sets review depth and reviewer-model tier by severity and skips trivial findings to control review spend.' },
+                cap: { cmd: '/reviewer-pack', name: 'Reviewer Pack', desc: 'Adds reviewer-agent sets, a configurable severity rubric, and a repair-verification gate.' } },
+            'Sub-agent Dispatch': {
+                perf: { cmd: '/stage-scheduler', name: 'Stage Scheduler', desc: 'Tunes lane concurrency and fan-out and prefers pipeline over barrier stages so sub-agent work overlaps instead of waiting.' },
+                cost: { cmd: '/worker-ceiling', name: 'Worker Ceiling', desc: 'Sets per-stage worker-model tier, caps total agent count, and early-exits empty stages to bound dispatch cost.' },
+                cap: { cmd: '/agent-types', name: 'Agent Types', desc: 'Registers new agent types, pluggable planning strategies, and enforced result schemas.' } },
+            'Network Protocol': {
+                perf: { cmd: '/handshake-cache', name: 'Handshake Cache', desc: 'Caches trust handshakes and batches signature verification so multi-node calls add less per-packet latency.' },
+                cost: { cmd: '/call-budget', name: 'Call Budget', desc: 'Prefers local execution, budgets remote calls, and uses degraded-mode fallbacks to limit cross-node cost.' },
+                cap: { cmd: '/transport-adapters', name: 'Transport Adapters', desc: 'Adds transport adapters, node-trust policy, and a capability-advertisement schema for new node types.' } },
+            'Memory': {
+                perf: { cmd: '/index-tuner', name: 'Index Tuner', desc: 'Tunes the recall index, decay-sweep interval, and write batching so memory reads and writes stay fast as it grows.' },
+                cost: { cmd: '/retention-policy', name: 'Retention Policy', desc: 'Applies expiry, size caps, and dedup-on-write to keep durable memory bounded.' },
+                cap: { cmd: '/conflict-resolution', name: 'Conflict Resolution', desc: 'Adds a memory schema, conflict-resolution logic, and provenance depth so recall stays trustworthy under contradiction.' } },
+            'Tool Registry': {
+                perf: { cmd: '/parallel-executor', name: 'Parallel Executor', desc: 'Caches tool results, runs safe tools in parallel, and keeps sandboxes warm to cut execution latency.' },
+                cost: { cmd: '/dry-run', name: 'Dry Run', desc: 'Enforces tool-call ceilings, dry-runs costly actions first, and reuses sandboxes to avoid wasted spend.' },
+                cap: { cmd: '/reversibility-policy', name: 'Reversibility Policy', desc: 'Registers new tools, permission policy, and rollback/reversibility definitions for gated execution.' } },
+            'Git Control': {
+                perf: { cmd: '/conflict-predict', name: 'Conflict Predict', desc: 'Precomputes likely merge conflicts and tunes shallow-fetch and diff-risk scoring so Git operations plan faster.' },
+                cost: { cmd: '/ci-gate', name: 'CI Gate', desc: 'Minimizes branch-lease scope and gates CI triggers (rebase-vs-merge policy) to avoid redundant pipeline cost.' },
+                cap: { cmd: '/main-gate', name: 'Main Gate', desc: 'Adds branch-lease rules, risk-scoring weights, and a scripted main-write gate.' } },
+            'Browser Capture': {
+                perf: { cmd: '/pool-warmup', name: 'Pool Warmup', desc: 'Warms a headless browser pool and tunes capture resolution and diff sensitivity so page capture returns quickly.' },
+                cost: { cmd: '/change-capture', name: 'Change Capture', desc: 'Captures only on detected change and reuses browser sessions to reduce screenshot and compute cost.' },
+                cap: { cmd: '/navigation-policy', name: 'Navigation Policy', desc: 'Adds navigation-allow policy, an action-planner strategy, and evidence-store connectors.' } },
+            'Release Readiness': {
+                perf: { cmd: '/proof-packager', name: 'Proof Packager', desc: 'Builds proof packages in parallel and tunes the risk-forecast model so release readiness is assessed faster.' },
+                cost: { cmd: '/scaled-gates', name: 'Scaled Gates', desc: 'Scales gate-check scope to release size and reuses prior proof bundles to cut release-prep cost.' },
+                cap: { cmd: '/rollback-gate', name: 'Rollback Gate', desc: 'Adds rollback-gate policy, changelog templates, and configurable release-risk inputs.' } },
+            // Model-harness layer
+            Provider: {
+                perf: { cmd: '/pool-manager', name: 'Pool Manager', desc: 'Pools connections, keeps them alive, and selects the nearest region to cut per-call connection overhead.' },
+                cost: { cmd: '/batch-endpoints', name: 'Batch Endpoints', desc: 'Chooses batch over realtime endpoints and compresses payloads where latency allows to reduce vendor cost.' },
+                cap: { cmd: '/vendor-adapters', name: 'Vendor Adapters', desc: 'Adds per-vendor adapters and auth-mode config so new providers connect through the controlled boundary.' } },
+            Identity: {
+                perf: { cmd: '/fast-pinner', name: 'Fast Pinner', desc: 'Pins requests to the fastest adequate model variant to trim response time.' },
+                cost: { cmd: '/cheap-pinner', name: 'Cheap Pinner', desc: 'Pins to the cheapest sufficient model version when capability allows, lowering per-call cost.' },
+                cap: { cmd: '/version-allowlist', name: 'Version Allowlist', desc: 'Maintains a version allowlist and identity-record schema so only approved model versions run.' } },
+            Select: {
+                perf: { cmd: '/speed-matcher', name: 'Speed Matcher', desc: 'Weights capability matching toward faster candidates when task quality permits.' },
+                cost: { cmd: '/tier-selector', name: 'Tier Selector', desc: 'Defaults selection to the lowest tier that meets the task to avoid overpaying for capability.' },
+                cap: { cmd: '/selection-rubric', name: 'Selection Rubric', desc: 'Adds an authored selection rubric and capability catalog so new task types map to the right model.' } },
+            Route: {
+                perf: { cmd: '/warm-dispatcher', name: 'Warm Dispatcher', desc: 'Raises dispatch concurrency and keeps routes warm so approved work reaches the model faster.' },
+                cost: { cmd: '/token-cap', name: 'Token Cap', desc: 'Enforces token ceilings per route so a single dispatch cannot overspend.' },
+                cap: { cmd: '/route-table', name: 'Route Table', desc: 'Adds a configurable route table and dispatch hooks for new model paths.' } },
+            Fallback: {
+                perf: { cmd: '/fail-standby', name: 'Fail Standby', desc: 'Sets tight fail timeouts and keeps a pre-warmed standby so blocked routes recover quickly.' },
+                cost: { cmd: '/retry-cap', name: 'Retry Cap', desc: "Caps fallback tier so retries don't silently escalate to pricier models unless required." },
+                cap: { cmd: '/chain-builder', name: 'Chain Builder', desc: 'Defines the fallback chain and retry policy for new failure modes.' } },
+            Verify: {
+                perf: { cmd: '/sampling-policy', name: 'Sampling Policy', desc: 'Verifies a sampled subset rather than every call where risk allows, cutting verification latency.' },
+                cost: { cmd: '/tiered-verifier', name: 'Tiered Verifier', desc: "Scales verification effort to risk tier so low-risk calls aren't over-verified." },
+                cap: { cmd: '/verification-checks', name: 'Verification Checks', desc: 'Adds scripted checks and an evidence schema so new output types can be confirmed.' } },
+            Cost: {
+                perf: { cmd: '/budget-check', name: 'Budget Check', desc: 'Checks budget before dispatch so over-budget work is stopped before it spends.' },
+                cost: { cmd: '/threshold-governor', name: 'Threshold Governor', desc: 'Sets per-project and per-task budgets with alert and halt thresholds and fine-grained token accounting.' },
+                cap: { cmd: '/cost-model', name: 'Cost Model', desc: 'Adds per-provider cost models and budget-policy authoring.' } },
+            Latency: {
+                perf: { cmd: '/route-demoter', name: 'Route Demoter', desc: 'Sets latency SLOs and demotes routes that breach them so fast paths win.' },
+                cost: { cmd: '/batch-mode', name: 'Batch Mode', desc: 'Trades latency for cheaper batch processing where the task tolerates delay.' },
+                cap: { cmd: '/availability-probes', name: 'Availability Probes', desc: 'Adds SLO config and availability probes for new routes.' } },
+            Context: {
+                perf: { cmd: '/context-compactor', name: 'Context Compactor', desc: 'Compacts context and selects the right window size so prompts fit with less processing.' },
+                cost: { cmd: '/summarize-fit', name: 'Summarize Fit', desc: 'Trims and summarizes context and reuses chunks to lower token spend.' },
+                cap: { cmd: '/window-map', name: 'Window Map', desc: 'Adds packing strategies and a per-model window map so context fit adapts to each model.' } },
+            Prompt: {
+                perf: { cmd: '/template-precompiler', name: 'Template Precompiler', desc: 'Precompiles templates and reuses cache prefixes so prompt assembly is fast.' },
+                cost: { cmd: '/cache-optimizer', name: 'Cache Optimizer', desc: 'Maximizes prompt-cache hits and strips redundant context to cut input tokens.' },
+                cap: { cmd: '/template-library', name: 'Template Library', desc: 'Adds a template library and injection-order rules for new prompt shapes.' } },
+            Policy: {
+                perf: { cmd: '/rule-precompiler', name: 'Rule Precompiler', desc: 'Precompiles and caches constraint rules so policy evaluation adds little overhead.' },
+                cost: { cmd: '/tier-constraint', name: 'Tier Constraint', desc: 'Adds a constraint that forces the cheapest allowed tier when policy permits.' },
+                cap: { cmd: '/constraint-packs', name: 'Constraint Packs', desc: 'Lets teams author policy and install constraint packs for new route/task rules.' } },
+            Safety: {
+                perf: { cmd: '/guard-cache', name: 'Guard Cache', desc: 'Caches guard evaluations so repeated safe patterns clear quickly.' },
+                cost: { cmd: '/scoped-guards', name: 'Scoped Guards', desc: 'Scopes guard checks by risk so low-risk calls run fewer checks.' },
+                cap: { cmd: '/safety-packs', name: 'Safety Packs', desc: 'Adds installable safety rule packs and block/allow policy.' } },
+            Privacy: {
+                perf: { cmd: '/redaction-precompiler', name: 'Redaction Precompiler', desc: 'Precompiles redaction matchers so leakage scanning stays fast.' },
+                cost: { cmd: '/scope-tuner', name: 'Scope Tuner', desc: 'Tunes scan scope to the data actually present, avoiding full-payload scanning cost.' },
+                cap: { cmd: '/redaction-packs', name: 'Redaction Packs', desc: 'Adds redaction patterns and data-class policy for new sensitive-data types.' } },
+            Tools: {
+                perf: { cmd: '/call-parallelizer', name: 'Call Parallelizer', desc: 'Caches results and runs safe tool calls in parallel to reduce wait.' },
+                cost: { cmd: '/call-ceiling', name: 'Call Ceiling', desc: "Caps tool calls per request so a run can't overspend on tool use." },
+                cap: { cmd: '/tool-policy', name: 'Tool Policy', desc: 'Configures the allowed-tool set and tool-call policy per route.' } },
+            Compare: {
+                perf: { cmd: '/early-consensus', name: 'Early Consensus', desc: 'Runs comparison lanes in parallel and exits on early consensus to save time.' },
+                cost: { cmd: '/juror-panel', name: 'Juror Panel', desc: 'Caps lane count and uses cheaper juror models to bound comparison cost.' },
+                cap: { cmd: '/voting-strategy', name: 'Voting Strategy', desc: 'Adds comparison/voting strategies and configurable juror sets.' } },
+            Trace: {
+                perf: { cmd: '/async-writer', name: 'Async Writer', desc: "Writes traces asynchronously so audit logging doesn't block the call path." },
+                cost: { cmd: '/trace-sampling', name: 'Trace Sampling', desc: 'Samples and ages out traces under a retention budget to limit storage cost.' },
+                cap: { cmd: '/trace-connectors', name: 'Trace Connectors', desc: 'Adds a trace schema and export connectors for external audit sinks.' } },
+            Goal: {
+                perf: { cmd: '/goal-cache', name: 'Goal Cache', desc: 'Caches the goal binding so each call reattaches to the objective without recompute.' },
+                cost: { cmd: '/context-pruner', name: 'Context Pruner', desc: 'Drops context not tied to the active objective to save tokens.' },
+                cap: { cmd: '/objective-binding', name: 'Objective Binding', desc: 'Adds objective-binding sources and a goal schema so new objective types bind cleanly.' } },
+            Payload: {
+                perf: { cmd: '/hash-selector', name: 'Hash Selector', desc: 'Picks a fast hash algorithm so fingerprinting adds minimal overhead.' },
+                cost: { cmd: '/metadata-audit', name: 'Metadata Audit', desc: 'Stores hash-only metadata instead of full payloads for cheap auditability.' },
+                cap: { cmd: '/sign-scheme', name: 'Sign Scheme', desc: 'Adds configurable hash/sign schemes for verifiable prompt fingerprints.' } },
+            Response: {
+                perf: { cmd: '/stream-capture', name: 'Stream Capture', desc: 'Captures responses as a stream rather than blocking so downstream work starts sooner.' },
+                cost: { cmd: '/delta-store', name: 'Delta Store', desc: 'Stores deltas and compresses artifacts to shrink response storage cost.' },
+                cap: { cmd: '/process-hooks', name: 'Process Hooks', desc: 'Adds an artifact schema and post-process hooks for response handling.' } },
+            Evidence: {
+                perf: { cmd: '/evidence-collector', name: 'Evidence Collector', desc: 'Gathers evidence across sources in parallel to shorten linking time.' },
+                cost: { cmd: '/evidence-depth', name: 'Evidence Depth', desc: "Scales evidence depth to risk tier so low-risk output isn't over-evidenced." },
+                cap: { cmd: '/evidence-connectors', name: 'Evidence Connectors', desc: 'Adds connectors and a link schema so output ties to new validation sources.' } },
+            Trust: {
+                perf: { cmd: '/trust-cache', name: 'Trust Cache', desc: 'Caches trust state so valid routes skip redundant lookups.' },
+                cost: { cmd: '/skip-reviewer', name: 'Skip Reviewer', desc: 'Skips re-review while trust remains valid to avoid repeat review cost.' },
+                cap: { cmd: '/trust-machine', name: 'Trust Machine', desc: 'Adds a configurable trust-state machine and expiry policy for route trust.' } }
+        };
+
+        function hEscape(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+        const HARNESS_BY_NAME = [].concat(HARNESS_ORCHESTRATOR, HARNESS_MODEL).reduce(function(m,h){m[h.name]=h;return m;},{});
+        const HARNESS_AXES = [
+            { key:'perf', label:'Performance', accent:'#7df4ff' },
+            { key:'cost', label:'Cost efficiency', accent:'#facc15' },
+            { key:'cap', label:'Capability', accent:'#48ff91' }
+        ];
+
+        function skillButtonHtml(harnessName, axis, skill){
+            if(!skill || !skill.name) return '';
+            return '<button type="button" data-harness="'+hEscape(harnessName)+'" aria-haspopup="dialog"'
+                + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full">'
+                + '<div class="flex items-center gap-2">'
+                + '<span class="h-2 w-2 rounded-full" style="background:'+axis.accent+'"></span>'
+                + '<span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+axis.accent+'">'+hEscape(axis.label)+'</span>'
+                + '<span class="ml-auto material-symbols-outlined text-[16px] text-on-surface-variant/50">tune</span>'
+                + '</div>'
+                + '<div class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">'+hEscape(skill.name)+'</div>'
+                + (skill.cmd ? '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
+                + '<p class="text-xs text-on-surface-variant leading-relaxed">'+hEscape(skill.desc)+'</p>'
+                + '<span class="mt-auto pt-1 font-label-caps text-[9px] uppercase tracking-widest text-secondary-fixed-dim">'+hEscape(harnessName)+'</span>'
+                + '</button>';
+        }
+
+        function harnessGroupHtml(title, subtitle, items){
+            var blocks = items.map(function(h){
+                var sk = HARNESS_SKILLS[h.name]; if(!sk) return '';
+                var btns = HARNESS_AXES.map(function(a){ return skillButtonHtml(h.name, a, sk[a.key]); }).join('');
+                return '<div class="md:col-span-12">'
+                    + '<div class="mb-3 flex items-center gap-3">'
+                    + '<span class="font-body-md font-bold text-primary-fixed">'+hEscape(h.name)+'</span>'
+                    + '<span class="font-label-caps text-[9px] uppercase tracking-widest text-on-surface-variant/60">'+hEscape(h.sub)+'</span>'
+                    + '<div class="flex-grow data-flow-line"></div>'
+                    + '</div>'
+                    + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">'+btns+'</div>'
+                    + '</div>';
+            }).join('');
+            return '<div class="md:col-span-12 mt-2">'
+                + '<h3 class="font-label-caps text-[11px] uppercase tracking-[0.24em] text-primary">'+hEscape(title)+'</h3>'
+                + '<p class="mt-1 mb-5 text-xs text-on-surface-variant/70 leading-relaxed">'+hEscape(subtitle)+'</p>'
+                + '</div>' + blocks;
+        }
+
+        function renderHarnessSkills(){
+            var root = document.getElementById('harness-skills-root');
+            if(!root) return;
+            root.innerHTML = '<div class="grid grid-cols-1 md:grid-cols-12 gap-x-6">'
+                + harnessGroupHtml('Orchestrator Harnesses','The control plane: what coordinates sessions, work, and authority.', HARNESS_ORCHESTRATOR)
+                + harnessGroupHtml('Model Harness Layer','The per-call boundary: what governs each model request end to end.', HARNESS_MODEL)
+                + '</div>';
+            root.querySelectorAll('button[data-harness]').forEach(function(btn){
+                btn.addEventListener('click', function(){ openHarnessDetail(btn.dataset.harness); });
+            });
+        }
+
+        function leverListHtml(title, accent, items){
+            if(!items || !items.length) return '';
+            var rows = items.map(function(it){
+                return '<li class="flex gap-2 text-xs leading-relaxed text-on-surface-variant"><span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style="background:'+accent+'"></span><span>'+hEscape(it)+'</span></li>';
+            }).join('');
+            return '<div class="rounded-lg border border-primary/15 bg-black/30 p-3"><div class="mb-2 flex items-center gap-2"><span class="h-2 w-2 rounded-full" style="background:'+accent+'"></span><span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+accent+'">'+hEscape(title)+'</span></div><ul class="space-y-1.5">'+rows+'</ul></div>';
+        }
+
+        function skillCardHtml(label, accent, skill){
+            if(!skill || !skill.name) return '';
+            return '<div class="rounded-lg border border-primary/15 bg-black/30 p-3"><div class="mb-1 flex items-center gap-2"><span class="h-2 w-2 rounded-full" style="background:'+accent+'"></span><span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+accent+'">'+hEscape(label)+'</span></div><div class="text-sm font-bold text-on-surface">'+hEscape(skill.name)+'</div>'
+                + (skill.cmd ? '<code class="mt-0.5 inline-block rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
+                + '<p class="mt-0.5 text-xs leading-relaxed text-on-surface-variant">'+hEscape(skill.desc)+'</p></div>';
+        }
+
+        function renderHarnessDetail(name){
+            var card = document.getElementById('harness-detail-card');
+            var meta = HARNESS_BY_NAME[name];
+            var detail = HARNESS_DETAIL[name];
+            var skills = HARNESS_SKILLS[name];
+            if(!card || !meta) return;
+            var isOrch = HARNESS_ORCHESTRATOR.some(function(h){ return h.name === name; });
+            var iconColor = isOrch ? '#7df4ff' : '#48ff91';
+            var layerLabel = isOrch ? 'Orchestrator Harness' : 'Model Harness Layer';
+            var fn = (detail && detail.fn) || meta.desc;
+            var skillCards = skills ? [
+                skillCardHtml('Performance','#7df4ff',skills.perf),
+                skillCardHtml('Cost efficiency','#facc15',skills.cost),
+                skillCardHtml('Capability','#48ff91',skills.cap)
+            ].join('') : '';
+            card.innerHTML = ''
+                + '<div class="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-primary/20 bg-surface-container-lowest/95 px-6 py-4 backdrop-blur">'
+                +   '<div class="flex items-start gap-3">'
+                +     '<div class="shrink-0 flex h-12 w-12 items-center justify-center rounded-md border border-primary/15 bg-black/40">'
+                +       '<svg class="h-7 w-7" viewBox="0 0 64 64" aria-hidden="true" style="fill:none;stroke:'+iconColor+';stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round">'+meta.icon+'</svg>'
+                +     '</div>'
+                +     '<div>'
+                +       '<div class="font-label-caps text-[10px] uppercase tracking-[0.24em]" style="color:'+iconColor+'">'+hEscape(layerLabel)+' &middot; '+hEscape(meta.sub)+'</div>'
+                +       '<h2 id="harness-detail-title" class="mt-0.5 font-headline-lg text-2xl text-primary-fixed">'+hEscape(meta.name)+'</h2>'
+                +     '</div>'
+                +   '</div>'
+                +   '<button class="border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10" id="harness-detail-close" type="button" aria-label="Close harness detail">Close</button>'
+                + '</div>'
+                + '<div class="space-y-4 p-6">'
+                +   '<div><div class="mb-1 font-label-caps text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/60">Function</div><p class="text-sm leading-relaxed text-on-surface">'+hEscape(fn)+'</p></div>'
+                +   '<div><div class="mb-2 font-label-caps text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/60">What can be manipulated</div><div class="grid grid-cols-1 gap-3 sm:grid-cols-3">'
+                +       leverListHtml('Performance','#7df4ff', detail && detail.perf)
+                +       leverListHtml('Cost efficiency','#facc15', detail && detail.cost)
+                +       leverListHtml('Capability','#48ff91', detail && detail.cap)
+                +   '</div></div>'
+                +   (skillCards ? '<div><div class="mb-2 font-label-caps text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/60">Proposed skills</div><div class="grid grid-cols-1 gap-3 sm:grid-cols-3">'+skillCards+'</div></div>' : '')
+                +   '<p class="rounded-md border border-primary/15 bg-black/30 px-3 py-2 text-[11px] leading-relaxed text-on-surface-variant/70">Reference only. These levers and proposed skills describe where skills, plugins, scripts, and config will later attach &mdash; nothing here is wired to act yet. Each change is a gated, reviewed step.</p>'
+                + '</div>';
+            var cb = document.getElementById('harness-detail-close');
+            if(cb) cb.addEventListener('click', closeHarnessDetail);
+        }
+
+        function openHarnessDetail(name){
+            if(!HARNESS_BY_NAME[name]) return;
+            renderHarnessDetail(name);
+            var m = document.getElementById('harness-detail-modal');
+            if(!m) return;
+            m.classList.remove('hidden'); m.classList.add('flex'); m.setAttribute('aria-hidden','false');
+        }
+
+        function closeHarnessDetail(){
+            var m = document.getElementById('harness-detail-modal');
+            if(!m) return;
+            m.classList.add('hidden'); m.classList.remove('flex'); m.setAttribute('aria-hidden','true');
+        }
+
+        (function(){
+            var m = document.getElementById('harness-detail-modal');
+            if(m) m.addEventListener('click', function(e){ if(e.target === m || (e.target && e.target.id === 'harness-detail-backdrop')) closeHarnessDetail(); });
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.getAttribute('aria-hidden') === 'false') closeHarnessDetail(); });
+            renderHarnessSkills();
+        })();
+
+    </script>
+</body></html>
+
+
+
