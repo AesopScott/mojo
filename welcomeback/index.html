@@ -1097,6 +1097,75 @@ Other Repositories
             { key:'cap', label:'Capability', accent:'#48ff91' }
         ];
 
+        // Copy-command control. Clicking copies the slash command to the clipboard so an
+        // operator can paste it straight into Claude Code. These skills are reference-only and
+        // not installable from a web page, so "copy command" is the honest action — no artifact
+        // is downloaded, nothing touches the visitor's filesystem.
+        function copyCtrlHtml(cmd){
+            if(!cmd) return '';
+            return '<span role="button" tabindex="0" data-copy="'+hEscape(cmd)+'"'
+                + ' class="copy-skill inline-flex items-center gap-1 rounded bg-primary/15 hover:bg-primary/25 px-1.5 py-0.5 cursor-pointer select-none font-label-caps text-[9px] uppercase tracking-widest text-primary-fixed transition-colors"'
+                + ' aria-label="Copy command '+hEscape(cmd)+'">'
+                + '<span class="material-symbols-outlined text-[13px] leading-none" aria-hidden="true">content_copy</span>'
+                + '<span class="copy-skill-label">Copy</span></span>';
+        }
+
+        function cmdRowHtml(cmd){
+            if(!cmd) return '';
+            return '<div class="flex items-center gap-2 flex-wrap">'
+                + '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(cmd)+'</code>'
+                + copyCtrlHtml(cmd)
+                + '</div>';
+        }
+
+        function fallbackCopySkill(text, done){
+            try {
+                var ta = document.createElement('textarea');
+                ta.value = text; ta.setAttribute('readonly','');
+                ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+                document.body.appendChild(ta); ta.select();
+                var ok = document.execCommand('copy');
+                document.body.removeChild(ta); done(ok);
+            } catch(err){ done(false); }
+        }
+
+        function flashCopied(el, ok){
+            var label = el.querySelector('.copy-skill-label');
+            if(!label) return;
+            label.textContent = ok ? 'Copied' : 'Copy failed';
+            el.classList.add('copied');
+            setTimeout(function(){ label.textContent = 'Copy'; el.classList.remove('copied'); }, 1400);
+        }
+
+        function handleCopySkill(el){
+            var cmd = el.getAttribute('data-copy');
+            if(!cmd) return;
+            var done = function(ok){ flashCopied(el, ok); };
+            if(navigator.clipboard && navigator.clipboard.writeText){
+                navigator.clipboard.writeText(cmd).then(function(){ done(true); }, function(){ fallbackCopySkill(cmd, done); });
+            } else {
+                fallbackCopySkill(cmd, done);
+            }
+        }
+
+        // Capture-phase delegation: stopPropagation here prevents a copy click on a skill bar
+        // from also firing the bar's bubble-phase handler that opens the harness detail modal.
+        function wireCopySkills(){
+            document.addEventListener('click', function(e){
+                var el = e.target.closest ? e.target.closest('.copy-skill') : null;
+                if(!el) return;
+                e.preventDefault(); e.stopPropagation();
+                handleCopySkill(el);
+            }, true);
+            document.addEventListener('keydown', function(e){
+                if(e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+                var el = e.target.closest ? e.target.closest('.copy-skill') : null;
+                if(!el) return;
+                e.preventDefault(); e.stopPropagation();
+                handleCopySkill(el);
+            }, true);
+        }
+
         function skillButtonHtml(harnessName, axis, skill){
             if(!skill || !skill.name) return '';
             return '<button type="button" data-harness="'+hEscape(harnessName)+'" aria-haspopup="dialog"'
@@ -1107,7 +1176,7 @@ Other Repositories
                 + '<span class="ml-auto material-symbols-outlined text-[16px] text-on-surface-variant/50">tune</span>'
                 + '</div>'
                 + '<div class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">'+hEscape(skill.name)+'</div>'
-                + (skill.cmd ? '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
+                + (skill.cmd ? cmdRowHtml(skill.cmd) : '')
                 + '<p class="text-xs text-on-surface-variant leading-relaxed">'+hEscape(skill.desc)+'</p>'
                 + '<span class="mt-auto pt-1 font-label-caps text-[9px] uppercase tracking-widest text-secondary-fixed-dim">'+hEscape(harnessName)+'</span>'
                 + '</button>';
@@ -1155,7 +1224,7 @@ Other Repositories
         function skillCardHtml(label, accent, skill){
             if(!skill || !skill.name) return '';
             return '<div class="rounded-lg border border-primary/15 bg-black/30 p-3"><div class="mb-1 flex items-center gap-2"><span class="h-2 w-2 rounded-full" style="background:'+accent+'"></span><span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+accent+'">'+hEscape(label)+'</span></div><div class="text-sm font-bold text-on-surface">'+hEscape(skill.name)+'</div>'
-                + (skill.cmd ? '<code class="mt-0.5 inline-block rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
+                + (skill.cmd ? '<div class="mt-0.5">'+cmdRowHtml(skill.cmd)+'</div>' : '')
                 + '<p class="mt-0.5 text-xs leading-relaxed text-on-surface-variant">'+hEscape(skill.desc)+'</p></div>';
         }
 
@@ -1219,6 +1288,7 @@ Other Repositories
             var m = document.getElementById('harness-detail-modal');
             if(m) m.addEventListener('click', function(e){ if(e.target === m || (e.target && e.target.id === 'harness-detail-backdrop')) closeHarnessDetail(); });
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.getAttribute('aria-hidden') === 'false') closeHarnessDetail(); });
+            wireCopySkills();
             renderHarnessSkills();
         })();
 
