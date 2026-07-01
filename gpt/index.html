@@ -250,7 +250,7 @@
       font-size: 0.9rem;
     }
 
-    main section {
+    main > section {
       padding: 5.2rem 0;
     }
 
@@ -426,7 +426,12 @@
       display: grid;
       gap: 1rem;
       align-content: start;
+      align-self: start;
       box-shadow: var(--shadow);
+    }
+
+    .prompt-layout {
+      align-items: start;
     }
 
     .prompt-panel h3 {
@@ -700,7 +705,7 @@
         color: black;
       }
 
-      main section {
+      main > section {
         padding: 1rem 0;
       }
 
@@ -974,7 +979,7 @@
           <button class="tab" role="tab" aria-selected="false" data-pattern="explain">Explain</button>
         </div>
 
-        <div class="grid cols-2">
+        <div class="grid cols-2 prompt-layout">
           <section class="prompt-panel" aria-live="polite">
             <h3 id="patternTitle">Draft</h3>
             <p class="prompt-text" id="patternText">Draft a professional email to [audience] explaining [topic]. Keep it concise, clear, and friendly.</p>
