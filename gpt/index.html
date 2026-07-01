@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>First Use AI Training</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@200..700,0..1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172027;
+      --muted: #5d6872;
+      --paper: #f7f8f5;
+      --panel: #ffffff;
+      --line: #d8ded8;
+      --teal: #047c7a;
+      --teal-dark: #025b5b;
+      --amber: #be6a15;
+      --charcoal: #253038;
+      --soft-teal: #e4f4f1;
+      --soft-amber: #fff0dc;
+      --danger: #9f2d20;
+      --safe: #1c7551;
+      --shadow: 0 16px 40px rgba(28, 38, 44, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      letter-spacing: 0;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      transform: translateY(-160%);
+      background: var(--charcoal);
+      color: white;
+      padding: 0.75rem 1rem;
+      z-index: 20;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(247, 248, 245, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-weight: 800;
+      color: var(--charcoal);
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      background: var(--teal);
+      color: white;
+      border-radius: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a,
+    .ghost-button,
+    .solid-button {
+      min-height: 42px;
+      border-radius: 8px;
+      padding: 0.7rem 0.95rem;
+      text-decoration: none;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-links a,
+    .ghost-button {
+      color: var(--charcoal);
+      background: transparent;
+      border-color: var(--line);
+    }
+
+    .solid-button {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+      font-weight: 700;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 86vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+
+    .hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(14, 22, 28, 0.9), rgba(14, 22, 28, 0.55) 44%, rgba(14, 22, 28, 0.16)),
+        linear-gradient(0deg, rgba(14, 22, 28, 0.92), rgba(14, 22, 28, 0.1) 48%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 8rem 0 4rem;
+      color: white;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: #bff3ec;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      max-width: 820px;
+      margin: 0;
+      font-size: clamp(2.55rem, 7vw, 5.9rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      margin: 1.5rem 0 0;
+      color: rgba(255, 255, 255, 0.84);
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      line-height: 1.58;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 2rem;
+    }
+
+    .hero .ghost-button {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: white;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      max-width: 760px;
+      margin-top: 3rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat {
+      padding: 1rem;
+      background: rgba(12, 20, 26, 0.5);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat span {
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 0.9rem;
+    }
+
+    main section {
+      padding: 5.2rem 0;
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.45fr);
+      gap: 2rem;
+      align-items: end;
+      margin-bottom: 2.25rem;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--charcoal);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 0 rgba(23, 32, 39, 0.03);
+    }
+
+    .card h3 {
+      margin: 0 0 0.55rem;
+      font-size: 1.05rem;
+      color: var(--charcoal);
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      line-height: 1.58;
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .icon-title {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .icon-title .material-symbols-outlined {
+      color: var(--teal);
+      font-size: 1.55rem;
+    }
+
+    .agenda {
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      border-top: 1px solid var(--line);
+    }
+
+    .agenda-row {
+      display: contents;
+    }
+
+    .agenda-time,
+    .agenda-detail {
+      border-bottom: 1px solid var(--line);
+      padding: 1.1rem 0;
+    }
+
+    .agenda-time {
+      color: var(--teal-dark);
+      font-weight: 800;
+      padding-right: 1.4rem;
+    }
+
+    .agenda-detail h3 {
+      margin: 0 0 0.35rem;
+      font-size: 1.08rem;
+    }
+
+    .agenda-detail p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .band {
+      background: #edf3ed;
+      border-block: 1px solid var(--line);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.48rem 0.68rem;
+      border-radius: 999px;
+      background: var(--soft-teal);
+      color: var(--teal-dark);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .danger .pill {
+      background: #fde6e2;
+      color: var(--danger);
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--charcoal);
+      min-height: 42px;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .tab[aria-selected="true"] {
+      background: var(--charcoal);
+      color: white;
+      border-color: var(--charcoal);
+    }
+
+    .prompt-panel {
+      background: var(--charcoal);
+      color: white;
+      border-radius: 8px;
+      padding: 1.25rem;
+      min-height: 210px;
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      box-shadow: var(--shadow);
+    }
+
+    .prompt-panel h3 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+
+    .prompt-text {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .prompt-panel .solid-button {
+      width: fit-content;
+      background: #d7a04e;
+      border-color: #d7a04e;
+      color: #172027;
+    }
+
+    .builder {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .field label {
+      color: var(--charcoal);
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem;
+      background: white;
+      color: var(--ink);
+    }
+
+    .field textarea {
+      min-height: 116px;
+      resize: vertical;
+    }
+
+    .builder-output {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1rem;
+      color: var(--muted);
+      line-height: 1.65;
+      min-height: 120px;
+    }
+
+    .quiz {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .quiz-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 0.6rem;
+      align-items: center;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem;
+    }
+
+    .quiz-item p {
+      margin: 0;
+      color: var(--charcoal);
+      font-weight: 700;
+    }
+
+    .quiz-item button {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      color: var(--charcoal);
+      padding: 0.55rem 0.75rem;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .quiz-item button.correct {
+      background: var(--safe);
+      border-color: var(--safe);
+      color: white;
+    }
+
+    .quiz-item button.wrong {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: white;
+    }
+
+    .timer {
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      min-height: 260px;
+      background: var(--charcoal);
+      color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .timer-time {
+      font-size: clamp(3.2rem, 10vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .timer .ghost-button {
+      color: white;
+      border-color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .rule-list {
+      counter-reset: rules;
+      display: grid;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rule-list li {
+      counter-increment: rules;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 0.8rem;
+      align-items: start;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem;
+      color: var(--muted);
+    }
+
+    .rule-list li::before {
+      content: counter(rules);
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      background: var(--teal);
+      color: white;
+      border-radius: 8px;
+      font-weight: 800;
+    }
+
+    .footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--line);
+      background: white;
+      color: var(--muted);
+    }
+
+    .footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      background: var(--charcoal);
+      color: white;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: 180ms ease;
+      pointer-events: none;
+      z-index: 30;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .print-only {
+      display: none;
+    }
+
+    @media (max-width: 860px) {
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 0.8rem 0;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: visible;
+        flex-wrap: wrap;
+        padding-bottom: 0.2rem;
+      }
+
+      .hero {
+        min-height: 780px;
+      }
+
+      .hero-stats,
+      .grid.cols-3,
+      .grid.cols-2,
+      .section-head,
+      .builder {
+        grid-template-columns: 1fr;
+      }
+
+      .agenda {
+        grid-template-columns: 1fr;
+      }
+
+      .agenda-time {
+        border-bottom: 0;
+        padding-bottom: 0.1rem;
+      }
+
+      .agenda-detail {
+        padding-top: 0.15rem;
+      }
+
+      .quiz-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .topbar,
+      .hero,
+      .timer,
+      .toast,
+      .no-print {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+        color: black;
+      }
+
+      main section {
+        padding: 1rem 0;
+      }
+
+      .wrap {
+        width: 100%;
+      }
+
+      .card,
+      .rule-list li,
+      .quiz-item,
+      .builder-output {
+        box-shadow: none;
+        border-color: #bbb;
+      }
+
+      .print-only {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to class content</a>
+
+  <header class="topbar">
+    <nav class="nav" aria-label="Training navigation">
+      <a class="brand" href="#top" aria-label="First Use AI Training home">
+        <span class="brand-mark material-symbols-outlined" aria-hidden="true">psychology</span>
+        <span>First Use AI Training</span>
+      </a>
+      <div class="nav-links">
+        <a href="#agenda">Agenda</a>
+        <a href="#safety">Safety</a>
+        <a href="#prompts">Prompts</a>
+        <a href="#demo">Demo</a>
+        <button class="ghost-button" type="button" id="printPage">
+          <span class="material-symbols-outlined" aria-hidden="true">print</span>
+          Print handout
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top" aria-label="Class overview">
+      <img src="assets/ai-training-hero.png" alt="Employees in a training room learning practical AI workflows on laptops">
+      <div class="hero-content">
+        <span class="eyebrow"><span class="material-symbols-outlined" aria-hidden="true">shield_person</span> One hour employee class</span>
+        <h1>Using AI In The Business For The First Time</h1>
+        <p class="hero-copy">A practical class for employees receiving access to OpenAI tools. The goal is simple: use AI for drafts, ideas, summaries, structure, and learning while keeping judgment and sensitive data protected.</p>
+        <div class="hero-actions">
+          <a class="solid-button" href="#agenda">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+            Start class
+          </a>
+          <a class="ghost-button" href="#rules">
+            <span class="material-symbols-outlined" aria-hidden="true">rule</span>
+            Five rules
+          </a>
+        </div>
+        <div class="hero-stats" aria-label="Training facts">
+          <div class="stat"><strong>60</strong><span>Minutes total</span></div>
+          <div class="stat"><strong>6</strong><span>Prompt patterns</span></div>
+          <div class="stat"><strong>5</strong><span>Rules to remember</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="overview">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Training goal</span>
+            <h2>Safe first use, not AI mastery</h2>
+          </div>
+          <p class="lead">By the end, employees should understand what AI is useful for, what they are not allowed to enter, how to verify output, and how to use AI safely for everyday work.</p>
+        </div>
+
+        <div class="grid cols-3">
+          <article class="card">
+            <div class="icon-title">
+              <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
+              <h3>Use AI for drafts</h3>
+            </div>
+            <p>Emails, agendas, FAQs, procedures, checklists, summaries, explanations, and rough training material.</p>
+          </article>
+          <article class="card">
+            <div class="icon-title">
+              <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+              <h3>Keep data protected</h3>
+            </div>
+            <p>Do not enter confidential, regulated, sensitive, or restricted information unless the use case is explicitly approved.</p>
+          </article>
+          <article class="card">
+            <div class="icon-title">
+              <span class="material-symbols-outlined" aria-hidden="true">fact_check</span>
+              <h3>Review before use</h3>
+            </div>
+            <p>Employees own final work product. Facts, tone, audience, privacy, policy fit, and approvals still need human review.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="agenda">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Class agenda</span>
+            <h2>Sixty minute run of show</h2>
+          </div>
+          <p class="lead">Each section includes instructor purpose, core message, and enough detail for live delivery tomorrow.</p>
+        </div>
+
+        <div class="agenda">
+          <div class="agenda-row">
+            <div class="agenda-time">0:00 to 0:05</div>
+            <div class="agenda-detail">
+              <h3>Welcome and why we are doing this</h3>
+              <p>AI is being introduced as a work assistant, not a replacement for judgment. This is a learning rollout. Nobody needs to be an expert on day one.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:05 to 0:12</div>
+            <div class="agenda-detail">
+              <h3>What AI is good for</h3>
+              <p>Drafting, summarizing approved text, rewriting, brainstorming, explaining concepts, organizing notes, and creating first pass documentation.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:12 to 0:18</div>
+            <div class="agenda-detail">
+              <h3>What AI is not good for</h3>
+              <p>AI is not a final decision maker, verified source of truth, legal authority, HR authority, compliance authority, or replacement for required approvals.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:18 to 0:28</div>
+            <div class="agenda-detail">
+              <h3>Data safety and what not to enter</h3>
+              <p>Make the main governance rule memorable: if you would not send it to an external vendor without approval, do not put it into AI.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:28 to 0:38</div>
+            <div class="agenda-detail">
+              <h3>Basic prompting patterns</h3>
+              <p>Give employees reusable structures for drafting, rewriting, summarizing, brainstorming, checklist creation, and plain language explanation.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:38 to 0:48</div>
+            <div class="agenda-detail">
+              <h3>Human review and verification</h3>
+              <p>Check facts, names, dates, calculations, policy references, tone, privacy, audience fit, and required approvals before use.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:48 to 0:55</div>
+            <div class="agenda-detail">
+              <h3>Live demonstration</h3>
+              <p>Rewrite a rough internal announcement, create a meeting agenda, and build a document review checklist from safe sample content.</p>
+            </div>
+          </div>
+          <div class="agenda-row">
+            <div class="agenda-time">0:55 to 1:00</div>
+            <div class="agenda-detail">
+              <h3>Wrap up and rules to remember</h3>
+              <p>Close with simple guidance: protect sensitive information, verify output, and keep human judgment in charge.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Safety gate</span>
+            <h2>What employees should not enter</h2>
+          </div>
+          <p class="lead">This is the control I would keep most visible. Tool access does not create permission to paste sensitive business material.</p>
+        </div>
+
+        <div class="grid cols-2">
+          <article class="card danger">
+            <h3>Never enter without approval</h3>
+            <div class="pill-list">
+              <span class="pill">PHI</span>
+              <span class="pill">Client records</span>
+              <span class="pill">Social Security numbers</span>
+              <span class="pill">Payment card data</span>
+              <span class="pill">Passwords</span>
+              <span class="pill">API keys</span>
+              <span class="pill">HR records</span>
+              <span class="pill">Legal privilege</span>
+              <span class="pill">Vendor pricing</span>
+              <span class="pill">Board materials</span>
+              <span class="pill">Security incidents</span>
+              <span class="pill">Network diagrams</span>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>Safe first uses</h3>
+            <div class="pill-list">
+              <span class="pill">Draft</span>
+              <span class="pill">Rewrite</span>
+              <span class="pill">Summarize approved text</span>
+              <span class="pill">Brainstorm</span>
+              <span class="pill">Organize notes</span>
+              <span class="pill">Explain concepts</span>
+              <span class="pill">Create checklists</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="grid cols-2" style="margin-top: 1rem;">
+          <div>
+            <h3>Data safety activity</h3>
+            <p class="lead">Ask the room: Would you put this into AI? Select an answer to reveal the control.</p>
+          </div>
+          <div class="quiz" aria-label="Data safety quiz">
+            <div class="quiz-item" data-answer="safe">
+              <p>A public job description</p>
+              <button type="button" data-choice="safe">Safe</button>
+              <button type="button" data-choice="stop">Stop</button>
+            </div>
+            <div class="quiz-item" data-answer="safe">
+              <p>A draft email with no names or sensitive data</p>
+              <button type="button" data-choice="safe">Safe</button>
+              <button type="button" data-choice="stop">Stop</button>
+            </div>
+            <div class="quiz-item" data-answer="stop">
+              <p>A customer complaint with name and account details</p>
+              <button type="button" data-choice="safe">Safe</button>
+              <button type="button" data-choice="stop">Stop</button>
+            </div>
+            <div class="quiz-item" data-answer="stop">
+              <p>A spreadsheet containing employee compensation</p>
+              <button type="button" data-choice="safe">Safe</button>
+              <button type="button" data-choice="stop">Stop</button>
+            </div>
+            <div class="quiz-item" data-answer="safe">
+              <p>A meeting agenda with no sensitive content</p>
+              <button type="button" data-choice="safe">Safe</button>
+              <button type="button" data-choice="stop">Stop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="prompts">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Prompt patterns</span>
+            <h2>Context, task, audience, format, constraints</h2>
+          </div>
+          <p class="lead">Good prompts tell AI what role the output should play. The employee still reviews the result before using it.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Prompt pattern selector">
+          <button class="tab" role="tab" aria-selected="true" data-pattern="draft">Draft</button>
+          <button class="tab" role="tab" aria-selected="false" data-pattern="rewrite">Rewrite</button>
+          <button class="tab" role="tab" aria-selected="false" data-pattern="summarize">Summarize</button>
+          <button class="tab" role="tab" aria-selected="false" data-pattern="brainstorm">Brainstorm</button>
+          <button class="tab" role="tab" aria-selected="false" data-pattern="checklist">Checklist</button>
+          <button class="tab" role="tab" aria-selected="false" data-pattern="explain">Explain</button>
+        </div>
+
+        <div class="grid cols-2">
+          <section class="prompt-panel" aria-live="polite">
+            <h3 id="patternTitle">Draft</h3>
+            <p class="prompt-text" id="patternText">Draft a professional email to [audience] explaining [topic]. Keep it concise, clear, and friendly.</p>
+            <button class="solid-button" type="button" id="copyPattern">
+              <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+              Copy pattern
+            </button>
+          </section>
+
+          <section class="card">
+            <h3>Build a safe prompt</h3>
+            <div class="builder">
+              <div class="field">
+                <label for="promptTask">Task</label>
+                <input id="promptTask" value="Rewrite this announcement">
+              </div>
+              <div class="field">
+                <label for="promptAudience">Audience</label>
+                <input id="promptAudience" value="All employees">
+              </div>
+              <div class="field">
+                <label for="promptFormat">Format</label>
+                <input id="promptFormat" value="Three short paragraphs">
+              </div>
+              <div class="field">
+                <label for="promptTone">Tone</label>
+                <input id="promptTone" value="Clear, calm, professional">
+              </div>
+            </div>
+            <div class="field" style="margin-top: 0.75rem;">
+              <label for="promptContext">Approved context</label>
+              <textarea id="promptContext">We are introducing AI tools as work assistants. Employees should experiment safely and review output before use.</textarea>
+            </div>
+            <div class="builder-output" id="builderOutput"></div>
+            <button class="solid-button" type="button" id="copyBuilt" style="margin-top: 0.75rem;">
+              <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+              Copy built prompt
+            </button>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="review">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Human review</span>
+            <h2>AI output is draft material</h2>
+          </div>
+          <p class="lead">AI can sound confident and still be wrong. The review step is not optional for external use, high impact work, or anything policy sensitive.</p>
+        </div>
+
+        <div class="grid cols-3">
+          <article class="card">
+            <h3>Check facts</h3>
+            <p>Names, dates, calculations, policy references, source claims, and anything that will be acted upon.</p>
+          </article>
+          <article class="card">
+            <h3>Check fit</h3>
+            <p>Tone, audience, reading level, company voice, completeness, and whether the output answers the real question.</p>
+          </article>
+          <article class="card">
+            <h3>Check gates</h3>
+            <p>Privacy, approvals, HR involvement, legal involvement, compliance involvement, finance review, and security review.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="demo">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Live demonstration</span>
+            <h2>Seven minute guided demo</h2>
+          </div>
+          <p class="lead">Show the first output, review what needs adjustment, ask for improvement, and produce a reviewed version.</p>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="timer" aria-label="Demo timer">
+            <div>
+              <div class="timer-time" id="timerDisplay">07:00</div>
+              <p style="color: rgba(255,255,255,0.78); margin: 0.8rem 0 0;">Live demo timer</p>
+              <div class="timer-controls">
+                <button class="solid-button" type="button" id="startTimer">
+                  <span class="material-symbols-outlined" aria-hidden="true">play_arrow</span>
+                  Start
+                </button>
+                <button class="ghost-button" type="button" id="pauseTimer">
+                  <span class="material-symbols-outlined" aria-hidden="true">pause</span>
+                  Pause
+                </button>
+                <button class="ghost-button" type="button" id="resetTimer">
+                  <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <article class="card">
+              <h3>Demo one: rewrite</h3>
+              <p>Use a rough, non sensitive internal announcement. Ask for clarity and a professional tone while preserving meaning.</p>
+            </article>
+            <article class="card">
+              <h3>Demo two: meeting agenda</h3>
+              <p>Ask for a 30 minute agenda with objectives, topics, owners, and decisions needed.</p>
+            </article>
+            <article class="card">
+              <h3>Demo three: review checklist</h3>
+              <p>Turn a short process into a checklist. Then ask AI what a human should verify before using it.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Wrap up</span>
+            <h2>Five rules to remember</h2>
+          </div>
+          <p class="lead">This is the closing slide and employee quick reference.</p>
+        </div>
+
+        <ol class="rule-list">
+          <li>Use AI for drafts, ideas, summaries, structure, and learning.</li>
+          <li>Do not enter sensitive information unless the use case is explicitly approved.</li>
+          <li>Treat AI output as a draft, not truth.</li>
+          <li>Review before using or sending anything.</li>
+          <li>Ask when unsure.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="band">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow" style="color: var(--teal-dark);">Optional extension</span>
+            <h2>Obsidian and basic skills</h2>
+          </div>
+          <p class="lead">Use these only if the group needs extra material. Keep the same rule: only approved content goes into AI workflows.</p>
+        </div>
+
+        <div class="grid cols-2">
+          <article class="card">
+            <h3>Connecting Obsidian</h3>
+            <p>AI can summarize, outline, tag, restructure, or draft from approved notes. Keep sensitive notes out unless the use case is approved, and review AI generated notes before treating them as organizational knowledge.</p>
+          </article>
+          <article class="card">
+            <h3>Writing basic skills with AI</h3>
+            <p>A skill is a reusable instruction pattern. It should define purpose, trigger, inputs, steps, output, boundaries, and examples. It also needs testing with a safe example before real use.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <strong>First Use AI Training</strong>
+      <span>Prepared for a one hour employee rollout class.</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script>
+    const patterns = {
+      draft: {
+        title: "Draft",
+        text: "Draft a professional email to [audience] explaining [topic]. Keep it concise, clear, and friendly."
+      },
+      rewrite: {
+        title: "Rewrite",
+        text: "Rewrite this for clarity and a professional tone. Keep the meaning the same."
+      },
+      summarize: {
+        title: "Summarize",
+        text: "Summarize this into five bullet points. Identify action items separately."
+      },
+      brainstorm: {
+        title: "Brainstorm",
+        text: "Give me ten possible approaches to [problem]. Include pros, cons, and risks."
+      },
+      checklist: {
+        title: "Checklist",
+        text: "Turn this process into a checklist for an employee to follow."
+      },
+      explain: {
+        title: "Explain",
+        text: "Explain [topic] in plain language for someone new to it."
+      }
+    };
+
+    const tabs = document.querySelectorAll(".tab");
+    const patternTitle = document.getElementById("patternTitle");
+    const patternText = document.getElementById("patternText");
+    const toast = document.getElementById("toast");
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Copied");
+      } catch {
+        showToast("Copy unavailable");
+      }
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((item) => item.setAttribute("aria-selected", "false"));
+        tab.setAttribute("aria-selected", "true");
+        const selected = patterns[tab.dataset.pattern];
+        patternTitle.textContent = selected.title;
+        patternText.textContent = selected.text;
+      });
+    });
+
+    document.getElementById("copyPattern").addEventListener("click", () => {
+      copyText(patternText.textContent);
+    });
+
+    const fields = ["promptTask", "promptAudience", "promptFormat", "promptTone", "promptContext"].map((id) => document.getElementById(id));
+    const builderOutput = document.getElementById("builderOutput");
+
+    function updateBuilder() {
+      const [task, audience, format, tone, context] = fields.map((field) => field.value.trim());
+      builderOutput.textContent = `${task}. Audience: ${audience}. Format: ${format}. Tone: ${tone}. Use only this approved context: ${context}. Do not add facts that are not in the context. Flag anything that needs human review.`;
+    }
+
+    fields.forEach((field) => field.addEventListener("input", updateBuilder));
+    updateBuilder();
+
+    document.getElementById("copyBuilt").addEventListener("click", () => {
+      copyText(builderOutput.textContent);
+    });
+
+    document.querySelectorAll(".quiz-item button").forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = button.closest(".quiz-item");
+        const answer = item.dataset.answer;
+        item.querySelectorAll("button").forEach((choice) => {
+          choice.classList.remove("correct", "wrong");
+        });
+        if (button.dataset.choice === answer) {
+          button.classList.add("correct");
+          showToast(answer === "safe" ? "Safe with approved content" : "Stop and ask");
+        } else {
+          button.classList.add("wrong");
+          showToast("Review the data gate");
+        }
+      });
+    });
+
+    let remaining = 7 * 60;
+    let interval = null;
+    const timerDisplay = document.getElementById("timerDisplay");
+
+    function renderTimer() {
+      const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const seconds = String(remaining % 60).padStart(2, "0");
+      timerDisplay.textContent = `${minutes}:${seconds}`;
+    }
+
+    document.getElementById("startTimer").addEventListener("click", () => {
+      if (interval) return;
+      interval = window.setInterval(() => {
+        remaining = Math.max(remaining - 1, 0);
+        renderTimer();
+        if (remaining === 0) {
+          window.clearInterval(interval);
+          interval = null;
+          showToast("Demo time complete");
+        }
+      }, 1000);
+    });
+
+    document.getElementById("pauseTimer").addEventListener("click", () => {
+      window.clearInterval(interval);
+      interval = null;
+    });
+
+    document.getElementById("resetTimer").addEventListener("click", () => {
+      window.clearInterval(interval);
+      interval = null;
+      remaining = 7 * 60;
+      renderTimer();
+    });
+
+    document.getElementById("printPage").addEventListener("click", () => window.print());
+  </script>
+</body>
+</html>
