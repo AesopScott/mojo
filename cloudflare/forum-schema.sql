@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS forum_threads (
   youtube_thumbnail_url TEXT,
   image_url TEXT,
   poll_question TEXT,
+  pinned INTEGER NOT NULL DEFAULT 0,
   locked INTEGER NOT NULL DEFAULT 0,
   hidden INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL,

@@ -55,6 +55,12 @@
         justify-content: flex-end;
       }
 
+      .forum-admin-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
       .forum-panel,
       .forum-thread,
       .forum-composer,
@@ -320,6 +326,12 @@
         color: var(--coral);
       }
 
+      .forum-danger {
+        border-color: rgba(195, 67, 67, 0.35);
+        color: #9b2f2f;
+        background: #fff2f2;
+      }
+
       .forum-replies {
         display: grid;
         gap: 10px;
@@ -396,10 +408,6 @@
           <h1>Threads, polls, builds, and useful questions.</h1>
           <p>Share work, ask for help, vote on decisions, and link YouTube videos without hosting or embedding them on Mojo.</p>
         </div>
-        <div class="forum-actions">
-          <a class="button ghost" href="/watch">Watch builds</a>
-          <a class="button dark" href="/products">Browse apps</a>
-        </div>
       </section>
     </header>
 
@@ -407,33 +415,6 @@
       <aside class="forum-panel" aria-label="Forum categories" data-categories></aside>
 
       <section class="forum-main" aria-live="polite">
-        <section class="forum-auth" data-auth-panel>
-          <div>
-            <p class="kicker">Forum login</p>
-            <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
-          </div>
-          <form data-auth-email-form>
-            <div class="forum-field">
-              <label for="forum-login-name">Display name</label>
-              <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
-            </div>
-            <div class="forum-field">
-              <label for="forum-login-email">Email</label>
-              <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
-            </div>
-            <button class="button dark" type="submit">Send code</button>
-          </form>
-          <form data-auth-code-form hidden>
-            <div class="forum-field">
-              <label for="forum-login-code">Code</label>
-              <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
-            </div>
-            <button class="button dark" type="submit">Sign in</button>
-          </form>
-          <button class="button ghost" type="button" data-logout hidden>Sign out</button>
-          <div class="forum-status" data-auth-status></div>
-        </section>
-
         <form class="forum-composer" data-thread-form>
           <h2>New thread</h2>
           <div class="forum-form-grid">
@@ -480,6 +461,33 @@
           </div>
           <input class="forum-search" type="search" placeholder="Search threads" data-search />
         </div>
+
+        <section class="forum-auth" data-auth-panel>
+          <div>
+            <p class="kicker">Forum login</p>
+            <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
+          </div>
+          <form data-auth-email-form>
+            <div class="forum-field">
+              <label for="forum-login-name">Display name</label>
+              <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
+            </div>
+            <div class="forum-field">
+              <label for="forum-login-email">Email</label>
+              <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <button class="button dark" type="submit">Send code</button>
+          </form>
+          <form data-auth-code-form hidden>
+            <div class="forum-field">
+              <label for="forum-login-code">Code</label>
+              <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+            </div>
+            <button class="button dark" type="submit">Sign in</button>
+          </form>
+          <button class="button ghost" type="button" data-logout hidden>Sign out</button>
+          <div class="forum-status" data-auth-status></div>
+        </section>
 
         <article class="forum-thread" hidden data-thread-detail></article>
         <div class="forum-replies" data-replies></div>

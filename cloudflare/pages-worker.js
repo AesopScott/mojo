@@ -11,6 +11,7 @@ const PUBLIC_CONSENT_TEXT =
 const FORUM_SESSION_COOKIE = "mojo_forum_session";
 const FORUM_SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
 const FORUM_LOGIN_CODE_TTL_MINUTES = 15;
+const FORUM_ADMIN_EMAILS = new Set(["scott@mojoaistudio.com"]);
 
 export default {
   async fetch(request, env, ctx) {
@@ -603,7 +604,7 @@ async function handleForumApi(request, env, url) {
     }
 
     if (path === "/api/forum/moderate" && request.method === "POST") {
-      if (!isForumAdmin(request, env, url)) {
+      if (!(isForumAdmin(request, env, url) || await isForumAdminUser(env, request))) {
         return json({ ok: false, message: "Unauthorized." }, 401);
       }
       const input = await readJsonBody(request);
@@ -668,6 +669,7 @@ async function forumThreads(env, url) {
       t.youtube_thumbnail_url AS youtubeThumbnailUrl,
       t.image_url AS imageUrl,
       t.poll_question AS pollQuestion,
+      t.pinned,
       t.locked,
       t.created_at AS createdAt,
       t.updated_at AS updatedAt,
@@ -679,7 +681,7 @@ async function forumThreads(env, url) {
     LEFT JOIN forum_posts p ON p.thread_id = t.id AND p.hidden = 0
     WHERE ${where}
     GROUP BY t.id
-    ORDER BY t.updated_at DESC
+    ORDER BY t.pinned DESC, t.updated_at DESC
     LIMIT 80
   `).bind(...params).all();
 
@@ -701,6 +703,7 @@ async function forumThread(env, threadId) {
       t.youtube_thumbnail_url AS youtubeThumbnailUrl,
       t.image_url AS imageUrl,
       t.poll_question AS pollQuestion,
+      t.pinned,
       t.locked,
       t.created_at AS createdAt,
       t.updated_at AS updatedAt,
@@ -788,9 +791,9 @@ async function createForumThread(env, input, request) {
       INSERT INTO forum_threads (
         id, category_id, title, body, author_name, author_token_hash,
         youtube_url, youtube_video_id, youtube_thumbnail_url, image_url,
-        poll_question, locked, hidden, created_at, updated_at
+        poll_question, pinned, locked, hidden, created_at, updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, ?, ?)
     `).bind(
       id,
       category.id,
@@ -913,13 +916,17 @@ async function moderateForumItem(env, input) {
     throw publicError("Choose a thread or post to moderate.", 422);
   }
 
-  if (type === "thread" && action === "hide") {
+  if (type === "thread" && (action === "hide" || action === "delete")) {
     await env.FORUM_DB.prepare("UPDATE forum_threads SET hidden = 1 WHERE id = ?").bind(id).run();
+  } else if (type === "thread" && action === "pin") {
+    await env.FORUM_DB.prepare("UPDATE forum_threads SET pinned = 1 WHERE id = ?").bind(id).run();
+  } else if (type === "thread" && action === "unpin") {
+    await env.FORUM_DB.prepare("UPDATE forum_threads SET pinned = 0 WHERE id = ?").bind(id).run();
   } else if (type === "thread" && action === "lock") {
     await env.FORUM_DB.prepare("UPDATE forum_threads SET locked = 1 WHERE id = ?").bind(id).run();
   } else if (type === "thread" && action === "unlock") {
     await env.FORUM_DB.prepare("UPDATE forum_threads SET locked = 0 WHERE id = ?").bind(id).run();
-  } else if (type === "post" && action === "hide") {
+  } else if (type === "post" && (action === "hide" || action === "delete")) {
     await env.FORUM_DB.prepare("UPDATE forum_posts SET hidden = 1 WHERE id = ?").bind(id).run();
   } else {
     throw publicError("Unsupported moderation action.", 422);
@@ -941,6 +948,7 @@ function forumThreadSummary(row) {
     youtubeThumbnailUrl: row.youtubeThumbnailUrl || null,
     imageUrl: row.imageUrl || null,
     pollQuestion: row.pollQuestion || null,
+    pinned: Boolean(row.pinned),
     locked: Boolean(row.locked),
     replyCount: Number(row.replyCount || 0),
     createdAt: row.createdAt,
@@ -1044,7 +1052,8 @@ async function requestForumLoginCode(env, input) {
   }
 
   const email = normalizeEmail(input.email);
-  const displayName = cleanText(input.displayName, 80);
+  const requestedDisplayName = cleanText(input.displayName, 80);
+  const displayName = forumDisplayNameForEmail(email, requestedDisplayName);
   if (!email) throw publicError("Enter a valid email address.", 422);
   if (!displayName) throw publicError("Enter your display name.", 422);
 
@@ -1202,11 +1211,26 @@ function forumSessionCookie(value, expires) {
 }
 
 function forumUserPayload(user) {
+  const email = normalizeEmail(user.email);
   return {
     id: user.id,
-    email: user.email,
-    displayName: user.displayName || user.display_name || "Mojo member",
+    email,
+    displayName: forumDisplayNameForEmail(email, user.displayName || user.display_name || "Mojo member"),
+    isAdmin: isForumAdminEmail(email),
   };
+}
+
+async function isForumAdminUser(env, request) {
+  const user = await forumCurrentUser(env, request);
+  return Boolean(user && isForumAdminEmail(user.email));
+}
+
+function isForumAdminEmail(email) {
+  return FORUM_ADMIN_EMAILS.has(normalizeEmail(email));
+}
+
+function forumDisplayNameForEmail(email, fallback) {
+  return isForumAdminEmail(email) ? "Mojo Scott" : cleanText(fallback, 80);
 }
 
 function normalizeEmail(value) {

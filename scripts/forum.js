@@ -99,7 +99,7 @@
     const signedIn = Boolean(state.user);
     els.authPanel.classList.toggle('is-signed-in', signedIn);
     els.authSummary.textContent = signedIn
-      ? `Signed in as ${state.user.displayName}`
+      ? `Signed in as ${state.user.displayName}${state.user.isAdmin ? ' · Admin' : ''}`
       : 'Sign in with email to post, reply, and vote.';
     els.authEmailForm.hidden = signedIn;
     els.authCodeForm.hidden = signedIn || !state.pendingEmail;
@@ -184,6 +184,7 @@
       thread.authorName,
       formatDate(thread.updatedAt),
       `${thread.replyCount || 0} replies`,
+      thread.pinned ? 'Pinned' : '',
       thread.pollQuestion ? 'Poll' : '',
     ]);
 
@@ -206,6 +207,7 @@
       loadThread(thread.id);
     });
     actions.append(open);
+    appendAdminThreadActions(actions, thread, false);
     article.append(actions);
 
     return article;
@@ -231,6 +233,7 @@
       thread.categoryName,
       thread.authorName,
       formatDate(thread.createdAt),
+      thread.pinned ? 'Pinned' : '',
       thread.locked ? 'Locked' : '',
     ]);
 
@@ -239,7 +242,13 @@
     const body = document.createElement('p');
     body.textContent = thread.body;
 
-    els.threadDetail.append(back, meta, title, body);
+    const adminActions = document.createElement('div');
+    adminActions.className = 'forum-admin-actions';
+    appendAdminThreadActions(adminActions, thread, true);
+
+    els.threadDetail.append(back, meta, title);
+    if (adminActions.childElementCount) els.threadDetail.append(adminActions);
+    els.threadDetail.append(body);
     appendMedia(els.threadDetail, thread);
     appendPoll(els.threadDetail, thread);
 
@@ -264,7 +273,73 @@
     body.textContent = post.body;
     article.append(meta, body);
     appendMedia(article, post);
+    appendAdminPostActions(article, post);
     return article;
+  }
+
+  function appendAdminThreadActions(parent, thread, isDetail) {
+    if (!state.user || !state.user.isAdmin) return;
+
+    const pin = document.createElement('button');
+    pin.className = 'button ghost';
+    pin.type = 'button';
+    pin.textContent = thread.pinned ? 'Unpin' : 'Pin';
+    pin.addEventListener('click', async function () {
+      await moderate({
+        type: 'thread',
+        id: thread.id,
+        action: thread.pinned ? 'unpin' : 'pin',
+      });
+      if (isDetail || state.selectedThreadId === thread.id) {
+        await loadThread(thread.id);
+      } else {
+        await loadThreads();
+      }
+    });
+
+    const remove = document.createElement('button');
+    remove.className = 'button ghost forum-danger';
+    remove.type = 'button';
+    remove.textContent = 'Delete';
+    remove.addEventListener('click', async function () {
+      if (!window.confirm('Delete this thread from the forum?')) return;
+      await moderate({ type: 'thread', id: thread.id, action: 'delete' });
+      await loadThreads();
+    });
+
+    parent.append(pin, remove);
+  }
+
+  function appendAdminPostActions(parent, post) {
+    if (!state.user || !state.user.isAdmin) return;
+
+    const actions = document.createElement('div');
+    actions.className = 'forum-admin-actions';
+    const remove = document.createElement('button');
+    remove.className = 'button ghost forum-danger';
+    remove.type = 'button';
+    remove.textContent = 'Delete reply';
+    remove.addEventListener('click', async function () {
+      if (!window.confirm('Delete this reply from the forum?')) return;
+      await moderate({ type: 'post', id: post.id, action: 'delete' });
+      if (state.selectedThreadId) await loadThread(state.selectedThreadId);
+    });
+    actions.append(remove);
+    parent.append(actions);
+  }
+
+  async function moderate(body) {
+    try {
+      await api('/api/forum/moderate', {
+        method: 'POST',
+        body,
+      });
+      setStatus(els.threadStatus, '');
+      setStatus(els.replyStatus, '');
+    } catch (err) {
+      setStatus(els.threadStatus, err.message, true);
+      throw err;
+    }
   }
 
   function appendPoll(parent, thread) {
