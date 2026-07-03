@@ -106,7 +106,38 @@
       transition: border-color 0.2s;
     }
 
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    .form-group textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .form-note {
+      margin: -8px 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .form-group input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus {
       outline: none;
       border-color: var(--blue);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -293,20 +324,53 @@
       </div>
     </div>
 
+    <!-- Step 2: Payout Preference -->
+    <div id="step-payout" class="step">
+      <div class="step-title">Choose Payout Method</div>
+
+      <div class="status-indicator complete">
+        <div class="status-check">✓</div>
+        <span>Contract signed</span>
+      </div>
+
+      <form id="payout-preference-form">
+        <p class="form-note">Choose how Mojo should pay you manually for now: PayPal, Zelle, Venmo, Cash App, mailed check, or another option. Once you have sold 10 products, we will work with your bank account directly.</p>
+
+        <div class="form-group">
+          <label for="payout-method">Preferred payout method</label>
+          <select id="payout-method" name="payoutMethod" required>
+            <option value="">Select a payout method</option>
+            <option value="paypal">PayPal</option>
+            <option value="zelle">Zelle</option>
+            <option value="venmo">Venmo</option>
+            <option value="cash_app">Cash App</option>
+            <option value="check">Mailed check</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payout-contact">Payout email, username, phone, or mailing details</label>
+          <input type="text" id="payout-contact" name="payoutContact" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+          <label for="payout-notes">Notes</label>
+          <textarea id="payout-notes" name="payoutNotes" placeholder="Anything Mojo should know about this payout method"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button-primary" id="btn-submit-payout" type="submit">Save Payout Method</button>
+        </div>
+      </form>
+    </div>
 
     <!-- Step 3: Success -->
     <div id="step-success" class="step">
       <div class="success-message">
         <h2>✓ You're all set!</h2>
-        <p>Your seller account is ready. Next, create your product listing on Polar so buyers can find and purchase it.</p>
-      </div>
-
-      <div style="margin-top: 32px; text-align: center;">
-        <a href="https://polar.sh/dashboard" target="_blank" rel="noopener noreferrer" class="button button-primary" style="display: inline-block; text-decoration: none;">Set up your product on Polar →</a>
-      </div>
-
-      <div style="margin-top: 24px; text-align: center; font-size: 14px; color: var(--muted);">
-        <p>Once your product is live on Polar, we'll link it to the Mojo marketplace and you'll start earning commissions on sales.</p>
+        <p>Your seller agreement is signed and your payout preference has been saved.</p>
+        <p style="margin-top: 16px;">Mojo will review your submitted product assets and connect the approved product to the marketplace checkout.</p>
       </div>
     </div>
 
@@ -322,6 +386,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="../../scripts/firebase-config.js"></script>
-  <script src="../../scripts/seller-onboarding.js"></script>
+  <script src="../../scripts/seller-onboarding.js?v=20260702-no-seller-polar"></script>
 </body>
 </html>

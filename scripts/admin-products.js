@@ -210,9 +210,25 @@
       ` : ''}
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price USD <span style="font-weight:400;color:#6b7280">(Mojo creates the Polar checkout product)</span></label>
+            <input type="number" class="price-input" min="1" step="0.01" placeholder="99.00" required>
+          </div>
+
+          <div class="form-group">
+            <label>Billing</label>
+            <select class="billing-select">
+              <option value="month">Monthly</option>
+              <option value="year">Yearly</option>
+              <option value="one_time">One-time</option>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label>Polar Price ID <span style="font-weight:400;color:#6b7280">(optional — add after seller sets up on Polar)</span></label>
-          <input type="text" class="polar-id-input" placeholder="POLAR_PRODUCT_PRICE_ID">
+          <label>Existing Polar Price ID <span style="font-weight:400;color:#6b7280">(optional override; leave blank for Mojo to create it)</span></label>
+          <input type="text" class="polar-id-input" placeholder="Optional existing Polar price ID">
         </div>
 
         <div class="form-group">
@@ -235,37 +251,43 @@
 
     approveBtn.addEventListener('click', async () => {
       const polarId = div.querySelector('.polar-id-input').value.trim();
+      const priceDollars = Number(div.querySelector('.price-input').value);
+      const priceCents = Number.isFinite(priceDollars) ? Math.round(priceDollars * 100) : null;
+      const billingPeriod = div.querySelector('.billing-select').value;
       const featured = div.querySelector('.featured-select').value === 'true';
 
+      if (!polarId && (!priceCents || priceCents <= 0)) {
+        showMessage('Enter a price so Mojo can create the Polar checkout product', 'error');
+        return;
+      }
 
       try {
         approveBtn.disabled = true;
-        approveBtn.textContent = 'Publishing...';
+        approveBtn.textContent = polarId ? 'Publishing...' : 'Creating checkout...';
 
         const result = await adminRequest('adminApproveProduct', {
           method: 'POST',
           body: {
             productId,
             polarPriceId: polarId,
+            priceCents,
+            billingPeriod,
             featured,
           },
         });
 
         // Send seller onboarding email now that product is approved
         if (result.sellerToken && result.email) {
-          await fetch('/api/send-seller-onboarding-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: result.email,
-              contactName: result.contactName || '',
-              productName: result.productName || product.name,
-              sellerToken: result.sellerToken,
-            }),
+          await sendSellerOnboardingEmail({
+            email: result.email,
+            contactName: result.contactName || result.email.split('@')[0],
+            productName: result.productName || product.name,
+            sellerToken: result.sellerToken,
           });
         }
 
-        showMessage(`Published ${product.name} — onboarding email sent`, 'success');
+        const checkoutNote = result.polarPriceId ? ` Checkout ID: ${result.polarPriceId}` : '';
+        showMessage(`Published ${product.name} — onboarding email sent.${checkoutNote}`, 'success');
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
         console.error('[admin-products] approve error:', err);
@@ -300,14 +322,20 @@
     const div = document.createElement('div');
     div.className = 'product-card';
 
-    const seller = product.sellerId || 'Mojo';
+    const seller = product.sellerEmail || product.sellerId || 'Mojo';
+    const sellerName = product.sellerContactName || (seller.includes('@') ? seller.split('@')[0] : seller);
+    const canResendContract = Boolean(product.sellerToken && seller.includes('@'));
     const price = product.price ? `$${(product.price / 100).toFixed(2)}/mo` : 'Custom';
+    const payoutStatus = product.sellerPayoutPreferenceStatus || 'not submitted';
+    const payoutMethod = formatPayoutMethod(product.sellerPayoutMethod);
+    const payoutContact = product.sellerPayoutContact || '—';
+    const payoutNotes = product.sellerPayoutNotes || '';
 
     div.innerHTML = `
       <div class="product-header">
         <div class="product-info">
           <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
-          <div class="product-seller">by ${escapeHtml(seller)}</div>
+          <div class="product-seller">by ${escapeHtml(sellerName)} (${escapeHtml(seller)})</div>
         </div>
         <span class="status-badge status-live">Published</span>
       </div>
@@ -324,17 +352,73 @@
           <div class="meta-value" style="font-family: monospace; font-size: 11px;">${escapeHtml(product.polarPriceId || '—')}</div>
         </div>
         <div class="meta-item">
+          <div class="meta-label">Polar Product</div>
+          <div class="meta-value" style="font-family: monospace; font-size: 11px;">${escapeHtml(product.polarProductId || '—')}</div>
+        </div>
+        <div class="meta-item">
           <div class="meta-label">Featured</div>
           <div class="meta-value">${product.featured ? 'Yes' : 'No'}</div>
         </div>
+        <div class="meta-item">
+          <div class="meta-label">Seller Status</div>
+          <div class="meta-value">${escapeHtml(formatValue(product.sellerStatus, 'Unknown'))}</div>
+        </div>
+      </div>
+
+      <div class="seller-payout">
+        <h4 class="seller-payout-title">Seller Payout</h4>
+        <div class="seller-payout-grid">
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-value">${escapeHtml(formatValue(payoutStatus, 'Not submitted'))}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Method</div>
+            <div class="meta-value">${escapeHtml(payoutMethod)}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Pay To / Contact</div>
+            <div class="meta-value">${escapeHtml(payoutContact)}</div>
+          </div>
+        </div>
+        ${payoutNotes ? `<div class="seller-payout-notes"><strong>Notes:</strong> ${escapeHtml(payoutNotes)}</div>` : ''}
       </div>
 
       <div class="action-buttons">
+        <button class="btn-resend" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller contract email' : 'Seller token unavailable'}">Resend Contract</button>
         <button class="btn-archive" data-product-id="${productId}">Archive</button>
       </div>
     `;
 
+    const resendBtn = div.querySelector('.btn-resend');
     const archiveBtn = div.querySelector('.btn-archive');
+
+    resendBtn.addEventListener('click', async () => {
+      try {
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+
+        await sendSellerOnboardingEmail({
+          email: seller,
+          contactName: sellerName,
+          productName: product.name || 'your product',
+          sellerToken: product.sellerToken,
+        });
+
+        showMessage(`Contract email resent to ${seller}`, 'success');
+        resendBtn.textContent = 'Resent';
+        setTimeout(() => {
+          resendBtn.disabled = false;
+          resendBtn.textContent = 'Resend Contract';
+        }, 2000);
+      } catch (err) {
+        console.error('[admin-products] resend contract error:', err);
+        showMessage(err.message || 'Error resending contract email', 'error');
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Resend Contract';
+      }
+    });
+
     archiveBtn.addEventListener('click', async () => {
       if (!confirm(`Archive "${product.name}"?`)) return;
 
@@ -355,6 +439,26 @@
     });
 
     return div;
+  }
+
+  async function sendSellerOnboardingEmail({ email, contactName, productName, sellerToken }) {
+    const response = await fetch('/api/send-seller-onboarding-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        contactName,
+        productName,
+        sellerToken,
+      }),
+    });
+
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || data.ok === false) {
+      throw new Error(data.message || 'Failed to send seller onboarding email');
+    }
+
+    return data;
   }
 
   function showMessage(text, type) {
@@ -407,6 +511,18 @@
   function formatValue(value, fallback) {
     const text = String(value || '').trim();
     return text || fallback;
+  }
+
+  function formatPayoutMethod(value) {
+    const labels = {
+      paypal: 'PayPal',
+      zelle: 'Zelle',
+      venmo: 'Venmo',
+      cash_app: 'Cash App',
+      check: 'Mailed check',
+      other: 'Other',
+    };
+    return labels[value] || formatValue(value, '—');
   }
 
   function escapeHtml(value) {

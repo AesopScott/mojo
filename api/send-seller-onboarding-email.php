@@ -88,13 +88,13 @@ $fromEmail = 'noreply@mojoaistudio.com';
 
 $body  = "Hi {$contactName},\n\n";
 $body .= "Thanks for submitting \"{$productName}\" to the Mojo AI Studio marketplace!\n\n";
-$body .= "To complete your seller setup and start receiving payments, please sign the seller agreement and provide your bank information:\n\n";
+$body .= "To complete your seller setup, please sign the seller agreement:\n\n";
 $body .= $onboardingUrl . "\n\n";
 $body .= "What happens next:\n";
 $body .= "1. Review and sign the seller agreement\n";
-$body .= "2. Provide your bank details (encrypted and secure)\n";
-$body .= "3. We'll send a small test deposit to verify your account\n";
-$body .= "4. Once verified, you'll start earning 90% commission on product sales\n\n";
+$body .= "2. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option\n";
+$body .= "3. Mojo reviews your submitted product assets and connects the approved product to the marketplace checkout\n";
+$body .= "4. Buyers purchase through the Mojo marketplace checkout\n\n";
 $body .= "If you have any questions, reply to this email or contact us at admin@mojoaistudio.com.\n\n";
 $body .= "— Mojo AI Studio Team\n";
 $body .= "https://MojoAiStudio.com\n";

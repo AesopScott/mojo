@@ -38,6 +38,7 @@ const POLAR_WEBHOOK_SECRET = defineSecret('POLAR_WEBHOOK_SECRET');
 const ADMIN_PAYOUT_KEY = defineSecret('ADMIN_PAYOUT_KEY');
 const SOCIAL_ADMIN_KEY = defineSecret('SOCIAL_ADMIN_KEY');
 const RESEND_API_KEY = defineSecret('RESEND_API_KEY');
+const POLAR_ACCESS_TOKEN = defineSecret('POLAR_ACCESS_TOKEN');
 
 function setPublicCors(req, res) {
   res.set('Content-Type', 'application/json');
@@ -333,13 +334,73 @@ const { encryptBankDetails, decryptBankDetails } = require('./encryption');
 const SELLER_ENCRYPTION_KEY = defineSecret('SELLER_ENCRYPTION_KEY');
 
 /**
+ * POST /sellers/onboarding-state
+ * Returns token-validated seller onboarding state so the public page can resume
+ * at the correct step without exposing seller records through Firestore rules.
+ *
+ * Body: { email, sellerToken }
+ */
+exports.getSellerOnboardingState = onRequest(
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = String(req.body?.email || '').trim();
+    const sellerToken = String(req.body?.sellerToken || '').trim();
+
+    if (!email || !sellerToken) {
+      res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      res.status(400).json({ ok: false, message: 'Invalid email' });
+      return;
+    }
+
+    try {
+      const sellerSnap = await db.collection('sellers').doc(email).get();
+
+      if (!sellerSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Seller record not found' });
+        return;
+      }
+
+      const seller = sellerSnap.data();
+      if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
+        res.status(401).json({ ok: false, message: 'Invalid token' });
+        return;
+      }
+
+      const contractSigned = Boolean(seller.contractSignedAt);
+      const payoutPreferenceProvided = Boolean(seller.payoutPreferenceStatus === 'provided' || seller.payoutPreference);
+      const nextStep = payoutPreferenceProvided ? 'success' : contractSigned ? 'payout' : 'contract';
+
+      res.status(200).json({
+        ok: true,
+        status: seller.status || null,
+        contractSigned,
+        payoutPreferenceProvided,
+        nextStep,
+      });
+    } catch (err) {
+      console.error('[getSellerOnboardingState] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
  * POST /sellers/sign-contract
- * Signs the seller agreement and updates seller status to pending_bank_info
+ * Signs the seller agreement and updates seller status to pending_payout_preference
  *
  * Body: { email, contactName, sellerToken, contractVersion }
  */
 exports.signContract = onRequest(
-  { secrets: [SELLER_ENCRYPTION_KEY] },
   async (req, res) => {
     if (setPublicCors(req, res)) return;
 
@@ -377,18 +438,22 @@ exports.signContract = onRequest(
         return;
       }
 
-      // Update seller: sign contract, move to pending_bank_info
+      // Update seller: sign contract, move to payout preference collection.
       const ipAddress = req.headers['x-forwarded-for']?.split(',')[0] || req.socket.remoteAddress || '';
 
       await sellerRef.update({
         contractSignedAt: admin.firestore.FieldValue.serverTimestamp(),
         contractVersion,
         contractIpAddress: ipAddress,
-        status: 'pending_bank_info',
+        status: 'pending_payout_preference',
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
       console.log('[signContract] Seller', email, 'signed contract version', contractVersion);
-      res.status(200).json({ ok: true, message: 'Contract signed successfully' });
+      res.status(200).json({
+        ok: true,
+        message: 'Contract signed successfully',
+      });
     } catch (err) {
       console.error('[signContract] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
@@ -398,12 +463,26 @@ exports.signContract = onRequest(
 
 /**
  * POST /sellers/submit-bank-info
- * Collects and encrypts seller bank details
- *
- * Body: { email, sellerToken, accountNumber, routingNumber, accountHolder, bankName }
+ * Deprecated: Mojo no longer collects or stores seller bank account details.
  */
 exports.submitBankInfo = onRequest(
-  { secrets: [SELLER_ENCRYPTION_KEY] },
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    res.status(410).json({
+      ok: false,
+      message: 'Bank account collection is disabled. Seller payouts are handled outside Mojo bank-detail storage.',
+    });
+  }
+);
+
+/**
+ * POST /sellers/submit-payout-preference
+ * Stores the seller's non-bank payout preference for manual Mojo payout coordination.
+ *
+ * Body: { email, sellerToken, payoutMethod, payoutContact, payoutNotes }
+ */
+exports.submitPayoutPreference = onRequest(
   async (req, res) => {
     if (setPublicCors(req, res)) return;
 
@@ -412,11 +491,25 @@ exports.submitBankInfo = onRequest(
       return;
     }
 
-    const { email, sellerToken, accountNumber, routingNumber, accountHolder, bankName } = req.body;
+    const email = String(req.body?.email || '').trim();
+    const sellerToken = String(req.body?.sellerToken || '').trim();
+    const payoutMethod = String(req.body?.payoutMethod || '').trim().toLowerCase();
+    const payoutContact = String(req.body?.payoutContact || '').trim();
+    const payoutNotes = String(req.body?.payoutNotes || '').trim().slice(0, 1000);
+    const allowedMethods = new Set(['paypal', 'zelle', 'venmo', 'cash_app', 'check', 'other']);
 
-    // Validate required fields
-    if (!email || !sellerToken || !accountNumber || !routingNumber || !accountHolder) {
+    if (!email || !sellerToken || !payoutMethod || !payoutContact) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      res.status(400).json({ ok: false, message: 'Invalid email' });
+      return;
+    }
+
+    if (!allowedMethods.has(payoutMethod)) {
+      res.status(400).json({ ok: false, message: 'Invalid payout method' });
       return;
     }
 
@@ -430,43 +523,32 @@ exports.submitBankInfo = onRequest(
       }
 
       const seller = sellerSnap.data();
-
-      // Verify token and contract signed
       if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
         res.status(401).json({ ok: false, message: 'Invalid token' });
         return;
       }
 
-      if (seller.status !== 'pending_bank_info') {
-        res.status(400).json({ ok: false, message: 'Seller has not signed contract yet' });
+      if (!seller.contractSignedAt) {
+        res.status(400).json({ ok: false, message: 'Seller agreement must be signed first' });
         return;
       }
 
-      // Encrypt bank details
-      const keyB64 = SELLER_ENCRYPTION_KEY.value();
-      const encryptionKey = Buffer.from(keyB64, 'base64');
-
-      const bankDetails = {
-        accountNumber,
-        routingNumber,
-        accountHolder,
-        bankName: bankName || 'Unknown',
-      };
-
-      const encryptedBankDetails = encryptBankDetails(bankDetails, encryptionKey);
-
-      // Update seller with encrypted bank info
       await sellerRef.update({
-        encryptedBankDetails,
-        bankDetailsStatus: 'pending', // Will be "verified" after test deposit confirmation
-        status: 'active',
+        payoutPreference: {
+          method: payoutMethod,
+          contact: payoutContact.slice(0, 240),
+          notes: payoutNotes,
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        payoutPreferenceStatus: 'provided',
+        status: 'ready_for_launch',
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
-      console.log('[submitBankInfo] Seller', email, 'submitted bank details');
-      res.status(200).json({ ok: true, message: 'Bank details saved securely' });
+      console.log('[submitPayoutPreference] Seller', email, 'submitted payout preference:', payoutMethod);
+      res.status(200).json({ ok: true, message: 'Payout preference saved' });
     } catch (err) {
-      console.error('[submitBankInfo] error:', err);
+      console.error('[submitPayoutPreference] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
     }
   }
@@ -513,8 +595,6 @@ exports.createSellerFromProductSubmission = onRequest(
           contractSignedAt: null,
           contractVersion: null,
           contractIpAddress: null,
-          encryptedBankDetails: null,
-          bankDetailsStatus: 'pending',
           availableBalance: 0,
           totalEarnings: 0,
           commissionRate: 0.9,
@@ -546,15 +626,15 @@ exports.createSellerFromProductSubmission = onRequest(
 
 Thanks for submitting "${productName}" to the Mojo AI Studio marketplace!
 
-To complete your seller setup and start receiving payments, please sign the seller agreement and provide your bank information:
+To complete your seller setup, please sign the seller agreement:
 
 ${onboardingUrl}
 
 What happens next:
 1. Review and sign the seller agreement
-2. Provide your bank details (encrypted and secure)
-3. We'll send a small test deposit to verify your account
-4. Once verified, you'll start earning 90% commission on product sales
+2. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option
+3. Mojo reviews your submitted product assets and connects the approved product to the marketplace checkout
+4. Buyers purchase through the Mojo marketplace checkout
 
 If you have any questions, reply to this email or contact us at admin@MojoAiStudio.com.
 
@@ -596,115 +676,16 @@ https://MojoAiStudio.com`;
 
 /**
  * POST /sellers/request-payout
- * Seller submits a payout request for available earnings
- *
- * Body: { email, sellerToken, amount }
+ * Deprecated: seller payout requests are coordinated manually using payout preferences.
  */
 exports.requestPayout = onRequest(
-  { secrets: [SELLER_ENCRYPTION_KEY] },
   async (req, res) => {
     if (setPublicCors(req, res)) return;
 
-    if (req.method !== 'POST') {
-      res.status(405).json({ ok: false, message: 'Method not allowed' });
-      return;
-    }
-
-    const { email, sellerToken, amount } = req.body;
-
-    if (!email || !sellerToken || !amount) {
-      res.status(400).json({ ok: false, message: 'Missing required fields' });
-      return;
-    }
-
-    if (typeof amount !== 'number' || amount <= 0) {
-      res.status(400).json({ ok: false, message: 'Amount must be a positive number' });
-      return;
-    }
-
-    try {
-      const sellerRef = db.collection('sellers').doc(email);
-      const sellerSnap = await sellerRef.get();
-
-      if (!sellerSnap.exists) {
-        res.status(404).json({ ok: false, message: 'Seller record not found' });
-        return;
-      }
-
-      const seller = sellerSnap.data();
-
-      // Verify token
-      if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
-        res.status(401).json({ ok: false, message: 'Invalid token' });
-        return;
-      }
-
-      // Check seller is active and verified
-      if (seller.status !== 'active') {
-        res.status(400).json({ ok: false, message: 'Seller account is not active' });
-        return;
-      }
-
-      if (seller.bankDetailsStatus !== 'verified') {
-        res.status(400).json({ ok: false, message: 'Bank account not verified yet' });
-        return;
-      }
-
-      // Check sufficient balance
-      const availableBalance = seller.availableBalance || 0;
-      if (amount > availableBalance) {
-        res.status(400).json({
-          ok: false,
-          message: `Insufficient balance. Available: $${(availableBalance / 100).toFixed(2)}`,
-        });
-        return;
-      }
-
-      // Decrypt bank details for snapshot
-      const keyB64 = SELLER_ENCRYPTION_KEY.value();
-      const encryptionKey = Buffer.from(keyB64, 'base64');
-      let bankDetailsSnapshot = null;
-
-      try {
-        bankDetailsSnapshot = decryptBankDetails(seller.encryptedBankDetails, encryptionKey);
-      } catch (err) {
-        console.error('[requestPayout] failed to decrypt bank details:', err);
-        res.status(500).json({ ok: false, message: 'Unable to process payout' });
-        return;
-      }
-
-      // Create payout request
-      const payoutId = db.collection('payout_requests').doc().id;
-      const payoutRef = db.collection('payout_requests').doc(payoutId);
-
-      await payoutRef.set({
-        sellerId: email,
-        sellerEmail: email,
-        sellerName: seller.contactName,
-        amount,
-        requestedAt: admin.firestore.FieldValue.serverTimestamp(),
-        status: 'pending',
-        bankDetailsSnapshot,
-        processedAt: null,
-        adminNotes: null,
-      });
-
-      // Deduct amount from available balance immediately
-      await sellerRef.update({
-        availableBalance: admin.firestore.FieldValue.increment(-amount),
-        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-
-      console.log('[requestPayout] Created payout request', payoutId, 'for', email, 'amount:', amount);
-      res.status(200).json({
-        ok: true,
-        payoutId,
-        message: `Payout request submitted for $${(amount / 100).toFixed(2)}. Your funds will be transferred within 3-5 business days.`,
-      });
-    } catch (err) {
-      console.error('[requestPayout] error:', err);
-      res.status(500).json({ ok: false, message: 'Server error' });
-    }
+    res.status(410).json({
+      ok: false,
+      message: 'Self-service payout requests are disabled. Mojo coordinates seller payouts manually using the saved payout preference.',
+    });
   }
 );
 
@@ -824,6 +805,33 @@ function productPayload(doc) {
   };
 }
 
+async function productPayloadWithSellerOnboarding(doc) {
+  const payload = productPayload(doc);
+  const sellerEmail = payload.submittedByEmail || payload.sellerId;
+  if (!sellerEmail) return payload;
+
+  try {
+    const sellerSnap = await db.collection('sellers').doc(String(sellerEmail)).get();
+    if (!sellerSnap.exists) return payload;
+
+    const seller = sellerSnap.data();
+    return {
+      ...payload,
+      sellerToken: seller.sellerToken || null,
+      sellerContactName: seller.contactName || null,
+      sellerEmail: seller.email || sellerEmail,
+      sellerStatus: seller.status || null,
+      sellerPayoutMethod: seller.payoutPreference?.method || null,
+      sellerPayoutContact: seller.payoutPreference?.contact || null,
+      sellerPayoutNotes: seller.payoutPreference?.notes || null,
+      sellerPayoutPreferenceStatus: seller.payoutPreferenceStatus || null,
+    };
+  } catch (err) {
+    console.error('[productPayloadWithSellerOnboarding] seller lookup error:', err);
+    return payload;
+  }
+}
+
 function nullableString(value, maxLength = 2000) {
   const text = String(value || '').trim();
   if (!text) return null;
@@ -840,6 +848,76 @@ function normalizeSocialPlatform(value) {
   return ['x', 'linkedin', 'facebook', 'instagram', 'tiktok', 'youtube', 'threads', 'other'].includes(platform)
     ? platform
     : 'other';
+}
+
+function parsePositiveCents(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const numberValue = Number(value);
+  if (!Number.isFinite(numberValue) || numberValue <= 0) return null;
+  return Math.round(numberValue);
+}
+
+function normalizeBillingPeriod(value) {
+  const period = String(value || '').trim().toLowerCase();
+  if (['one_time', 'one-time', 'once'].includes(period)) return 'one_time';
+  if (['year', 'yearly', 'annual', 'annually'].includes(period)) return 'year';
+  return 'month';
+}
+
+function firstPolarPriceId(polarProduct) {
+  const prices = Array.isArray(polarProduct?.prices) ? polarProduct.prices : [];
+  return prices[0]?.id || null;
+}
+
+async function createPolarProductForMojo(productId, product, priceCents, billingPeriod) {
+  const token = POLAR_ACCESS_TOKEN.value();
+  if (!token) {
+    throw new Error('POLAR_ACCESS_TOKEN is not configured');
+  }
+
+  const normalizedBillingPeriod = normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel);
+  const body = {
+    name: String(product.name || 'Mojo product').slice(0, 64),
+    description: String(product.description || '').slice(0, 2000) || null,
+    visibility: 'private',
+    prices: [
+      {
+        price_currency: 'usd',
+        price_amount: priceCents,
+      },
+    ],
+    metadata: {
+      mojo_product_id: productId,
+      mojo_seller_email: String(product.submittedByEmail || product.sellerId || '').slice(0, 500),
+      mojo_source: 'seller_submission',
+    },
+  };
+
+  if (normalizedBillingPeriod !== 'one_time') {
+    body.recurring_interval = normalizedBillingPeriod;
+  }
+
+  const response = await fetch('https://api.polar.sh/v1/products', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const responseBody = await response.json().catch(async () => ({ raw: await response.text().catch(() => '') }));
+  if (!response.ok) {
+    console.error('[createPolarProductForMojo] Polar create failed:', response.status, responseBody);
+    throw new Error(responseBody?.detail?.[0]?.msg || responseBody?.message || 'Polar product creation failed');
+  }
+
+  return {
+    polarProduct: responseBody,
+    polarProductId: responseBody.id || null,
+    polarPriceId: firstPolarPriceId(responseBody),
+    billingPeriod: normalizedBillingPeriod,
+  };
 }
 
 function socialPostPayload(doc) {
@@ -1099,9 +1177,8 @@ exports.adminListProducts = onRequest(
         .where('status', '==', status)
         .get();
 
-      const products = snapshot.docs
-        .map(productPayload)
-        .sort((a, b) => (b.createdAtMillis || 0) - (a.createdAtMillis || 0));
+      const products = await Promise.all(snapshot.docs.map(productPayloadWithSellerOnboarding));
+      products.sort((a, b) => (b.createdAtMillis || 0) - (a.createdAtMillis || 0));
 
       res.status(200).json({
         ok: true,
@@ -1119,7 +1196,7 @@ exports.adminListProducts = onRequest(
  * Publishes a pending product with pricing and Polar checkout metadata.
  */
 exports.adminApproveProduct = onRequest(
-  { secrets: [ADMIN_PAYOUT_KEY] },
+  { secrets: [ADMIN_PAYOUT_KEY, POLAR_ACCESS_TOKEN] },
   async (req, res) => {
     if (setAdminCors(req, res)) return;
     if (req.method !== 'POST') {
@@ -1131,7 +1208,7 @@ exports.adminApproveProduct = onRequest(
       return;
     }
 
-    const { productId, polarPriceId, featured } = req.body || {};
+    const { productId, polarPriceId, featured, priceCents, billingPeriod } = req.body || {};
     if (!productId) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
       return;
@@ -1146,10 +1223,33 @@ exports.adminApproveProduct = onRequest(
       }
 
       const product = productSnap.data();
+      const parsedPriceCents = parsePositiveCents(priceCents);
+      const manualPolarPriceId = String(polarPriceId || '').trim();
+      let polarCreateResult = null;
+      let resolvedPolarPriceId = manualPolarPriceId;
+
+      if (!resolvedPolarPriceId) {
+        if (!parsedPriceCents) {
+          res.status(400).json({ ok: false, message: 'Price is required to create the checkout product in Polar' });
+          return;
+        }
+
+        polarCreateResult = await createPolarProductForMojo(String(productId), product, parsedPriceCents, billingPeriod);
+        resolvedPolarPriceId = polarCreateResult.polarPriceId;
+        if (!resolvedPolarPriceId) {
+          res.status(502).json({ ok: false, message: 'Polar product was created but no price ID was returned' });
+          return;
+        }
+      }
 
       await productRef.update({
         status: 'live',
-        polarPriceId: String(polarPriceId),
+        price: parsedPriceCents || product.price || null,
+        billingPeriod: normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel),
+        polarPriceId: resolvedPolarPriceId,
+        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
+        polarSyncStatus: polarCreateResult ? 'created' : 'manual_price_id',
+        polarSyncedAt: polarCreateResult ? admin.firestore.FieldValue.serverTimestamp() : product.polarSyncedAt || null,
         featured: Boolean(featured),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
@@ -1176,6 +1276,8 @@ exports.adminApproveProduct = onRequest(
         contactName,
         productName: product.name || null,
         sellerToken,
+        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
+        polarPriceId: resolvedPolarPriceId,
       });
     } catch (err) {
       console.error('[adminApproveProduct] error:', err);
