@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A student companion for learning development automation through harness engineering, verification gates, and golden paths."
+    />
+    <title>Harness Engineering | Mojo AI Studio</title>
+    <link rel="canonical" href="https://mojoaistudio.com/harness/" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#111827" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/harness/" />
+    <meta property="og:title" content="Harness Engineering and Development Automation" />
+    <meta
+      property="og:description"
+      content="A practical class companion for turning repeated development work into reliable harnesses, gates, and golden paths."
+    />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Harness Engineering and Development Automation" />
+    <meta
+      name="twitter:description"
+      content="Learn how harnesses make development automation repeatable, observable, and safe."
+    />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LearningResource",
+        "name": "Harness Engineering and Development Automation",
+        "url": "https://mojoaistudio.com/harness/",
+        "description": "A student companion for learning development automation through harness engineering, verification gates, and golden paths.",
+        "provider": {
+          "@type": "Organization",
+          "name": "Mojo AI Studio",
+          "url": "https://mojoaistudio.com/"
+        }
+      }
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #172033;
+        --muted: #617087;
+        --line: rgba(23, 32, 51, 0.14);
+        --soft-line: rgba(23, 32, 51, 0.08);
+        --paper: #f6f8fb;
+        --white: #ffffff;
+        --blue: #2563eb;
+        --teal: #0f766e;
+        --gold: #f2c14e;
+        --coral: #e76f51;
+        --green: #22a06b;
+        --shadow: 0 22px 58px rgba(23, 32, 51, 0.13);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 92px;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      a {
+        cursor: pointer;
+      }
+
+      button {
+        border: 0;
+        font: inherit;
+      }
+
+      .site-nav {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1220px, calc(100% - 32px));
+        z-index: 10;
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 44px rgba(23, 32, 51, 0.12);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: auto;
+        font-weight: 850;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        border-radius: 8px;
+        background: var(--ink);
+      }
+
+      .nav-links,
+      .nav-actions,
+      .hero-actions,
+      .quick-links,
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nav-links {
+        gap: 22px;
+        color: #435066;
+        font-size: 0.95rem;
+      }
+
+      .nav-links a.active {
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .button {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-weight: 850;
+      }
+
+      .button.dark {
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .button.light {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+      }
+
+      .button.ghost {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 74vh;
+        isolation: isolate;
+        display: flex;
+        align-items: flex-end;
+        padding: 138px 0 56px;
+        overflow: hidden;
+        color: #fff;
+        background-image:
+          linear-gradient(90deg, rgba(10, 16, 29, 0.92) 0%, rgba(10, 16, 29, 0.72) 44%, rgba(10, 16, 29, 0.32) 100%),
+          url("/assets/ai-software-showcase.png");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 42%;
+        z-index: -1;
+        background: linear-gradient(0deg, rgba(7, 12, 22, 0.72), rgba(7, 12, 22, 0));
+      }
+
+      .hero-inner,
+      .section,
+      .site-footer {
+        width: min(1160px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+      }
+
+      .kicker {
+        margin: 0 0 12px;
+        color: var(--gold);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin-bottom: 18px;
+        font-size: 4.6rem;
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero-copy > p {
+        max-width: 650px;
+        margin-bottom: 24px;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 1.15rem;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        gap: 12px;
+      }
+
+      .quick-links {
+        width: min(1160px, calc(100% - 32px));
+        margin: -28px auto 0;
+        position: relative;
+        z-index: 2;
+        align-items: stretch;
+      }
+
+      .quick-links a {
+        flex: 1 1 170px;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 14px 36px rgba(23, 32, 51, 0.08);
+        color: #344052;
+        font-weight: 850;
+      }
+
+      .section {
+        padding: 82px 0 0;
+      }
+
+      .section-header {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(280px, 0.56fr);
+        gap: 34px;
+        align-items: end;
+        margin-bottom: 26px;
+      }
+
+      .section-header h2 {
+        margin-bottom: 0;
+        font-size: 2.6rem;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .section-header p {
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .definition-board {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .definition-card,
+      .step-card,
+      .example-card,
+      .worksheet-panel,
+      .principle,
+      .ladder-step,
+      .command-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 14px 34px rgba(23, 32, 51, 0.06);
+      }
+
+      .definition-card {
+        min-height: 220px;
+        padding: 28px;
+      }
+
+      .definition-card strong {
+        display: block;
+        margin-bottom: 16px;
+        color: var(--teal);
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .definition-card h3 {
+        margin-bottom: 12px;
+        font-size: 1.55rem;
+        letter-spacing: 0;
+      }
+
+      .definition-card p,
+      .step-card p,
+      .example-card p,
+      .principle p,
+      .command-card p {
+        color: var(--muted);
+        line-height: 1.68;
+      }
+
+      .tag-row {
+        margin-top: 20px;
+      }
+
+      .tag-row span {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        border-radius: 8px;
+        padding: 0 10px;
+        background: #eef7f5;
+        color: #0b5f59;
+        font-size: 0.86rem;
+        font-weight: 850;
+      }
+
+      .ladder {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .ladder-step {
+        min-height: 142px;
+        padding: 22px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .ladder-step::before {
+        content: attr(data-step);
+        display: block;
+        margin-bottom: 20px;
+        color: var(--coral);
+        font-weight: 900;
+      }
+
+      .ladder-step h3 {
+        margin-bottom: 8px;
+        font-size: 1.08rem;
+      }
+
+      .ladder-step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.93rem;
+        line-height: 1.55;
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .step-card {
+        min-height: 210px;
+        padding: 22px;
+        border-top: 5px solid var(--blue);
+      }
+
+      .step-card:nth-child(2) {
+        border-top-color: var(--teal);
+      }
+
+      .step-card:nth-child(3) {
+        border-top-color: var(--gold);
+      }
+
+      .step-card:nth-child(4) {
+        border-top-color: var(--coral);
+      }
+
+      .step-card:nth-child(5) {
+        border-top-color: var(--green);
+      }
+
+      .step-card span {
+        display: block;
+        margin-bottom: 18px;
+        color: #8b97aa;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .step-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.18rem;
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .example-card {
+        min-height: 188px;
+        padding: 24px;
+      }
+
+      .example-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+      }
+
+      .example-card code,
+      .command-card code {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        border-radius: 8px;
+        padding: 0 10px;
+        color: #0f3b38;
+        background: #e7f5f2;
+        font: 800 0.9rem ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      }
+
+      .practice-band {
+        padding: 58px;
+        border-radius: 8px;
+        color: #fff;
+        background:
+          linear-gradient(120deg, rgba(23, 32, 51, 0.96), rgba(15, 118, 110, 0.88)),
+          url("/assets/advanced-ai-concepts/hero.jpg");
+        background-size: cover;
+        background-position: center;
+        box-shadow: var(--shadow);
+      }
+
+      .practice-band h2 {
+        max-width: 760px;
+        margin-bottom: 16px;
+        font-size: 2.6rem;
+        line-height: 1.04;
+      }
+
+      .practice-band p {
+        max-width: 720px;
+        margin-bottom: 24px;
+        color: rgba(255, 255, 255, 0.86);
+        line-height: 1.7;
+      }
+
+      .worksheet-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(320px, 0.64fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .worksheet-panel {
+        padding: 28px;
+      }
+
+      .worksheet-panel h3 {
+        font-size: 1.35rem;
+      }
+
+      .worksheet-list {
+        display: grid;
+        gap: 12px;
+        margin: 22px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .worksheet-list li {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--soft-line);
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .worksheet-list b {
+        color: var(--ink);
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      .code-panel {
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        background: #101827;
+        color: #e5edf8;
+        box-shadow: 0 22px 48px rgba(10, 16, 29, 0.16);
+      }
+
+      .code-panel header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 52px;
+        padding: 0 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        color: #a7b4c9;
+        font-weight: 850;
+      }
+
+      .code-panel pre {
+        padding: 22px;
+        font: 0.95rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      }
+
+      .principles {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .principle {
+        min-height: 152px;
+        padding: 22px;
+      }
+
+      .principle h3 {
+        margin-bottom: 8px;
+        font-size: 1.02rem;
+      }
+
+      .principle p {
+        margin-bottom: 0;
+        font-size: 0.93rem;
+      }
+
+      .command-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .command-card {
+        min-height: 174px;
+        padding: 24px;
+      }
+
+      .command-card h3 {
+        margin: 16px 0 10px;
+        font-size: 1.14rem;
+      }
+
+      .closing {
+        padding-bottom: 86px;
+      }
+
+      .closing-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(240px, 0.34fr);
+        gap: 26px;
+        align-items: center;
+        padding: 34px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+
+      .closing-panel h2 {
+        margin-bottom: 12px;
+        font-size: 2rem;
+      }
+
+      .closing-panel p {
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .site-footer {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 24px;
+        padding: 48px 0 56px;
+        color: #475569;
+        border-top: 1px solid var(--line);
+      }
+
+      .site-footer a {
+        display: block;
+        margin-top: 9px;
+      }
+
+      @media (max-width: 980px) {
+        .site-nav {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .brand {
+          margin-right: 0;
+        }
+
+        .nav-links {
+          gap: 14px;
+        }
+
+        .nav-actions {
+          display: none;
+        }
+
+        .hero {
+          min-height: 70vh;
+          padding-top: 172px;
+        }
+
+        h1 {
+          font-size: 3.2rem;
+        }
+
+        .section-header,
+        .definition-board,
+        .worksheet-grid,
+        .closing-panel,
+        .site-footer {
+          grid-template-columns: 1fr;
+        }
+
+        .ladder,
+        .steps-grid,
+        .principles {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .example-grid,
+        .command-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site-nav,
+        .hero-inner,
+        .section,
+        .site-footer,
+        .quick-links {
+          width: min(100% - 24px, 1160px);
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 180px 0 46px;
+        }
+
+        h1 {
+          font-size: 2.55rem;
+          line-height: 1;
+        }
+
+        .hero-copy > p {
+          font-size: 1rem;
+        }
+
+        .quick-links {
+          margin-top: 12px;
+        }
+
+        .section {
+          padding-top: 58px;
+        }
+
+        .section-header h2,
+        .practice-band h2 {
+          font-size: 2rem;
+        }
+
+        .definition-card,
+        .worksheet-panel,
+        .practice-band,
+        .closing-panel {
+          padding: 22px;
+        }
+
+        .ladder,
+        .steps-grid,
+        .principles {
+          grid-template-columns: 1fr;
+        }
+
+        .worksheet-list li {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+      }
+
+      @media print {
+        .site-nav,
+        .hero,
+        .quick-links,
+        .site-footer,
+        .button {
+          display: none;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .section {
+          width: 100%;
+          padding: 22px 0;
+        }
+
+        .definition-card,
+        .step-card,
+        .example-card,
+        .worksheet-panel,
+        .principle,
+        .ladder-step,
+        .command-card,
+        .closing-panel,
+        .code-panel {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="brand" href="/" aria-label="Mojo AI Studio home">
+        <span class="brand-mark">M</span>
+        <span>Mojo AI Studio</span>
+      </a>
+      <div class="nav-links">
+        <a href="/buy/">Buy</a>
+        <a href="/sell">Sell</a>
+        <a href="/request/">Request</a>
+        <a href="/learn/" class="active">Learn</a>
+        <a href="/forum/">Forum</a>
+      </div>
+      <div class="nav-actions">
+        <a class="button ghost" href="/learn/">More classes</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">Class companion</p>
+          <h1>Harness Engineering and Development Automation</h1>
+          <p>
+            Learn how repeated development work becomes reliable: first as a checklist,
+            then as a script, then as a harness your team can trust.
+          </p>
+          <div class="hero-actions">
+            <a class="button light" href="#model">Start the model</a>
+            <a class="button dark" href="#worksheet">Open worksheet</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="quick-links" aria-label="Class sections">
+      <a href="#definitions">Definitions</a>
+      <a href="#ladder">Automation ladder</a>
+      <a href="#model">Harness model</a>
+      <a href="#examples">Examples</a>
+      <a href="#worksheet">Worksheet</a>
+    </div>
+
+    <main>
+      <section class="section" id="definitions">
+        <div class="section-header">
+          <div>
+            <p class="kicker">The big idea</p>
+            <h2>Automation runs the task. A harness makes the task trustworthy.</h2>
+          </div>
+          <p>
+            Development automation is the larger discipline. Harness engineering is
+            one concrete craft inside it: designing the controlled wrapper around
+            repeated work.
+          </p>
+        </div>
+
+        <div class="definition-board">
+          <article class="definition-card">
+            <strong>Development automation</strong>
+            <h3>Making repeated work executable.</h3>
+            <p>
+              Development automation turns repeated engineering work into commands,
+              checks, gates, and workflows that a team can run consistently.
+            </p>
+            <div class="tag-row" aria-label="Development automation qualities">
+              <span>Repeatable</span>
+              <span>Observable</span>
+              <span>Safe</span>
+            </div>
+          </article>
+
+          <article class="definition-card">
+            <strong>Harness engineering</strong>
+            <h3>Building the wrapper that controls the run.</h3>
+            <p>
+              A harness sets up the state, runs the target process, captures evidence,
+              decides pass or fail, and leaves the developer with a useful result.
+            </p>
+            <div class="tag-row" aria-label="Harness qualities">
+              <span>Controlled</span>
+              <span>Verifiable</span>
+              <span>Reusable</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="ladder">
+        <div class="section-header">
+          <div>
+            <p class="kicker">From memory to workflow</p>
+            <h2>The automation ladder</h2>
+          </div>
+          <p>
+            A team usually climbs this ladder one rung at a time. The higher you go,
+            the less the work depends on memory and the more it depends on evidence.
+          </p>
+        </div>
+
+        <div class="ladder">
+          <article class="ladder-step" data-step="01">
+            <h3>Checklist</h3>
+            <p>The steps are written down, but a person still has to run and judge them.</p>
+          </article>
+          <article class="ladder-step" data-step="02">
+            <h3>Script</h3>
+            <p>The steps become executable, but success may still be unclear.</p>
+          </article>
+          <article class="ladder-step" data-step="03">
+            <h3>Harness</h3>
+            <p>The run is controlled, observed, and judged with a clear result.</p>
+          </article>
+          <article class="ladder-step" data-step="04">
+            <h3>Gate</h3>
+            <p>The harness becomes a requirement before merge, release, or handoff.</p>
+          </article>
+          <article class="ladder-step" data-step="05">
+            <h3>Workflow</h3>
+            <p>Several gates connect into CI, release, demo, or agent workflows.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="model">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Harness anatomy</p>
+            <h2>Five jobs every useful harness performs</h2>
+          </div>
+          <p>
+            Use this model whenever you are designing a test harness, build harness,
+            deployment harness, evaluation harness, or demo harness.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <span>Setup</span>
+            <h3>Create the conditions.</h3>
+            <p>Prepare dependencies, files, environment variables, test data, ports, services, or fixtures.</p>
+          </article>
+          <article class="step-card">
+            <span>Run</span>
+            <h3>Execute the target.</h3>
+            <p>Start the process, script, test suite, migration, app, model, workflow, or command.</p>
+          </article>
+          <article class="step-card">
+            <span>Observe</span>
+            <h3>Capture evidence.</h3>
+            <p>Collect logs, screenshots, exit codes, reports, traces, metrics, generated files, or API responses.</p>
+          </article>
+          <article class="step-card">
+            <span>Judge</span>
+            <h3>Decide pass or fail.</h3>
+            <p>Define the rule that tells the team whether the run succeeded, failed, or needs review.</p>
+          </article>
+          <article class="step-card">
+            <span>Recover</span>
+            <h3>Clean up or report.</h3>
+            <p>Stop services, reset state, preserve useful artifacts, and explain what to do next.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="examples">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Where harnesses appear</p>
+            <h2>Examples students should recognize</h2>
+          </div>
+          <p>
+            The same harness pattern shows up in tiny local scripts and in full
+            production pipelines. The scale changes. The job stays familiar.
+          </p>
+        </div>
+
+        <div class="example-grid">
+          <article class="example-card">
+            <code>npm test</code>
+            <h3>Test harness</h3>
+            <p>Sets up test fixtures, runs the suite, captures failures, and exits with a status CI can understand.</p>
+          </article>
+          <article class="example-card">
+            <code>npm run verify</code>
+            <h3>Pull request harness</h3>
+            <p>Runs formatting, linting, unit tests, build checks, and smoke tests before review.</p>
+          </article>
+          <article class="example-card">
+            <code>make demo</code>
+            <h3>Demo harness</h3>
+            <p>Starts the right services, loads demo data, opens the app, and keeps reset steps close.</p>
+          </article>
+          <article class="example-card">
+            <code>just eval</code>
+            <h3>AI eval harness</h3>
+            <p>Runs prompts or agents against cases, records outputs, scores behavior, and stores evidence.</p>
+          </article>
+          <article class="example-card">
+            <code>make migrate-check</code>
+            <h3>Migration harness</h3>
+            <p>Tests schema or data changes against isolated state before anything touches production.</p>
+          </article>
+          <article class="example-card">
+            <code>pnpm preview</code>
+            <h3>Release harness</h3>
+            <p>Builds the app, serves the output, checks the route, and gives the team a preview target.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="practice-band">
+          <p class="kicker">Golden paths</p>
+          <h2>The goal is not to automate everything. The goal is to make the right thing easy to run correctly.</h2>
+          <p>
+            A golden path is the command the team can trust. It hides unnecessary
+            ceremony, but it does not hide evidence. When it fails, it tells you
+            where to look.
+          </p>
+          <a class="button light" href="#golden-paths">See command patterns</a>
+        </div>
+      </section>
+
+      <section class="section" id="safety">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Trust rules</p>
+            <h2>What makes development automation worth trusting?</h2>
+          </div>
+          <p>
+            The best automation saves time without hiding risk. Use these checks
+            before turning a script into a gate or a shared team workflow.
+          </p>
+        </div>
+
+        <div class="principles">
+          <article class="principle">
+            <h3>Repeatable</h3>
+            <p>It can run more than once without creating confusing state.</p>
+          </article>
+          <article class="principle">
+            <h3>Isolated</h3>
+            <p>It avoids production data, real customers, and destructive defaults.</p>
+          </article>
+          <article class="principle">
+            <h3>Observable</h3>
+            <p>It captures enough evidence to debug a failed run.</p>
+          </article>
+          <article class="principle">
+            <h3>Reversible</h3>
+            <p>It has a cleanup, rollback, reset, or recovery path.</p>
+          </article>
+          <article class="principle">
+            <h3>Bounded</h3>
+            <p>It is clear what the automation is allowed to change.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="golden-paths">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Command design</p>
+            <h2>Good golden paths sound boring on purpose</h2>
+          </div>
+          <p>
+            A boring command name is a gift to the team. Nobody has to remember a
+            long checklist when the project has one obvious command for the job.
+          </p>
+        </div>
+
+        <div class="command-grid">
+          <article class="command-card">
+            <code>npm run verify</code>
+            <h3>Before review</h3>
+            <p>Format, lint, test, build, and smoke check the change before a pull request.</p>
+          </article>
+          <article class="command-card">
+            <code>make reset-demo</code>
+            <h3>Before a live demo</h3>
+            <p>Reset sample data, start the app, and confirm the route opens cleanly.</p>
+          </article>
+          <article class="command-card">
+            <code>just release-check</code>
+            <h3>Before shipping</h3>
+            <p>Build output, run route checks, confirm assets, and save proof for release.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="worksheet">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Class activity</p>
+            <h2>Design a harness for one repeated workflow</h2>
+          </div>
+          <p>
+            Pick a workflow that already annoys you. The exercise is not to write
+            code first. The exercise is to design trust first.
+          </p>
+        </div>
+
+        <div class="worksheet-grid">
+          <article class="worksheet-panel">
+            <h3>Fill this in during class</h3>
+            <ul class="worksheet-list">
+              <li><b>Workflow</b><span>What repeated task do you want to make reliable?</span></li>
+              <li><b>Current steps</b><span>What do people currently do by memory or checklist?</span></li>
+              <li><b>Setup</b><span>What state, tools, services, files, or data must exist first?</span></li>
+              <li><b>Run</b><span>What command, process, model, app, or workflow should execute?</span></li>
+              <li><b>Evidence</b><span>What output should the harness capture?</span></li>
+              <li><b>Pass/fail rule</b><span>How does it know the run succeeded?</span></li>
+              <li><b>Recovery</b><span>What should be cleaned up, reset, or preserved afterward?</span></li>
+              <li><b>Risk</b><span>What could this automation damage, hide, or misunderstand?</span></li>
+              <li><b>Golden path</b><span>What should the one-command version be called?</span></li>
+            </ul>
+          </article>
+
+          <div class="code-panel" aria-label="Harness design worksheet template">
+            <header>
+              <span>Worksheet template</span>
+              <button class="button light" type="button" onclick="window.print()">Print</button>
+            </header>
+            <pre><code>Workflow:
+
+Current manual steps:
+
+Setup required:
+
+Command or process to run:
+
+Evidence to capture:
+
+Pass/fail rule:
+
+Cleanup or recovery:
+
+One risk:
+
+One safety improvement:
+
+Golden path command name:</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section closing">
+        <div class="closing-panel">
+          <div>
+            <p class="kicker">Keep this sentence</p>
+            <h2>A harness is a trust machine for repeated development work.</h2>
+            <p>
+              When you know the setup, the run, the evidence, the judgment, and
+              the recovery path, you can turn fragile manual work into automation
+              a team can actually rely on.
+            </p>
+          </div>
+          <a class="button dark" href="#worksheet">Return to worksheet</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>Practical AI classes and software for builders.</p>
+      </div>
+      <div>
+        <b>Learn</b>
+        <a href="/learn/">Advanced AI Concepts</a>
+        <a href="/harness/">Harness Engineering</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/request/">Request a build</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
