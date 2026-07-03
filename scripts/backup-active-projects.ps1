@@ -8,8 +8,7 @@ $ErrorActionPreference = "Stop"
 
 $projects = @(
     @{ Name = "mindshare"; Path = "C:\Users\scott\Code\mindshare" },
-    @{ Name = "mojo"; Path = "C:\Users\scott\Code\mojo" },
-    @{ Name = "watch"; Path = "C:\Users\scott\Code\watch" }
+    @{ Name = "mojo"; Path = "C:\Users\scott\Code\mojo" }
 )
 
 function Assert-UnderPath {
