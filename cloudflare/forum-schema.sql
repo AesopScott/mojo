@@ -98,10 +98,19 @@ CREATE INDEX IF NOT EXISTS idx_forum_votes_option
 CREATE INDEX IF NOT EXISTS idx_forum_sessions_token
   ON forum_sessions(token_hash, expires_at);
 
-INSERT OR IGNORE INTO forum_categories (id, slug, name, description, sort_order, created_at)
+DELETE FROM forum_categories WHERE slug = 'support';
+DELETE FROM forum_categories WHERE slug = 'events';
+
+INSERT INTO forum_categories (id, slug, name, description, sort_order, created_at)
 VALUES
   ('cat-general', 'general', 'General', 'Open conversation, questions, and community notes.', 10, '2026-07-03T00:00:00.000Z'),
-  ('cat-maps', 'maps', 'MAPS', 'MAPS training, operating-model questions, and role architecture discussion.', 20, '2026-07-03T00:00:00.000Z'),
+  ('cat-maps', 'maps', 'Maps', 'MAPS training, operating-model questions, and role architecture discussion.', 20, '2026-07-03T00:00:00.000Z'),
   ('cat-builds', 'builds', 'Builds', 'Share AI builds, experiments, demos, and lessons learned.', 30, '2026-07-03T00:00:00.000Z'),
-  ('cat-events', 'events', 'Events', 'Meetups, workshops, watch sessions, and follow-up threads.', 40, '2026-07-03T00:00:00.000Z'),
-  ('cat-support', 'support', 'Support', 'Help with Mojo products, courses, and community setup.', 50, '2026-07-03T00:00:00.000Z');
+  ('cat-meetup', 'meetup', 'Meetup', 'Meetups, workshops, watch sessions, and follow-up threads.', 40, '2026-07-03T00:00:00.000Z'),
+  ('cat-projects', 'projects', 'Projects', 'Share project work, collaboration requests, and build progress.', 50, '2026-07-03T00:00:00.000Z'),
+  ('cat-self-promote', 'self-promote', 'Self Promote', 'Share your work, offers, launches, and public wins.', 60, '2026-07-03T00:00:00.000Z'),
+  ('cat-skills', 'skills', 'Skills', 'Discuss skills, templates, workflows, and practical capability building.', 70, '2026-07-03T00:00:00.000Z')
+ON CONFLICT(slug) DO UPDATE SET
+  name = excluded.name,
+  description = excluded.description,
+  sort_order = excluded.sort_order;
