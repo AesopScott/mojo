@@ -3,6 +3,7 @@
     categories: [],
     threads: [],
     user: null,
+    memberCount: 0,
     pendingEmail: '',
     selectedCategory: '',
     selectedThreadId: new URLSearchParams(window.location.search).get('thread') || '',
@@ -27,6 +28,7 @@
     authEmailForm: document.querySelector('[data-auth-email-form]'),
     authCodeForm: document.querySelector('[data-auth-code-form]'),
     authSummary: document.querySelector('[data-auth-summary]'),
+    memberCount: document.querySelector('[data-member-count]'),
     categorySelect: document.getElementById('thread-category'),
   };
 
@@ -61,6 +63,8 @@
       await loadMe();
       const categories = await api('/api/forum/categories');
       state.categories = categories.categories || [];
+      state.memberCount = Number(categories.stats?.memberCount || 0);
+      renderMemberCount();
       renderCategories();
 
       if (state.selectedThreadId) {
@@ -104,6 +108,11 @@
     els.authEmailForm.hidden = signedIn;
     els.authCodeForm.hidden = signedIn || !state.pendingEmail;
     document.querySelector('[data-logout]').hidden = !signedIn;
+  }
+
+  function renderMemberCount() {
+    const count = state.memberCount;
+    els.memberCount.textContent = `${count.toLocaleString()} forum ${count === 1 ? 'member' : 'members'}`;
   }
 
   function renderCategories() {

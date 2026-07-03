@@ -132,6 +132,12 @@
         margin: 0;
       }
 
+      .forum-member-count {
+        color: var(--muted);
+        font-size: 0.95rem;
+        font-weight: 850;
+      }
+
       .forum-toolbar {
         display: flex;
         gap: 10px;
@@ -418,6 +424,7 @@
         <div>
           <p class="kicker">Forum login</p>
           <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
+          <p class="forum-member-count" data-member-count>0 forum members</p>
         </div>
         <form data-auth-email-form>
           <div class="forum-field">

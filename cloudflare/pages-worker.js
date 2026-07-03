@@ -548,7 +548,11 @@ async function handleForumApi(request, env, url) {
 
   try {
     if (path === "/api/forum/categories" && request.method === "GET") {
-      return json({ ok: true, categories: await forumCategories(env) });
+      const [categories, stats] = await Promise.all([
+        forumCategories(env),
+        forumStats(env),
+      ]);
+      return json({ ok: true, categories, stats });
     }
 
     if (path === "/api/forum/threads" && request.method === "GET") {
@@ -646,6 +650,17 @@ async function forumCategories(env) {
     threadCount: Number(row.threadCount || 0),
     lastActivityAt: row.lastActivityAt || null,
   }));
+}
+
+async function forumStats(env) {
+  const row = await env.FORUM_DB.prepare(`
+    SELECT COUNT(*) AS memberCount
+    FROM forum_users
+  `).first();
+
+  return {
+    memberCount: Number(row?.memberCount || 0),
+  };
 }
 
 async function forumThreads(env, url) {
