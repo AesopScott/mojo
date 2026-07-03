@@ -174,7 +174,6 @@
 <span class="border border-primary/30 bg-primary-fixed/10 px-3 py-2 font-label-caps text-[10px] text-primary-fixed" id="page-version-badge">HARNESS V1.0</span>
 <a class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" href="/harness/" rel="noopener" target="_blank">Student Guide</a>
 <a class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" href="/harnessteach/" rel="noopener" target="_blank">Teacher Guide</a>
-<button aria-controls="build-primer-modal" aria-haspopup="dialog" class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" id="build-primer-trigger" type="button">Harness Build Primer</button>
 </div>
 </div>
 </header>
@@ -719,6 +718,7 @@ Other Repositories
         }
 
         function bindModalTrigger(topic, modal, closeButton) {
+            if (!topic || !modal || !closeButton) return;
             topic.addEventListener('click', () => openModal(modal, closeButton));
             topic.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
