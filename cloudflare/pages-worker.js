@@ -556,11 +556,11 @@ async function handleForumApi(request, env, url) {
     }
 
     if (path === "/api/forum/threads" && request.method === "GET") {
-      return json({ ok: true, threads: await forumThreads(env, url) });
+      return json({ ok: true, threads: await forumThreads(env, url, request) });
     }
 
     if (path === "/api/forum/thread" && request.method === "GET") {
-      const thread = await forumThread(env, url.searchParams.get("id"));
+      const thread = await forumThread(env, url.searchParams.get("id"), request);
       if (!thread) return json({ ok: false, message: "Thread not found." }, 404);
       return json({ ok: true, thread });
     }
@@ -595,10 +595,22 @@ async function handleForumApi(request, env, url) {
       return json({ ok: true, thread: saved }, 201);
     }
 
+    if (path === "/api/forum/threads" && request.method === "PUT") {
+      const input = await readJsonBody(request);
+      const saved = await updateForumThread(env, input, request);
+      return json({ ok: true, thread: saved });
+    }
+
     if (path === "/api/forum/posts" && request.method === "POST") {
       const input = await readJsonBody(request);
       const saved = await createForumPost(env, input, request);
       return json({ ok: true, post: saved }, 201);
+    }
+
+    if (path === "/api/forum/posts" && request.method === "PUT") {
+      const input = await readJsonBody(request);
+      const saved = await updateForumPost(env, input, request);
+      return json({ ok: true, post: saved });
     }
 
     if (path === "/api/forum/votes" && request.method === "POST") {
@@ -663,8 +675,9 @@ async function forumStats(env) {
   };
 }
 
-async function forumThreads(env, url) {
+async function forumThreads(env, url, request) {
   const category = String(url.searchParams.get("category") || "").trim();
+  const viewer = await forumViewer(env, request);
   const params = [];
   let where = "t.hidden = 0";
 
@@ -679,6 +692,7 @@ async function forumThreads(env, url) {
       t.title,
       t.body,
       t.author_name AS authorName,
+      t.author_token_hash AS authorHash,
       t.youtube_url AS youtubeUrl,
       t.youtube_video_id AS youtubeVideoId,
       t.youtube_thumbnail_url AS youtubeThumbnailUrl,
@@ -700,12 +714,13 @@ async function forumThreads(env, url) {
     LIMIT 80
   `).bind(...params).all();
 
-  return (result.results || []).map(forumThreadSummary);
+  return (result.results || []).map((row) => forumThreadSummary(row, viewer));
 }
 
-async function forumThread(env, threadId) {
+async function forumThread(env, threadId, request) {
   const id = cleanId(threadId);
   if (!id) return null;
+  const viewer = request ? await forumViewer(env, request) : null;
 
   const threadResult = await env.FORUM_DB.prepare(`
     SELECT
@@ -713,6 +728,7 @@ async function forumThread(env, threadId) {
       t.title,
       t.body,
       t.author_name AS authorName,
+      t.author_token_hash AS authorHash,
       t.youtube_url AS youtubeUrl,
       t.youtube_video_id AS youtubeVideoId,
       t.youtube_thumbnail_url AS youtubeThumbnailUrl,
@@ -737,6 +753,7 @@ async function forumThread(env, threadId) {
       id,
       body,
       author_name AS authorName,
+      author_token_hash AS authorHash,
       youtube_url AS youtubeUrl,
       youtube_video_id AS youtubeVideoId,
       youtube_thumbnail_url AS youtubeThumbnailUrl,
@@ -761,8 +778,8 @@ async function forumThread(env, threadId) {
   `).bind(id).all();
 
   return {
-    ...forumThreadSummary({ ...threadResult, replyCount: (postsResult.results || []).length }),
-    posts: (postsResult.results || []).map(forumPostPayload),
+    ...forumThreadSummary({ ...threadResult, replyCount: (postsResult.results || []).length }, viewer),
+    posts: (postsResult.results || []).map((row) => forumPostPayload(row, viewer)),
     pollOptions: (optionsResult.results || []).map((row) => ({
       id: row.id,
       label: row.label,
@@ -778,8 +795,12 @@ async function createForumThread(env, input, request) {
   const authorName = user.display_name || "Mojo member";
   const categorySlug = cleanText(input.categorySlug, 80);
   const media = normalizeForumMedia(input);
-  const pollQuestion = cleanText(input.pollQuestion, 180);
-  const pollOptions = normalizePollOptions(input.pollOptions);
+  const isPoll = cleanText(input.type, 20) === "poll";
+  if (isPoll && !isForumAdminEmail(user.email)) {
+    throw publicError("Only admins can create polls.", 403);
+  }
+  const pollQuestion = isPoll ? cleanText(input.pollQuestion || input.title, 180) : "";
+  const pollOptions = isPoll ? normalizePollOptions(input.pollOptions) : [];
 
   if (!title || !body || !categorySlug) {
     throw publicError("Title, body, and category are required.", 422);
@@ -834,7 +855,58 @@ async function createForumThread(env, input, request) {
   });
 
   await env.FORUM_DB.batch(statements);
-  return forumThread(env, id);
+  return forumThread(env, id, request);
+}
+
+async function updateForumThread(env, input, request) {
+  const user = await requireForumUser(env, request);
+  const threadId = cleanId(input.threadId);
+  const title = cleanText(input.title, 140);
+  const body = cleanText(input.body, 5000);
+
+  if (!threadId || !title || !body) {
+    throw publicError("Thread, title, and body are required.", 422);
+  }
+
+  const thread = await env.FORUM_DB.prepare(`
+    SELECT id, author_token_hash AS authorHash
+    FROM forum_threads
+    WHERE id = ? AND hidden = 0
+    LIMIT 1
+  `).bind(threadId).first();
+
+  if (!thread) throw publicError("Thread not found.", 404);
+
+  const viewer = await forumViewerFromUser(request, user);
+  if (!viewer.isAdmin && thread.authorHash !== viewer.authorHash) {
+    throw publicError("You can only edit your own threads.", 403);
+  }
+
+  const media = normalizeForumMedia(input);
+  const now = new Date().toISOString();
+
+  await env.FORUM_DB.prepare(`
+    UPDATE forum_threads
+    SET title = ?,
+        body = ?,
+        youtube_url = ?,
+        youtube_video_id = ?,
+        youtube_thumbnail_url = ?,
+        image_url = ?,
+        updated_at = ?
+    WHERE id = ?
+  `).bind(
+    title,
+    body,
+    media.youtubeUrl,
+    media.youtubeVideoId,
+    media.youtubeThumbnailUrl,
+    media.imageUrl,
+    now,
+    threadId,
+  ).run();
+
+  return forumThread(env, threadId, request);
 }
 
 async function createForumPost(env, input, request) {
@@ -894,6 +966,55 @@ async function createForumPost(env, input, request) {
   };
 }
 
+async function updateForumPost(env, input, request) {
+  const user = await requireForumUser(env, request);
+  const postId = cleanId(input.postId);
+  const body = cleanText(input.body, 5000);
+
+  if (!postId || !body) {
+    throw publicError("Post and reply body are required.", 422);
+  }
+
+  const post = await env.FORUM_DB.prepare(`
+    SELECT id, thread_id AS threadId, author_token_hash AS authorHash
+    FROM forum_posts
+    WHERE id = ? AND hidden = 0
+    LIMIT 1
+  `).bind(postId).first();
+
+  if (!post) throw publicError("Reply not found.", 404);
+
+  const viewer = await forumViewerFromUser(request, user);
+  if (!viewer.isAdmin && post.authorHash !== viewer.authorHash) {
+    throw publicError("You can only edit your own replies.", 403);
+  }
+
+  const media = normalizeForumMedia(input);
+  const now = new Date().toISOString();
+
+  await env.FORUM_DB.batch([
+    env.FORUM_DB.prepare(`
+      UPDATE forum_posts
+      SET body = ?,
+          youtube_url = ?,
+          youtube_video_id = ?,
+          youtube_thumbnail_url = ?,
+          image_url = ?
+      WHERE id = ?
+    `).bind(
+      body,
+      media.youtubeUrl,
+      media.youtubeVideoId,
+      media.youtubeThumbnailUrl,
+      media.imageUrl,
+      postId,
+    ),
+    env.FORUM_DB.prepare("UPDATE forum_threads SET updated_at = ? WHERE id = ?").bind(now, post.threadId),
+  ]);
+
+  return { id: postId, threadId: post.threadId };
+}
+
 async function createForumVote(env, input, request) {
   const user = await requireForumUser(env, request);
   const threadId = cleanId(input.threadId);
@@ -950,7 +1071,7 @@ async function moderateForumItem(env, input) {
   return { type, id, action };
 }
 
-function forumThreadSummary(row) {
+function forumThreadSummary(row, viewer) {
   return {
     id: row.id,
     title: row.title,
@@ -965,13 +1086,14 @@ function forumThreadSummary(row) {
     pollQuestion: row.pollQuestion || null,
     pinned: Boolean(row.pinned),
     locked: Boolean(row.locked),
+    canEdit: Boolean(viewer && (viewer.isAdmin || row.authorHash === viewer.authorHash)),
     replyCount: Number(row.replyCount || 0),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
 }
 
-function forumPostPayload(row) {
+function forumPostPayload(row, viewer) {
   return {
     id: row.id,
     body: row.body || "",
@@ -980,6 +1102,7 @@ function forumPostPayload(row) {
     youtubeVideoId: row.youtubeVideoId || null,
     youtubeThumbnailUrl: row.youtubeThumbnailUrl || null,
     imageUrl: row.imageUrl || null,
+    canEdit: Boolean(viewer && (viewer.isAdmin || row.authorHash === viewer.authorHash)),
     createdAt: row.createdAt,
   };
 }
@@ -993,9 +1116,17 @@ async function readJsonBody(request) {
 }
 
 function normalizeForumMedia(input) {
-  const youtubeUrl = cleanText(input.youtubeUrl, 2000);
+  const sourceText = [
+    input.body,
+    input.youtubeUrl,
+    input.imageUrl,
+  ].map((value) => String(value || "")).join("\n");
+  const urls = extractPublicUrls(sourceText);
+  const explicitYoutubeUrl = cleanText(input.youtubeUrl, 2000);
+  const explicitImageUrl = cleanText(input.imageUrl, 2000);
+  const youtubeUrl = explicitYoutubeUrl || urls.find((url) => extractYouTubeVideoId(url)) || "";
   const youtubeVideoId = youtubeUrl ? extractYouTubeVideoId(youtubeUrl) : "";
-  const imageUrl = cleanText(input.imageUrl, 2000);
+  const imageUrl = explicitImageUrl || urls.find(isLikelyImageUrl) || "";
 
   if (youtubeUrl && !youtubeVideoId) {
     throw publicError("Paste a valid YouTube URL.", 422);
@@ -1011,6 +1142,31 @@ function normalizeForumMedia(input) {
     youtubeThumbnailUrl: youtubeVideoId ? `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg` : null,
     imageUrl: imageUrl || null,
   };
+}
+
+function extractPublicUrls(value) {
+  const matches = String(value || "").match(/https?:\/\/[^\s<>"')\]]+/gi) || [];
+  const cleaned = [];
+  const seen = new Set();
+
+  matches.forEach((match) => {
+    const url = match.replace(/[.,!?;:]+$/g, "");
+    if (isPublicHttpUrl(url) && !seen.has(url)) {
+      seen.add(url);
+      cleaned.push(url);
+    }
+  });
+
+  return cleaned;
+}
+
+function isLikelyImageUrl(value) {
+  try {
+    const url = new URL(String(value || "").trim());
+    return /\.(png|jpe?g|gif|webp|avif|svg)(\?.*)?$/i.test(url.pathname + url.search);
+  } catch {
+    return false;
+  }
 }
 
 function extractYouTubeVideoId(value) {
@@ -1059,6 +1215,20 @@ function normalizePollOptions(options) {
 async function forumActorHash(request, authorToken) {
   const token = cleanText(authorToken, 200) || request.headers.get("CF-Connecting-IP") || "anonymous";
   return sha256(`forum|${token}`);
+}
+
+async function forumViewer(env, request) {
+  const user = await forumCurrentUser(env, request);
+  if (!user) return null;
+  return forumViewerFromUser(request, user);
+}
+
+async function forumViewerFromUser(request, user) {
+  return {
+    user,
+    isAdmin: isForumAdminEmail(user.email),
+    authorHash: await forumActorHash(request, user.id),
+  };
 }
 
 async function requestForumLoginCode(env, input) {

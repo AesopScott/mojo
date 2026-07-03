@@ -125,6 +125,7 @@
 
       .forum-main-actions {
         display: flex;
+        gap: 10px;
         justify-content: flex-end;
         align-items: center;
         min-height: 50px;
@@ -141,12 +142,12 @@
       @media (min-width: 1500px) {
         .forum-main-actions {
           justify-content: flex-start;
+          transform: translateX(calc(-100% - 312px));
         }
 
         .forum-main-actions .button {
           width: 118px;
           padding-inline: 12px;
-          transform: translateX(calc(-100% - 312px));
         }
       }
 
@@ -435,7 +436,7 @@
       }
 
       @media (max-width: 980px) {
-        .forum-main-actions .button {
+        .forum-main-actions {
           position: fixed;
           top: auto;
           right: 12px;
@@ -443,6 +444,11 @@
           left: 12px;
           width: auto;
           transform: none;
+          justify-content: center;
+        }
+
+        .forum-main-actions .button {
+          min-width: min(150px, 44vw);
         }
       }
     </style>
@@ -460,9 +466,6 @@
           <a href="/request/">Request</a>
           <a href="/learn/">Learn</a>
           <a href="/forum/" class="active">Forum</a>
-        </div>
-        <div class="nav-actions">
-          <button class="button ghost" type="button" data-refresh>Refresh</button>
         </div>
       </nav>
 
@@ -509,10 +512,11 @@
       <section class="forum-main" aria-live="polite">
         <div class="forum-main-actions">
           <button class="button dark" type="button" data-open-composer>New thread</button>
+          <button class="button ghost" type="button" data-open-poll hidden>New poll</button>
         </div>
 
         <form class="forum-composer" data-thread-form>
-          <h2>New thread</h2>
+          <h2 data-composer-title>New thread</h2>
           <div class="forum-form-grid">
             <div class="forum-field">
               <label for="thread-category">Category</label>
@@ -524,28 +528,20 @@
             </div>
             <div class="forum-field forum-field--wide">
               <label for="thread-body">Post</label>
-              <textarea id="thread-body" name="body" maxlength="5000" required></textarea>
+              <textarea id="thread-body" name="body" maxlength="5000" required placeholder="Paste YouTube or image links directly into the post."></textarea>
             </div>
-            <div class="forum-field">
-              <label for="thread-youtube">YouTube URL</label>
-              <input id="thread-youtube" name="youtubeUrl" inputmode="url" />
-            </div>
-            <div class="forum-field">
-              <label for="thread-image">Image URL</label>
-              <input id="thread-image" name="imageUrl" inputmode="url" />
-            </div>
-            <div class="forum-field">
+            <div class="forum-field forum-poll-fields" hidden>
               <label for="thread-poll-question">Poll question</label>
               <input id="thread-poll-question" name="pollQuestion" maxlength="180" />
             </div>
-            <div class="forum-field">
+            <div class="forum-field forum-poll-fields" hidden>
               <label for="thread-poll-options">Poll options</label>
               <textarea id="thread-poll-options" name="pollOptions" maxlength="1000"></textarea>
             </div>
           </div>
           <div class="forum-actions">
             <button class="button ghost" type="button" data-close-composer>Cancel</button>
-            <button class="button dark" type="submit">Publish thread</button>
+            <button class="button dark" type="submit" data-composer-submit>Publish thread</button>
           </div>
           <div class="forum-status" data-thread-status></div>
         </form>
@@ -561,23 +557,15 @@
         <article class="forum-thread" hidden data-thread-detail></article>
         <div class="forum-replies" data-replies></div>
         <form class="forum-composer" data-reply-form>
-          <h2>Reply</h2>
+          <h2 data-reply-title>Reply</h2>
           <div class="forum-form-grid">
-            <div class="forum-field">
-              <label for="reply-youtube">YouTube URL</label>
-              <input id="reply-youtube" name="youtubeUrl" inputmode="url" />
-            </div>
-            <div class="forum-field">
-              <label for="reply-image">Image URL</label>
-              <input id="reply-image" name="imageUrl" inputmode="url" />
-            </div>
             <div class="forum-field forum-field--wide">
               <label for="reply-body">Reply</label>
-              <textarea id="reply-body" name="body" maxlength="5000" required></textarea>
+              <textarea id="reply-body" name="body" maxlength="5000" required placeholder="Paste YouTube or image links directly into the reply."></textarea>
             </div>
           </div>
           <div class="forum-actions">
-            <button class="button dark" type="submit">Post reply</button>
+            <button class="button dark" type="submit" data-reply-submit>Post reply</button>
           </div>
           <div class="forum-status" data-reply-status></div>
         </form>

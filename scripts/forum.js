@@ -8,6 +8,9 @@
     selectedCategory: '',
     selectedThreadId: new URLSearchParams(window.location.search).get('thread') || '',
     search: '',
+    composerMode: 'thread',
+    editingThreadId: '',
+    editingPostId: '',
   };
 
   const els = {
@@ -30,19 +33,25 @@
     authSummary: document.querySelector('[data-auth-summary]'),
     memberCount: document.querySelector('[data-member-count]'),
     categorySelect: document.getElementById('thread-category'),
+    openComposer: document.querySelector('[data-open-composer]'),
+    openPoll: document.querySelector('[data-open-poll]'),
+    closeComposer: document.querySelector('[data-close-composer]'),
+    composerTitle: document.querySelector('[data-composer-title]'),
+    composerSubmit: document.querySelector('[data-composer-submit]'),
+    pollFields: Array.from(document.querySelectorAll('.forum-poll-fields')),
+    replyTitle: document.querySelector('[data-reply-title]'),
+    replySubmit: document.querySelector('[data-reply-submit]'),
   };
 
-  document.querySelector('[data-open-composer]').addEventListener('click', function () {
-    if (!requireSignedIn(els.threadStatus)) return;
-    els.threadForm.classList.add('is-open');
-    document.getElementById('thread-title').focus();
+  els.openComposer.addEventListener('click', function () {
+    openThreadComposer();
   });
 
-  document.querySelector('[data-close-composer]').addEventListener('click', function () {
-    els.threadForm.classList.remove('is-open');
+  els.openPoll.addEventListener('click', function () {
+    openPollComposer();
   });
 
-  document.querySelector('[data-refresh]').addEventListener('click', loadForum);
+  els.closeComposer.addEventListener('click', closeThreadComposer);
   document.querySelector('[data-logout]').addEventListener('click', logout);
 
   els.search.addEventListener('input', function () {
@@ -56,16 +65,13 @@
   els.replyForm.addEventListener('submit', submitReply);
 
   loadForum();
+  window.setInterval(autoRefreshForum, 5 * 60 * 1000);
 
   async function loadForum() {
     setStatus(els.threadStatus, '');
     try {
       await loadMe();
-      const categories = await api('/api/forum/categories');
-      state.categories = categories.categories || [];
-      state.memberCount = Number(categories.stats?.memberCount || 0);
-      renderMemberCount();
-      renderCategories();
+      await loadCategories();
 
       if (state.selectedThreadId) {
         await loadThread(state.selectedThreadId);
@@ -81,6 +87,14 @@
     const payload = await api('/api/forum/auth/me');
     state.user = payload.user || null;
     renderAuth();
+  }
+
+  async function loadCategories() {
+    const payload = await api('/api/forum/categories');
+    state.categories = payload.categories || [];
+    state.memberCount = Number(payload.stats?.memberCount || 0);
+    renderMemberCount();
+    renderCategories();
   }
 
   async function loadThreads() {
@@ -108,6 +122,7 @@
     els.authEmailForm.hidden = signedIn;
     els.authCodeForm.hidden = signedIn || !state.pendingEmail;
     document.querySelector('[data-logout]').hidden = !signedIn;
+    els.openPoll.hidden = !(state.user && state.user.isAdmin);
   }
 
   function renderMemberCount() {
@@ -158,6 +173,7 @@
   function renderThreads() {
     els.threadDetail.hidden = true;
     els.replies.replaceChildren();
+    resetReplyComposer();
     els.replyForm.classList.remove('is-open');
     els.threadList.replaceChildren();
 
@@ -216,6 +232,7 @@
       loadThread(thread.id);
     });
     actions.append(open);
+    appendThreadEditAction(actions, thread);
     appendAdminThreadActions(actions, thread, false);
     article.append(actions);
 
@@ -225,6 +242,7 @@
   function renderThreadDetail(thread) {
     els.threadList.replaceChildren();
     els.replies.replaceChildren();
+    resetReplyComposer();
     els.empty.hidden = true;
     els.threadDetail.hidden = false;
     els.threadDetail.replaceChildren();
@@ -253,6 +271,7 @@
 
     const adminActions = document.createElement('div');
     adminActions.className = 'forum-admin-actions';
+    appendThreadEditAction(adminActions, thread);
     appendAdminThreadActions(adminActions, thread, true);
 
     els.threadDetail.append(back, meta, title);
@@ -282,8 +301,40 @@
     body.textContent = post.body;
     article.append(meta, body);
     appendMedia(article, post);
-    appendAdminPostActions(article, post);
+    appendPostActions(article, post);
     return article;
+  }
+
+  function appendThreadEditAction(parent, thread) {
+    if (!thread.canEdit) return;
+
+    const edit = document.createElement('button');
+    edit.className = 'button ghost';
+    edit.type = 'button';
+    edit.textContent = 'Edit';
+    edit.addEventListener('click', function () {
+      openEditThreadComposer(thread);
+    });
+    parent.append(edit);
+  }
+
+  function appendPostActions(parent, post) {
+    const actions = document.createElement('div');
+    actions.className = 'forum-admin-actions';
+
+    if (post.canEdit) {
+      const edit = document.createElement('button');
+      edit.className = 'button ghost';
+      edit.type = 'button';
+      edit.textContent = 'Edit reply';
+      edit.addEventListener('click', function () {
+        openEditReplyComposer(post);
+      });
+      actions.append(edit);
+    }
+
+    appendAdminPostActions(actions, post);
+    if (actions.childElementCount) parent.append(actions);
   }
 
   function appendAdminThreadActions(parent, thread, isDetail) {
@@ -300,8 +351,10 @@
         action: thread.pinned ? 'unpin' : 'pin',
       });
       if (isDetail || state.selectedThreadId === thread.id) {
+        await loadCategories();
         await loadThread(thread.id);
       } else {
+        await loadCategories();
         await loadThreads();
       }
     });
@@ -313,6 +366,7 @@
     remove.addEventListener('click', async function () {
       if (!window.confirm('Delete this thread from the forum?')) return;
       await moderate({ type: 'thread', id: thread.id, action: 'delete' });
+      await loadCategories();
       await loadThreads();
     });
 
@@ -322,8 +376,6 @@
   function appendAdminPostActions(parent, post) {
     if (!state.user || !state.user.isAdmin) return;
 
-    const actions = document.createElement('div');
-    actions.className = 'forum-admin-actions';
     const remove = document.createElement('button');
     remove.className = 'button ghost forum-danger';
     remove.type = 'button';
@@ -331,10 +383,10 @@
     remove.addEventListener('click', async function () {
       if (!window.confirm('Delete this reply from the forum?')) return;
       await moderate({ type: 'post', id: post.id, action: 'delete' });
+      await loadCategories();
       if (state.selectedThreadId) await loadThread(state.selectedThreadId);
     });
-    actions.append(remove);
-    parent.append(actions);
+    parent.append(remove);
   }
 
   async function moderate(body) {
@@ -435,6 +487,101 @@
     return link;
   }
 
+  function openThreadComposer() {
+    if (!requireSignedIn(els.threadStatus)) return;
+    resetThreadComposer('thread');
+    els.threadForm.classList.add('is-open');
+    document.getElementById('thread-title').focus();
+  }
+
+  function openPollComposer() {
+    if (!requireSignedIn(els.threadStatus)) return;
+    if (!state.user.isAdmin) {
+      setStatus(els.threadStatus, 'Only admins can create polls.', true);
+      return;
+    }
+    resetThreadComposer('poll');
+    els.threadForm.classList.add('is-open');
+    document.getElementById('thread-title').focus();
+  }
+
+  function openEditThreadComposer(thread) {
+    if (!requireSignedIn(els.threadStatus)) return;
+    resetThreadComposer('edit-thread');
+    state.editingThreadId = thread.id;
+    els.threadForm.categorySlug.value = thread.categorySlug || state.selectedCategory || '';
+    els.threadForm.title.value = thread.title || '';
+    els.threadForm.body.value = thread.body || '';
+    els.threadForm.classList.add('is-open');
+    els.threadForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('thread-title').focus();
+  }
+
+  function openEditReplyComposer(post) {
+    if (!requireSignedIn(els.replyStatus)) return;
+    state.editingPostId = post.id;
+    els.replyTitle.textContent = 'Edit reply';
+    els.replySubmit.textContent = 'Save reply';
+    els.replyForm.body.value = post.body || '';
+    els.replyForm.classList.add('is-open');
+    els.replyForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('reply-body').focus();
+  }
+
+  function closeThreadComposer() {
+    els.threadForm.classList.remove('is-open');
+    resetThreadComposer('thread');
+  }
+
+  function resetThreadComposer(mode) {
+    state.composerMode = mode || 'thread';
+    state.editingThreadId = '';
+    els.threadForm.reset();
+    if (state.selectedCategory && els.categorySelect.querySelector(`[value="${CSS.escape(state.selectedCategory)}"]`)) {
+      els.categorySelect.value = state.selectedCategory;
+    }
+
+    const isPoll = state.composerMode === 'poll';
+    els.pollFields.forEach((field) => {
+      field.hidden = !isPoll;
+    });
+
+    els.composerTitle.textContent = state.composerMode === 'edit-thread'
+      ? 'Edit thread'
+      : isPoll ? 'New poll' : 'New thread';
+    els.composerSubmit.textContent = state.composerMode === 'edit-thread'
+      ? 'Save thread'
+      : isPoll ? 'Publish poll' : 'Publish thread';
+    setStatus(els.threadStatus, '');
+  }
+
+  function resetReplyComposer() {
+    state.editingPostId = '';
+    els.replyForm.reset();
+    els.replyTitle.textContent = 'Reply';
+    els.replySubmit.textContent = 'Post reply';
+    setStatus(els.replyStatus, '');
+  }
+
+  async function autoRefreshForum() {
+    if (hasOpenDraft()) return;
+    try {
+      await loadForum();
+    } catch {
+      // Keep quiet during passive refreshes; direct actions still surface errors.
+    }
+  }
+
+  function hasOpenDraft() {
+    if (els.threadForm.classList.contains('is-open')) return true;
+    if (state.editingThreadId || state.editingPostId) return true;
+
+    const threadForm = new FormData(els.threadForm);
+    const replyForm = new FormData(els.replyForm);
+    return ['title', 'body', 'pollQuestion', 'pollOptions'].some((key) => String(threadForm.get(key) || '').trim())
+      || String(replyForm.get('body') || '').trim();
+  }
+
   async function requestLoginCode(event) {
     event.preventDefault();
     const form = new FormData(els.authEmailForm);
@@ -474,6 +621,7 @@
       els.authCodeForm.reset();
       renderAuth();
       setStatus(els.authStatus, 'Signed in.');
+      await loadCategories();
       if (state.selectedThreadId) await loadThread(state.selectedThreadId);
     } catch (err) {
       setStatus(els.authStatus, err.message, true);
@@ -487,6 +635,7 @@
       state.user = null;
       renderAuth();
       setStatus(els.authStatus, 'Signed out.');
+      await loadCategories();
       if (state.selectedThreadId) await loadThread(state.selectedThreadId);
     } catch (err) {
       setStatus(els.authStatus, err.message, true);
@@ -496,25 +645,38 @@
   async function submitThread(event) {
     event.preventDefault();
     if (!requireSignedIn(els.threadStatus)) return;
-    setStatus(els.threadStatus, 'Publishing...');
+    const isEdit = state.composerMode === 'edit-thread';
+    setStatus(els.threadStatus, isEdit ? 'Saving...' : 'Publishing...');
     const form = new FormData(els.threadForm);
+    const isPoll = state.composerMode === 'poll';
 
     try {
+      const body = {
+        categorySlug: form.get('categorySlug'),
+        title: form.get('title'),
+        body: form.get('body'),
+      };
+
+      if (isEdit) {
+        body.threadId = state.editingThreadId;
+      } else {
+        body.type = isPoll ? 'poll' : 'thread';
+        if (isPoll) {
+          body.pollQuestion = form.get('pollQuestion');
+          body.pollOptions = String(form.get('pollOptions') || '').split(/\r?\n/);
+        }
+      }
+
       const payload = await api('/api/forum/threads', {
-        method: 'POST',
+        method: isEdit ? 'PUT' : 'POST',
         body: {
-          categorySlug: form.get('categorySlug'),
-          title: form.get('title'),
-          body: form.get('body'),
-          youtubeUrl: form.get('youtubeUrl'),
-          imageUrl: form.get('imageUrl'),
-          pollQuestion: form.get('pollQuestion'),
-          pollOptions: String(form.get('pollOptions') || '').split(/\r?\n/),
+          ...body,
         },
       });
 
-      els.threadForm.reset();
       els.threadForm.classList.remove('is-open');
+      resetThreadComposer('thread');
+      await loadCategories();
       await loadThread(payload.thread.id);
       setStatus(els.threadStatus, '');
     } catch (err) {
@@ -525,22 +687,24 @@
   async function submitReply(event) {
     event.preventDefault();
     if (!requireSignedIn(els.replyStatus)) return;
-    setStatus(els.replyStatus, 'Posting...');
+    const isEdit = Boolean(state.editingPostId);
+    setStatus(els.replyStatus, isEdit ? 'Saving...' : 'Posting...');
     const form = new FormData(els.replyForm);
+    const threadId = els.replyForm.dataset.threadId;
 
     try {
       await api('/api/forum/posts', {
-        method: 'POST',
+        method: isEdit ? 'PUT' : 'POST',
         body: {
-          threadId: els.replyForm.dataset.threadId,
+          threadId,
+          postId: state.editingPostId,
           body: form.get('body'),
-          youtubeUrl: form.get('youtubeUrl'),
-          imageUrl: form.get('imageUrl'),
         },
       });
 
-      els.replyForm.reset();
-      await loadThread(els.replyForm.dataset.threadId);
+      resetReplyComposer();
+      await loadCategories();
+      await loadThread(threadId);
       setStatus(els.replyStatus, '');
     } catch (err) {
       setStatus(els.replyStatus, err.message, true);
