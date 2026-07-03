@@ -8,6 +8,8 @@
     selectedCategory: '',
     selectedThreadId: new URLSearchParams(window.location.search).get('thread') || '',
     search: '',
+    currentPage: 1,
+    pageSize: 5,
     composerMode: 'thread',
     editingThreadId: '',
     editingPostId: '',
@@ -16,6 +18,7 @@
   const els = {
     categories: document.querySelector('[data-categories]'),
     threadList: document.querySelector('[data-thread-list]'),
+    threadPagination: document.querySelector('[data-thread-pagination]'),
     threadDetail: document.querySelector('[data-thread-detail]'),
     replies: document.querySelector('[data-replies]'),
     empty: document.querySelector('[data-empty]'),
@@ -56,6 +59,7 @@
 
   els.search.addEventListener('input', function () {
     state.search = els.search.value.trim().toLowerCase();
+    state.currentPage = 1;
     renderThreads();
   });
 
@@ -102,6 +106,7 @@
     const payload = await api(`/api/forum/threads${query}`);
     state.threads = payload.threads || [];
     state.selectedThreadId = '';
+    state.currentPage = 1;
     setUrlThread('');
     renderThreads();
   }
@@ -164,6 +169,7 @@
     button.append(name, count);
     button.addEventListener('click', async function () {
       state.selectedCategory = category.slug;
+      state.currentPage = 1;
       renderCategories();
       await loadThreads();
     });
@@ -172,22 +178,27 @@
 
   function renderThreads() {
     els.threadDetail.hidden = true;
+    els.threadDetail.classList.remove('is-pinned');
     els.replies.replaceChildren();
     resetReplyComposer();
     els.replyForm.classList.remove('is-open');
     els.threadList.replaceChildren();
+    els.threadPagination.hidden = true;
+    els.threadPagination.replaceChildren();
 
     const selected = state.categories.find((category) => category.slug === state.selectedCategory);
     els.currentCategory.textContent = selected ? selected.name : 'All categories';
     els.viewTitle.textContent = selected ? `${selected.name} threads` : 'Latest threads';
 
-    const threads = state.threads.filter((thread) => {
-      if (!state.search) return true;
-      return [thread.title, thread.body, thread.authorName, thread.categoryName]
-        .join(' ')
-        .toLowerCase()
-        .includes(state.search);
-    });
+    const threads = state.threads
+      .filter((thread) => {
+        if (!state.search) return true;
+        return [thread.title, thread.body, thread.authorName, thread.categoryName]
+          .join(' ')
+          .toLowerCase()
+          .includes(state.search);
+      })
+      .sort(compareThreads);
 
     if (!threads.length) {
       showEmpty('No threads yet.');
@@ -195,14 +206,20 @@
     }
 
     els.empty.hidden = true;
-    threads.forEach((thread) => {
+    const totalPages = Math.max(1, Math.ceil(threads.length / state.pageSize));
+    state.currentPage = Math.min(Math.max(state.currentPage, 1), totalPages);
+    const start = (state.currentPage - 1) * state.pageSize;
+
+    threads.slice(start, start + state.pageSize).forEach((thread) => {
       els.threadList.append(threadCard(thread));
     });
+    renderPagination(totalPages);
   }
 
   function threadCard(thread) {
     const article = document.createElement('article');
     article.className = 'forum-thread';
+    article.classList.toggle('is-pinned', Boolean(thread.pinned));
 
     const meta = metaRow([
       thread.categoryName,
@@ -239,12 +256,55 @@
     return article;
   }
 
+  function compareThreads(a, b) {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return new Date(b.updatedAt || b.createdAt || 0) - new Date(a.updatedAt || a.createdAt || 0);
+  }
+
+  function renderPagination(totalPages) {
+    els.threadPagination.replaceChildren();
+    if (totalPages <= 1) {
+      els.threadPagination.hidden = true;
+      return;
+    }
+
+    const previous = document.createElement('button');
+    previous.className = 'button ghost';
+    previous.type = 'button';
+    previous.textContent = 'Previous';
+    previous.disabled = state.currentPage <= 1;
+    previous.addEventListener('click', function () {
+      state.currentPage -= 1;
+      renderThreads();
+    });
+
+    const count = document.createElement('span');
+    count.className = 'forum-page-count';
+    count.textContent = `Page ${state.currentPage} of ${totalPages}`;
+
+    const next = document.createElement('button');
+    next.className = 'button ghost';
+    next.type = 'button';
+    next.textContent = 'Next';
+    next.disabled = state.currentPage >= totalPages;
+    next.addEventListener('click', function () {
+      state.currentPage += 1;
+      renderThreads();
+    });
+
+    els.threadPagination.append(previous, count, next);
+    els.threadPagination.hidden = false;
+  }
+
   function renderThreadDetail(thread) {
     els.threadList.replaceChildren();
     els.replies.replaceChildren();
+    els.threadPagination.hidden = true;
+    els.threadPagination.replaceChildren();
     resetReplyComposer();
     els.empty.hidden = true;
     els.threadDetail.hidden = false;
+    els.threadDetail.classList.toggle('is-pinned', Boolean(thread.pinned));
     els.threadDetail.replaceChildren();
     els.replyForm.classList.toggle('is-open', !thread.locked && Boolean(state.user));
     els.viewTitle.textContent = thread.title;
@@ -745,7 +805,10 @@
 
   function showEmpty(message) {
     els.threadList.replaceChildren();
+    els.threadPagination.hidden = true;
+    els.threadPagination.replaceChildren();
     els.threadDetail.hidden = true;
+    els.threadDetail.classList.remove('is-pinned');
     els.replies.replaceChildren();
     els.replyForm.classList.remove('is-open');
     els.empty.hidden = false;
