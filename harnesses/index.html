@@ -838,22 +838,35 @@ Other Repositories
         function hEscape(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
         const HARNESS_BY_NAME = [].concat(HARNESS_ORCHESTRATOR, HARNESS_MODEL).reduce(function(m,h){m[h.name]=h;return m;},{});
-        const DEMO_HARNESS_NAMES = [
-            'Browser Capture',
-            'Tool Registry',
-            'Tools',
-            'Guardrails',
-            'Privacy',
-            'Prompt',
-            'Payload',
-            'Trace',
-            'Evidence',
-            'Verify',
-            'Proof Authority',
-            'Cost',
-            'Context',
-            'Git Control',
-            'Release Readiness'
+        const DEMO_SKILL_COMMANDS = [
+            '/change-capture',
+            '/navigation-policy',
+            '/pool-warmup',
+            '/dry-run',
+            '/reversibility-policy',
+            '/tool-policy',
+            '/call-ceiling',
+            '/diff-scanner',
+            '/guardrail-packs',
+            '/redaction-packs',
+            '/scope-tuner',
+            '/template-library',
+            '/template-precompiler',
+            '/hash-selector',
+            '/metadata-audit',
+            '/async-writer',
+            '/evidence-collector',
+            '/verification-checks',
+            '/proof-policy',
+            '/proof-registry',
+            '/budget-check',
+            '/threshold-governor',
+            '/context-compactor',
+            '/summarize-fit',
+            '/main-gate',
+            '/ci-gate',
+            '/proof-packager',
+            '/rollback-gate'
         ];
         const HARNESS_AXES = [
             { key:'perf', label:'Performance', accent:'#7df4ff' },
@@ -922,14 +935,21 @@ Other Repositories
 
         function skillButtonHtml(harnessName, axis, skill){
             if(!skill || !skill.name) return '';
+            var isDemoSkill = DEMO_SKILL_COMMANDS.indexOf(skill.cmd) !== -1;
+            var demoStyle = isDemoSkill
+                ? ' style="border:2px solid rgba(250,204,21,0.85);background:rgba(250,204,21,0.08);box-shadow:0 0 22px rgba(250,204,21,0.22);"'
+                : '';
+            var demoBadge = '<span class="rounded px-2 py-1 font-label-caps text-[9px] uppercase tracking-widest" style="border:1px solid rgba(250,204,21,0.7);background:rgba(250,204,21,0.15);color:#facc15;">Visual proof demo</span>';
             return '<div'
                 + ' data-harness-card="'+hEscape(harnessName)+'" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open '+hEscape(harnessName)+' harness details"'
-                + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full focus:outline-none focus:ring-2 focus:ring-primary-fixed/60">'
+                + ' data-demo-skill="'+(isDemoSkill ? 'true' : 'false')+'"'
+                + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full focus:outline-none focus:ring-2 focus:ring-primary-fixed/60"'+demoStyle+'>'
                 + '<div class="flex items-center gap-2">'
                 + '<span class="h-2 w-2 rounded-full" style="background:'+axis.accent+'"></span>'
                 + '<span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+axis.accent+'">'+hEscape(axis.label)+'</span>'
                 + '<span class="ml-auto material-symbols-outlined text-[16px] text-on-surface-variant/50">download</span>'
                 + '</div>'
+                + (isDemoSkill ? demoBadge : '')
                 + '<div class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">'+hEscape(skill.name)+'</div>'
                 + (skill.cmd ? cmdRowHtml(skill.cmd) : '')
                 + '<p class="text-xs text-on-surface-variant leading-relaxed">'+hEscape(skill.desc)+'</p>'
@@ -945,22 +965,13 @@ Other Repositories
             var blocks = items.map(function(h){
                 var sk = HARNESS_SKILLS[h.name]; if(!sk) return '';
                 var btns = HARNESS_AXES.map(function(a){ return skillButtonHtml(h.name, a, sk[a.key]); }).join('');
-                var isDemoPick = DEMO_HARNESS_NAMES.indexOf(h.name) !== -1;
-                var wrapperClass = isDemoPick
-                    ? 'md:col-span-12 mb-6 p-4'
-                    : 'md:col-span-12';
-                var wrapperStyle = isDemoPick
-                    ? ' style="border:2px solid rgba(250,204,21,0.8);background:rgba(250,204,21,0.08);box-shadow:0 0 28px rgba(250,204,21,0.2);"'
-                    : '';
-                var demoBadge = '<span class="px-2 py-1 font-label-caps text-[9px] uppercase tracking-widest" style="border:1px solid rgba(250,204,21,0.7);background:rgba(250,204,21,0.15);color:#facc15;">Visual proof demo</span>';
-                return '<div class="'+wrapperClass+'" data-harness-block="'+hEscape(h.name)+'" data-demo-pick="'+(isDemoPick ? 'true' : 'false')+'"'+wrapperStyle+'>'
+                return '<div class="md:col-span-12" data-harness-block="'+hEscape(h.name)+'">'
                     + '<div class="mb-3 flex flex-wrap items-center gap-3">'
                     + '<button type="button" data-harness="'+hEscape(h.name)+'" aria-haspopup="dialog" class="font-body-md font-bold text-primary-fixed transition hover:text-primary-container focus:outline-none focus:ring-2 focus:ring-primary-fixed/60">'+hEscape(h.name)+'</button>'
                     + '<span class="font-label-caps text-[9px] uppercase tracking-widest text-on-surface-variant/60">'+hEscape(h.sub)+'</span>'
-                    + (isDemoPick ? demoBadge : '')
                     + '<div class="flex-grow data-flow-line"></div>'
                     + '</div>'
-                    + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 '+(isDemoPick ? '' : 'mb-6')+'">'+btns+'</div>'
+                    + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">'+btns+'</div>'
                     + '</div>';
             }).join('');
             return '<div class="md:col-span-12 mt-2">'
