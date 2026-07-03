@@ -275,9 +275,13 @@ Other Repositories
 </div>
 <!-- Class Agenda Bento Grid -->
 <section class="grid grid-cols-1 md:grid-cols-12 gap-6">
-<div class="md:col-span-12 flex items-center gap-4">
+<div class="md:col-span-12 grid grid-cols-1 items-center gap-3 md:grid-cols-[auto_minmax(80px,1fr)_auto] md:gap-4">
 <h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Harness_Map</h2>
-<div class="flex-grow data-flow-line"></div>
+<div class="min-w-[80px] flex-grow data-flow-line"></div>
+<div class="flex items-center gap-2 md:justify-self-end" role="group" aria-label="Harness layer filter">
+<button aria-pressed="true" class="border border-primary-fixed bg-primary-fixed/10 px-4 py-2 font-label-caps text-[10px] uppercase tracking-widest text-primary-fixed" id="harness-layer-orchestrator" type="button">Orchestrator</button>
+<button aria-pressed="false" class="border border-primary/30 bg-black/30 px-4 py-2 font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant hover:border-primary-fixed/60 hover:text-primary-fixed" id="harness-layer-model" type="button">Model</button>
+</div>
 </div>
 <!-- Harness skill cards: one per skill, grouped by harness. Download buttons fetch the related SKILL.md; Details opens the harness modal. -->
 <div class="md:col-span-12" id="harness-skills-root"></div>
@@ -873,6 +877,7 @@ Other Repositories
             { key:'cost', label:'Cost efficiency', accent:'#facc15' },
             { key:'cap', label:'Capability', accent:'#48ff91' }
         ];
+        var activeHarnessLayer = 'orchestrator';
 
         var CENTRAL_SKILL_RAW_BASE = 'https://raw.githubusercontent.com/AesopScott/central/main/skills';
 
@@ -980,12 +985,44 @@ Other Repositories
                 + '</div>' + blocks;
         }
 
+        function updateHarnessLayerControls(){
+            var controls = [
+                { id: 'harness-layer-orchestrator', layer: 'orchestrator' },
+                { id: 'harness-layer-model', layer: 'model' }
+            ];
+            controls.forEach(function(c){
+                var el = document.getElementById(c.id);
+                if(!el) return;
+                var active = activeHarnessLayer === c.layer;
+                el.setAttribute('aria-pressed', active ? 'true' : 'false');
+                el.className = active
+                    ? 'border border-primary-fixed bg-primary-fixed/10 px-4 py-2 font-label-caps text-[10px] uppercase tracking-widest text-primary-fixed'
+                    : 'border border-primary/30 bg-black/30 px-4 py-2 font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant hover:border-primary-fixed/60 hover:text-primary-fixed';
+            });
+        }
+
+        function setHarnessLayer(layer){
+            activeHarnessLayer = layer === 'model' ? 'model' : 'orchestrator';
+            updateHarnessLayerControls();
+            renderHarnessSkills();
+        }
+
+        function bindHarnessLayerControls(){
+            var orchestrator = document.getElementById('harness-layer-orchestrator');
+            var model = document.getElementById('harness-layer-model');
+            if(orchestrator) orchestrator.addEventListener('click', function(){ setHarnessLayer('orchestrator'); });
+            if(model) model.addEventListener('click', function(){ setHarnessLayer('model'); });
+            updateHarnessLayerControls();
+        }
+
         function renderHarnessSkills(){
             var root = document.getElementById('harness-skills-root');
             if(!root) return;
+            var content = activeHarnessLayer === 'model'
+                ? harnessGroupHtml('Model Harness Layer','The per-call boundary: what governs each model request end to end.', HARNESS_MODEL)
+                : harnessGroupHtml('Orchestrator Harnesses','The control plane: what coordinates sessions, work, and authority.', HARNESS_ORCHESTRATOR);
             root.innerHTML = '<div class="grid grid-cols-1 md:grid-cols-12 gap-x-6">'
-                + harnessGroupHtml('Orchestrator Harnesses','The control plane: what coordinates sessions, work, and authority.', HARNESS_ORCHESTRATOR)
-                + harnessGroupHtml('Model Harness Layer','The per-call boundary: what governs each model request end to end.', HARNESS_MODEL)
+                + content
                 + '</div>';
             root.querySelectorAll('button[data-harness]').forEach(function(btn){
                 btn.addEventListener('click', function(){ openHarnessDetail(btn.dataset.harness); });
@@ -1131,6 +1168,7 @@ Other Repositories
             if(m) m.addEventListener('click', function(e){ if(e.target === m || (e.target && e.target.id === 'harness-detail-backdrop')) closeHarnessDetail(); });
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.getAttribute('aria-hidden') === 'false') closeHarnessDetail(); });
             wireSkillDownloads();
+            bindHarnessLayerControls();
             renderHarnessSkills();
             loadInstallableSkills();
         })();
