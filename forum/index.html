@@ -128,6 +128,26 @@
         justify-content: flex-end;
         align-items: center;
         min-height: 50px;
+        position: sticky;
+        top: 96px;
+        z-index: 9;
+        pointer-events: none;
+      }
+
+      .forum-main-actions .button {
+        pointer-events: auto;
+      }
+
+      @media (min-width: 1500px) {
+        .forum-main-actions {
+          justify-content: flex-start;
+        }
+
+        .forum-main-actions .button {
+          width: 118px;
+          padding-inline: 12px;
+          transform: translateX(calc(-100% - 312px));
+        }
       }
 
       .forum-auth {
@@ -411,6 +431,18 @@
 
         .forum-main-actions .button {
           width: 100%;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .forum-main-actions .button {
+          position: fixed;
+          top: auto;
+          right: 12px;
+          bottom: 16px;
+          left: 12px;
+          width: auto;
+          transform: none;
         }
       }
     </style>
