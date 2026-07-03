@@ -838,6 +838,23 @@ Other Repositories
         function hEscape(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 
         const HARNESS_BY_NAME = [].concat(HARNESS_ORCHESTRATOR, HARNESS_MODEL).reduce(function(m,h){m[h.name]=h;return m;},{});
+        const DEMO_HARNESS_NAMES = [
+            'Browser Capture',
+            'Tool Registry',
+            'Tools',
+            'Guardrails',
+            'Privacy',
+            'Prompt',
+            'Payload',
+            'Trace',
+            'Evidence',
+            'Verify',
+            'Proof Authority',
+            'Cost',
+            'Context',
+            'Git Control',
+            'Release Readiness'
+        ];
         const HARNESS_AXES = [
             { key:'perf', label:'Performance', accent:'#7df4ff' },
             { key:'cost', label:'Cost efficiency', accent:'#facc15' },
@@ -928,13 +945,22 @@ Other Repositories
             var blocks = items.map(function(h){
                 var sk = HARNESS_SKILLS[h.name]; if(!sk) return '';
                 var btns = HARNESS_AXES.map(function(a){ return skillButtonHtml(h.name, a, sk[a.key]); }).join('');
-                return '<div class="md:col-span-12">'
-                    + '<div class="mb-3 flex items-center gap-3">'
+                var isDemoPick = DEMO_HARNESS_NAMES.indexOf(h.name) !== -1;
+                var wrapperClass = isDemoPick
+                    ? 'md:col-span-12 mb-6 p-4'
+                    : 'md:col-span-12';
+                var wrapperStyle = isDemoPick
+                    ? ' style="border:2px solid rgba(250,204,21,0.8);background:rgba(250,204,21,0.08);box-shadow:0 0 28px rgba(250,204,21,0.2);"'
+                    : '';
+                var demoBadge = '<span class="px-2 py-1 font-label-caps text-[9px] uppercase tracking-widest" style="border:1px solid rgba(250,204,21,0.7);background:rgba(250,204,21,0.15);color:#facc15;">Visual proof demo</span>';
+                return '<div class="'+wrapperClass+'" data-demo-pick="'+(isDemoPick ? 'true' : 'false')+'"'+wrapperStyle+'>'
+                    + '<div class="mb-3 flex flex-wrap items-center gap-3">'
                     + '<button type="button" data-harness="'+hEscape(h.name)+'" aria-haspopup="dialog" class="font-body-md font-bold text-primary-fixed transition hover:text-primary-container focus:outline-none focus:ring-2 focus:ring-primary-fixed/60">'+hEscape(h.name)+'</button>'
                     + '<span class="font-label-caps text-[9px] uppercase tracking-widest text-on-surface-variant/60">'+hEscape(h.sub)+'</span>'
+                    + (isDemoPick ? demoBadge : '')
                     + '<div class="flex-grow data-flow-line"></div>'
                     + '</div>'
-                    + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">'+btns+'</div>'
+                    + '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 '+(isDemoPick ? '' : 'mb-6')+'">'+btns+'</div>'
                     + '</div>';
             }).join('');
             return '<div class="md:col-span-12 mt-2">'
