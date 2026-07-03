@@ -78,9 +78,14 @@
         box-shadow: 0 14px 34px rgba(23, 84, 128, 0.1);
       }
 
-      .forum-panel {
+      .forum-sidebar {
         position: sticky;
         top: 96px;
+        display: grid;
+        gap: 14px;
+      }
+
+      .forum-panel {
         display: grid;
         gap: 8px;
         padding: 14px;
@@ -116,6 +121,13 @@
       .forum-main {
         display: grid;
         gap: 14px;
+      }
+
+      .forum-main-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        min-height: 50px;
       }
 
       .forum-auth {
@@ -317,6 +329,12 @@
         align-items: end;
       }
 
+      .forum-sidebar .forum-auth,
+      .forum-sidebar .forum-auth.is-signed-in,
+      .forum-sidebar .forum-auth form {
+        grid-template-columns: 1fr;
+      }
+
       .forum-auth form[hidden],
       .forum-auth button[hidden] {
         display: none;
@@ -375,7 +393,7 @@
           justify-content: flex-start;
         }
 
-        .forum-panel {
+        .forum-sidebar {
           position: static;
         }
       }
@@ -389,6 +407,10 @@
 
         .forum-media div {
           padding: 0 14px 14px;
+        }
+
+        .forum-main-actions .button {
+          width: 100%;
         }
       }
     </style>
@@ -409,7 +431,6 @@
         </div>
         <div class="nav-actions">
           <button class="button ghost" type="button" data-refresh>Refresh</button>
-          <button class="button dark" type="button" data-open-composer>New thread</button>
         </div>
       </nav>
 
@@ -421,40 +442,43 @@
       </section>
     </header>
 
-    <section class="section">
-      <section class="forum-auth" data-auth-panel>
-        <div>
-          <p class="kicker">Forum login</p>
-          <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
-          <p class="forum-member-count" data-member-count>0 forum members</p>
-        </div>
-        <form data-auth-email-form>
-          <div class="forum-field">
-            <label for="forum-login-name">Display name</label>
-            <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
-          </div>
-          <div class="forum-field">
-            <label for="forum-login-email">Email</label>
-            <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
-          </div>
-          <button class="button dark" type="submit">Send code</button>
-        </form>
-        <form data-auth-code-form hidden>
-          <div class="forum-field">
-            <label for="forum-login-code">Code</label>
-            <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
-          </div>
-          <button class="button dark" type="submit">Sign in</button>
-        </form>
-        <button class="button ghost" type="button" data-logout hidden>Sign out</button>
-        <div class="forum-status" data-auth-status></div>
-      </section>
-    </section>
-
     <main class="section forum-shell">
-      <aside class="forum-panel" aria-label="Forum categories" data-categories></aside>
+      <aside class="forum-sidebar" aria-label="Forum controls">
+        <section class="forum-auth" data-auth-panel>
+          <div>
+            <p class="kicker">Forum login</p>
+            <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
+            <p class="forum-member-count" data-member-count>0 forum members</p>
+          </div>
+          <form data-auth-email-form>
+            <div class="forum-field">
+              <label for="forum-login-name">Display name</label>
+              <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
+            </div>
+            <div class="forum-field">
+              <label for="forum-login-email">Email</label>
+              <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <button class="button dark" type="submit">Send code</button>
+          </form>
+          <form data-auth-code-form hidden>
+            <div class="forum-field">
+              <label for="forum-login-code">Code</label>
+              <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+            </div>
+            <button class="button dark" type="submit">Sign in</button>
+          </form>
+          <button class="button ghost" type="button" data-logout hidden>Sign out</button>
+          <div class="forum-status" data-auth-status></div>
+        </section>
+        <nav class="forum-panel" aria-label="Forum categories" data-categories></nav>
+      </aside>
 
       <section class="forum-main" aria-live="polite">
+        <div class="forum-main-actions">
+          <button class="button dark" type="button" data-open-composer>New thread</button>
+        </div>
+
         <form class="forum-composer" data-thread-form>
           <h2>New thread</h2>
           <div class="forum-form-grid">
