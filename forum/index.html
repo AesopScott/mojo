@@ -411,6 +411,35 @@
       </section>
     </header>
 
+    <section class="section">
+      <section class="forum-auth" data-auth-panel>
+        <div>
+          <p class="kicker">Forum login</p>
+          <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
+        </div>
+        <form data-auth-email-form>
+          <div class="forum-field">
+            <label for="forum-login-name">Display name</label>
+            <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
+          </div>
+          <div class="forum-field">
+            <label for="forum-login-email">Email</label>
+            <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <button class="button dark" type="submit">Send code</button>
+        </form>
+        <form data-auth-code-form hidden>
+          <div class="forum-field">
+            <label for="forum-login-code">Code</label>
+            <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+          </div>
+          <button class="button dark" type="submit">Sign in</button>
+        </form>
+        <button class="button ghost" type="button" data-logout hidden>Sign out</button>
+        <div class="forum-status" data-auth-status></div>
+      </section>
+    </section>
+
     <main class="section forum-shell">
       <aside class="forum-panel" aria-label="Forum categories" data-categories></aside>
 
@@ -461,33 +490,6 @@
           </div>
           <input class="forum-search" type="search" placeholder="Search threads" data-search />
         </div>
-
-        <section class="forum-auth" data-auth-panel>
-          <div>
-            <p class="kicker">Forum login</p>
-            <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
-          </div>
-          <form data-auth-email-form>
-            <div class="forum-field">
-              <label for="forum-login-name">Display name</label>
-              <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
-            </div>
-            <div class="forum-field">
-              <label for="forum-login-email">Email</label>
-              <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
-            </div>
-            <button class="button dark" type="submit">Send code</button>
-          </form>
-          <form data-auth-code-form hidden>
-            <div class="forum-field">
-              <label for="forum-login-code">Code</label>
-              <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
-            </div>
-            <button class="button dark" type="submit">Sign in</button>
-          </form>
-          <button class="button ghost" type="button" data-logout hidden>Sign out</button>
-          <div class="forum-status" data-auth-status></div>
-        </section>
 
         <article class="forum-thread" hidden data-thread-detail></article>
         <div class="forum-replies" data-replies></div>
