@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Mojo Forum — community threads, polls, shared builds, videos, and support for Mojo AI Studio."
+    />
+    <title>Mojo Forum | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/forum/" />
+    <meta name="theme-color" content="#0f0f1a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/forum/" />
+    <meta property="og:title" content="Mojo Forum" />
+    <meta property="og:description" content="Community threads, polls, shared builds, videos, and support for Mojo AI Studio." />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/styles/shared.css?v=local-20260703074308" />
+    <style>
+      body {
+        background: #eef7ff;
+      }
+
+      .forum-shell {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+        padding-bottom: 74px;
+      }
+
+      .forum-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.55fr);
+        gap: 28px;
+        align-items: end;
+        padding: 74px 0 42px;
+      }
+
+      .forum-hero h1 {
+        font-size: clamp(2.65rem, 5vw, 5.2rem);
+      }
+
+      .forum-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .forum-panel,
+      .forum-thread,
+      .forum-composer,
+      .forum-reply,
+      .forum-auth,
+      .forum-empty {
+        border: 1px solid #b8d7ed;
+        border-radius: 8px;
+        background: #e8f5ff;
+        box-shadow: 0 14px 34px rgba(23, 84, 128, 0.1);
+      }
+
+      .forum-panel {
+        position: sticky;
+        top: 96px;
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        background: #def0ff;
+      }
+
+      .forum-category {
+        display: grid;
+        gap: 3px;
+        width: 100%;
+        min-height: 58px;
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--ink);
+        background: #f6fbff;
+        text-align: left;
+      }
+
+      .forum-category:hover,
+      .forum-category.is-active {
+        background: #cfe9fb;
+      }
+
+      .forum-category b {
+        font-size: 0.95rem;
+      }
+
+      .forum-category span {
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .forum-main {
+        display: grid;
+        gap: 14px;
+      }
+
+      .forum-auth {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        background: #dff2ff;
+      }
+
+      .forum-auth.is-signed-in {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+      }
+
+      .forum-auth p {
+        margin: 0;
+      }
+
+      .forum-toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+
+      .forum-search {
+        width: min(100%, 420px);
+        min-height: 44px;
+        border: 1px solid #b8d7ed;
+        border-radius: 8px;
+        padding: 0 12px;
+        color: var(--ink);
+        background: #f6fbff;
+      }
+
+      .forum-thread {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        text-align: left;
+      }
+
+      .forum-thread h2,
+      .forum-thread h3 {
+        margin: 0;
+      }
+
+      .forum-thread h2 {
+        font-size: clamp(1.4rem, 2.4vw, 2.25rem);
+      }
+
+      .forum-thread p,
+      .forum-reply p {
+        margin: 0;
+        white-space: pre-wrap;
+      }
+
+      .forum-meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 750;
+      }
+
+      .forum-media {
+        display: grid;
+        grid-template-columns: minmax(180px, 300px) minmax(0, 1fr);
+        gap: 14px;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid #b8d7ed;
+        border-radius: 8px;
+        background: #f3faff;
+      }
+
+      .forum-media img {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        display: block;
+      }
+
+      .forum-media div {
+        display: grid;
+        gap: 6px;
+        padding: 14px 14px 14px 0;
+      }
+
+      .forum-media b {
+        font-size: 1rem;
+      }
+
+      .forum-media span {
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .forum-poll {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid #b8d7ed;
+        border-radius: 8px;
+        background: #f0f9ff;
+      }
+
+      .forum-poll h3 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .poll-option {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+        min-height: 42px;
+        border: 1px solid #b8d7ed;
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: #f8fcff;
+        text-align: left;
+      }
+
+      .poll-option span {
+        color: var(--muted);
+        font-size: 0.83rem;
+        font-weight: 800;
+      }
+
+      .poll-option:disabled {
+        cursor: not-allowed;
+        opacity: 0.62;
+      }
+
+      .forum-composer {
+        display: none;
+        gap: 12px;
+        padding: 18px;
+        background: #dff2ff;
+      }
+
+      .forum-composer.is-open {
+        display: grid;
+      }
+
+      .forum-composer h2 {
+        margin: 0;
+        font-size: clamp(1.4rem, 2vw, 2rem);
+      }
+
+      .forum-form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .forum-field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .forum-field--wide {
+        grid-column: 1 / -1;
+      }
+
+      .forum-field label {
+        color: var(--ink);
+        font-size: 0.84rem;
+        font-weight: 850;
+      }
+
+      .forum-field input,
+      .forum-field select,
+      .forum-field textarea {
+        width: 100%;
+        min-height: 44px;
+        border: 1px solid #a8cce4;
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: var(--ink);
+        background: #f8fcff;
+        font: inherit;
+      }
+
+      .forum-auth form {
+        display: grid;
+        grid-template-columns: minmax(140px, 1fr) minmax(140px, 1fr) auto;
+        gap: 10px;
+        align-items: end;
+      }
+
+      .forum-auth form[hidden],
+      .forum-auth button[hidden] {
+        display: none;
+      }
+
+      .forum-field textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      .forum-status {
+        min-height: 22px;
+        color: var(--teal);
+        font-weight: 800;
+      }
+
+      .forum-status.is-error {
+        color: var(--coral);
+      }
+
+      .forum-replies {
+        display: grid;
+        gap: 10px;
+      }
+
+      .forum-reply {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        background: #edf8ff;
+      }
+
+      .forum-empty {
+        padding: 24px;
+      }
+
+      .forum-thread[hidden],
+      .forum-reply[hidden],
+      .forum-empty[hidden] {
+        display: none;
+      }
+
+      @media (max-width: 980px) {
+        .forum-hero,
+        .forum-shell {
+          grid-template-columns: 1fr;
+        }
+
+        .forum-actions {
+          justify-content: flex-start;
+        }
+
+        .forum-panel {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .forum-form-grid,
+        .forum-auth form,
+        .forum-media {
+          grid-template-columns: 1fr;
+        }
+
+        .forum-media div {
+          padding: 0 14px 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/">Learn</a>
+          <a href="/forum/" class="active">Forum</a>
+        </div>
+        <div class="nav-actions">
+          <button class="button ghost" type="button" data-refresh>Refresh</button>
+          <button class="button dark" type="button" data-open-composer>New thread</button>
+        </div>
+      </nav>
+
+      <section class="forum-hero">
+        <div>
+          <p class="kicker">Mojo Forum</p>
+          <h1>Threads, polls, builds, and useful questions.</h1>
+          <p>Share work, ask for help, vote on decisions, and link YouTube videos without hosting or embedding them on Mojo.</p>
+        </div>
+        <div class="forum-actions">
+          <a class="button ghost" href="/watch">Watch builds</a>
+          <a class="button dark" href="/products">Browse apps</a>
+        </div>
+      </section>
+    </header>
+
+    <main class="section forum-shell">
+      <aside class="forum-panel" aria-label="Forum categories" data-categories></aside>
+
+      <section class="forum-main" aria-live="polite">
+        <section class="forum-auth" data-auth-panel>
+          <div>
+            <p class="kicker">Forum login</p>
+            <p data-auth-summary>Sign in with email to post, reply, and vote.</p>
+          </div>
+          <form data-auth-email-form>
+            <div class="forum-field">
+              <label for="forum-login-name">Display name</label>
+              <input id="forum-login-name" name="displayName" autocomplete="name" maxlength="80" required />
+            </div>
+            <div class="forum-field">
+              <label for="forum-login-email">Email</label>
+              <input id="forum-login-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <button class="button dark" type="submit">Send code</button>
+          </form>
+          <form data-auth-code-form hidden>
+            <div class="forum-field">
+              <label for="forum-login-code">Code</label>
+              <input id="forum-login-code" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required />
+            </div>
+            <button class="button dark" type="submit">Sign in</button>
+          </form>
+          <button class="button ghost" type="button" data-logout hidden>Sign out</button>
+          <div class="forum-status" data-auth-status></div>
+        </section>
+
+        <form class="forum-composer" data-thread-form>
+          <h2>New thread</h2>
+          <div class="forum-form-grid">
+            <div class="forum-field">
+              <label for="thread-category">Category</label>
+              <select id="thread-category" name="categorySlug" required></select>
+            </div>
+            <div class="forum-field forum-field--wide">
+              <label for="thread-title">Title</label>
+              <input id="thread-title" name="title" maxlength="140" required />
+            </div>
+            <div class="forum-field forum-field--wide">
+              <label for="thread-body">Post</label>
+              <textarea id="thread-body" name="body" maxlength="5000" required></textarea>
+            </div>
+            <div class="forum-field">
+              <label for="thread-youtube">YouTube URL</label>
+              <input id="thread-youtube" name="youtubeUrl" inputmode="url" />
+            </div>
+            <div class="forum-field">
+              <label for="thread-image">Image URL</label>
+              <input id="thread-image" name="imageUrl" inputmode="url" />
+            </div>
+            <div class="forum-field">
+              <label for="thread-poll-question">Poll question</label>
+              <input id="thread-poll-question" name="pollQuestion" maxlength="180" />
+            </div>
+            <div class="forum-field">
+              <label for="thread-poll-options">Poll options</label>
+              <textarea id="thread-poll-options" name="pollOptions" maxlength="1000"></textarea>
+            </div>
+          </div>
+          <div class="forum-actions">
+            <button class="button ghost" type="button" data-close-composer>Cancel</button>
+            <button class="button dark" type="submit">Publish thread</button>
+          </div>
+          <div class="forum-status" data-thread-status></div>
+        </form>
+
+        <div class="forum-toolbar">
+          <div>
+            <p class="kicker" data-current-category>All categories</p>
+            <h2 data-view-title>Latest threads</h2>
+          </div>
+          <input class="forum-search" type="search" placeholder="Search threads" data-search />
+        </div>
+
+        <article class="forum-thread" hidden data-thread-detail></article>
+        <div class="forum-replies" data-replies></div>
+        <form class="forum-composer" data-reply-form>
+          <h2>Reply</h2>
+          <div class="forum-form-grid">
+            <div class="forum-field">
+              <label for="reply-youtube">YouTube URL</label>
+              <input id="reply-youtube" name="youtubeUrl" inputmode="url" />
+            </div>
+            <div class="forum-field">
+              <label for="reply-image">Image URL</label>
+              <input id="reply-image" name="imageUrl" inputmode="url" />
+            </div>
+            <div class="forum-field forum-field--wide">
+              <label for="reply-body">Reply</label>
+              <textarea id="reply-body" name="body" maxlength="5000" required></textarea>
+            </div>
+          </div>
+          <div class="forum-actions">
+            <button class="button dark" type="submit">Post reply</button>
+          </div>
+          <div class="forum-status" data-reply-status></div>
+        </form>
+
+        <div data-thread-list></div>
+        <div class="forum-empty" hidden data-empty></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Community</b>
+        <a href="/forum/">Forum</a>
+        <a href="/watch">Watch builds</a>
+        <a href="/maps/Overview/">MAPS</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/request/">Custom development</a>
+        <a href="/products">Marketplace</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+
+    <script src="/scripts/forum.js?v=local-20260703074308"></script>
+  </body>
+</html>

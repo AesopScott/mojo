@@ -1,0 +1,41 @@
+{
+  "role_id": "liz",
+  "role_name": "Liz",
+  "title": "Mojo Website Manager",
+  "status": "authorized_role_contract",
+  "created_at": "2026-06-19T10:25:29.1212122-06:00",
+  "updated_at": "2026-06-21T22:20:00.0000000-06:00",
+  "primary_repo": "C:\\Users\\scott\\Code\\mojo",
+  "primary_memory": "C:\\Users\\scott\\Code\\mojo\\roles\\liz\\memory.md",
+  "role_contract": "C:\\Users\\scott\\Code\\mojo\\roles\\liz\\role-agent.md",
+  "workflow": "C:\\Users\\scott\\Code\\mojo\\roles\\liz\\workflow.md",
+  "role_mode": "workflow_owner_operator",
+  "highest_authority": "A7_execute_within_policy_scoped_to_approved_mojo_website_management",
+  "agent_readiness": "role_only_agent_build_candidate",
+  "automation_active": true,
+  "automation_id": "liz-handoff-check",
+  "assigned_handoff_files": [
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\heartbeat.md",
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\recruiting.md",
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\pipeline.md"
+  ],
+  "handoff_hashes": {
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\heartbeat.md": "E443D9222F64B3596F91E9F83F993AFBDFB84D58559C5F9042DB920E9336F25C",
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\recruiting.md": "AD2EE2B6F33C6ED266E416B4983A5FADB7CA45D762DE90D5EBF59A6F0B986480",
+    "G:\\My Drive\\Mojo\\05 Role Handoffs\\channels\\pipeline.md": "956F1686345070ED2740B359A00864DC0B32C552A453BBA651F5ABEA81C1C54D"
+  },
+  "last_handoff_check_at": null,
+  "last_visible_handoff_report_at": null,
+  "requires_approval_for": [
+    "non_maps_production_deploy",
+    "external_communication",
+    "spending",
+    "secrets",
+    "global_skill_behavior",
+    "background_loops_beyond_liz_handoff_check",
+    "file_watchers",
+    "authority_expansion",
+    "unrelated_repo_work"
+  ],
+  "last_event": "Scott promoted Liz to Mojo Website Manager and asked Liz to update the website with the title change."
+}

@@ -1,0 +1,279 @@
+{
+  "role": "Ana",
+  "title": "Recruiter",
+  "memory_file": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\memory.md",
+  "obsidian_memory_mirror": "G:\\My Drive\\Mindshare\\ana.md",
+  "obsidian_role_mirror": "G:\\My Drive\\Mindshare\\role\\ana-recruiter",
+  "status": "active-level-4-scoped-autonomy",
+  "authorization": "operating-authorized-for-mindshare-role-intake-level-1-2-3-internal-promotion-and-level-4-recruiting-lifecycle-processing",
+  "skill_ownership": "/role",
+  "agent_build_status": "profile-design-eval-ready; not implemented broad agent; Level 4 scoped recruiting lifecycle approved through Level 3 timed progression; Level 5 policy autonomy defined-not-active; Level 6 deferred",
+  "autonomy_stage": {
+    "current_level": 4,
+    "current_stage": "Level 4 Senior Staff (Scoped Autonomy)",
+    "target_level": 5,
+    "target_stage": "Level 5 Principal (Policy Autonomy)",
+    "level_4_status": "approved-active",
+    "level_4_approved_by": "Scott",
+    "level_4_approved_on": "2026-06-22",
+    "level_4_trigger_source": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\recruiting.backlog.md",
+    "level_4_contract": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\Autonomy.md",
+    "level_4_boundary": "process approved recruiting backlog items to Level 1 New Hire packets; promote Level 1 to Level 2 after 24 hours; promote Level 2 to Level 3 after five days; no external recruiting, human hiring, production, Git/release, spending, secrets, Level 4+ promotion for hired roles, or broad autonomous runtime",
+    "level_5_status": "defined-policy-not-active",
+    "level_6_status": "deferred-not-needed-yet",
+    "level_4_runtime_blocker": null,
+    "level_4_automation": {
+      "automation_id": "ana-l4-recruiting-backlog-processing",
+      "kind": "heartbeat",
+      "status": "ACTIVE",
+      "test_cadence": "complete",
+      "steady_state_cadence": "active; every 4 hours",
+      "thread_id": "019ee052-168c-7da3-a3c3-df936e5c1c92",
+      "scope": "process recruiting.backlog.md items with status backlog into Level 1 New Hire packets, then timed Level 1 to Level 2 and Level 2 to Level 3 promotions",
+      "loop_rule": "every 4 hours, process all eligible backlog items and timed promotions until no eligible item remains or one item blocks/errors",
+      "proof_requirement": "durable packet and pipeline/state proof for each Level 1, Level 2, and Level 3 promotion; prior 3-of-3 proof remains proof for Level 1 processing only",
+      "boundaries": "no external recruiting or candidate contact, no human hiring, no production or website edits, no Git/GitHub/release, no spending, no secrets, no hooks/global skill changes, no Level 4/5/6 promotion for hired roles, no broad autonomous runtime",
+      "cadence_updated_on": "2026-06-22T12:42:31-06:00",
+      "cadence_update_result": "automation_update succeeded after Scott expanded Ana Level 4 to include timed Level 1/2/3 progression"
+    },
+    "level_4_proof_tracking": {
+      "consecutive_successful_runs": 3,
+      "required_successful_runs": 3,
+      "last_successful_run": "2026-06-22T12:42:31-06:00",
+      "last_proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-level1-run-003.md",
+      "proof_reset_reason": "Scott changed Ana Level 4 output target from Level 0 candidate prep to Level 1 New Hire packets; prior proof run is superseded for work-product proof.",
+      "superseded_proof_history": [
+        {
+          "timestamp": "2026-06-22T12:23:12-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_number": 1,
+          "consecutive_successful_level_4_proof_runs": 1,
+          "items_completed": [
+            "REC-001",
+            "REC-002",
+            "REC-003",
+            "REC-004",
+            "REC-005",
+            "REC-006",
+            "REC-007",
+            "REC-008",
+            "REC-009",
+            "REC-010",
+            "REC-011",
+            "REC-012",
+            "REC-013",
+            "REC-014",
+            "REC-015",
+            "REC-016",
+            "REC-017",
+            "REC-018",
+            "REC-019",
+            "REC-020",
+            "REC-021",
+            "REC-022",
+            "REC-023",
+            "REC-024",
+            "REC-025",
+            "REC-026"
+          ],
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-run-001.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 5/6 activity, or broad runtime.",
+          "next_cadence": "Keep 3-minute testing cadence until three consecutive successful proof runs; then Tess should update to every 4 hours."
+        },
+        {
+          "timestamp": "2026-06-22T12:31:01-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_number": 2,
+          "consecutive_successful_level_4_proof_runs": 2,
+          "items_completed": [],
+          "empty_backlog_verified": true,
+          "eligible_backlog_items": 0,
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-run-002.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 5/6 activity, or broad runtime.",
+          "next_cadence": "Keep 3-minute testing cadence until one more consecutive successful proof run; then Tess should update to every 4 hours."
+        },
+        {
+          "timestamp": "2026-06-22T12:34:01-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_number": 3,
+          "consecutive_successful_level_4_proof_runs": 3,
+          "items_completed": [],
+          "empty_backlog_verified": true,
+          "eligible_backlog_items": 0,
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-run-003.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 5/6 activity, or broad runtime.",
+          "work_product_result": "not advanced; no new backlog item processed; Level 2 target remains pending Scott decision",
+          "next_cadence": "Tess should update automation to every 4 hours."
+        }
+      ],
+      "proof_history": [
+        {
+          "timestamp": "2026-06-22T12:34:01-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_standard": "Level 1 New Hire packet",
+          "proof_number_under_current_standard": 1,
+          "consecutive_successful_level_1_proof_runs": 1,
+          "items_completed": [
+            "REC-001",
+            "REC-002",
+            "REC-003",
+            "REC-004",
+            "REC-005",
+            "REC-006",
+            "REC-007",
+            "REC-008",
+            "REC-009",
+            "REC-010",
+            "REC-011",
+            "REC-012",
+            "REC-013",
+            "REC-014",
+            "REC-015",
+            "REC-016",
+            "REC-017",
+            "REC-018",
+            "REC-019",
+            "REC-020",
+            "REC-021",
+            "REC-022",
+            "REC-023",
+            "REC-024",
+            "REC-025",
+            "REC-026"
+          ],
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-level1-run-001.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 2+ promotion for hired roles, Level 5/6 activity, or broad runtime.",
+          "work_product_result": "Level 1 New Hire packets written and mirrored for all 26 backlog rows.",
+          "next_cadence": "Keep 3-minute testing cadence until two more consecutive successful Level 1 standard proof runs; then Tess may update to every 4 hours."
+        },
+        {
+          "timestamp": "2026-06-22T12:39:31-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_standard": "Level 1 New Hire packet",
+          "proof_number_under_current_standard": 2,
+          "consecutive_successful_level_1_proof_runs": 2,
+          "items_completed": [],
+          "empty_backlog_verified": true,
+          "eligible_backlog_items": 0,
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-level1-run-002.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 2+ promotion for hired roles, Level 5/6 activity, or broad runtime.",
+          "work_product_result": "No new packet required; Level 1 backlog already complete from run 001.",
+          "next_cadence": "Keep 3-minute testing cadence until one more consecutive successful Level 1 standard proof run; then Tess may update to every 4 hours."
+        },
+        {
+          "timestamp": "2026-06-22T12:42:31-06:00",
+          "automation_id": "ana-l4-recruiting-backlog-processing",
+          "proof_standard": "Level 1 New Hire packet",
+          "proof_number_under_current_standard": 3,
+          "consecutive_successful_level_1_proof_runs": 3,
+          "items_completed": [],
+          "empty_backlog_verified": true,
+          "eligible_backlog_items": 0,
+          "proof_packet": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level-4-proof\\2026-06-22-level1-run-003.md",
+          "boundary_result": "Level 4 only; no office activation, authority grant, external recruiting, Git/GitHub/release, production/website edit, spending, secrets, hooks/global skill changes, Level 2+ promotion for hired roles, Level 5/6 activity, or broad runtime.",
+          "work_product_result": "No new packet required; Level 1 backlog already complete from run 001.",
+          "next_cadence": "Update automation to 4-hour steady cadence."
+        }
+      ],
+      "proof_dimensions": {
+        "loop_proof_required": 3,
+        "superseded_output": "Level 0 candidate-prep artifacts from run 001",
+        "loop_proof_streak": 3,
+        "legacy_loop_proof_streak_before_level_1_reset": 3,
+        "work_product_target": "Level 1 New Hire packet, Level 2 Trainee packet after 24 hours, and Level 3 Staff packet after five days per active automation and recruiting pipeline",
+        "work_product_recommendation": "Use recruiting.pipeline.json as the durable timing source for Level 1/2/3 promotion checks.",
+        "level_1_proof_streak": 3,
+        "level_1_proof_required": 3,
+        "work_product_proof_status": "Level 1 proof run 3 of 3 complete; empty backlog verified after all 26 director rows were processed to Level 1 packets",
+        "steady_cadence_ready": true,
+        "level_4_scope_updated_on": "2026-06-22T12:55:00-06:00"
+      }
+    },
+    "level_5_policy_source": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\Autonomy.md",
+    "leadership_taxonomy": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\leadership-role-taxonomy.md",
+    "recruiting_pipeline": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\recruiting.pipeline.json",
+    "level_5_company_position_policy": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level5-company-position-research-policy.md",
+    "level_5_leader_hiring_policy": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\level5-leader-hiring-demand-policy.md"
+  },
+  "handoff_check_goal": {
+    "status": "active",
+    "cadence": "every 5 minutes when not engaged in active user-directed work",
+    "automation_id": "ana-handoff-check",
+    "wake_rule": "Only the ana-handoff-check 5-minute heartbeat timer should perform handoff reads; the active Codex goal is restored as a tracking goal and must not perform interim due-check wakeups between heartbeat runs.",
+    "assigned_files": [
+      "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
+      "G:\\My Drive\\Mindshare\\channels\\recruiting.md",
+      "G:\\My Drive\\Mindshare\\channels\\communications.md"
+    ],
+    "durable_write_rule": "Always write durable changes Ana makes to C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\memory.md first and mirror appropriate durable notes to G:\\My Drive\\Mindshare\\ana.md.",
+    "active_work_rule": "If Ana is engaged in active user-directed work, continue that work and skip routine handoff polling until idle.",
+    "visibility_rule": "Do not visibly show routine handoff checks unless there is work to complete, an action taken, a blocker, an approval question, or a relevant handoff change Scott should see.",
+    "heartbeat_channel_rule": "Read heartbeat.md first during real ana-handoff-check heartbeat runs because it is the shared channel roster/update source that can announce new handoff channels. If heartbeat.md is missing or unreadable, report the setup blocker to Scott.",
+    "check_location_reporting_rule": "Each real ana-handoff-check heartbeat response should identify the handoff locations checked, including heartbeat.md, recruiting.md, and communications.md."
+  },
+  "handoff_check_tracking": {
+    "last_checked": "2026-06-19T20:55:37.459Z",
+    "last_result": "Read Ana memory plus assigned Heartbeat, Recruiting, and Communications channels. No new Ana recruiting action, blocker, approval question, or memory update needed.",
+    "files": [
+      {
+        "path": "C:\\Users\\scott\\Code\\mindshare\\roles\\ana-recruiter\\memory.md",
+        "sha256": "2BC7AE5A4C664FA685A9ECFE5AA83FD875DE807D455C1882FC30B8D6FE0F1DF3",
+        "status": "read"
+      },
+      {
+        "path": "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
+        "sha256": "9A870B1A53E49B8094FE1A92ACE5947B1706539BDA937ABF6306E1A2F10727BD",
+        "status": "read"
+      },
+      {
+        "path": "G:\\My Drive\\Mindshare\\channels\\recruiting.md",
+        "sha256": "3C198F328274406CD48DF659BC12210928F0CE0E12CC9860AEB621C5C9CC4382",
+        "status": "read"
+      },
+      {
+        "path": "G:\\My Drive\\Mindshare\\channels\\communications.md",
+        "sha256": "A73DC46725618C5EC4254C9B1ADEF8166D7C7F777AE9788DEB3B5B45833F77F6",
+        "status": "read"
+      }
+    ]
+  },
+  "last_updated": "2026-06-23T10:49:10.498Z",
+  "candidate_roles": [
+    {
+      "name": "Liz",
+      "title": "Mojo MAPS Training Coordinator",
+      "status": "planned",
+      "notes": "Create after Ana is established."
+    }
+  ],
+  "active_handoffs": [
+    "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
+    "G:\\My Drive\\Mindshare\\channels\\recruiting.md",
+    "G:\\My Drive\\Mindshare\\channels\\communications.md"
+  ],
+  "open_questions": [
+    "Should Ana become an installable /ana or /recruiter skill?",
+    "What standard backlog format should every role maintain?"
+  ],
+  "pending_approvals": [
+    "Approve automatic hook installation.",
+    "Approve scheduled role pipeline review.",
+    "Approve Ana Level 5 policy packet for company-position research and leader hiring-demand conversations.",
+    "Approve Ana leadership-role taxonomy before Level 5 activation."
+  ],
+  "next_recommended_skill": "/build-agent",
+  "last_l4_lifecycle_check": {
+    "timestamp": "2026-06-23T10:49:10.498Z",
+    "automation_id": "ana-l4-recruiting-backlog-processing",
+    "eligible_backlog_items": 0,
+    "eligible_level_1_promotions": 0,
+    "eligible_level_2_promotions": 0,
+    "processed_backlog_items": 0,
+    "processed_level_1_promotions": 0,
+    "processed_level_2_promotions": 0,
+    "proof_paths": [],
+    "next_known_eligible_at": "2026-06-23T12:39:43-06:00",
+    "boundaries_held": "no external recruiting or candidate contact, no human hiring, no production or website edits, no Git/GitHub/release, no spending, no secrets, no hooks/global skill changes, no Level 4/5/6 promotion for hired roles, no broad autonomous runtime",
+    "result": "no eligible backlog item or timed promotion due"
+  }
+}

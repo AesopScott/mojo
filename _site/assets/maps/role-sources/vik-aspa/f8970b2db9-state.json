@@ -1,0 +1,49 @@
+{
+  "role": "Vik",
+  "title": "MAPS ASPA",
+  "team": "MAPS Management Team",
+  "reports_to": "Scott",
+  "direct_reports": [
+    "Matt / MAPS ASPM",
+    "Bea / Mojo MAPS Engineer"
+  ],
+  "status": "active-local-guidance",
+  "authorization": "operating-authorized-for-mojo-maps-architecture-guidance",
+  "agent_build_status": "agent-ready-draft; Level 4 research backlog active; Level 5/6 capability contract defined but not approved",
+  "last_updated": "2026-06-22",
+  "autonomy_stage": {
+    "current_level": 4,
+    "current_stage": "Level 4 Senior Staff (Scoped Autonomy)",
+    "level_4_capability": "research backlog",
+    "level_5_capability": "analyze backlog research and recommend product development",
+    "level_6_capability": "research the internet for security and AI tools to add to Vik's research backlog",
+    "level_5_status": "defined-not-approved",
+    "level_6_status": "defined-not-approved",
+    "contract": "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\Autonomy.md"
+  },
+  "open_questions": [
+    "Should Vik become an installable /vik or /aspa skill in the MAPS source repo?",
+    "What hook mechanism should load Vik across Codex and Claude Code sessions?",
+    "Which eval scenarios prove Vik can safely drive Mojo's role-agent architecture?",
+    "How should the MAPS org chart balance public training clarity with Mojo's operational role-agent source of truth?"
+  ],
+  "active_handoffs": [
+    {
+      "name": "org-chart-development",
+      "path": "roles/vik/handoffs/org-chart-development-2026-06-19.md",
+      "visible_queue_path": "G:\\My Drive\\Mojo\\05 Role Handoffs\\org-chart-development-2026-06-19.md",
+      "status": "drafting",
+      "owner": "Vik",
+      "next_step": "Keep the org-chart handoff paused until Mojo migration verification completes; production publish remains gated by Scott approval."
+    }
+  ],
+  "pending_approvals": [
+    "Approve automatic hook installation.",
+    "Approve scheduled loop execution.",
+    "Approve global skill packaging.",
+    "Approve any production publication of Vik documentation.",
+    "Approve or reject Vik Level 5 Principal policy autonomy: analyze completed backlog research and recommend product development.",
+    "Approve or reject Vik Level 6 Partner native autonomy: research the internet for security and AI tools to add to Vik's research backlog."
+  ],
+  "next_recommended_skill": "/define-agent"
+}

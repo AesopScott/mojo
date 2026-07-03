@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 2: Design | Mojo AI Studio</title>
+    <meta name="description" content="Phase 2 of MAPS uses Research and Recommend to turn an agent brief into an agent design with workflow, roles, controls, tools, failure paths, and observability needs.">
+    <link rel="canonical" href="https://mojoaistudio.com/2.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/2.html">
+    <meta property="og:title" content="MAPS Phase 2: Design">
+    <meta property="og:description" content="Turn an agent brief into an agent design using Research and Recommend.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Phase 2: Design">
+    <meta name="twitter:description" content="Turn an agent brief into an agent design using Research and Recommend.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="2">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="agents.html">Agents</a>
+              <a href="global.html">Global</a>
+              <a href="skills.html">Skills</a>
+              <a href="references.html">References</a>
+              <div class="maps-pipeline-group multi-agent" aria-label="Multi-agent pipeline">
+                <span class="maps-pipeline-label">Multi-Agent Pipeline <small>Under development</small></span>
+                <div class="maps-pipeline-links">
+                  <a href="m0.html">M0 Project Foundation</a>
+                  <a href="m1.html">M1 System Shape</a>
+                  <span>M2 Roster</span>
+                  <span>M3 Contracts</span>
+                  <span>M4 Coordination</span>
+                  <span>M5 Agent Buildout</span>
+                  <span>M6 Capabilities</span>
+                  <span>M7 Orchestration</span>
+                  <a href="m8.html">M8 Experience Design</a>
+                  <span>M9 Evaluate</span>
+                  <span>M10 Deploy/Observe</span>
+                  <span>M11 Improve</span>
+                </div>
+              </div>
+              <div class="maps-pipeline-group agentic" aria-label="Agentic pipeline">
+                <span class="maps-pipeline-label">Agentic Pipeline</span>
+                <div class="maps-pipeline-links">
+                  <a href="0.html">A0 Phase Alignment</a>
+                  <a href="1.html">A1 Define</a>
+                  <a href="2.html">A2 Design</a>
+                  <a href="m8.html">A2 Experience Design</a>
+                  <a href="3.html">A3 Build</a>
+                  <a href="4.html">A4 Equip</a>
+                  <a href="5.html">A5 Evaluate</a>
+                  <a href="6.html">A6 Deploy</a>
+                  <a href="7.html">A7 Observe</a>
+                  <a href="8.html">A8 Improve</a>
+                </div>
+              </div>
+            </div>            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#rr">Research and Recommend</a>
+              <a href="#output">Output</a>
+              <a href="#questions">Design questions</a>
+              <a href="#runtime">Runtime target</a>
+              <a href="#backlog">Backlog</a>
+              <a href="#proof">Proof plan</a>
+              <a href="references.html">References</a>
+              <a href="#walkthrough">Build path</a>
+              <a href="#resources">Resources</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 2</p>
+          <h1>Design</h1>
+          <p>
+            Design turns the agent brief into a buildable agent design. The default
+            method is <span class="maps-term-highlight">Research and Recommend</span>: inspect the brief, research comparable
+            agents, recommend the design choices, then capture user overrides.
+            If there is no multi-agent system, optional A2 Experience Design can run after this phase
+            on the same page as M3 before Build.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#rr">Run <span class="maps-button-highlight">Research and Recommend</span></a>
+            <a class="maps-button" href="#output">See the output</a>
+            <a class="maps-button" href="1.html">Back to Phase 1</a>
+            <a class="maps-button" href="m8.html">Optional A2 Experience Design</a>
+            <a class="maps-button" href="3.html">Continue to Phase 3</a>
+          </div>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="rr" class="maps-section">
+          <div class="maps-section-header">
+            <h2><span class="maps-heading-highlight">Research and Recommend</span></h2>
+            <p>
+              <span class="maps-term-highlight">Research and Recommend</span> means the agent does the first pass of design judgment instead of handing the user a blank questionnaire.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Research</h3>
+              <p>Find comparable agents, reference architectures, open-source implementations, product patterns, and design guidance.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Recommend</h3>
+              <p>Recommend answers for operating model, roles, workflow, memory, tools, approvals, failures, and observability.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Override</h3>
+              <p>Ask the user to accept the recommendations or override only the parts that are wrong, risky, or incomplete.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="output" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 2 output</h2>
+            <p>
+              At the end of Design, the required artifacts are `agents/{agent-handle}/agent-design.md` and `agents/{agent-handle}/agent-backlog.md`.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Input</h3>
+              <p><strong>`agents/{agent-handle}/agent-brief.md`</strong> from Phase 1 Define.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Skill</h3>
+              <p><a href="assets/maps/skills/design-agent/SKILL.md" download><strong>/design-agent</strong></a> runs Research and Recommend and produces or updates the design.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Template</h3>
+              <p><a href="assets/maps/templates/workflow-spec.md" download><strong>`templates/workflow-spec.md`</strong></a> provides the design structure.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Backlog template</h3>
+              <p><a href="assets/maps/templates/agent-backlog.md" download><strong>`templates/agent-backlog.md`</strong></a> turns the design into prioritized build slices, dependencies, and deferred improvement items.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Artifact</h3>
+              <p><strong>`agent-design.md`</strong> captures recommendations and proof needs; <strong>`agent-backlog.md`</strong> captures the ordered work before Build starts.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="questions" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Research and recommend every design choice</h2>
+            <p>
+              The user should review a proposed design, not assemble one from scratch.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Design question</th>
+                  <th>Recommendation should cover</th>
+                  <th>Override prompt</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Operating model</td>
+                  <td>Single agent, tool-using agent, supervised agent, or multi-agent participant.</td>
+                  <td>Accept this model or name the model you prefer.</td>
+                </tr>
+                <tr>
+                  <td>Roles and responsibilities</td>
+                  <td>What the agent owns, what a human owns, and what other systems own.</td>
+                  <td>Remove, add, or rename responsibilities.</td>
+                </tr>
+                <tr>
+                  <td>Workflow states</td>
+                  <td>Trigger, intake, plan, act, check, escalate, complete, and stop conditions.</td>
+                  <td>Change any state that does not match the real workflow.</td>
+                </tr>
+                <tr>
+                  <td>Memory and context</td>
+                  <td>What is read, remembered, retrieved, retained, or intentionally forgotten.</td>
+                  <td>Tighten access, retention, or retrieval boundaries.</td>
+                </tr>
+                <tr>
+                  <td>Tools and integrations</td>
+                  <td>Tool candidates, required permissions, failure behavior, and constraints.</td>
+                  <td>Approve, reject, or substitute tools.</td>
+                </tr>
+                <tr>
+                  <td>Approvals and escalation</td>
+                  <td>Human approval gates, forbidden paths, escalation triggers, and owners.</td>
+                  <td>Raise or lower the authorization boundary.</td>
+                </tr>
+                <tr>
+                  <td>Observability</td>
+                  <td>Logs, traces, review points, quality signals, cost, latency, and failure evidence.</td>
+                  <td>Add any signal needed to trust the design.</td>
+                </tr>
+                <tr>
+                  <td>Test strategy</td>
+                  <td>How the agent will be proven before implementation: TDD, ATDD, scenario evals, or a blended approach.</td>
+                  <td>Change the proof style or raise the required evidence.</td>
+                </tr>
+                <tr>
+                  <td>Acceptance scenarios</td>
+                  <td>Given/when/then examples that define correct behavior, edge cases, and escalation behavior.</td>
+                  <td>Add missing scenarios or reject weak proof.</td>
+                </tr>
+                <tr>
+                  <td>Mock vs real tools</td>
+                  <td>Which tests use fakes, mocks, sandbox integrations, real APIs, or replayed traces.</td>
+                  <td>Change where real integrations are required.</td>
+                </tr>
+                <tr>
+                  <td>Regression gates</td>
+                  <td>What must keep passing before the agent can move into Build, Evaluate, and Deploy.</td>
+                  <td>Add required gates before Build starts.</td>
+                </tr>
+                <tr>
+                  <td>Backlog and dependencies</td>
+                  <td>Epics, build slices, task dependencies, priority order, first slice, deferred items, and proof required per item.</td>
+                  <td>Reorder, split, combine, defer, or mark blocked items before Build starts.</td>
+                </tr>
+                <tr>
+                  <td>Runtime target and adapter requirement</td>
+                  <td>Primary runtime, secondary runtimes, skill format, tool interface, memory model, sandbox assumptions, packaging path, and portability risks.</td>
+                  <td>Choose the target runtime or mark the design runtime-neutral until Build.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="runtime" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime target and adapter requirement</h2>
+            <p>
+              Design should decide where the agent may run. It should not build the adapter yet.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Runtime target</h3>
+              <p>Name the primary runtime and any secondary runtimes, such as OpenClaw, Manus, Hermes, Codex, Claude Code, LangGraph, OpenAI Agents SDK, CrewAI, or Google ADK.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Profile or adapter</h3>
+              <p>Decide whether the runtime only needs an install/use profile or a fuller adapter that transforms files, tools, memory, permissions, or packaging.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Portability risks</h3>
+              <p>Record unsupported MAPS features, tool limitations, memory differences, sandbox constraints, approval gaps, and packaging risks before Build begins.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="backlog" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Backlog-driven build planning</h2>
+            <p>
+              Design should turn the approved direction into a dependency-aware backlog before Phase 3 starts.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Break it down</h3>
+              <p>Split large projects into epics, slices, tasks, spikes, and deferred improvement items that can be reasoned about separately.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Map dependencies</h3>
+              <p>Name prerequisites, blocked work, runtime adapter needs, data/setup work, and proof gates so Build does not start in the wrong order.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Prioritize</h3>
+              <p>Order work by user value, risk reduction, dependency sequence, safety, and the smallest slice that proves real behavior.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Define the first slice</h3>
+              <p>Choose the smallest vertical behavior that can be implemented, tested, reviewed, and handed to Equip without dragging the whole project behind it.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Defer consciously</h3>
+              <p>Move polish, later capabilities, tech debt, and observation-driven improvements into the Phase 8 improvement backlog instead of hiding them in Build.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Create the artifact</h3>
+              <p>Use <a href="assets/maps/templates/agent-backlog.md" download><strong>`templates/agent-backlog.md`</strong></a> so the Build agent receives ordered work, dependencies, proof, and status.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="proof" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Test-first proof plan</h2>
+            <p>
+              In Design, TDD is not implementation detail yet. It is a design requirement: define what evidence will prove the agent works before building it.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Test strategy</h3>
+              <p>Recommend TDD, ATDD, scenario evals, integration tests, or a blended proof plan based on the agent's risk and tool use.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Acceptance scenarios</h3>
+              <p>Write the given/when/then cases that define correct behavior, human escalation, refusal, recovery, and completion.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Eval shape</h3>
+              <p>Decide whether proof uses deterministic tests, rubric-based evals, trace review, golden datasets, or human review gates.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Test balance</h3>
+              <p>Recommend the unit, integration, and e2e mix before implementation choices make the system hard to test.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Mock policy</h3>
+              <p>Name where mocks or fakes are acceptable, where sandbox tools are required, and where real integrations must prove behavior.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Build gate</h3>
+              <p>State what must be proven before Phase 3 Build starts: failure cases, regression gates, and minimum acceptance evidence.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Adapter gate</h3>
+              <p>State whether Build must create a runtime profile, a runtime adapter, or no adapter for the first working agent.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="alternatives" class="maps-section">
+          <div class="maps-section-header">
+            <h2>External references and alternatives</h2>
+            <p>
+              These are reference materials only. They are not MAPS Phase 2 outputs, dependencies, or implemented skills.
+            </p>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Skill/workflow alternative</p>
+              <h3><a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener noreferrer">addyosmani/agent-skills</a></h3>
+              <p>Reference for spec, plan, interface design, ADR, and test-driven-development skills.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Design-template alternative</p>
+              <h3><a href="https://github.com/GSA-TTS/devCrew_s/blob/master/docs/templates/AI%20Agent%20Specification%20Template.md" target="_blank" rel="noopener noreferrer">GSA-TTS AI Agent Specification Template</a></h3>
+              <p>Deep template for agent architecture, autonomy, reasoning, tools, memory, permissions, and oversight.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Spec-to-plan process alternative</p>
+              <h3><a href="https://github.com/github/spec-kit" target="_blank" rel="noopener noreferrer">GitHub Spec Kit</a></h3>
+              <p>Process reference for moving from intent to specification, technical plan, tasks, and implementation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog definition</p>
+              <h3><a href="https://scrumguides.org/scrum-guide.html#product-backlog" target="_blank" rel="noopener noreferrer">Scrum Guide product backlog</a></h3>
+              <p>Reference for treating the backlog as an emergent ordered list of work needed to improve the product.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog refinement</p>
+              <h3><a href="https://www.atlassian.com/agile/scrum/backlogs" target="_blank" rel="noopener noreferrer">Atlassian product backlog guide</a></h3>
+              <p>Reference for prioritizing, refining, and aligning backlog items before the team starts implementation.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Work breakdown</p>
+              <h3><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues" target="_blank" rel="noopener noreferrer">GitHub sub-issues</a></h3>
+              <p>Reference for breaking larger work into smaller related items that can be tracked by parent/sub-issue progress.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Test-first workflow reference</p>
+              <h3><a href="https://code.visualstudio.com/docs/copilot/guides/test-driven-development-guide" target="_blank" rel="noopener noreferrer">VS Code Copilot TDD guide</a></h3>
+              <p>Reference for designing a test-first workflow with custom agents, handoffs, and planning before Build. Actual TDD execution belongs mainly in Phase 3.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Spec-writing guidance</p>
+              <h3><a href="https://addyosmani.com/blog/good-spec/" target="_blank" rel="noopener noreferrer">How to write a good spec for AI agents</a></h3>
+              <p>Useful for objectives, context, constraints, acceptance criteria, boundaries, and the quality of the design spec.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="walkthrough" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Self-guided design path</h2>
+          </div>
+
+          <div class="maps-walkthrough">
+            <article class="maps-step">
+              <span>01</span>
+              <h3>Read the brief</h3>
+              <p>Start from `agents/{agent-handle}/agent-brief.md` and restate the goal, user, success criteria, and authority boundary.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The design should not invent a new job for the agent.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>02</span>
+              <h3>Research peers</h3>
+              <p>Search for similar agents, tools, implementations, reference architectures, and product patterns.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The recommendation should name the comparable patterns it is borrowing from.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>03</span>
+              <h3>Recommend the design</h3>
+              <p>Fill the recommendation table before asking for user decisions.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Every design question should have a recommendation and reasoning.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>04</span>
+              <h3>Capture runtime and overrides</h3>
+              <p>Ask the user to change only the recommendations that do not fit, including runtime target and adapter requirements.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>User overrides and runtime portability notes should appear in `agents/{agent-handle}/agent-design.md`.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>05</span>
+              <h3>Write the backlog</h3>
+              <p>Turn the design into prioritized backlog items with dependencies, proof, first slice, and deferred improvement work.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Phase 3 should receive ordered work, not a vague project description.</p>
+              </details>
+            </article>
+          </div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 2 resources</h2>
+            <p>
+              <a href="assets/maps/skills/design-agent/SKILL.md" download>`/design-agent`</a> uses <a href="assets/maps/templates/workflow-spec.md" download>`templates/workflow-spec.md`</a> and <a href="assets/maps/templates/agent-backlog.md" download>`templates/agent-backlog.md`</a> to produce the design and build backlog. Track cross-phase work in <a href="maps.md" download>`maps.md`</a>.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

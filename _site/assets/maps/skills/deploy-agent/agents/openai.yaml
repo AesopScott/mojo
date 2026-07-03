@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy Agent"
+  short_description: "Plan and execute controlled release of an agent system."
+  default_prompt: "Use deploy-agent to prepare an agent deployment plan."

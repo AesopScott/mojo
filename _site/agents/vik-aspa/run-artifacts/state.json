@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-06-23T12:27:36.459959+00:00",
+  "agent": "vik-aspa",
+  "runtime_target": "undecided",
+  "runtime_adapter": "deferred until runtime selection",
+  "decision": {
+    "status": "allowed",
+    "category": "architecture_review",
+    "message": "Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.",
+    "needs_approval": false,
+    "sources": [
+      "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\role-agent.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-profile.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-design.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\agent-backlog.md",
+      "C:\\Users\\scott\\Code\\mojo\\agents\\vik-aspa\\autonomy-contract.md",
+      "C:\\Users\\scott\\Code\\mojo\\roles\\vik\\Autonomy.md"
+    ]
+  }
+}

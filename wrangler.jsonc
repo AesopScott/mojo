@@ -1,0 +1,22 @@
+{
+  "name": "mojoaistudio-com",
+  "pages_build_output_dir": "./_site",
+  "compatibility_date": "2026-06-14",
+  "d1_databases": [
+    {
+      "binding": "FORUM_DB",
+      "database_id": "3588eba2-cc34-4e11-99a7-6496401a9530",
+      "database_name": "mojo-forum"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "id": "2b59ee7369494f318cbc1d7ca820da3c",
+      "binding": "SMS_REMINDERS"
+    },
+    {
+      "id": "119ee808e9df4ce29f2e0a201099b2fc",
+      "binding": "PRODUCT_SUBMISSIONS"
+    }
+  ]
+}

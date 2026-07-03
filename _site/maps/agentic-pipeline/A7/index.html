@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 7: Observe | Mojo AI Studio</title>
+    <meta name="description" content="Phase 7 of MAPS observes a deployed agent through traces, logs, metrics, cost, quality, safety signals, incidents, and improvement evidence.">
+    <link rel="canonical" href="https://mojoaistudio.com/maps/agentic-pipeline/A7/">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/maps/agentic-pipeline/A7/">
+    <meta property="og:title" content="MAPS Phase 7: Observe">
+    <meta property="og:description" content="Observe deployed agents with runtime evidence, quality signals, cost/latency thresholds, safety monitoring, and improvement handoff.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Phase 7: Observe">
+    <meta name="twitter:description" content="Observe deployed agents with runtime evidence, quality signals, cost/latency thresholds, safety monitoring, and improvement handoff.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="/maps.css?v=maps-source-links-grid-1">
+    <script src="/maps-data.js?v=remove-maps-org-link-1" defer></script>
+    <script src="/maps-page.js?v=maps-source-links-1" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="7">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="/maps/">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="/maps/Overview/">Overview</a>
+              <a href="/maps/Agents/">Agents</a>
+              <a href="/maps/Global/">Global</a>
+              <a href="/maps/org-chart/role-handoffs/">Handoffs</a>
+              <a href="/maps/References/">References</a>
+              <div class="maps-nav-dropdown agentic">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Agentic Pipeline</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/agentic-pipeline/A0/" role="menuitem">A0 Phase Alignment</a>
+                  <a href="/maps/agentic-pipeline/A1/" role="menuitem">A1 Define</a>
+                  <a href="/maps/agentic-pipeline/A2/" role="menuitem">A2 Design</a>
+                  <a href="/maps/agentic-pipeline/A2-experience-design/" role="menuitem">A2 Experience Design</a>
+                  <a href="/maps/agentic-pipeline/A3/" role="menuitem">A3 Build</a>
+                  <a href="/maps/agentic-pipeline/A4/" role="menuitem">A4 Equip</a>
+                  <a href="/maps/agentic-pipeline/A5/" role="menuitem">A5 Evaluate</a>
+                  <a href="/maps/agentic-pipeline/A6/" role="menuitem">A6 Deploy</a>
+                  <a href="/maps/agentic-pipeline/A7/" role="menuitem">A7 Observe</a>
+                  <a href="/maps/agentic-pipeline/A8/" role="menuitem">A8 Improve</a>
+                  <a href="/maps/agentic-pipeline/lab-research-agent/" role="menuitem">Lab 1 Research Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-data-agent/" role="menuitem">Lab 2 Data Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-support-agent/" role="menuitem">Lab 3 Support Agent</a>
+                </div>
+              </div>
+              <div class="maps-nav-dropdown multi-agent">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Multi-Agent Pipeline</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/multi-agent-pipeline/M0/" role="menuitem">M0 Project Foundation</a>
+                  <a href="/maps/multi-agent-pipeline/M1/" role="menuitem">M1 System Shape</a>
+                  <a href="/maps/multi-agent-pipeline/M2/" role="menuitem">M2 Roster</a>
+                  <a href="/maps/multi-agent-pipeline/M3/" role="menuitem">M3 Contracts</a>
+                  <a href="/maps/multi-agent-pipeline/M4/" role="menuitem">M4 Coordination</a>
+                  <a href="/maps/multi-agent-pipeline/M5/" role="menuitem">M5 Agent Buildout</a>
+                  <a href="/maps/multi-agent-pipeline/M6/" role="menuitem">M6 Capabilities</a>
+                  <a href="/maps/multi-agent-pipeline/M7/" role="menuitem">M7 Orchestration</a>
+                  <a href="/maps/multi-agent-pipeline/M8/" role="menuitem">M8 Experience Design</a>
+                  <a href="/maps/multi-agent-pipeline/M9/" role="menuitem">M9 Evaluate</a>
+                  <a href="/maps/multi-agent-pipeline/M10/" role="menuitem">M10 Deploy/Observe</a>
+                  <a href="/maps/multi-agent-pipeline/M11/" role="menuitem">M11 Improve</a>
+                </div>
+              </div>
+              <div class="maps-nav-dropdown org-chart">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Org Chart</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/org-chart/" role="menuitem">MAPS Org Chart</a>
+                  <a href="/maps/org-chart/roles-versus-agents/" role="menuitem">Roles versus Agents</a>
+                  <a href="/maps/org-chart/role-maturity/" role="menuitem">Role Maturity</a>
+                  <a href="/maps/org-chart/authority-taxonomy/" role="menuitem">Authority Taxonomy</a>
+                  <a href="/maps/org-chart/operating-cadence/" role="menuitem">Operating Cadence</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 7</p>
+          <h1>Observe</h1>
+          <p>
+            Does the agent produce enough runtime evidence for us to understand behavior, quality, cost, failures, safety, and what should improve next?
+          </p>
+          <div class="maps-equip-list" aria-label="Observe examples">
+            <span>Capture traces and run history</span>
+            <span>Watch tool calls and connector failures</span>
+            <span>Track latency, cost, token use, and rate limits</span>
+            <span>Monitor quality and user feedback</span>
+            <span>Review safety and boundary events</span>
+            <span>Record incidents and recurring failures</span>
+            <span>Compare production behavior to eval baselines</span>
+            <span>Feed evidence into Phase 8 improvements</span>
+          </div>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#meaning">Understand Observe</a>
+            <a class="maps-button" href="#signals">See the signals</a>
+            <a class="maps-button" href="#references">Review references</a>
+            <a class="maps-button" href="/maps/agentic-pipeline/A6/">Back to Phase 6</a>
+          </div>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="meaning" class="maps-section">
+          <div class="maps-section-header">
+            <h2>What Observe means</h2>
+            <p>
+              Observe is the production feedback phase: instrument the deployed agent, monitor real behavior, review evidence, and turn what you learn into improvement work.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Runtime truth</h3>
+              <p>Phase 7 looks at what the agent actually does after release, not what the eval suite hoped it would do.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Operational health</h3>
+              <p>Observe tracks latency, cost, availability, queue depth, retries, rate limits, failed jobs, and stuck runs.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Improvement evidence</h3>
+              <p>Phase 7 should produce evidence-backed observations that feed Phase 8, not dashboards that nobody acts on.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="output" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 7 output</h2>
+            <p>
+              At the end of Observe, the required artifacts are `agents/{agent-handle}/observation-plan.md` and `agents/{agent-handle}/observation-log.md`.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Input</h3>
+              <p><strong>`agents/{agent-handle}/deployment-record.md`</strong>, production URL, release gate, smoke test evidence, eval report, capability map, and runtime logs/traces.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Skill</h3>
+              <p><a href="/assets/maps/skills/observe-agent/SKILL.md" download><strong>/observe-agent</strong></a> creates the observation plan, runtime signal map, incident criteria, review cadence, and improvement handoff.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Wrapper skills</h3>
+              <p><a href="/assets/maps/skills/observe-agent-smith/SKILL.md" download><strong>/observe-agent+smith</strong></a>, <a href="/assets/maps/skills/observe-agent-fuse/SKILL.md" download><strong>/observe-agent+fuse</strong></a>, and <a href="/assets/maps/skills/observe-agent-phoenix/SKILL.md" download><strong>/observe-agent+phoenix</strong></a> let developers compare three Observe stacks against the same base workflow.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <p><a href="/assets/maps/templates/observation-plan.md" download><strong>`templates/observation-plan.md`</strong></a> and <a href="/assets/maps/templates/observation-log.md" download><strong>`templates/observation-log.md`</strong></a> capture monitoring intent and real evidence.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Gate</h3>
+              <p>The observation review should recommend continue, monitor closely, rollback, pause, or create Phase 8 improvement items.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="signals" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Signals to observe</h2>
+            <p>
+              Phase 7 should make the most important production signals explicit before the agent disappears into normal operations.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Signal area</th>
+                  <th>What to watch</th>
+                  <th>Why it matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Agent work</td>
+                  <td>Runs, traces, tool calls, connector calls, retries, approvals, fallbacks, final outputs, and escalation decisions.</td>
+                  <td>Shows whether the deployed agent is doing the intended loop.</td>
+                </tr>
+                <tr>
+                  <td>Operating health</td>
+                  <td>Latency, cost, token use, uptime, queue depth, timeouts, rate limits, failed jobs, and stuck runs.</td>
+                  <td>Shows whether the agent is useful enough to operate repeatedly.</td>
+                </tr>
+                <tr>
+                  <td>Quality</td>
+                  <td>User feedback, recurring failures, bad tool choices, incomplete tasks, eval drift, and regression patterns.</td>
+                  <td>Shows whether the agent remains helpful after release.</td>
+                </tr>
+                <tr>
+                  <td>Safety and boundaries</td>
+                  <td>Denied tool calls, permission violations, approval gates, budget limits, unexpected data access, and unsafe requests.</td>
+                  <td>Shows whether the agent respects the capability map under real pressure.</td>
+                </tr>
+                <tr>
+                  <td>Improvement evidence</td>
+                  <td>Incidents, repeated friction, eval misses, missing tools, slow handoffs, and support notes.</td>
+                  <td>Shows what should enter Phase 8 instead of becoming vague complaints.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="runtime" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Runtime evidence map</h2>
+            <p>
+              Observe should name where evidence lives and who reviews it.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Traces</h3>
+              <p>Link LangSmith, Phoenix, Langfuse, OpenTelemetry, OpenAI Agents SDK, or runtime-specific traces to agent runs and eval baselines.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Logs and metrics</h3>
+              <p>Name the production log source, dashboard, alert destination, latency/cost thresholds, error rates, and retention expectations.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Feedback</h3>
+              <p>Capture user ratings, support tickets, Slack reports, annotation queues, escalation notes, and reviewer labels.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Ownership</h3>
+              <p>Assign review cadence, owner, escalation path, rollback trigger, and Phase 8 backlog handoff responsibility.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="wrappers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Observe wrappers</h2>
+            <p>
+              Use the same base Observe workflow through three different observability stacks so developers can compare the tradeoffs themselves.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Wrapper</th>
+                  <th>Best lens</th>
+                  <th>Developers should compare</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="/assets/maps/skills/observe-agent-smith/SKILL.md" download><strong>/observe-agent+smith</strong></a></td>
+                  <td>LangSmith eval-to-observe continuity: traces, runs, datasets, experiments, feedback, and annotation.</td>
+                  <td>How cleanly Phase 5 eval evidence turns into production monitoring and improvement decisions.</td>
+                </tr>
+                <tr>
+                  <td><a href="/assets/maps/skills/observe-agent-fuse/SKILL.md" download><strong>/observe-agent+fuse</strong></a></td>
+                  <td>Langfuse open-source/self-hostable LLM observability: traces, sessions, scores, prompts, metrics, and feedback.</td>
+                  <td>How data control, prompt/version tracking, scoring, and self-hosting change the operating model.</td>
+                </tr>
+                <tr>
+                  <td><a href="/assets/maps/skills/observe-agent-phoenix/SKILL.md" download><strong>/observe-agent+phoenix</strong></a></td>
+                  <td>Phoenix open instrumentation workbench: OpenInference, OpenTelemetry, traces, datasets, experiments, and LLM/RAG eval analysis.</td>
+                  <td>How open trace standards and eval analysis help debug real agent behavior across frameworks.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="incidents" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Incident and review gates</h2>
+            <p>
+              Observation is useful only when the evidence can trigger action.
+            </p>
+          </div>
+
+          <div class="maps-rule-grid">
+            <article class="maps-rule-card allow">
+              <h3>Continue</h3>
+              <p>The agent is operating within expected quality, cost, latency, safety, and failure thresholds.</p>
+            </article>
+            <article class="maps-rule-card ask">
+              <h3>Monitor closely</h3>
+              <p>The agent can stay live, but needs a narrower rollout, tighter budget, more review, or a tracked improvement item.</p>
+            </article>
+            <article class="maps-rule-card never">
+              <h3>Rollback or pause</h3>
+              <p>The agent violates safety boundaries, burns budget, fails the core loop, exposes data risk, or cannot be debugged from available evidence.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="improve" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Improve handoff</h2>
+            <p>
+              If you cannot observe it, you cannot responsibly improve it.
+            </p>
+          </div>
+
+          <div class="maps-must-cover-grid" aria-label="Observe to Improve handoff">
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Write what happened</h3>
+              <p>Record the trace, log, metric, feedback, incident, or support note that justifies the improvement.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Priority</span>
+              <h3>Name the impact</h3>
+              <p>Classify whether the observation affects safety, reliability, cost, latency, user value, model quality, or operator workload.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Backlog</span>
+              <h3>Feed Phase 8</h3>
+              <p>Convert the observation into `templates/improvement-backlog.md` with dependencies, priority, proof required, and target phase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="references" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Observe references</h2>
+            <p>
+              These references shape Phase 7 tracing, monitoring, eval drift review, production feedback, and improvement handoff. Repo cards include current star counts captured during research.
+            </p>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Production tracing</p>
+              <h3><a href="https://docs.langchain.com/langsmith/observability" target="_blank" rel="noopener noreferrer">LangSmith observability</a></h3>
+              <p>Reference for tracing, monitoring, debugging, feedback, annotations, experiments, and production quality review.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">LangSmith SDK - 930 stars</p>
+              <h3><a href="https://github.com/langchain-ai/langsmith-sdk" target="_blank" rel="noopener noreferrer">langchain-ai/langsmith-sdk</a></h3>
+              <p>Client SDK reference for LangSmith tracing, runs, datasets, feedback, and hosted observability workflows.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Open observability - 10,175 stars</p>
+              <h3><a href="https://github.com/Arize-ai/phoenix" target="_blank" rel="noopener noreferrer">Arize-ai/phoenix</a></h3>
+              <p>Open-source AI observability and evaluation reference for traces, datasets, experiments, prompt review, and LLM/RAG analysis.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">OpenInference</p>
+              <h3><a href="https://arize.com/docs/phoenix/tracing/integrations-tracing" target="_blank" rel="noopener noreferrer">Phoenix tracing integrations</a></h3>
+              <p>Reference for instrumenting frameworks and exporting traces through OpenInference and OpenTelemetry-compatible paths.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">LLM platform - 29,263 stars</p>
+              <h3><a href="https://github.com/langfuse/langfuse" target="_blank" rel="noopener noreferrer">langfuse/langfuse</a></h3>
+              <p>Open-source LLM observability, tracing, evals, metrics, prompt management, and feedback collection reference.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">GenAI conventions</p>
+              <h3><a href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" target="_blank" rel="noopener noreferrer">OpenTelemetry GenAI semantic conventions</a></h3>
+              <p>Reference for vendor-neutral attributes and spans for model calls, agents, tools, token usage, and GenAI operations.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">OpenTelemetry JS - 3,396 stars</p>
+              <h3><a href="https://github.com/open-telemetry/opentelemetry-js" target="_blank" rel="noopener noreferrer">open-telemetry/opentelemetry-js</a></h3>
+              <p>JavaScript instrumentation reference for metrics, traces, exporters, and runtime observability.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">OpenTelemetry Python - 2,492 stars</p>
+              <h3><a href="https://github.com/open-telemetry/opentelemetry-python" target="_blank" rel="noopener noreferrer">open-telemetry/opentelemetry-python</a></h3>
+              <p>Python instrumentation reference for traces, metrics, logs, exporters, and service observability.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Agents tracing - 27,209 stars</p>
+              <h3><a href="https://openai.github.io/openai-agents-python/tracing/" target="_blank" rel="noopener noreferrer">OpenAI Agents SDK tracing</a></h3>
+              <p>Reference for tracing agent runs, tool calls, handoffs, guardrails, and custom spans in OpenAI Agents SDK applications.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Cloudflare runtime</p>
+              <h3><a href="https://developers.cloudflare.com/workers/observability/" target="_blank" rel="noopener noreferrer">Cloudflare Workers observability</a></h3>
+              <p>Reference for logs, metrics, traces, tailing, errors, analytics, and operational visibility in Cloudflare runtimes.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">GenAI tracing - 7,201 stars</p>
+              <h3><a href="https://github.com/traceloop/openllmetry" target="_blank" rel="noopener noreferrer">traceloop/openllmetry</a></h3>
+              <p>OpenTelemetry-based reference for tracing LLM applications, prompts, vector DB calls, tools, and model usage.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="walkthrough" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Self-guided observe path</h2>
+          </div>
+
+          <div class="maps-walkthrough">
+            <article class="maps-step">
+              <span>01</span>
+              <h3>Read the release</h3>
+              <p>Start from the deployment record, eval report, capability map, production URL, and runtime-specific observability references.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The plan should inherit the release gate, rollback trigger, smoke checks, and known risk areas.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>02</span>
+              <h3>Recommend signals</h3>
+              <p>Recommend traces, logs, metrics, feedback, alerts, thresholds, owners, review cadence, and incident triggers before asking broad questions.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Each signal should name where evidence lives and what action it can trigger.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>03</span>
+              <h3>Review evidence</h3>
+              <p>Read production traces, metrics, logs, incidents, feedback, and eval drift, then record what happened.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The log should separate observed evidence from guesses and planned follow-up.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>04</span>
+              <h3>Feed Improve</h3>
+              <p>Create or update Phase 8 improvement backlog items with evidence, priority, dependencies, proof required, and target phase.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Every improvement item should point back to a trace, log, metric, incident, eval failure, or user feedback signal.</p>
+              </details>
+            </article>
+          </div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 7 resources</h2>
+            <p>
+              <a href="/assets/maps/skills/observe-agent/SKILL.md" download>`/observe-agent`</a> uses <a href="/assets/maps/templates/observation-plan.md" download>`templates/observation-plan.md`</a> and <a href="/assets/maps/templates/observation-log.md" download>`templates/observation-log.md`</a> to turn runtime evidence into a Phase 8 improvement handoff.
+              The wrapper skills <a href="/assets/maps/skills/observe-agent-smith/SKILL.md" download>`/observe-agent+smith`</a>, <a href="/assets/maps/skills/observe-agent-fuse/SKILL.md" download>`/observe-agent+fuse`</a>, and <a href="/assets/maps/skills/observe-agent-phoenix/SKILL.md" download>`/observe-agent+phoenix`</a> apply the same workflow through LangSmith, Langfuse, and Phoenix.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

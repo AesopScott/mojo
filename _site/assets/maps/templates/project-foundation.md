@@ -1,0 +1,298 @@
+# Project Foundation
+
+## Kickoff
+
+Project Intent + Scaffolding Structure, Kickoff.
+
+## Project
+
+- Name:
+- Owner:
+- Repository:
+- Date:
+- Project type: MAPS framework / APS project / downstream product or organization
+- Primary customer or operator:
+- Desired outcome:
+
+## M0 Preflight Decisions
+
+| Decision | Answer | Confirmed by | Notes |
+|---|---|---|---|
+| RAG exists? |  |  |  |
+| Notes location |  |  |  |
+| Notes access method | file system / MCP service / REST API / none yet |  |  |
+| Additional notes locations |  |  |  |
+| RAG provider/location/index |  |  |  |
+| RAG access method | file system / MCP service / REST API / none yet |  |  |
+| Additional RAG/index locations |  |  |  |
+| Canonical store policy |  |  |  |
+| Memory root |  |  |  |
+| Memory access method | file system / MCP service / REST API |  |  |
+| Sources root |  |  |  |
+| Sources access method | file system / MCP service / REST API |  |  |
+| Reuse remembered defaults? |  |  |  |
+| Project identity and type |  |  |  |
+| Project intent |  |  |  |
+| Primary customer/operator |  |  |  |
+| Agentic Systems Program Manager needed? |  |  |  |
+| Git initialized or allowed? |  |  |  |
+| Git remote exists or should be created? |  |  |  |
+| Env/secrets scaffold needed? |  |  |  |
+| Local env file approved? |  |  |  |
+| Portable path layer policy | project-local / org-local / global reusable / imported |  |  |
+| `repo_root` |  |  |  |
+| `notes_root` |  |  |  |
+| `channels_root` |  |  |  |
+| `roles_directory` |  |  |  |
+| `voice_taxonomy` |  |  |  |
+| `automations_root` |  |  |  |
+| Company roots |  |  |  |
+| Channel paths |  |  |  |
+| Path replacement syntax | `{{repo_root}}` / environment variables / relative paths / MCP / REST |  |  |
+| Full MAPS framework/org scaffold needed? | yes / no / later |  |  |
+| Scaffold target and overwrite policy | preserve / append-safe / force approved |  |  |
+| Update global living template? |  |  |  |
+
+## Customer Story
+
+- As a:
+- I need:
+- So I can:
+
+## Current Workflow
+
+- Current process:
+- Pain points:
+- Workarounds:
+- Evidence:
+
+## EventStorming Lite
+
+| Domain event | Trigger or command | Actor | Policy or rule | System/data touched | Pain point | Question |
+|---|---|---|---|---|---|---|
+|  |  |  |  |  |  |  |
+
+## Service Blueprint Lite
+
+| Customer/operator action | Visible agent/system action | Backstage process | Supporting system/data | Evidence/source | Failure point |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
+## Product Intent
+
+- Project purpose:
+- User value:
+- Business or mission value:
+- Why agents are appropriate:
+- Why multiple agents may be needed:
+
+## Culture Standard
+
+- Culture artifact: `MINDSHARE_CULTURE.md`
+- Trust standard: trust is earned through proactive, consistent, verified work inside clear bounds.
+- Role Who Am I lines:
+  - Proactive: I notice useful work, surface the next move, and do not wait to be chased.
+  - Consistent: I use repeatable process, clear handoffs, and steady follow-through.
+  - Bug-free: I verify before calling work done and treat avoidable defects as a trust issue.
+  - Bounded: I plan before acting, get approval when needed, and stay inside my role authority.
+- Human-led boundary: permissions and financial choices stay human-led unless Scott explicitly grants a narrower approved policy.
+
+## Agentic Systems Program Manager
+
+M0 defines whether this project needs an Agentic Systems Program Manager role. Use the full role name first; use ASPM only as shorthand after the role is defined.
+
+| Item | Decision | Notes |
+|---|---|---|
+| Agentic Systems Program Manager needed? | yes / no / later |  |
+| Role status | create now / reference existing / defer |  |
+| Engagement type | advisory / workflow owner / review gate / operator / autonomous loop |  |
+| Authority boundary | recommend / approve / block / execute / escalate |  |
+| Memory/RAG responsibility | none / advise / maintain contract / approve writes / trigger sync |  |
+| Phase-boundary responsibility | advise / own / review only |  |
+| Next-skill routing responsibility | advise / own / review only |  |
+| `/role` handoff needed? | yes / no |  |
+
+## Scaffold
+
+Create or confirm:
+
+```text
+.maps/
+  foundation-preferences.json
+  rag-updates.json
+.gitignore
+.env.example
+optional: .env.local
+notes/
+  daily/
+  interviews/
+  research/
+  decisions/
+sources/
+  docs/
+  transcripts/
+  screenshots/
+  links.md
+memory/
+  project-context.md
+  glossary.md
+  entity-map.md
+```
+
+Optional full MAPS framework/org scaffold formerly owned by `/scaffold`:
+
+```text
+README.md
+LICENSE
+docs/
+phases/
+skills/
+templates/
+catalogs/
+```
+
+## Portable Path Contract
+
+| Path setting | Value | Canonical? | Notes |
+|---|---|---|---|
+| `repo_root` |  | yes / no |  |
+| `notes_root` |  | yes / mirror / derived |  |
+| `channels_root` |  | yes / mirror / derived |  |
+| `roles_directory` |  | yes / mirror / derived |  |
+| `voice_taxonomy` |  | yes / mirror / derived / not used |  |
+| `automations_root` |  | yes / local install / not used |  |
+| Company roots |  |  |  |
+| Channel paths |  |  |  |
+| Path syntax |  |  | Use placeholders, environment variables, relative paths, MCP references, or REST endpoints instead of hardcoded personal paths. |
+
+Replacement rules:
+
+- Do not hardcode personal user directories, local drive mappings, or company-specific roots into reusable MAPS+Org artifacts.
+- Prefer `{{repo_root}}`, `{{notes_root}}`, `{{channels_root}}`, and environment variables for portable filesystem paths.
+- Record external MCP or REST locations as named endpoints, not as hidden assumptions.
+- Treat this section as the source of truth for role, channel, automation, scaffold, and memory path generation.
+
+## Git And Secrets Scaffold
+
+| Item | Status | Notes |
+|---|---|---|
+| Git repository | not checked / already initialized / initialized by M0 / skipped / blocked |  |
+| Git remote | not checked / origin present / connected existing remote / created remote repo / intentionally local / blocked |  |
+| `.gitignore` env rules | not checked / present / added by M0 / blocked |  |
+| `.env.example` | not checked / present / created by M0 / blocked | Placeholder keys only; no real secrets. |
+| `.env.local` | not requested / present / created by M0 / skipped | Ignored local developer secrets file; create only with confirmation. |
+| Secrets manager | none yet / local env / platform secrets / external vault |  |
+
+Secret handling rules:
+
+- Never write real secret values into tracked files.
+- Keep `.env.example` tracked as the documented template.
+- Keep `.env`, `.env.*`, and `*.local` ignored except `.env.example`.
+- Record required secrets by name, purpose, owner, and configuration location.
+
+## Incremental Foundation Audit
+
+| Item | Exists? | Action Taken | Still Missing |
+|---|---|---|---|
+| `project-foundation.md` |  |  |  |
+| `.maps/foundation-preferences.json` |  |  |  |
+| `.maps/rag-updates.json` |  |  |  |
+| Git repository |  |  |  |
+| Git remote |  |  |  |
+| `.gitignore` env rules |  |  |  |
+| `.env.example` |  |  |  |
+| Notes scaffold |  |  |  |
+| Sources scaffold |  |  |  |
+| Memory scaffold |  |  |  |
+
+## Remembered Foundation Preferences
+
+- Preference source:
+- Notes root:
+- Notes access method:
+- Additional notes locations:
+- Sources root:
+- Sources access method:
+- Memory root:
+- Memory access method:
+- RAG provider:
+- RAG location:
+- RAG index path:
+- RAG access method:
+- Additional RAG locations:
+- Canonical store policy:
+- Global default used?:
+- Updated `.maps/foundation-preferences.json`?:
+
+## Persistent Memory Contract
+
+| Store | Type | Location | Purpose | Update trigger | Update method | Sync rule | Canonical? | Do not write |
+|---|---|---|---|---|---|---|---|---|
+| Project notes | Markdown notes | notes/ | Human-readable working notes, interviews, research, and decisions. | New findings, decisions, assumptions, or research notes. | Append or create dated notes in the appropriate notes folder. | Summaries may be indexed into RAG if approved. | Yes for human decisions. | Secrets, raw private data, unsupported claims. |
+| Skill run notes | Markdown notes | notes/maps-runs/[project]-[skill]-helper-notes.md; role-[role-name].md for role entries | One named helper note per MAPS skill, maintained by the shared memory helper. | Every MAPS skill completion. | Append the run summary to the helper note through `maps_memory.py complete-run`. | Mirror to the configured RAG location when available. | Yes for phase summaries. | Raw secrets, large logs, or uncited source dumps. |
+| Sources | Source library | sources/ | Original evidence, documents, transcripts, screenshots, and links. | New approved source or changed source. | Add source and update source inventory. | RAG indexes approved sources. | Yes for evidence. | Unapproved, private, or uncited material. |
+| Project memory | Markdown memory | memory/ | Durable project context, glossary, and entity map. | Stable project facts, terms, entities, or durable context changes. | Edit the relevant memory file with concise updates. | Keep aligned with notes and source inventory. | Yes for project context. | Temporary scratch notes. |
+| RAG index | Retrieval index |  | Queryable project knowledge. | New or changed approved sources or memory. | Re-index changed inputs according to the configured provider. | Mirrors approved sources and selected memory/notes. | No, derived from canonical stores. | Unapproved sources or secrets. |
+| RAG update manifest | JSON state | .maps/rag-updates.json | Append-only list of skill notes and memory files that need RAG reindexing. | Every helper-written skill note or RAG mirror. | Append a needsReindex entry through `maps_memory.py complete-run`. | Used by future indexing automation. | No, derived from changed stores. | Long prose or raw evidence. |
+| MAPS state | JSON state | .maps/foundation-preferences.json | Remembered scaffold and memory configuration for future skill runs. | Every foundation configuration change. | Structured JSON update. | Reflect important choices in this document. | Yes for automation defaults. | Long prose or raw evidence. |
+| Env/secrets template | Text config template | .env.example | Documents required environment variables and secret names without storing secret values. | New integration, provider, model, API, or deployment secret requirement. | Add placeholder names and comments only. | Real values live in ignored local env files or a platform secrets manager. | Yes for secret names, not values. | Secret values, tokens, passwords, private keys. |
+
+## MAPS Skill Run Log
+
+| Timestamp | Skill | Phase | Output | Memory updates | Notes |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
+## Evidence Index
+
+| Evidence | Source | What it supports | Confidence |
+|---|---|---|---|
+|  |  |  |  |
+
+## Source Inventory
+
+| Source | Type | Location | Owner | RAG ready? | Notes |
+|---|---|---|---|---|---|
+|  |  |  |  |  |  |
+
+## Assumptions
+
+| Assumption | Why it matters | How to test | Status |
+|---|---|---|---|
+|  |  |  |  |
+
+## Decisions
+
+| Decision | Rationale | Date | Owner |
+|---|---|---|---|
+|  |  |  |  |
+
+## Open Questions
+
+- 
+
+## RAG Readiness
+
+- Source types to index:
+- Required metadata:
+- Privacy or access limits:
+- Citation requirements:
+- Freshness rules:
+- Exclusions:
+
+## Next Path
+
+- Scope First:
+- Single-Agent / APS:
+- Multi-Agent / MAPS:
+- Recommendation:
+
+## M1 Handoff Questions
+
+- What is still unknown about the workflow?
+- Which actors or jobs are distinct enough to matter?
+- Which decisions need review, approval, or escalation?
+- Which source/data needs are unclear?
+- Which roles need separate tools, permissions, or memory?
+- What can run in parallel?
+- What failure modes change the system shape?

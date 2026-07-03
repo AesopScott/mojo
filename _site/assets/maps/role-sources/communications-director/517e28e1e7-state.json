@@ -1,0 +1,25 @@
+{
+  "role": "Mae",
+  "formal_title": "Communications Director",
+  "slug": "communications-director",
+  "root_organization": "Mindshare",
+  "professional_maturity_level": "L7 Director",
+  "role_lifecycle_status": "Authorized role",
+  "operational_status": "activated_operator",
+  "role_automation_status": "Role+",
+  "primary_memory": "C:\\Users\\scott\\Code\\mindshare\\roles\\communications-director\\memory.md",
+  "obsidian_memory_mirror": "G:\\My Drive\\Mindshare\\communications-director.md",
+  "assigned_handoff_files": [
+    "G:\\My Drive\\Mindshare\\channels\\heartbeat.md",
+    "G:\\My Drive\\Mindshare\\channels\\communications.md"
+  ],
+  "heartbeat_automation": {
+    "name": "mae-handoff-check",
+    "status": "active",
+    "target_thread": "Mae's Office",
+    "target_thread_id": "019ee122-4c9b-72b2-b506-bbd25466bf15",
+    "reason": "Scott created Mae's thread and approved activation; heartbeat is installed there."
+  },
+  "authority_boundary": "Recommend, draft, and coordinate communications-governance corrections. No authority to change other roles, activate agents, edit another role automation, read unrelated function channels, or expand authority without Scott approval.",
+  "last_updated": "2026-06-19T18:43:00Z"
+}

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Skills | Mojo AI Studio</title>
+    <meta name="description" content="MAPS skill rules, implementation contracts, memory helper behavior, validation, and completion requirements.">
+    <link rel="canonical" href="https://mojoaistudio.com/skills.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/skills.html">
+    <meta property="og:title" content="MAPS Skills">
+    <meta property="og:description" content="The operating rules and implementation contracts behind MAPS skills.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Skills">
+    <meta name="twitter:description" content="The operating rules and implementation contracts behind MAPS skills.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="agents.html">Agents</a>
+              <a href="global.html">Global</a>
+              <a href="skills.html" class="active" aria-current="page">Skills</a>
+              <a href="references.html">References</a>
+              <div class="maps-pipeline-group multi-agent" aria-label="Multi-agent pipeline">
+                <span class="maps-pipeline-label">Multi-Agent Pipeline <small>Under development</small></span>
+                <div class="maps-pipeline-links">
+                  <a href="m0.html">M0 Project Foundation</a>
+                  <a href="m1.html">M1 System Shape</a>
+                  <span>M2 Roster</span>
+                  <span>M3 Contracts</span>
+                  <span>M4 Coordination</span>
+                  <span>M5 Agent Buildout</span>
+                  <span>M6 Capabilities</span>
+                  <span>M7 Orchestration</span>
+                  <a href="m8.html">M8 Experience Design</a>
+                  <span>M9 Evaluate</span>
+                  <span>M10 Deploy/Observe</span>
+                  <span>M11 Improve</span>
+                </div>
+              </div>
+              <div class="maps-pipeline-group agentic" aria-label="Agentic pipeline">
+                <span class="maps-pipeline-label">Agentic Pipeline</span>
+                <div class="maps-pipeline-links">
+                  <a href="0.html">A0 Phase Alignment</a>
+                  <a href="1.html">A1 Define</a>
+                  <a href="2.html">A2 Design</a>
+                  <a href="m8.html">A2 Experience Design</a>
+                  <a href="3.html">A3 Build</a>
+                  <a href="4.html">A4 Equip</a>
+                  <a href="5.html">A5 Evaluate</a>
+                  <a href="6.html">A6 Deploy</a>
+                  <a href="7.html">A7 Observe</a>
+                  <a href="8.html">A8 Improve</a>
+                </div>
+              </div>
+            </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#rules">Rules</a>
+              <a href="#runtime">Runtime</a>
+              <a href="#memory">Memory</a>
+              <a href="#validation">Validation</a>
+              <a href="#downloads">Downloads</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero maps-hero-wide">
+        <div>
+          <p class="maps-eyebrow">MAPS skills</p>
+          <h1>The rules that make MAPS repeatable.</h1>
+          <p>
+            MAPS skills are installable Codex workflows. Each skill asks one question at a time,
+            produces a named artifact, records completion, writes helper notes, and points the
+            builder to the next skill.
+          </p>
+          <p class="maps-commitment-note">
+            This page explains the rules behind the skills and where those rules are implemented in the downloadable skill files, templates, helper scripts, and validator.
+          </p>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#rules">Review the rules</a>
+            <a class="maps-button" href="#downloads">Open skill files</a>
+          </div>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="rules" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Skill rules</h2>
+            <p>Every MAPS skill follows the same operating contract so a new session can pick up the method without remembering this class conversation.</p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>One question at a time</h3>
+              <p>Skills interview the builder sequentially. They do not dump a form of unrelated questions into the chat.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Research and recommend</h3>
+              <p>After the essential user inputs are known, skills should research, compare options, and recommend a path instead of making the user design every detail from scratch.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Explicit output</h3>
+              <p>Each skill states the concrete file, plan, role, scaffold, or implementation artifact it is responsible for producing.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Completion report</h3>
+              <p>Every skill ends by saying whether it is complete, what changed, what memory was updated, and which skill should run next.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Versioned behavior</h3>
+              <p>Each skill carries a version and changelog so rule changes are visible when the skill evolves.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Source rule catalog</h3>
+              <p><a href="assets/maps/catalogs/skill-rules.md" download><strong>catalogs/skill-rules.md</strong></a> defines the MAPS plugin rules and where each rule is implemented.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Memory-aware execution</h3>
+              <p>Project skills write through the shared helper so notes, RAG mirrors, and the run log stay aligned.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Role engagement</h3>
+              <p>Role skills separate how a role participates from what it is allowed to do: passive reference, advisory, review gate, workflow owner, operator, autonomous loop, or escalation authority.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>First-person roles</h3>
+              <p>Role agents speak as the role in first person, with a defined voice, point of view, activation marker, and clear limits. They do not answer as Claude, Codex, ChatGPT, or an outside narrator.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="runtime" class="maps-section">
+          <div class="maps-section-header">
+            <h2>How they run</h2>
+            <p>A MAPS skill is a local folder with a `SKILL.md` file and optional scripts, templates, and references.</p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Layer</th>
+                  <th>Implementation</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>SKILL.md</code></td>
+                  <td>Frontmatter, workflow, versioning, output contract, completion report.</td>
+                  <td>Teaches Codex how to perform the phase or role workflow.</td>
+                </tr>
+                <tr>
+                  <td><code>templates/</code></td>
+                  <td>Phase artifacts such as <code>project-foundation.md</code> and <code>system-shape.md</code>.</td>
+                  <td>Gives the skill a concrete deliverable shape.</td>
+                </tr>
+                <tr>
+                  <td><code>references/</code></td>
+                  <td>Research sources, role taxonomies, repo notes, and domain guidance.</td>
+                  <td>Lets a skill load deeper context only when needed.</td>
+                </tr>
+                <tr>
+                  <td><code>scripts/</code></td>
+                  <td>Deterministic helpers such as memory routing and skill validation.</td>
+                  <td>Keeps repeated behavior reliable instead of retyping it into prompts.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="memory" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Memory writes</h2>
+            <p>The shared helper is a script that runs when a skill completes. It is not a background service.</p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Control file</h3>
+              <p><code>project-foundation.md</code> defines the memory contract, RAG/notes locations, run log, and scaffold decisions.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Helper notes</h3>
+              <p>Phase skill notes in <code>maps-runs</code> use <code>[project]-[skill]-helper-notes.md</code>. Role notes use <code>role-[role-name].md</code>.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Reindex manifest</h3>
+              <p><code>.maps/rag-updates.json</code> records changed notes and marks them for future RAG reindexing.</p>
+            </article>
+          </div>
+
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>python scripts/maps_memory.py complete-run \
+  --project . \
+  --skill /shape \
+  --phase M1 \
+  --output system-shape.md \
+  --summary-file system-shape.md</code></pre>
+          </div>
+        </section>
+
+        <section id="validation" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Validation</h2>
+            <p>The skill contract validator checks that published MAPS skills carry the rules developers use in real projects.</p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Validator check</th>
+                  <th>Why it matters</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Version and changelog</td>
+                  <td>Rule changes become trackable instead of disappearing into a session.</td>
+                </tr>
+                <tr>
+                  <td>Output contract</td>
+                  <td>Developers know what the skill is expected to create.</td>
+                </tr>
+                <tr>
+                  <td>One-question interview</td>
+                  <td>Skills gather information conversationally and reduce confusion.</td>
+                </tr>
+                <tr>
+                  <td>Completion report</td>
+                  <td>Each run closes with status, outcome, memory update, and next skill.</td>
+                </tr>
+                <tr>
+                  <td>Memory helper wiring</td>
+                  <td>Phase artifacts, helper notes, and RAG update manifests stay synchronized.</td>
+                </tr>
+                <tr>
+                  <td>Role engagement taxonomy</td>
+                  <td>Role contracts define participation style separately from authority and implementation.</td>
+                </tr>
+                <tr>
+                  <td>First-person role voice</td>
+                  <td>Role contracts define how the role speaks as itself, including prohibited narrator language.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="downloads" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Skill files</h2>
+            <p>These are the current downloadable MAPS skills and support files exposed through the training site.</p>
+          </div>
+
+          <div class="maps-reference-columns">
+            <section class="maps-reference-column">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </section>
+            <section class="maps-reference-column">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </section>
+            <section class="maps-reference-column">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </section>
+            <section class="maps-reference-column">
+              <h3>Source catalogs</h3>
+              <ul>
+                <li><a href="assets/maps/catalogs/global-installs.md" download><strong>global-installs.md</strong></a> defines MAPS global installs.</li>
+                <li><a href="assets/maps/catalogs/skill-rules.md" download><strong>skill-rules.md</strong></a> defines MAPS skill rules and implementations.</li>
+              </ul>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

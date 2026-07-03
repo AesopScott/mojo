@@ -1,0 +1,52 @@
+# MAPS Tools Catalog
+
+| Phase | Tool | Use |
+|---|---|---|
+| 0 | Python | Scaffold generation and local automation. |
+| 0 | GitHub CLI | Repository setup and publishing. |
+| 1 | Git | Save phase artifacts. |
+| 2 | Web and repository research | Find comparable agents and build patterns. |
+| 2 | Backlog planning | Turn the design into prioritized, dependency-aware build slices and deferred improvement items before implementation starts. |
+| 2 | Addy Osmani agent spec guidance | Shape objectives, context, constraints, acceptance criteria, and boundaries before build. |
+| 2 | Scrum Guide product backlog | Treat the backlog as an ordered, evolving source of product work. |
+| 2 | Atlassian product backlog guide | Refine, prioritize, and align backlog items before implementation. |
+| 2 | GitHub sub-issues | Break larger backlog items into smaller child issues with visible dependency structure. |
+| M8 / optional A2 | Experience design research | Find comparable product experiences, user journeys, front-end surfaces, design-system patterns, and agent UI interaction models. |
+| M8 / optional A2 | Journey mapping | Map user paths through surfaces, agent touchpoints, decisions, handoffs, approvals, errors, and recovery. |
+| M8 / optional A2 | Information architecture | Define navigation, object hierarchy, labels, wayfinding, and the relationship between product surfaces and agent work. |
+| M8 / optional A2 | Interaction state modeling | Capture loading, streaming, tool-use, approval, refusal, escalation, success, empty, error, and recovery states before Build. |
+| M8 / optional A2 | Accessibility and inclusive design | Check keyboard behavior, semantics, focus, contrast, motion, readable copy, and assistive-technology expectations. |
+| M8 / optional A2 | UI design system references | Compare mature component systems, primitives, tokens, layout, accessibility, content, theming, forms, navigation, and product polish. |
+| M8 / optional A2 | Agent interaction surface references | Compare chat, copilot, generative UI, tool call display, streaming, approval, review, handoff, and user-control patterns. |
+| 3 | Backlog planning | Pull the highest-priority unblocked backlog item into Build and split oversized items before coding. |
+| 3 | GitHub sub-issues | Keep implementation slices small enough to prove independently. |
+| 3 | Test runner | Prove each Build slice. |
+| 3 | Agent runtime | Execute the working agent. |
+| 3 | Browser/runtime verifier | Confirm user-facing or runtime behavior. |
+| 3 | Optional code review | Review Phase 3 changes before Equip, with an optional second pass from a different model or reviewer for higher-risk builds. |
+| 4 | MCP servers | Expose tools, data sources, prompts, and workflows to equipped agents. |
+| 4 | Connectors | Attach GitHub, Gmail, Slack, Drive, databases, and internal systems. |
+| 4 | Secrets and environment configuration | Provide local dev env files, platform runtime secrets, CI/CD secrets, managed secret stores, scoped credentials, and runtime variables. |
+| 4 | Memory and retrieval stores | Provide short-term state, long-term memory, and retrieval sources. |
+| 5 | LangSmith | Provide datasets, traces, trajectory evals, regression tracking, and Observe handoff. |
+| 5 | Inspect AI | Provide structured eval tasks, solvers, scorers, tool-use checks, and safety or boundary tests. |
+| 5 | Phoenix | Provide open-source tracing, LLM/RAG eval analysis, datasets, experiments, and Observe continuity. |
+| 6 | GitHub Actions environments | Provide environment secrets, deployment protection, branch controls, and approval gates for GitHub-driven releases. |
+| 6 | Cloudflare Wrangler | Provide Cloudflare Pages and Workers deploy commands, config validation, and project operations. |
+| 6 | Cloudflare rollback | Provide Worker rollback commands and dashboard rollback behavior for release recovery. |
+| 6 | Runtime packaging | Provide manifests, package metadata, entrypoints, install commands, release artifacts, and update metadata across target runtimes. |
+| 6 | MCPB | Provide portable MCP server bundles with manifest metadata, capabilities, runtime requirements, and install packaging. |
+| 6 | Temporal durable execution | Provide durable workflow execution, retries, state persistence, recovery, and activity-based tool calls for production agents. |
+| 7 | LangSmith observability | Provide production traces, monitoring, debugging, feedback, annotations, and quality review. |
+| 7 | Phoenix tracing | Provide OpenInference and OpenTelemetry-compatible tracing integrations for LLM applications. |
+| 7 | Langfuse | Provide open-source LLM traces, sessions, scores, datasets, metrics, prompt/version tracking, and feedback capture. |
+| 7 | OpenTelemetry GenAI conventions | Provide vendor-neutral semantic conventions for GenAI, agent, tool, token, and model-call telemetry. |
+| 7 | OpenAI Agents SDK tracing | Provide traces for agent runs, tool calls, handoffs, guardrails, custom spans, and trace processors. |
+| 7 | Cloudflare Workers observability | Provide runtime logs, metrics, traces, analytics, errors, and tailing for Cloudflare-hosted agents. |
+| 8 | Backlog planning | Convert observation, eval, incident, and feedback evidence into prioritized improvement work. |
+| 8 | Scrum Guide product backlog | Keep the improvement backlog ordered and evolving as new evidence appears. |
+| 8 | Atlassian product backlog guide | Refine improvement items and make tradeoffs before another build cycle starts. |
+| 8 | GitHub sub-issues | Split larger improvement projects into smaller implementation-ready items. |
+| 8 | Google SRE postmortem culture | Use incident evidence to produce concrete learning and follow-up without blame. |
+| 8 | Google SRE embracing risk | Prioritize reliability, cost, and risk tradeoffs instead of treating every issue equally. |
+| 8 | Atlassian postmortems | Convert incidents into action items, owners, follow-up, and visible improvement work. |

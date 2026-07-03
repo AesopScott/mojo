@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Phase 8: Improve | Mojo AI Studio</title>
+    <meta name="description" content="Phase 8 of MAPS turns observation evidence, eval failures, incidents, user feedback, and operating constraints into a prioritized improvement backlog.">
+    <link rel="canonical" href="https://mojoaistudio.com/8.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/8.html">
+    <meta property="og:title" content="MAPS Phase 8: Improve">
+    <meta property="og:description" content="Turn production evidence into prioritized, dependency-aware improvement work that re-enters the right MAPS phase.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS Phase 8: Improve">
+    <meta name="twitter:description" content="Turn production evidence into prioritized, dependency-aware improvement work that re-enters the right MAPS phase.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="8">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="agents.html">Agents</a>
+              <a href="global.html">Global</a>
+              <a href="skills.html">Skills</a>
+              <a href="references.html">References</a>
+              <div class="maps-pipeline-group multi-agent" aria-label="Multi-agent pipeline">
+                <span class="maps-pipeline-label">Multi-Agent Pipeline <small>Under development</small></span>
+                <div class="maps-pipeline-links">
+                  <a href="m0.html">M0 Project Foundation</a>
+                  <a href="m1.html">M1 System Shape</a>
+                  <span>M2 Roster</span>
+                  <span>M3 Contracts</span>
+                  <span>M4 Coordination</span>
+                  <span>M5 Agent Buildout</span>
+                  <span>M6 Capabilities</span>
+                  <span>M7 Orchestration</span>
+                  <a href="m8.html">M8 Experience Design</a>
+                  <span>M9 Evaluate</span>
+                  <span>M10 Deploy/Observe</span>
+                  <span>M11 Improve</span>
+                </div>
+              </div>
+              <div class="maps-pipeline-group agentic" aria-label="Agentic pipeline">
+                <span class="maps-pipeline-label">Agentic Pipeline</span>
+                <div class="maps-pipeline-links">
+                  <a href="0.html">A0 Phase Alignment</a>
+                  <a href="1.html">A1 Define</a>
+                  <a href="2.html">A2 Design</a>
+                  <a href="m8.html">A2 Experience Design</a>
+                  <a href="3.html">A3 Build</a>
+                  <a href="4.html">A4 Equip</a>
+                  <a href="5.html">A5 Evaluate</a>
+                  <a href="6.html">A6 Deploy</a>
+                  <a href="7.html">A7 Observe</a>
+                  <a href="8.html">A8 Improve</a>
+                </div>
+              </div>
+            </div>            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#meaning">Meaning</a>
+              <a href="#output">Output</a>
+              <a href="#must-cover">Must cover</a>
+              <a href="#classify">Classify</a>
+              <a href="#route">Route</a>
+              <a href="#prioritize">Prioritize</a>
+              <a href="references.html">References</a>
+              <a href="#walkthrough">Walkthrough</a>
+              <a href="#resources">Resources</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Phase 8</p>
+          <h1>Improve</h1>
+          <p>
+            What should change next, based on observed evidence, eval failures, incidents, user feedback, and operating constraints?
+          </p>
+          <div class="maps-equip-list" aria-label="Improve must-cover examples">
+            <span>Review observation evidence</span>
+            <span>Review eval failures and regressions</span>
+            <span>Review incidents and support notes</span>
+            <span>Review user feedback</span>
+            <span>Review cost, latency, and reliability signals</span>
+            <span>Classify improvement type</span>
+            <span>Route each item to the right MAPS phase</span>
+            <span>Prioritize by impact, safety, frequency, cost, dependency, and effort</span>
+            <span>Split large improvements into smaller backlog items</span>
+            <span>Define proof required for each item</span>
+            <span>Decide what enters the next iteration</span>
+            <span>Decide what stays deferred</span>
+          </div>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#meaning">Understand Improve</a>
+            <a class="maps-button" href="#must-cover">Must cover</a>
+            <a class="maps-button" href="#references">Review references</a>
+            <a class="maps-button" href="7.html">Back to Phase 7</a>
+          </div>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="meaning" class="maps-section">
+          <div class="maps-section-header">
+            <h2>What Improve means</h2>
+            <p>
+              Improve closes the MAPS loop by converting evidence into prioritized work that can re-enter Design, Build, Equip, Evaluate, Deploy, or Observe.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Evidence, not vibes</h3>
+              <p>Every improvement should point back to an observation, eval failure, incident, support note, user feedback item, or operating signal.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Route before build</h3>
+              <p>Some improvements need design changes, some need tools or permissions, some need eval coverage, and only some should go straight to Build.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Small next slice</h3>
+              <p>Phase 8 turns broad frustration into small backlog items with priority, dependencies, proof required, and a target phase.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="output" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 8 output</h2>
+            <p>
+              At the end of Improve, the required artifacts are `agents/{agent-handle}/improvement-review.md` and `agents/{agent-handle}/improvement-backlog.md`.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Input</h3>
+              <p><strong>`observation-log.md`</strong>, eval report, deployment record, incident/support notes, user feedback, cost/latency signals, and existing backlog items.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Skill</h3>
+              <p><a href="assets/maps/skills/improve-agent/SKILL.md" download><strong>/improve-agent</strong></a> reviews evidence, classifies improvements, routes work, prioritizes items, and creates the next backlog.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <p><a href="assets/maps/templates/improvement-review.md" download><strong>`templates/improvement-review.md`</strong></a> captures the decision trail. <a href="assets/maps/templates/improvement-backlog.md" download><strong>`templates/improvement-backlog.md`</strong></a> captures the ordered work.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Iteration gate</h3>
+              <p>The improvement review should recommend next iteration, defer, monitor, rollback/pause, or no action.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="must-cover" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Improve must cover</h2>
+            <p>
+              Phase 8 should not let evidence vanish into vague follow-up. These items must be reviewed before the next MAPS loop starts.
+            </p>
+          </div>
+
+          <div class="maps-must-cover-grid" aria-label="Improve must cover list">
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Review observation evidence</h3>
+              <p>Start with Phase 7 traces, logs, metrics, incidents, feedback, and observation findings.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Review eval failures and regressions</h3>
+              <p>Bring failed eval cases, drift, flaky behavior, and regression history into the improvement review.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Review incidents and support notes</h3>
+              <p>Use incident records, support tickets, operator notes, and escalations as improvement sources.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Review user feedback</h3>
+              <p>Include ratings, complaints, feature requests, acceptance issues, and real user friction.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Evidence</span>
+              <h3>Review cost, latency, and reliability signals</h3>
+              <p>Use budget pressure, slow runs, failed jobs, rate limits, retries, and availability issues as backlog inputs.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Classify</span>
+              <h3>Classify improvement type</h3>
+              <p>Name whether the item is behavior, prompt/design, tool, permission, memory, runtime config, eval, deployment, observability, cost, reliability, safety, or UX work.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Route</span>
+              <h3>Route each item to the right MAPS phase</h3>
+              <p>Send the work back to Define, Design, Build, Equip, Evaluate, Deploy, Observe, or another Improve pass.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Priority</span>
+              <h3>Prioritize by impact, safety, frequency, cost, dependency, and effort</h3>
+              <p>Make tradeoffs explicit instead of letting the loudest issue automatically become the next build.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Backlog</span>
+              <h3>Split large improvements into smaller backlog items</h3>
+              <p>Break broad changes into independent slices or spikes that can be proved separately.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Proof</span>
+              <h3>Define proof required for each item</h3>
+              <p>Require the eval, trace, smoke test, user check, metric, or manual review that will prove the improvement worked.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Decision</span>
+              <h3>Decide what enters the next iteration</h3>
+              <p>Promote only the highest-priority unblocked items into the next MAPS loop.</p>
+            </article>
+            <article class="maps-must-cover-card">
+              <span>Decision</span>
+              <h3>Decide what stays deferred</h3>
+              <p>Keep lower-priority, blocked, speculative, or poorly evidenced work visible without starting it yet.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="classify" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Classify improvement work</h2>
+            <p>
+              A good improvement backlog says what kind of work each item really is.
+            </p>
+          </div>
+
+          <div class="maps-table-wrap">
+            <table class="maps-table">
+              <thead>
+                <tr>
+                  <th>Improvement type</th>
+                  <th>Common evidence</th>
+                  <th>Likely phase</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Behavior or prompt/design</td>
+                  <td>Wrong answers, misunderstood intent, missing constraints, repeated user correction.</td>
+                  <td>Design, then Build or Evaluate.</td>
+                </tr>
+                <tr>
+                  <td>Tools, permissions, memory, or runtime config</td>
+                  <td>Tool failures, missing access, unsafe scopes, stale retrieval, bad fallback behavior.</td>
+                  <td>Equip, then Evaluate.</td>
+                </tr>
+                <tr>
+                  <td>Eval coverage or regression</td>
+                  <td>Production failure not covered by tests, unstable score, missing adversarial case.</td>
+                  <td>Evaluate.</td>
+                </tr>
+                <tr>
+                  <td>Deployment or observability</td>
+                  <td>Rollback gaps, missing logs, unclear traces, weak alerts, hard-to-debug incidents.</td>
+                  <td>Deploy or Observe.</td>
+                </tr>
+                <tr>
+                  <td>Cost, latency, reliability, safety, or UX</td>
+                  <td>Budget spikes, slow runs, failed jobs, boundary violations, user friction.</td>
+                  <td>Design, Build, Equip, Evaluate, or Observe depending on root cause.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="route" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Route the next loop</h2>
+            <p>
+              Phase 8 decides where improvement work enters the next MAPS pass.
+            </p>
+          </div>
+
+          <div class="maps-rule-grid">
+            <article class="maps-rule-card allow">
+              <h3>Next iteration</h3>
+              <p>The item has evidence, priority, dependencies, target phase, and proof required. Send it into the next MAPS loop.</p>
+            </article>
+            <article class="maps-rule-card ask">
+              <h3>Defer</h3>
+              <p>The item is real but lower priority, blocked, missing evidence, or dependent on another improvement.</p>
+            </article>
+            <article class="maps-rule-card never">
+              <h3>No action or pause</h3>
+              <p>The item is unsupported by evidence, already resolved, intentionally accepted as a tradeoff, or severe enough to pause/rollback first.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="prioritize" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Prioritize the backlog</h2>
+            <p>
+              Improve should produce an ordered backlog, not a dumping ground.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Impact</h3>
+              <p>How many users or workflows does this affect, and how much value is unlocked by fixing it?</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Safety</h3>
+              <p>Does the issue create security, privacy, compliance, unsafe action, data exposure, or approval-gate risk?</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Frequency</h3>
+              <p>Is this a one-off, a repeated pattern, a predictable edge case, or a growing trend?</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Cost and latency</h3>
+              <p>Does the item reduce operating cost, token use, queue time, slow runs, retries, or support workload?</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Dependency</h3>
+              <p>Does other important work depend on this item, or is this blocked by a prerequisite?</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Effort</h3>
+              <p>Can it be split into a small proof slice, or does it need a design spike before implementation?</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="references" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Improve references</h2>
+            <p>
+              These references shape Phase 8 backlog discipline, incident learning, prioritization, and evidence-driven iteration.
+            </p>
+          </div>
+
+          <div class="maps-reference-grid">
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog order</p>
+              <h3><a href="https://scrumguides.org/scrum-guide.html#product-backlog" target="_blank" rel="noopener noreferrer">Scrum Guide product backlog</a></h3>
+              <p>Reference for treating improvement work as an ordered, evolving backlog rather than a loose wishlist.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Backlog refinement</p>
+              <h3><a href="https://www.atlassian.com/agile/scrum/backlogs" target="_blank" rel="noopener noreferrer">Atlassian product backlog guide</a></h3>
+              <p>Reference for refining, prioritizing, and aligning backlog items before another build cycle starts.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Work breakdown</p>
+              <h3><a href="https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/adding-sub-issues" target="_blank" rel="noopener noreferrer">GitHub sub-issues</a></h3>
+              <p>Reference for splitting large improvement work into smaller child items that can be tracked and proven.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Incident learning</p>
+              <h3><a href="https://sre.google/sre-book/postmortem-culture/" target="_blank" rel="noopener noreferrer">Google SRE postmortem culture</a></h3>
+              <p>Reference for learning from incidents without hiding the evidence that should drive improvement.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Reliability tradeoffs</p>
+              <h3><a href="https://sre.google/sre-book/embracing-risk/" target="_blank" rel="noopener noreferrer">Google SRE embracing risk</a></h3>
+              <p>Reference for making reliability, cost, and risk tradeoffs explicit instead of assuming every issue is equally urgent.</p>
+            </article>
+            <article class="maps-reference-card">
+              <p class="maps-layer-kicker">Incident review</p>
+              <h3><a href="https://www.atlassian.com/incident-management/postmortem" target="_blank" rel="noopener noreferrer">Atlassian postmortems</a></h3>
+              <p>Reference for turning incidents into concrete action items, owners, follow-up, and learning.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="walkthrough" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Self-guided improve path</h2>
+          </div>
+
+          <div class="maps-walkthrough">
+            <article class="maps-step">
+              <span>01</span>
+              <h3>Gather evidence</h3>
+              <p>Read observation logs, eval failures, incidents, support notes, feedback, and cost/latency/reliability signals.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Every candidate improvement should have a concrete source.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>02</span>
+              <h3>Classify and route</h3>
+              <p>Name the improvement type and route each item to the MAPS phase where it belongs.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Do not send tool, eval, deployment, or observation problems blindly into Build.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>03</span>
+              <h3>Prioritize and split</h3>
+              <p>Order work by impact, safety, frequency, cost, dependency, and effort, then split large items.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The next item should be small enough to prove independently.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>04</span>
+              <h3>Define proof</h3>
+              <p>Record the eval, trace, smoke test, metric, user check, or review that will prove the improvement worked.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>The improvement backlog should say how each item gets verified.</p>
+              </details>
+            </article>
+            <article class="maps-step">
+              <span>05</span>
+              <h3>Choose the next loop</h3>
+              <p>Decide what enters the next MAPS iteration and what stays deferred.</p>
+              <details>
+                <summary>Check it</summary>
+                <p>Phase 8 should hand off a prioritized, dependency-aware backlog, not an unranked pile.</p>
+              </details>
+            </article>
+          </div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Phase 8 resources</h2>
+            <p>
+              <a href="assets/maps/skills/improve-agent/SKILL.md" download>`/improve-agent`</a> uses <a href="assets/maps/templates/improvement-review.md" download>`templates/improvement-review.md`</a> and <a href="assets/maps/templates/improvement-backlog.md" download>`templates/improvement-backlog.md`</a> to turn evidence into the next MAPS loop.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

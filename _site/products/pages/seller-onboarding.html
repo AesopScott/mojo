@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Onboarding — Mojo AI Studio</title>
+  <link rel="stylesheet" href="../../styles/shared.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, var(--ink) 0%, #1a1a2e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    .onboarding-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    .onboarding-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .onboarding-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 8px 0;
+    }
+
+    .onboarding-header p {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .step {
+      display: none;
+      margin-bottom: 32px;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .step-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .contract-display {
+      background: #f9f9f9;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .contract-display h2 {
+      font-size: 16px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .contract-display p {
+      margin: 12px 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    .form-group textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .form-note {
+      margin: -8px 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-group input:invalid {
+      border-color: #ef4444;
+    }
+
+    .form-error {
+      padding: 14px 18px;
+      border-radius: 8px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #b91c1c;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .form-error.show {
+      display: block;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .button-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .button-primary:hover:not(:disabled) {
+      background: #2563eb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .button-primary:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+    }
+
+    .button-secondary {
+      background: #f1f5f9;
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .button-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #15803d;
+    }
+
+    .status-indicator.pending {
+      background: #fefce8;
+      border-color: #fde047;
+      color: #a16207;
+    }
+
+    .status-indicator.complete {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #15803d;
+    }
+
+    .status-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .status-indicator.complete .status-check {
+      background: #22c55e;
+      color: white;
+    }
+
+    .status-indicator.pending .status-check {
+      background: #eab308;
+      color: white;
+    }
+
+    .success-message {
+      text-align: center;
+      padding: 20px;
+      background: #f0fdf4;
+      border-radius: 8px;
+      border: 1px solid #86efac;
+    }
+
+    .success-message h2 {
+      color: #15803d;
+      margin-top: 0;
+    }
+
+    .success-message p {
+      color: #166534;
+      margin-bottom: 0;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--line);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="onboarding-container">
+    <div class="onboarding-header">
+      <h1>Seller Onboarding</h1>
+      <p>Set up your account to receive payments</p>
+    </div>
+
+    <div id="form-error" class="form-error"></div>
+
+    <!-- Step 1: Sign Contract -->
+    <div id="step-contract" class="step active">
+      <div class="step-title">Review & Sign Contract</div>
+
+      <div class="status-indicator complete">
+        <div class="status-check">✓</div>
+        <span>Product submitted</span>
+      </div>
+
+      <div class="contract-display" id="contract-content">
+        <p style="text-align: center; color: var(--muted);">Loading contract...</p>
+      </div>
+
+      <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; cursor: pointer;">
+        <input type="checkbox" id="contract-agree" style="width: auto;">
+        <span style="font-size: 14px;">I agree to the terms and conditions</span>
+      </label>
+
+      <div class="form-actions">
+        <button class="button button-primary" id="btn-sign-contract" disabled>Sign Contract</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Payout Preference -->
+    <div id="step-payout" class="step">
+      <div class="step-title">Choose Payout Method</div>
+
+      <div class="status-indicator complete">
+        <div class="status-check">✓</div>
+        <span>Contract signed</span>
+      </div>
+
+      <form id="payout-preference-form">
+        <p class="form-note">Choose how Mojo should pay you manually for now: PayPal, Zelle, Venmo, Cash App, mailed check, or another option. Once you have sold 10 products, we will work with your bank account directly.</p>
+
+        <div class="form-group">
+          <label for="payout-method">Preferred payout method</label>
+          <select id="payout-method" name="payoutMethod" required>
+            <option value="">Select a payout method</option>
+            <option value="paypal">PayPal</option>
+            <option value="zelle">Zelle</option>
+            <option value="venmo">Venmo</option>
+            <option value="cash_app">Cash App</option>
+            <option value="check">Mailed check</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="payout-contact">Payout email, username, phone, or mailing details</label>
+          <input type="text" id="payout-contact" name="payoutContact" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+          <label for="payout-notes">Notes</label>
+          <textarea id="payout-notes" name="payoutNotes" placeholder="Anything Mojo should know about this payout method"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button-primary" id="btn-submit-payout" type="submit">Save Payout Method</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div id="step-success" class="step">
+      <div class="success-message">
+        <h2>✓ You're all set!</h2>
+        <p>Your seller agreement is signed and your payout preference has been saved.</p>
+        <p style="margin-top: 16px;">Mojo will review your submitted product assets and connect the approved product to the marketplace checkout.</p>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="step-loading" class="step">
+      <div class="loading">
+        <div class="spinner"></div>
+        <p style="margin-top: 16px;">Loading your onboarding...</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+  <script src="../../scripts/firebase-config.js"></script>
+  <script src="../../scripts/seller-onboarding.js?v=20260702-no-seller-polar"></script>
+</body>
+</html>

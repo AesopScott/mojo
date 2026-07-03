@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS | Mojo AI Studio</title>
+    <meta name="description" content="Build agent systems one phase at a time with MAPS, starting with M0 preflight, foundation memory, reset support, skills, templates, tools, and phase outputs.">
+    <link rel="canonical" href="https://mojoaistudio.com/maps/">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Mojo AI Studio">
+    <meta property="og:url" content="https://mojoaistudio.com/maps/">
+    <meta property="og:title" content="MAPS | Multi-Agent Pipeline Skills">
+    <meta property="og:description" content="A builder framework for multi-agent systems and repeatable agent development pipelines.">
+    <meta property="og:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAPS | Multi-Agent Pipeline Skills">
+    <meta name="twitter:description" content="A builder framework for multi-agent systems and repeatable agent development pipelines.">
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/maps-og-map-preview.png">
+    <meta name="twitter:image:alt" content="MAPS - Multi-Agent Pipeline Skills by Mojo AI Studio">
+    <link rel="stylesheet" href="/maps.css?v=maps-nav-wrap-2">
+    <script src="/maps-data.js?v=remove-maps-org-link-1" defer></script>
+    <script src="/maps-page.js?v=maps-nav-wrap-2" defer></script>
+  </head>
+  <body class="maps-page">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="/maps/">
+            <span class="maps-mark" aria-hidden="true">M</span>
+            <span>MAPS</span>
+          </a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="/maps/Overview/">Overview</a>
+              <a href="/maps/Agents/">Agents</a>
+              <a href="/maps/Global/">Global</a>
+              <a href="/maps/org-chart/role-handoffs/">Handoffs</a>
+              <a href="/maps/References/">References</a>
+              <div class="maps-nav-dropdown agentic">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Agentic Pipeline</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/agentic-pipeline/A0/" role="menuitem">A0 Phase Alignment</a>
+                  <a href="/maps/agentic-pipeline/A1/" role="menuitem">A1 Define</a>
+                  <a href="/maps/agentic-pipeline/A2/" role="menuitem">A2 Design</a>
+                  <a href="/maps/agentic-pipeline/A2-experience-design/" role="menuitem">A2 Experience Design</a>
+                  <a href="/maps/agentic-pipeline/A3/" role="menuitem">A3 Build</a>
+                  <a href="/maps/agentic-pipeline/A4/" role="menuitem">A4 Equip</a>
+                  <a href="/maps/agentic-pipeline/A5/" role="menuitem">A5 Evaluate</a>
+                  <a href="/maps/agentic-pipeline/A6/" role="menuitem">A6 Deploy</a>
+                  <a href="/maps/agentic-pipeline/A7/" role="menuitem">A7 Observe</a>
+                  <a href="/maps/agentic-pipeline/A8/" role="menuitem">A8 Improve</a>
+                  <a href="/maps/agentic-pipeline/lab-research-agent/" role="menuitem">Lab 1 Research Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-data-agent/" role="menuitem">Lab 2 Data Agent</a>
+                  <a href="/maps/agentic-pipeline/lab-support-agent/" role="menuitem">Lab 3 Support Agent</a>
+                </div>
+              </div>
+              <div class="maps-nav-dropdown multi-agent">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Multi-Agent Pipeline</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/multi-agent-pipeline/M0/" role="menuitem">M0 Project Foundation</a>
+                  <a href="/maps/multi-agent-pipeline/M1/" role="menuitem">M1 System Shape</a>
+                  <a href="/maps/multi-agent-pipeline/M2/" role="menuitem">M2 Roster</a>
+                  <a href="/maps/multi-agent-pipeline/M3/" role="menuitem">M3 Contracts</a>
+                  <a href="/maps/multi-agent-pipeline/M4/" role="menuitem">M4 Coordination</a>
+                  <a href="/maps/multi-agent-pipeline/M5/" role="menuitem">M5 Agent Buildout</a>
+                  <a href="/maps/multi-agent-pipeline/M6/" role="menuitem">M6 Capabilities</a>
+                  <a href="/maps/multi-agent-pipeline/M7/" role="menuitem">M7 Orchestration</a>
+                  <a href="/maps/multi-agent-pipeline/M8/" role="menuitem">M8 Experience Design</a>
+                  <a href="/maps/multi-agent-pipeline/M9/" role="menuitem">M9 Evaluate</a>
+                  <a href="/maps/multi-agent-pipeline/M10/" role="menuitem">M10 Deploy/Observe</a>
+                  <a href="/maps/multi-agent-pipeline/M11/" role="menuitem">M11 Improve</a>
+                </div>
+              </div>
+              <div class="maps-nav-dropdown org-chart">
+                <button class="maps-nav-dropdown-label" type="button" aria-haspopup="true" aria-expanded="false">Org Chart</button>
+                <div class="maps-dropdown-menu" role="menu">
+                  <a href="/maps/org-chart/" role="menuitem">MAPS Org Chart</a>
+                  <a href="/maps/org-chart/roles-versus-agents/" role="menuitem">Roles versus Agents</a>
+                  <a href="/maps/org-chart/role-maturity/" role="menuitem">Role Maturity</a>
+                  <a href="/maps/org-chart/authority-taxonomy/" role="menuitem">Authority Taxonomy</a>
+                  <a href="/maps/org-chart/operating-cadence/" role="menuitem">Operating Cadence</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero">
+        <div>
+          <p class="maps-eyebrow">Mojo AI Studio</p>
+          <p class="maps-kickoff-line">Project Intent + Foundation Structure, Kickoff.</p>
+          <h1>Build agent systems one phase at a time.</h1>
+          <p>
+            MAPS is Mojo's builder framework for designing, building, evaluating,
+            and improving agent capabilities. It now starts with an M0 preflight
+            that confirms intent, memory, notes, sources, and RAG before anything
+            gets written.
+          </p>
+          <div class="maps-scope-strip" aria-label="MAPS layers">
+            <div class="m-scope">
+              <strong>M layer</strong>
+              <span>Multi-agent project foundation</span>
+            </div>
+            <div class="aps-scope">
+              <strong>APS</strong>
+              <span>Agent development pipeline</span>
+            </div>
+          </div>
+          <p class="maps-commitment-note">
+            Start with M0 Project Foundation. If the first pass is wrong, use `/foundation --wipe`, then restart with confirmed preflight answers.
+          </p>
+        </div>
+      </section>
+
+      <main class="maps-main">
+        <section id="layers" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Two layers, one foundation</h2>
+          </div>
+
+          <div class="maps-layer-board">
+            <article class="maps-layer-card outer">
+              <div>
+                <p class="maps-layer-kicker">M layer</p>
+                <h3>Multi-agent project foundation</h3>
+                <p>
+                  Define the outcome, decompose work, identify agents, assign responsibilities,
+                  design coordination, plan integration, and evaluate the full system.
+                </p>
+              </div>
+              <span>System layer</span>
+            </article>
+            <article class="maps-layer-card active">
+              <div>
+                <p class="maps-layer-kicker">APS layer</p>
+                <h3>Agent Pipeline Skills</h3>
+                <p>
+                  Define, design, build, equip, evaluate, deploy, observe, and improve
+                  one agent or agent capability at a time.
+                </p>
+              </div>
+              <span>Agent layer</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="maps-section">
+          <div class="maps-section-header">
+            <h2>What MAPS gives builders</h2>
+            <p>
+              The framework keeps phase work, reusable skills, templates, catalogs, and repo structure connected.
+            </p>
+          </div>
+
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>Foundation preflight</h3>
+              <p>M0 asks memory first: whether RAG exists, where notes live, how to access each store, and which locations are canonical.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Conversational skills</h3>
+              <p>Every MAPS skill asks one question at a time, waits for the answer, and only writes artifacts after missing decisions are clear.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Clear handoffs</h3>
+              <p>Every skill ends with a completion report: status, outcome, memory update, and the recommended next skill to run.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Reusable skills</h3>
+              <p>Each phase can be executed by compatible agent tooling through `SKILL.md` workflows and helper scripts.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="training" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Training workflow</h2>
+            <p>
+              Teach MAPS as a resettable operating loop: ask first, write the foundation, inspect memory, then continue.
+            </p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>1. Run M0 preflight</h3>
+              <p>Start by asking whether the project has RAG. If not, ask where notes live. Ask one question at a time, then capture locations, access method, and canonical-store policy before project identity.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>2. Inspect the artifact</h3>
+              <p>Review `project-foundation.md`, `.maps/foundation-preferences.json`, `.maps/rag-updates.json`, and `notes/maps-runs/foundation.md` before M1.</p>
+            </article>
+            <article class="maps-panel" id="training-reset">
+              <h3>3. Read the handoff</h3>
+              <p>At completion, read the status, outcome, memory update, and next-skill recommendation before moving forward.</p>
+            </article>
+            <article class="maps-panel" id="training-reset">
+              <h3>4. Reset when wrong</h3>
+              <p>Use `/foundation --wipe` to preview cleanup. Confirm only when the listed files are the MAPS-created foundation artifacts you want removed.</p>
+            </article>
+          </div>
+          <div class="maps-code-panel maps-gap-top">
+            <pre><code>/foundation --wipe
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project .
+python "$CODEX_HOME/skills/foundation/scripts/remember_foundation.py" wipe --project . --confirm</code></pre>
+          </div>
+        </section>
+
+        <section id="sequence" class="maps-section">
+          <div class="maps-section-header">
+            <h2>All phase pages</h2>
+            <p>
+              Available now: M0 through M11 for MAPS, optional A2 Experience Design, and APS Phase 0 through Phase 8.
+            </p>
+          </div>
+          <div class="maps-phase-nav" data-maps-phase-nav data-current-phase=""></div>
+        </section>
+
+        <section id="resources" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Start with these resources</h2>
+            <p>
+              Use M0 Project Foundation, inspect the preflight/memory outputs, then M1 System Shape before moving to phase-specific resources.
+            </p>
+          </div>
+
+          <div class="maps-resource-grid">
+            <article class="maps-panel maps-resource-priority">
+              <h3>M0 first</h3>
+              <p>Use <a href="/assets/maps/skills/foundation/SKILL.md" download><code>/foundation</code></a>, <a href="/assets/maps/templates/project-foundation.md" download><code>templates/project-foundation.md</code></a>, then <a href="/assets/maps/skills/shape/SKILL.md" download><code>/shape</code></a> and <a href="/assets/maps/templates/system-shape.md" download><code>templates/system-shape.md</code></a> to establish confirmed intent, notes, sources, memory, RAG, and the S/M/U system track before selecting later phase resources.</p>
+              <a class="maps-button" href="/maps/multi-agent-pipeline/M0/#resources">Open M0 resources</a>
+            </article>
+            <article class="maps-panel">
+              <h3>Skills</h3>
+              <ul data-maps-skills></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Repos</h3>
+              <ul data-maps-repos></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Tools</h3>
+              <ul data-maps-tools></ul>
+            </article>
+            <article class="maps-panel">
+              <h3>Templates</h3>
+              <ul data-maps-templates></ul>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Mojo AI Studio | SMS Event Reminder</title>
+    <link rel="stylesheet" href="../../styles/shared.css?v=local-20260703074308" />
+    <style>
+      .sms-section {
+        min-height: 72vh;
+        display: grid;
+        align-items: center;
+        padding: 64px 0 90px;
+      }
+
+      .sms-panel {
+        width: min(640px, 100%);
+        display: grid;
+        gap: 24px;
+        padding: 30px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 18px 48px rgba(23, 32, 51, 0.1);
+      }
+
+      .sms-panel h1 {
+        margin: 0;
+        font-size: clamp(2rem, 6vw, 3.2rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .sms-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .sms-form {
+        display: grid;
+        gap: 16px;
+      }
+
+      .sms-field {
+        display: grid;
+        gap: 8px;
+        font-weight: 800;
+      }
+
+      .sms-field input {
+        min-height: 48px;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 14px;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .sms-consent {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 10px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .sms-consent input {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+      }
+
+      .sms-status {
+        min-height: 22px;
+        color: var(--teal);
+        font-weight: 800;
+      }
+
+      .sms-status.error {
+        color: var(--coral);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/" class="active">Learn</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="https://polar.sh/dashboard" target="_blank" rel="noopener noreferrer">Seller portal</a>
+          <a class="button dark" href="/watch">Meetups</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section sms-section">
+        <div class="sms-panel">
+          <div>
+            <p class="kicker">Event reminder</p>
+            <h1>Get a text before your Meetup starts.</h1>
+          </div>
+          <p>Mojo AI Studio will use your phone number only for Advanced AI Concepts event reminders and SMS service messages. We will not use it for marketing or any other purpose.</p>
+
+          <form class="sms-form" id="sms-form">
+            <label class="sms-field">
+              Phone number
+              <input
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="(555) 555-5555"
+                required />
+            </label>
+            <label class="sms-consent">
+              <input name="consent" type="checkbox" required />
+              <span>I agree to receive SMS reminders for Advanced AI Concepts events. Mojo AI Studio will use my phone number only for event reminders and SMS service messages, not marketing or any other purpose.</span>
+            </label>
+            <button class="button dark" type="submit">Save SMS reminder</button>
+            <p class="sms-status" id="sms-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>AI-built software for practical workflows.</p>
+      </div>
+      <div>
+        <b>Meetups</b>
+        <a href="/watch">Advanced AI Concepts</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+
+    <script>
+      (() => {
+        const form = document.querySelector("#sms-form");
+        const status = document.querySelector("#sms-status");
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token") || "";
+
+        if (!token) {
+          status.textContent = "This reminder link is missing its invite token.";
+          status.classList.add("error");
+          form.querySelector("button").disabled = true;
+        }
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          status.textContent = "Saving...";
+          status.classList.remove("error");
+
+          const body = {
+            token,
+            phone: form.elements.phone.value,
+            consent: form.elements.consent.checked,
+          };
+
+          try {
+            const response = await fetch("/api/sms-reminders", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) {
+              throw new Error(result.message || "Unable to save SMS reminder.");
+            }
+            status.textContent = "Saved. We'll text a reminder before the event.";
+            form.reset();
+          } catch (error) {
+            status.textContent = error.message || "Unable to save SMS reminder.";
+            status.classList.add("error");
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

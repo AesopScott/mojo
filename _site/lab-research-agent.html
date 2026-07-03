@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Lab 1: Research Agent | Mojo AI Studio</title>
+    <meta name="description" content="Class lab for building a research agent with MAPS, using a real customer story, requirements, artifacts, and phase-by-phase prompts.">
+    <link rel="canonical" href="https://mojoaistudio.com/lab-research-agent.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="lab1">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html"><span class="maps-mark" aria-hidden="true">M</span><span>MAPS</span></a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="agents.html">Agents</a>
+              <a href="global.html">Global</a>
+              <a href="skills.html">Skills</a>
+              <a href="references.html">References</a>
+              <div class="maps-pipeline-group multi-agent" aria-label="Multi-agent pipeline">
+                <span class="maps-pipeline-label">Multi-Agent Pipeline <small>Under development</small></span>
+                <div class="maps-pipeline-links">
+                  <a href="m0.html">M0 Project Foundation</a><a href="m1.html">M1 System Shape</a><span>M2 Roster</span><span>M3 Contracts</span><span>M4 Coordination</span><span>M5 Agent Buildout</span><span>M6 Capabilities</span><span>M7 Orchestration</span><a href="m8.html">M8 Experience Design</a><span>M9 Evaluate</span><span>M10 Deploy/Observe</span><span>M11 Improve</span>
+                </div>
+              </div>
+              <div class="maps-pipeline-group agentic" aria-label="Agentic pipeline">
+                <span class="maps-pipeline-label">Agentic Pipeline</span>
+                <div class="maps-pipeline-links">
+                  <a href="0.html">A0 Phase Alignment</a><a href="1.html">A1 Define</a><a href="2.html">A2 Design</a><a href="m8.html">A2 Experience Design</a><a href="3.html">A3 Build</a><a href="4.html">A4 Equip</a><a href="5.html">A5 Evaluate</a><a href="6.html">A6 Deploy</a><a href="7.html">A7 Observe</a><a href="8.html">A8 Improve</a>
+                </div>
+              </div>
+            </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#story">Story</a>
+              <a href="#requirements">Requirements</a>
+              <a href="#maps">MAPS path</a>
+              <a href="#deliverables">Deliverables</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero maps-hero-wide">
+        <div>
+          <p class="maps-eyebrow">Lab 1</p>
+          <h1>Research Agent</h1>
+          <p>Build an agent that turns scattered public sources into a cited, decision-ready competitor brief for a customer-facing team.</p>
+          <div class="maps-equip-list">
+            <span>Source discovery</span>
+            <span>Evidence extraction</span>
+            <span>Citation discipline</span>
+            <span>Confidence and gaps</span>
+            <span>Brief generation</span>
+            <span>Human review</span>
+          </div>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#story">Start the lab</a>
+            <a class="maps-button" href="lab-data-agent.html">Next lab</a>
+          </div>
+        </div>
+
+      </section>
+
+      <main class="maps-main">
+        <section id="story" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Customer story</h2>
+            <p>Northstar Solar sells commercial battery systems to grocery chains. Its sales team loses deals when a competitor announces a rebate partnership, financing offer, or installation guarantee before Northstar can explain the difference to prospects.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel">
+              <h3>User</h3>
+              <p>Maya, a regional sales manager, needs a 2-page competitor brief every Monday before pipeline review.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Job</h3>
+              <p>Find credible public updates, separate facts from interpretation, cite the source of every claim, and call out unknowns that need human follow-up.</p>
+            </article>
+            <article class="maps-panel">
+              <h3>Outcome</h3>
+              <p>Maya can coach reps on what changed, how it affects open deals, and what questions to ask customers.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="requirements" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Requirements</h2>
+          </div>
+          <div class="maps-must-cover-grid">
+            <article class="maps-must-cover-card"><span>R1</span><h3>Accepted sources</h3><p>Use company newsrooms, SEC filings, utility commission pages, reputable trade press, and customer-visible product pages.</p></article>
+            <article class="maps-must-cover-card"><span>R2</span><h3>Rejected sources</h3><p>Do not use anonymous social posts, unsourced summaries, scraped review fragments, or claims that cannot be traced to a URL.</p></article>
+            <article class="maps-must-cover-card"><span>R3</span><h3>Evidence table</h3><p>Capture claim, source URL, source type, publish date, extracted quote or fact, confidence, and business implication.</p></article>
+            <article class="maps-must-cover-card"><span>R4</span><h3>Brief format</h3><p>Produce executive summary, top 5 changes, customer risk, recommended sales response, and open questions.</p></article>
+            <article class="maps-must-cover-card"><span>R5</span><h3>Safety boundary</h3><p>Do not fabricate citations, do not imply legal or financial advice, and do not claim private competitor knowledge.</p></article>
+            <article class="maps-must-cover-card"><span>R6</span><h3>Human checkpoint</h3><p>Ask for review before turning research into outbound talk tracks for active opportunities.</p></article>
+          </div>
+        </section>
+
+        <section id="maps" class="maps-section">
+          <div class="maps-section-header">
+            <h2>MAPS path</h2>
+            <p>Use the APS phases to build the agent one slice at a time.</p>
+          </div>
+          <div class="maps-walkthrough">
+            <article class="maps-step"><span>A0</span><h3>Align</h3><p>Create `northstar-research-agent` and define folders, source policy, and class demo boundaries.</p></article>
+            <article class="maps-step"><span>A1</span><h3>Define</h3><p>Write the brief for Maya, the sales manager, with source authority and escalation rules.</p></article>
+            <article class="maps-step"><span>A2</span><h3>Design</h3><p>Design the source search, extraction, evidence table, confidence scoring, and brief workflow.</p></article>
+            <article class="maps-step"><span>A3</span><h3>Build</h3><p>Implement the first slice: accept seed URLs, extract facts, and generate an evidence table.</p></article>
+            <article class="maps-step"><span>A4</span><h3>Equip</h3><p>Add web search or browser tools, citation storage, and a local output folder.</p></article>
+            <article class="maps-step"><span>A5</span><h3>Evaluate</h3><p>Test fabricated citation refusal, stale source handling, and missing date warnings.</p></article>
+            <article class="maps-step"><span>A6-A8</span><h3>Ship and improve</h3><p>Package the lab demo, observe review notes, and add improvements for source quality and brief clarity.</p></article>
+          </div>
+        </section>
+
+        <section id="deliverables" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Developer deliverables</h2>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel"><h3>Agent artifacts</h3><p>`agent-brief.md`, `agent-design.md`, `agent-backlog.md`, and one working research output.</p></article>
+            <article class="maps-panel"><h3>Proof</h3><p>One passing evaluation for citation integrity and one failing example that the agent handles safely.</p></article>
+            <article class="maps-panel"><h3>Demo</h3><p>A short walkthrough showing source input, evidence table, final brief, and human review point.</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

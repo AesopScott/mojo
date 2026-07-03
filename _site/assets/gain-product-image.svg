@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Background gradient: deep navy → teal -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#0f2d3d"/>
+    </linearGradient>
+    <!-- Icon glow -->
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#2563eb" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Subtle dot grid mask -->
+    <pattern id="dots" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.2" fill="#ffffff" opacity="0.04"/>
+    </pattern>
+    <clipPath id="rounded">
+      <rect width="1200" height="630" rx="0"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+
+  <!-- Left accent bar -->
+  <rect x="0" y="0" width="6" height="630" fill="#2563eb" opacity="0.9"/>
+
+  <!-- Icon glow halo -->
+  <ellipse cx="240" cy="315" rx="200" ry="200" fill="url(#glow)"/>
+
+  <!-- Icon background square -->
+  <rect x="120" y="195" width="240" height="240" rx="36" fill="#2563eb"/>
+
+  <!-- "G" letter -->
+  <text x="240" y="340" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+        font-size="148" font-weight="900" fill="#ffffff"
+        text-anchor="middle" dominant-baseline="auto">G</text>
+
+  <!-- LIVE NOW badge -->
+  <rect x="120" y="455" width="120" height="32" rx="8" fill="#16a34a"/>
+  <text x="180" y="476" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="13" font-weight="800" fill="#ffffff"
+        text-anchor="middle" letter-spacing="0.08em">LIVE NOW</text>
+
+  <!-- Divider -->
+  <line x1="420" y1="160" x2="420" y2="470" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+
+  <!-- Product name -->
+  <text x="480" y="262" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+        font-size="82" font-weight="900" fill="#ffffff" dominant-baseline="auto">GAIN</text>
+
+  <!-- Tagline -->
+  <text x="480" y="318" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+        font-size="30" font-weight="400" fill="#94a3b8">Govern AI Now</text>
+
+  <!-- Description -->
+  <text x="480" y="372" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+        font-size="20" font-weight="400" fill="#64748b">
+    AI governance from intake to audit — risk register,
+  </text>
+  <text x="480" y="400" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif"
+        font-size="20" font-weight="400" fill="#64748b">
+    impact assessments, and compliance checklists.
+  </text>
+
+  <!-- Framework pills -->
+  <!-- NIST AI RMF -->
+  <rect x="480" y="432" width="136" height="30" rx="8" fill="#1e3a5f"/>
+  <text x="548" y="452" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="12" font-weight="700" fill="#93c5fd"
+        text-anchor="middle" letter-spacing="0.04em">NIST AI RMF</text>
+
+  <!-- ISO 42001 -->
+  <rect x="628" y="432" width="106" height="30" rx="8" fill="#1e3a5f"/>
+  <text x="681" y="452" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="12" font-weight="700" fill="#93c5fd"
+        text-anchor="middle" letter-spacing="0.04em">ISO 42001</text>
+
+  <!-- EU AI Act -->
+  <rect x="746" y="432" width="100" height="30" rx="8" fill="#1e3a5f"/>
+  <text x="796" y="452" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="12" font-weight="700" fill="#93c5fd"
+        text-anchor="middle" letter-spacing="0.04em">EU AI Act</text>
+
+  <!-- HIPAA -->
+  <rect x="858" y="432" width="80" height="30" rx="8" fill="#1e3a5f"/>
+  <text x="898" y="452" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="12" font-weight="700" fill="#93c5fd"
+        text-anchor="middle" letter-spacing="0.04em">HIPAA</text>
+
+  <!-- Bottom-right: Mojo brand -->
+  <text x="1152" y="600" font-family="ui-sans-serif, system-ui, sans-serif"
+        font-size="15" font-weight="700" fill="#334155"
+        text-anchor="end">Mojo AI Studio</text>
+</svg>

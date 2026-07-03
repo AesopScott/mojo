@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAPS Lab 3: Support Agent | Mojo AI Studio</title>
+    <meta name="description" content="Class lab for building a support agent with MAPS, using a real customer story, requirements, artifacts, and phase-by-phase prompts.">
+    <link rel="canonical" href="https://mojoaistudio.com/lab-support-agent.html">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="stylesheet" href="maps.css?v=maps-program-contract">
+    <script src="maps-data.js?v=maps-program-contract" defer></script>
+    <script src="maps-page.js?v=maps-program-contract" defer></script>
+  </head>
+  <body class="maps-page" data-maps-phase="lab3">
+    <div class="maps-shell">
+      <header class="maps-topbar">
+        <nav class="maps-nav" aria-label="MAPS navigation">
+          <a class="maps-brand" href="maps.html"><span class="maps-mark" aria-hidden="true">M</span><span>MAPS</span></a>
+          <div class="maps-nav-stack">
+            <div class="maps-links">
+              <a href="maps.html">Overview</a>
+              <a href="agents.html">Agents</a>
+              <a href="global.html">Global</a>
+              <a href="skills.html">Skills</a>
+              <a href="references.html">References</a>
+              <div class="maps-pipeline-group multi-agent" aria-label="Multi-agent pipeline">
+                <span class="maps-pipeline-label">Multi-Agent Pipeline <small>Under development</small></span>
+                <div class="maps-pipeline-links">
+                  <a href="m0.html">M0 Project Foundation</a><a href="m1.html">M1 System Shape</a><span>M2 Roster</span><span>M3 Contracts</span><span>M4 Coordination</span><span>M5 Agent Buildout</span><span>M6 Capabilities</span><span>M7 Orchestration</span><a href="m8.html">M8 Experience Design</a><span>M9 Evaluate</span><span>M10 Deploy/Observe</span><span>M11 Improve</span>
+                </div>
+              </div>
+              <div class="maps-pipeline-group agentic" aria-label="Agentic pipeline">
+                <span class="maps-pipeline-label">Agentic Pipeline</span>
+                <div class="maps-pipeline-links">
+                  <a href="0.html">A0 Phase Alignment</a><a href="1.html">A1 Define</a><a href="2.html">A2 Design</a><a href="m8.html">A2 Experience Design</a><a href="3.html">A3 Build</a><a href="4.html">A4 Equip</a><a href="5.html">A5 Evaluate</a><a href="6.html">A6 Deploy</a><a href="7.html">A7 Observe</a><a href="8.html">A8 Improve</a>
+                </div>
+              </div>
+            </div>
+            <div class="maps-inline-links" aria-label="This page sections">
+              <a href="#story">Story</a>
+              <a href="#requirements">Requirements</a>
+              <a href="#maps">MAPS path</a>
+              <a href="#deliverables">Deliverables</a>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <section class="maps-hero maps-hero-wide">
+        <div>
+          <p class="maps-eyebrow">Lab 3</p>
+          <h1>Support Agent</h1>
+          <p>Build an agent that triages customer support tickets, drafts safe replies from approved knowledge, and escalates edge cases with useful context.</p>
+          <div class="maps-equip-list">
+            <span>Ticket triage</span>
+            <span>Knowledge retrieval</span>
+            <span>Reply drafting</span>
+            <span>Escalation rules</span>
+            <span>Tone control</span>
+            <span>Resolution evidence</span>
+          </div>
+          <div class="maps-actions">
+            <a class="maps-button primary" href="#story">Start the lab</a>
+            <a class="maps-button" href="lab-data-agent.html">Previous lab</a>
+            <a class="maps-button" href="maps.html">Back to MAPS</a>
+          </div>
+        </div>
+
+      </section>
+
+      <main class="maps-main">
+        <section id="story" class="maps-section">
+          <div class="maps-section-header">
+            <h2>Customer story</h2>
+            <p>Harbor Health sells remote patient monitoring kits to clinics. Its support queue spikes after device onboarding, and agents spend too much time rewriting the same troubleshooting replies while missing urgent escalation signals.</p>
+          </div>
+          <div class="maps-grid">
+            <article class="maps-panel"><h3>User</h3><p>Leah, the support lead, wants draft replies and triage labels before her team starts the morning queue.</p></article>
+            <article class="maps-panel"><h3>Job</h3><p>Classify the ticket, find approved help-center guidance, draft a reply in brand tone, and escalate anything medical, billing-sensitive, angry, or blocked.</p></article>
+            <article class="maps-panel"><h3>Outcome</h3><p>Support agents respond faster while still owning final send decisions and sensitive escalations.</p></article>
+          </div>
+        </section>
+
+        <section id="requirements" class="maps-section">
+          <div class="maps-section-header"><h2>Requirements</h2></div>
+          <div class="maps-must-cover-grid">
+            <article class="maps-must-cover-card"><span>R1</span><h3>Ticket labels</h3><p>Classify tickets as onboarding, device offline, data sync, account access, billing, clinical concern, complaint, or unknown.</p></article>
+            <article class="maps-must-cover-card"><span>R2</span><h3>Knowledge boundary</h3><p>Use only approved help-center articles, macro snippets, device setup docs, and support policy notes.</p></article>
+            <article class="maps-must-cover-card"><span>R3</span><h3>Escalation</h3><p>Escalate clinical advice, refunds over policy, angry customers, repeated failures, VIP clinics, and missing knowledge articles.</p></article>
+            <article class="maps-must-cover-card"><span>R4</span><h3>Draft reply</h3><p>Include empathy, likely issue, steps, source article, what the human should verify, and a clear next action.</p></article>
+            <article class="maps-must-cover-card"><span>R5</span><h3>Do not send</h3><p>The agent drafts only. A human support agent must review and send every customer-facing response.</p></article>
+            <article class="maps-must-cover-card"><span>R6</span><h3>Evidence</h3><p>Save the ticket summary, selected label, retrieved source, draft reply, escalation decision, and confidence.</p></article>
+          </div>
+        </section>
+
+        <section id="maps" class="maps-section">
+          <div class="maps-section-header"><h2>MAPS path</h2><p>Use APS to build a support agent that is useful without crossing sensitive boundaries.</p></div>
+          <div class="maps-walkthrough">
+            <article class="maps-step"><span>A0</span><h3>Align</h3><p>Create `harbor-support-agent`, ticket samples, approved knowledge folders, and demo boundaries.</p></article>
+            <article class="maps-step"><span>A1</span><h3>Define</h3><p>Write the support lead brief with draft-only authority and escalation triggers.</p></article>
+            <article class="maps-step"><span>A2</span><h3>Design</h3><p>Design triage, retrieval, reply drafting, confidence, and human approval workflow.</p></article>
+            <article class="maps-step"><span>A3</span><h3>Build</h3><p>Implement the first slice: classify one ticket and draft a reply from one approved article.</p></article>
+            <article class="maps-step"><span>A4</span><h3>Equip</h3><p>Add local knowledge retrieval, ticket fixtures, output logs, and optional help desk connector notes.</p></article>
+            <article class="maps-step"><span>A5</span><h3>Evaluate</h3><p>Test clinical-advice refusal, billing escalation, missing article behavior, and tone consistency.</p></article>
+            <article class="maps-step"><span>A6-A8</span><h3>Ship and improve</h3><p>Package the demo, observe review friction, and improve labels, tone, and escalation precision.</p></article>
+          </div>
+        </section>
+
+        <section id="deliverables" class="maps-section">
+          <div class="maps-section-header"><h2>Developer deliverables</h2></div>
+          <div class="maps-grid">
+            <article class="maps-panel"><h3>Agent artifacts</h3><p>Brief, design, backlog, ticket fixtures, knowledge notes, and at least one draft response output.</p></article>
+            <article class="maps-panel"><h3>Proof</h3><p>One passing draft-quality eval and one escalation-boundary eval.</p></article>
+            <article class="maps-panel"><h3>Demo</h3><p>A short walkthrough showing ticket input, retrieved article, draft reply, confidence, and escalation decision.</p></article>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
+

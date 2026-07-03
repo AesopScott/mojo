@@ -1,0 +1,11 @@
+2026-06-19T20:48:03.436318+00:00 allowed architecture_review Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.
+2026-06-19T20:48:14.286977+00:00 blocked production Profile/design blocks production. Escalate for explicit approval before action.
+2026-06-19T20:48:14.293378+00:00 blocked runtime_specific Runtime-specific implementation requested while runtime target is undecided. Select runtime target before adapter build.
+2026-06-19T20:48:37.207037+00:00 blocked memory_write Profile/design blocks memory_write. Escalate for explicit approval before action.
+2026-06-19T20:48:37.207594+00:00 blocked tool_access Profile/design blocks tool_access. Escalate for explicit approval before action.
+2026-06-19T20:49:38.016530+00:00 allowed architecture_review Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.
+2026-06-19T20:50:17.516951+00:00 allowed architecture_review Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.
+2026-06-19T21:20:12.535502+00:00 allowed architecture_review Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.
+2026-06-19T21:20:12.583693+00:00 blocked autonomous_runtime Profile/design blocks autonomous_runtime. Escalate for explicit approval before action.
+2026-06-19T21:20:26.347741+00:00 blocked autonomous_runtime Autonomy contract is draft-not-approved and activation status is not active. Equip, Evaluate, Deploy, Observe, rollback proof, and Scott approval are required before activation.
+2026-06-23T12:27:36.459959+00:00 allowed architecture_review Architecture review/recommendation allowed inside current profile. No autonomy or external action granted.
