@@ -658,9 +658,9 @@
           <p class="kicker">Training handout</p>
           <h1>Harness Skill Training</h1>
           <p>
-            This page teaches harnesses as a practical engineering pattern. A harness
-            is not this web page. A harness is the wrapper you build around a model
-            call, tool call, workflow, or agent step so the work can be controlled,
+            Harnesses are repeatable control wrappers around model calls, tool
+            calls, workflows, and agent steps. They define the inputs, permissions,
+            output shape, proof, and recovery behavior that make AI work controlled,
             tested, repeated, and trusted.
           </p>
           <div class="hero-actions">
@@ -691,11 +691,12 @@
           <p>
             Everything outside purple boxes is the student-facing spine. Everything
             in purple is for you: setup notes, scripts, warnings, model answers,
-            and pacing. If it is not on the student page, it belongs in purple.
+            and pacing. Purple means instructor-only.
           </p>
           <p>
-            The key correction: never identify any web page as a harness. Say the
-            web page is a training board with examples of harness skills.
+            The key teaching move: define harnesses positively as control wrappers
+            around AI actions, then keep every example tied to the action being
+            controlled.
           </p>
         </aside>
       </section>
@@ -718,16 +719,17 @@
             <h3>Harness = controlled wrapper</h3>
             <p>
               It controls what goes in, what is allowed to happen, what comes out,
-              what proof is captured, and what happens when the result is not good
-              enough.
+              what proof is captured, and how the workflow recovers when the result
+              needs another pass.
             </p>
           </article>
           <article class="callout warning">
-            <strong>Do not confuse this</strong>
-            <h3>The web page is not the harness</h3>
+            <strong>Study the pattern</strong>
+            <h3>Cards name harness skills</h3>
             <p>
-              The live class page is a training board with example harness skills.
-              The harness is the engineering pattern represented by a card or skill.
+              The harnesses board gives examples of control patterns: prompt
+              control, tool control, proof control, routing control, memory control,
+              and release control.
             </p>
           </article>
           <article class="callout">
@@ -744,13 +746,13 @@
           <strong>Teacher-only</strong>
           <h3>Opening script</h3>
           <p>
-            Say: "Tonight is not a software demo. It is not a page tour. We are using
-            the live board as a list of example harness skills. A harness is the
-            control wrapper you build around AI work."
+            Say: "Tonight is harness skill training. A harness is the control
+            wrapper you build around AI work. We are going to study the control
+            patterns, then design one."
           </p>
           <p>
-            Say: "When someone asks where the harness is, the answer is not 'on the
-            web page.' The answer is: it is in the boundary around the AI action."
+            Say: "Every example tonight starts with one question: what AI action
+            are we controlling?"
           </p>
         </aside>
       </section>
@@ -809,9 +811,9 @@
           <strong>Teacher-only</strong>
           <h3>How to use the live skill board</h3>
           <p>
-            Keep the board open, but do not present the board as the system or the
-            harness. Use it like a specimen tray. Each card is an example of a
-            harness skill students can inspect, discuss, and later design.
+            Keep the board open as a reference of example harness skills. Use it
+            like a specimen tray: each card gives students a control pattern they
+            can inspect, discuss, and later design.
           </p>
           <ul>
             <li>Start with <code>Prompt</code> for model input control.</li>
@@ -824,7 +826,7 @@
         <div class="section-header" style="margin-top: 38px;">
           <div>
             <p class="kicker">How to read a card</p>
-            <h2>Each card is a possible harness skill, not the finished system.</h2>
+            <h2>Each card points to a possible harness skill.</h2>
           </div>
           <p>
             Read a card by asking what it controls, how you would package it, and
@@ -859,9 +861,9 @@
           <strong>Teacher-only</strong>
           <h3>Timing cue</h3>
           <p>
-            Spend about 15 minutes here. Do not try to explain every card. Pick
-            three: one orchestration card, one model-call card, and one skill package
-            example. The point is the pattern, not card memorization.
+            Spend about 15 minutes here. Pick three: one orchestration card, one
+            model-call card, and one skill package example. Keep the focus on the
+            repeated pattern students can reuse.
           </p>
         </aside>
       </section>
@@ -985,13 +987,12 @@
 
         <aside class="teacher-box">
           <strong>Teacher-only</strong>
-          <h3>Correct answer to "where is the harness?"</h3>
+          <h3>Answer to "where is the harness?"</h3>
           <p>
-            Answer: "The harness is not a page. The harness is the wrapper around
-            an AI action. On the live board, each card names a harness skill you
-            could build. For example, a Tool Registry harness controls tool use; a
-            Prompt harness controls admitted input; an Evidence harness controls
-            what proof is required."
+            Answer: "The harness is the control wrapper around an AI action. Each
+            card names a harness skill you could build. For example, a Tool Registry
+            harness controls tool use; a Prompt harness controls admitted input; an
+            Evidence harness controls what proof is required."
           </p>
         </aside>
       </section>
@@ -1003,8 +1004,8 @@
             <h2>Start small: build one harness skill around one risky step.</h2>
           </div>
           <p>
-            A useful harness skill does not need to control everything. It should
-            control one boundary clearly enough that the behavior can be repeated.
+            A useful harness skill starts with one clear boundary. Control that
+            boundary well enough that the behavior can be repeated.
           </p>
         </div>
 
@@ -1062,8 +1063,8 @@ How to package it:
             source list, and sends missing-evidence answers to review.
           </p>
           <p>
-            Keep it small. Students need to see that a harness can be one boundary,
-            not a giant platform.
+            Keep it small. Students need to see that a harness can control one
+            boundary clearly.
           </p>
         </aside>
       </section>
@@ -1075,8 +1076,7 @@ How to package it:
             <h2>Turn one card from the live board into a harness skill design.</h2>
           </div>
           <p>
-            Pick one card. Do not describe the web page. Describe the engineering
-            harness that card represents.
+            Pick one card. Describe the engineering harness that card represents.
           </p>
         </div>
 
@@ -1105,7 +1105,7 @@ How to package it:
             <li>Give students 5 minutes to choose one card and fill the template.</li>
             <li>Ask for one model-call example and one orchestration example.</li>
             <li>Push every answer to include proof and failure behavior.</li>
-            <li>If the answer describes the web page, redirect: "What AI action is being controlled?"</li>
+            <li>If the answer gets vague, redirect: "What AI action is being controlled?"</li>
           </ul>
         </aside>
 
