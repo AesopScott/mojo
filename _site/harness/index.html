@@ -5,52 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Student companion for learning harnesses as model-control and orchestration-control systems, using the live Harnesses page as the class artifact."
+      content="Student training page for harness engineering: harness skills, vendor controls, model-call wrappers, orchestration wrappers, and how to build your own harness skill."
     />
-    <title>Harnesses for Model and Orchestration Control | Mojo AI Studio</title>
+    <title>Harness Skill Training | Mojo AI Studio</title>
     <link rel="canonical" href="https://mojoaistudio.com/harness/" />
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#111827" />
+    <meta name="theme-color" content="#172033" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Mojo AI Studio" />
     <meta property="og:url" content="https://mojoaistudio.com/harness/" />
-    <meta property="og:title" content="Harnesses for Model and Orchestration Control" />
+    <meta property="og:title" content="Harness Skill Training" />
     <meta
       property="og:description"
-      content="Learn harnesses as the control layer around model calls, orchestration, proof, trust, fallback, and development automation."
+      content="A class handout for learning what harness skills do, how they work, how vendors already expose them, and how to build your own."
     />
     <meta property="og:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
-    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1536" />
-    <meta property="og:image:height" content="1024" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Harnesses for Model and Orchestration Control" />
+    <meta name="twitter:title" content="Harness Skill Training" />
     <meta
       name="twitter:description"
-      content="A student guide to the harness concepts behind Mojo's live Harnesses control surface."
+      content="Student training page for model-control and orchestration-control harness skills."
     />
     <meta name="twitter:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
     <style>
       :root {
         color-scheme: light;
         --ink: #172033;
-        --muted: #617087;
-        --line: rgba(23, 32, 51, 0.14);
-        --soft-line: rgba(23, 32, 51, 0.08);
-        --paper: #f6f8fb;
+        --muted: #607086;
+        --paper: #f5f7fb;
         --white: #ffffff;
+        --line: rgba(23, 32, 51, 0.14);
         --blue: #2563eb;
         --teal: #0f766e;
-        --gold: #f2c14e;
-        --coral: #e76f51;
-        --green: #22a06b;
-        --plum: #5b3cc4;
-        --shadow: 0 22px 58px rgba(23, 32, 51, 0.13);
+        --green: #1f8a5b;
+        --gold: #c58b12;
+        --coral: #cf5b3c;
+        --purple: #6d28d9;
+        --shadow: 0 20px 54px rgba(23, 32, 51, 0.12);
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
@@ -74,32 +69,22 @@
         text-decoration: none;
       }
 
-      button,
-      a {
-        cursor: pointer;
-      }
-
-      button {
-        border: 0;
-        font: inherit;
-      }
-
-      .site-nav {
+      .topbar {
         position: fixed;
+        z-index: 20;
         top: 12px;
         left: 50%;
+        width: min(1200px, calc(100% - 32px));
+        min-height: 66px;
         transform: translateX(-50%);
-        width: min(1220px, calc(100% - 32px));
-        z-index: 10;
-        min-height: 68px;
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: 18px;
         padding: 10px 12px;
-        border: 1px solid rgba(255, 255, 255, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.68);
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 16px 44px rgba(23, 32, 51, 0.12);
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 16px 42px rgba(23, 32, 51, 0.13);
         backdrop-filter: blur(18px);
       }
 
@@ -108,7 +93,7 @@
         align-items: center;
         gap: 10px;
         margin-right: auto;
-        font-weight: 850;
+        font-weight: 900;
       }
 
       .brand-mark {
@@ -116,8 +101,8 @@
         height: 36px;
         display: grid;
         place-items: center;
-        color: #fff;
         border-radius: 8px;
+        color: #fff;
         background: var(--ink);
       }
 
@@ -125,21 +110,21 @@
       .nav-actions,
       .hero-actions,
       .quick-links,
-      .tag-row {
+      .pill-row {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
       }
 
       .nav-links {
-        gap: 22px;
-        color: #435066;
+        gap: 18px;
+        color: #465469;
         font-size: 0.95rem;
       }
 
       .nav-links a.active {
         color: var(--ink);
-        font-weight: 800;
+        font-weight: 850;
       }
 
       .button {
@@ -147,6 +132,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        border: 1px solid transparent;
         border-radius: 8px;
         padding: 0 16px;
         font-weight: 850;
@@ -160,26 +146,26 @@
       .button.light {
         color: var(--ink);
         background: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-color: rgba(255, 255, 255, 0.72);
       }
 
       .button.ghost {
         color: var(--ink);
         background: #fff;
-        border: 1px solid var(--line);
+        border-color: var(--line);
       }
 
       .hero {
+        min-height: 74vh;
         position: relative;
-        min-height: 76vh;
-        isolation: isolate;
         display: flex;
         align-items: flex-end;
-        padding: 138px 0 56px;
         overflow: hidden;
+        isolation: isolate;
+        padding: 142px 0 58px;
         color: #fff;
         background-image:
-          linear-gradient(90deg, rgba(9, 14, 26, 0.95) 0%, rgba(9, 14, 26, 0.78) 48%, rgba(9, 14, 26, 0.36) 100%),
+          linear-gradient(90deg, rgba(10, 16, 29, 0.96) 0%, rgba(10, 16, 29, 0.78) 52%, rgba(10, 16, 29, 0.35) 100%),
           url("/assets/ai-software-showcase.png");
         background-size: cover;
         background-position: center;
@@ -189,25 +175,25 @@
         content: "";
         position: absolute;
         inset: auto 0 0;
-        height: 42%;
         z-index: -1;
-        background: linear-gradient(0deg, rgba(7, 12, 22, 0.74), rgba(7, 12, 22, 0));
+        height: 44%;
+        background: linear-gradient(0deg, rgba(10, 16, 29, 0.82), rgba(10, 16, 29, 0));
       }
 
-      .hero-inner,
+      .wrap,
       .section,
-      .site-footer {
+      .footer {
         width: min(1160px, calc(100% - 32px));
         margin-inline: auto;
       }
 
       .hero-copy {
-        max-width: 880px;
+        max-width: 900px;
       }
 
       .kicker {
         margin: 0 0 12px;
-        color: var(--gold);
+        color: #f5c84b;
         font-size: 0.78rem;
         font-weight: 900;
         letter-spacing: 0.16em;
@@ -222,30 +208,26 @@
       }
 
       h1 {
-        max-width: 940px;
+        max-width: 980px;
         margin-bottom: 18px;
         font-size: 4.35rem;
         line-height: 0.96;
         letter-spacing: 0;
       }
 
-      .hero-copy > p {
-        max-width: 760px;
+      .hero p:not(.kicker) {
+        max-width: 820px;
         margin-bottom: 24px;
-        color: rgba(255, 255, 255, 0.88);
-        font-size: 1.15rem;
-        line-height: 1.7;
-      }
-
-      .hero-actions {
-        gap: 12px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.16rem;
+        line-height: 1.68;
       }
 
       .quick-links {
-        width: min(1160px, calc(100% - 32px));
-        margin: -28px auto 0;
         position: relative;
         z-index: 2;
+        width: min(1160px, calc(100% - 32px));
+        margin: -28px auto 0;
         align-items: stretch;
       }
 
@@ -257,19 +239,20 @@
         justify-content: center;
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: rgba(255, 255, 255, 0.94);
-        box-shadow: 0 14px 36px rgba(23, 32, 51, 0.08);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 14px 34px rgba(23, 32, 51, 0.08);
         color: #344052;
         font-weight: 850;
+        text-align: center;
       }
 
       .section {
-        padding: 82px 0 0;
+        padding: 78px 0 0;
       }
 
       .section-header {
         display: grid;
-        grid-template-columns: minmax(0, 0.86fr) minmax(280px, 0.56fr);
+        grid-template-columns: minmax(0, 0.88fr) minmax(280px, 0.54fr);
         gap: 34px;
         align-items: end;
         margin-bottom: 26px;
@@ -277,21 +260,21 @@
 
       .section-header h2 {
         margin-bottom: 0;
-        font-size: 2.58rem;
+        font-size: 2.55rem;
         line-height: 1.04;
         letter-spacing: 0;
       }
 
-      .section-header p {
-        margin-bottom: 0;
+      .section-header p,
+      .lead {
         color: var(--muted);
-        line-height: 1.7;
+        line-height: 1.72;
       }
 
       .grid-2,
       .grid-3,
       .grid-4,
-      .loop-grid {
+      .steps {
         display: grid;
         gap: 16px;
       }
@@ -308,165 +291,148 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
 
-      .loop-grid {
-        grid-template-columns: repeat(6, minmax(0, 1fr));
+      .steps {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
 
-      .panel,
-      .layer-card,
-      .loop-card,
-      .map-card,
-      .example-card,
-      .exercise-card {
+      .card,
+      .callout,
+      .skill-card,
+      .step-card,
+      .code-panel {
         border: 1px solid var(--line);
         border-radius: 8px;
-        background: #fff;
+        background: var(--white);
         box-shadow: 0 14px 34px rgba(23, 32, 51, 0.06);
       }
 
-      .panel,
-      .layer-card,
-      .map-card,
-      .example-card,
-      .exercise-card {
-        padding: 26px;
+      .card,
+      .callout,
+      .skill-card,
+      .step-card {
+        padding: 24px;
       }
 
-      .loop-card {
-        min-height: 158px;
-        padding: 20px;
-        border-top: 5px solid var(--blue);
+      .callout {
+        border-left: 6px solid var(--blue);
       }
 
-      .loop-card:nth-child(2) {
-        border-top-color: var(--teal);
+      .callout.warning {
+        border-left-color: var(--coral);
+        background: #fff7f3;
       }
 
-      .loop-card:nth-child(3) {
-        border-top-color: var(--gold);
+      .callout.good {
+        border-left-color: var(--green);
+        background: #f4fbf7;
       }
 
-      .loop-card:nth-child(4) {
-        border-top-color: var(--coral);
-      }
-
-      .loop-card:nth-child(5) {
-        border-top-color: var(--green);
-      }
-
-      .loop-card:nth-child(6) {
-        border-top-color: var(--plum);
-      }
-
-      .panel strong,
-      .layer-card strong,
-      .map-card strong,
-      .example-card strong,
-      .exercise-card strong {
+      .card strong,
+      .skill-card strong,
+      .step-card strong,
+      .callout strong {
         display: block;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
         color: var(--teal);
         font-size: 0.78rem;
         letter-spacing: 0.14em;
         text-transform: uppercase;
       }
 
-      .panel h3,
-      .layer-card h3,
-      .loop-card h3,
-      .map-card h3,
-      .example-card h3,
-      .exercise-card h3 {
+      .card h3,
+      .skill-card h3,
+      .step-card h3,
+      .callout h3 {
         margin-bottom: 10px;
         font-size: 1.18rem;
       }
 
-      .panel p,
-      .layer-card p,
-      .loop-card p,
-      .map-card p,
-      .example-card p,
-      .exercise-card p,
+      .card p,
+      .skill-card p,
+      .step-card p,
+      .callout p,
       li {
         color: var(--muted);
         line-height: 1.65;
       }
 
-      .loop-card span {
-        display: block;
+      .skill-card {
+        border-top: 5px solid var(--blue);
+      }
+
+      .skill-card:nth-child(2n) {
+        border-top-color: var(--teal);
+      }
+
+      .skill-card:nth-child(3n) {
+        border-top-color: var(--gold);
+      }
+
+      .skill-card:nth-child(4n) {
+        border-top-color: var(--green);
+      }
+
+      .step-card span {
+        display: inline-grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
         margin-bottom: 14px;
-        color: #8b97aa;
-        font-size: 0.78rem;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--ink);
         font-weight: 900;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
       }
 
-      .tag-row {
-        margin-top: 18px;
+      .pill-row {
+        margin-top: 16px;
       }
 
-      .tag-row span {
-        display: inline-flex;
+      .pill-row span {
         min-height: 34px;
+        display: inline-flex;
         align-items: center;
         border-radius: 8px;
         padding: 0 10px;
-        background: #eef7f5;
+        background: #edf7f6;
         color: #0b5f59;
         font-size: 0.86rem;
         font-weight: 850;
       }
 
-      .concept-band {
-        padding: 58px;
+      .matrix {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
         border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 14px 34px rgba(23, 32, 51, 0.06);
+      }
+
+      .matrix th,
+      .matrix td {
+        padding: 16px;
+        border: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        line-height: 1.55;
+      }
+
+      .matrix th {
         color: #fff;
-        background:
-          linear-gradient(120deg, rgba(23, 32, 51, 0.97), rgba(37, 99, 235, 0.78)),
-          url("/assets/advanced-ai-concepts/hero.jpg");
-        background-size: cover;
-        background-position: center;
-        box-shadow: var(--shadow);
+        background: var(--ink);
       }
 
-      .concept-band h2 {
-        max-width: 840px;
-        margin-bottom: 18px;
-        font-size: 2.55rem;
-        line-height: 1.04;
+      .matrix td {
+        color: var(--muted);
       }
 
-      .concept-band p {
-        max-width: 860px;
-        margin-bottom: 18px;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1.04rem;
-        line-height: 1.72;
-      }
-
-      .concept-band p:last-child {
-        margin-bottom: 0;
-      }
-
-      .code-panel {
-        border: 1px solid #1f2937;
-        border-radius: 8px;
-        background: #101827;
-        color: #e5edf8;
-        box-shadow: 0 22px 48px rgba(10, 16, 29, 0.16);
-      }
-
-      .code-panel header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        min-height: 52px;
-        padding: 0 18px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        color: #a7b4c9;
-        font-weight: 850;
+      code {
+        border-radius: 7px;
+        padding: 0.1rem 0.36rem;
+        color: #0f3b38;
+        background: #e7f5f2;
+        font: 800 0.9rem ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
       }
 
       pre {
@@ -475,55 +441,55 @@
         overflow-wrap: anywhere;
       }
 
+      .code-panel {
+        background: #101827;
+        color: #e5edf8;
+      }
+
+      .code-panel header {
+        display: flex;
+        min-height: 52px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 0 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        color: #a7b4c9;
+        font-weight: 850;
+      }
+
       .code-panel pre {
         padding: 22px;
         font: 0.95rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-      }
-
-      code {
-        border-radius: 8px;
-        padding: 0.12rem 0.38rem;
-        color: #0f3b38;
-        background: #e7f5f2;
-        font: 800 0.9rem ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
-      }
-
-      ul {
-        margin: 14px 0 0;
-        padding-left: 20px;
-      }
-
-      li + li {
-        margin-top: 8px;
       }
 
       .closing {
         padding-bottom: 86px;
       }
 
-      .site-footer {
+      .footer {
         display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr;
+        grid-template-columns: 1.4fr 1fr 1fr;
         gap: 24px;
         padding: 48px 0 56px;
         color: #475569;
         border-top: 1px solid var(--line);
       }
 
-      .site-footer a {
+      .footer a {
         display: block;
         margin-top: 9px;
       }
 
       @media (max-width: 1080px) {
-        .loop-grid,
+        .steps,
         .grid-4 {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
       @media (max-width: 980px) {
-        .site-nav {
+        .topbar {
           align-items: flex-start;
           flex-direction: column;
           gap: 12px;
@@ -543,41 +509,41 @@
 
         .hero {
           min-height: 70vh;
-          padding-top: 172px;
+          padding-top: 174px;
         }
 
         h1 {
-          font-size: 3.1rem;
+          font-size: 3.08rem;
         }
 
         .section-header,
         .grid-2,
         .grid-3,
-        .site-footer {
+        .footer {
           grid-template-columns: 1fr;
         }
       }
 
       @media (max-width: 640px) {
-        .site-nav,
-        .hero-inner,
+        .topbar,
+        .wrap,
         .section,
-        .site-footer,
+        .footer,
         .quick-links {
           width: min(100% - 24px, 1160px);
         }
 
         .hero {
           min-height: auto;
-          padding: 180px 0 46px;
+          padding: 182px 0 46px;
         }
 
         h1 {
-          font-size: 2.34rem;
+          font-size: 2.28rem;
           line-height: 1;
         }
 
-        .hero-copy > p {
+        .hero p:not(.kicker) {
           font-size: 1rem;
         }
 
@@ -589,59 +555,31 @@
           padding-top: 58px;
         }
 
-        .section-header h2,
-        .concept-band h2 {
+        .section-header h2 {
           font-size: 2rem;
         }
 
-        .loop-grid,
+        .steps,
         .grid-4 {
           grid-template-columns: 1fr;
         }
 
-        .panel,
-        .layer-card,
-        .map-card,
-        .example-card,
-        .exercise-card,
-        .concept-band {
+        .card,
+        .callout,
+        .skill-card,
+        .step-card {
           padding: 22px;
         }
-      }
 
-      @media print {
-        .site-nav,
-        .hero,
-        .quick-links,
-        .site-footer,
-        .button {
-          display: none;
-        }
-
-        body {
-          background: #fff;
-        }
-
-        .section {
-          width: 100%;
-          padding: 22px 0;
-        }
-
-        .panel,
-        .layer-card,
-        .loop-card,
-        .map-card,
-        .example-card,
-        .exercise-card,
-        .code-panel {
-          box-shadow: none;
-          break-inside: avoid;
+        .matrix {
+          display: block;
+          overflow-x: auto;
         }
       }
     </style>
   </head>
   <body>
-    <nav class="site-nav" aria-label="Primary navigation">
+    <nav class="topbar" aria-label="Primary navigation">
       <a class="brand" href="/" aria-label="Mojo AI Studio home">
         <span class="brand-mark">M</span>
         <span>Mojo AI Studio</span>
@@ -654,25 +592,28 @@
         <a href="/forum/">Forum</a>
       </div>
       <div class="nav-actions">
-        <a class="button ghost" href="/welcomeback/" target="_blank" rel="noopener">Harnesses page</a>
+        <a class="button ghost" href="/welcomeback/" target="_blank" rel="noopener">Live skill board</a>
+        <a class="button ghost" href="/harness/">Student handout</a>
         <a class="button ghost" href="/harnessteach/">Teacher guide</a>
       </div>
     </nav>
 
     <header class="hero" id="top">
-      <div class="hero-inner">
+      <div class="wrap">
         <div class="hero-copy">
-          <p class="kicker">Student companion</p>
-          <h1>Harnesses for Model Control and Orchestration Control</h1>
+          <p class="kicker">Training handout</p>
+          <h1>Harness Skill Training</h1>
           <p>
-            A harness is the control layer around AI work. It decides what context
-            enters, what model or worker runs, what tools are allowed, what evidence
-            is captured, and when the result can be trusted.
+            This page teaches harnesses as a practical engineering pattern. A harness
+            is not this web page. A harness is the wrapper you build around a model
+            call, tool call, workflow, or agent step so the work can be controlled,
+            tested, repeated, and trusted.
           </p>
           <div class="hero-actions">
-            <a class="button light" href="/welcomeback/" target="_blank" rel="noopener">Open Harnesses page</a>
+            <a class="button light" href="/welcomeback/" target="_blank" rel="noopener">Open live skill board</a>
+            <a class="button dark" href="#build">Build your own</a>
+            <a class="button ghost" href="/harness/">Student handout</a>
             <a class="button ghost" href="/harnessteach/">Teacher guide</a>
-            <a class="button dark" href="#control-loop">Start the model</a>
           </div>
         </div>
       </div>
@@ -680,214 +621,297 @@
 
     <div class="quick-links" aria-label="Class sections">
       <a href="#definition">Definition</a>
-      <a href="#layers">Two layers</a>
-      <a href="#control-loop">Control loop</a>
-      <a href="#harnesses">Harnesses page</a>
-      <a href="#automation">Dev automation</a>
+      <a href="#board">Skill board</a>
+      <a href="#vendor">Vendor controls</a>
+      <a href="#works">How it works</a>
+      <a href="#build">Build one</a>
       <a href="#exercise">Exercise</a>
+      <button type="button" onclick="window.print()">Print</button>
     </div>
 
     <main>
       <section class="section" id="definition">
         <div class="section-header">
           <div>
-            <p class="kicker">Core idea</p>
-            <h2>Harnesses make AI systems controllable enough to trust.</h2>
+            <p class="kicker">Core definition</p>
+            <h2>A harness is a repeatable control wrapper around AI work.</h2>
           </div>
           <p>
-            In this class, harnesses are not mainly about test runners. They are
-            about controlling model calls and orchestrated work so an AI system
-            can be routed, inspected, bounded, verified, and improved.
+            The important word is wrapper. The model, tool, or workflow is the thing
+            doing work. The harness controls the conditions around that work.
           </p>
         </div>
 
-        <div class="concept-band">
-          <p class="kicker">Keep this sentence</p>
-          <h2>A harness wraps intelligence with control.</h2>
-          <p>
-            A model can produce an answer. An agent can take a step. A harness
-            controls the conditions around that step: the goal, context, policy,
-            route, tools, evidence, trust state, and recovery path.
-          </p>
-          <p>
-            Development automation is how those controls become repeatable:
-            packaged as skills, scripts, gates, checks, evals, workflows, and
-            installable project behavior.
-          </p>
+        <div class="grid-3">
+          <article class="callout good">
+            <strong>Say it plainly</strong>
+            <h3>Harness = controlled wrapper</h3>
+            <p>
+              It controls what goes in, what is allowed to happen, what comes out,
+              what proof is captured, and what happens when the result is not good
+              enough.
+            </p>
+          </article>
+          <article class="callout warning">
+            <strong>Do not confuse this</strong>
+            <h3>The web page is not the harness</h3>
+            <p>
+              The live class page is a training board with example harness skills.
+              The harness is the engineering pattern represented by a card or skill.
+            </p>
+          </article>
+          <article class="callout">
+            <strong>Development automation</strong>
+            <h3>Automation packages the harness</h3>
+            <p>
+              A harness becomes useful when it can be repeated as a skill, script,
+              config, eval, workflow, guardrail, or release gate.
+            </p>
+          </article>
         </div>
       </section>
 
-      <section class="section" id="layers">
+      <section class="section" id="board">
         <div class="section-header">
           <div>
-            <p class="kicker">Two control layers</p>
-            <h2>Orchestration harnesses and model harnesses</h2>
+            <p class="kicker">Live class board</p>
+            <h2>The live board shows example harness skills to study.</h2>
           </div>
           <p>
-            The Harnesses page separates the control plane into two layers.
-            One governs the system around the work. The other governs each model call.
+            Use <a href="/welcomeback/" target="_blank" rel="noopener"><b>the live skill board</b></a>
+            during class. Each card names a control problem, shows what it does,
+            and proposes skills that could move performance, cost, or capability.
           </p>
         </div>
 
         <div class="grid-2">
-          <article class="layer-card">
-            <strong>Orchestration control</strong>
-            <h3>The system-level harness</h3>
+          <article class="card">
+            <strong>Layer 1</strong>
+            <h3>Orchestration harness skills</h3>
             <p>
-              This layer coordinates sessions, memory, tools, routing, proof,
-              review, browser capture, Git control, and release readiness.
+              These control the system around the model work: sessions, tools,
+              memory, proof, review, browser capture, Git, release readiness, and
+              sub-agent dispatch.
             </p>
-            <div class="tag-row">
-              <span>Orchestrator</span>
+            <div class="pill-row">
               <span>Proof Authority</span>
               <span>Tool Registry</span>
               <span>Session Manager</span>
+              <span>Memory</span>
+              <span>Git Control</span>
+              <span>Release Readiness</span>
             </div>
           </article>
-
-          <article class="layer-card">
-            <strong>Model control</strong>
-            <h3>The per-call harness</h3>
+          <article class="card">
+            <strong>Layer 2</strong>
+            <h3>Model-call harness skills</h3>
             <p>
-              This layer controls provider identity, selection, routing, prompt,
-              context, policy, safety, privacy, tools, verification, trace, evidence,
-              cost, latency, fallback, and trust.
+              These control a specific model request: provider, model identity,
+              selection, route, fallback, prompt, context, tools, response, evidence,
+              trace, cost, latency, privacy, and trust.
             </p>
-            <div class="tag-row">
+            <div class="pill-row">
+              <span>Provider</span>
               <span>Prompt</span>
-              <span>Verify</span>
+              <span>Tools</span>
+              <span>Evidence</span>
               <span>Trace</span>
               <span>Trust</span>
             </div>
           </article>
         </div>
-      </section>
 
-      <section class="section" id="control-loop">
-        <div class="section-header">
+        <div class="section-header" style="margin-top: 38px;">
           <div>
-            <p class="kicker">The control loop</p>
-            <h2>What a harness does around AI work</h2>
+            <p class="kicker">How to read a card</p>
+            <h2>Each card is a possible harness skill, not the finished system.</h2>
           </div>
           <p>
-            Use this loop when you inspect any card on the Harnesses page. The labels
-            are different from classic software testing, but the trust logic is the same.
-          </p>
-        </div>
-
-        <div class="loop-grid">
-          <article class="loop-card">
-            <span>01</span>
-            <h3>Bind intent</h3>
-            <p>Connect the action to a goal, task, policy, or session.</p>
-          </article>
-          <article class="loop-card">
-            <span>02</span>
-            <h3>Pack context</h3>
-            <p>Choose what memory, files, rules, and examples enter the run.</p>
-          </article>
-          <article class="loop-card">
-            <span>03</span>
-            <h3>Route work</h3>
-            <p>Select the worker, model, tool, path, or fallback chain.</p>
-          </article>
-          <article class="loop-card">
-            <span>04</span>
-            <h3>Constrain action</h3>
-            <p>Apply safety, privacy, permission, approval, and cost boundaries.</p>
-          </article>
-          <article class="loop-card">
-            <span>05</span>
-            <h3>Capture proof</h3>
-            <p>Record traces, outputs, evidence, logs, screenshots, or reports.</p>
-          </article>
-          <article class="loop-card">
-            <span>06</span>
-            <h3>Set trust state</h3>
-            <p>Mark the result trusted, reviewed, blocked, expired, or needing fallback.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="harnesses">
-        <div class="section-header">
-          <div>
-            <p class="kicker">Live artifact</p>
-            <h2>How to read the Harnesses page</h2>
-          </div>
-          <p>
-            The live page is a teaching artifact. Each area demonstrates a different
-            part of the harness control architecture.
-          </p>
-        </div>
-
-        <div class="grid-3">
-          <article class="map-card">
-            <strong>Countdown and status</strong>
-            <h3>Run state</h3>
-            <p>The page makes time and session state visible before the system starts.</p>
-          </article>
-          <article class="map-card">
-            <strong>Valuable repositories</strong>
-            <h3>Source dependencies</h3>
-            <p>Obsidianify, Graphify, and other repositories are named context sources.</p>
-          </article>
-          <article class="map-card">
-            <strong>Class_Agenda cards</strong>
-            <h3>Harness inventory</h3>
-            <p>The cards list the control surfaces needed for orchestration and model calls.</p>
-          </article>
-          <article class="map-card">
-            <strong>Harness detail modal</strong>
-            <h3>Inspectable controls</h3>
-            <p>Each card opens function, performance levers, cost levers, capability levers, and related skills.</p>
-          </article>
-          <article class="map-card">
-            <strong>Installable skills</strong>
-            <h3>Packaged automation</h3>
-            <p>SKILL.md downloads show how harness concepts become reusable development automation.</p>
-          </article>
-          <article class="map-card">
-            <strong>Class page links</strong>
-            <h3>Navigation harness</h3>
-            <p>The Harnesses page links students to this guide and links you to the teacher script.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="section" id="automation">
-        <div class="section-header">
-          <div>
-            <p class="kicker">Where dev automation fits</p>
-            <h2>Development automation packages the harness.</h2>
-          </div>
-          <p>
-            The harness is the control design. Development automation is how that
-            design becomes something people can run repeatedly.
+            Read a card by asking what it controls, how you would package it, and
+            how you would know it worked.
           </p>
         </div>
 
         <div class="grid-4">
-          <article class="example-card">
-            <strong>Skill</strong>
-            <h3><code>SKILL.md</code></h3>
-            <p>Packages a repeatable control pattern so a coding agent or developer can invoke it.</p>
+          <article class="skill-card">
+            <strong>Function</strong>
+            <h3>What control problem does it solve?</h3>
+            <p>Example: Tool Registry controls which tools can run and under what permission rules.</p>
           </article>
-          <article class="example-card">
-            <strong>Script</strong>
-            <h3><code>verify.ps1</code></h3>
-            <p>Executes checks, setup, proof capture, or recovery steps.</p>
+          <article class="skill-card">
+            <strong>Levers</strong>
+            <h3>What can be tuned?</h3>
+            <p>Each card separates performance, cost efficiency, and capability as different design axes.</p>
           </article>
-          <article class="example-card">
-            <strong>Gate</strong>
-            <h3><code>release-check</code></h3>
-            <p>Prevents work from moving forward until evidence and approvals are sufficient.</p>
+          <article class="skill-card">
+            <strong>Skill package</strong>
+            <h3>What could become reusable?</h3>
+            <p>A SKILL.md, script, policy file, eval suite, or workflow can package the control pattern.</p>
           </article>
-          <article class="example-card">
-            <strong>Eval</strong>
-            <h3><code>agent-eval</code></h3>
-            <p>Runs model or agent behavior against cases and records proof.</p>
+          <article class="skill-card">
+            <strong>Proof</strong>
+            <h3>How do you know it worked?</h3>
+            <p>Look for logs, traces, evals, screenshots, review records, or state changes that prove behavior.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="section" id="vendor">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Vendor interfaces</p>
+            <h2>You already use harnesses inside AI vendor tools.</h2>
+          </div>
+          <p>
+            Vendor dashboards and APIs expose small harness controls. The class is
+            about recognizing those controls and learning how to build your own
+            around higher-level workflows.
+          </p>
+        </div>
+
+        <table class="matrix" aria-label="Vendor control examples">
+          <thead>
+            <tr>
+              <th>Vendor control</th>
+              <th>Harness idea</th>
+              <th>What it controls</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Model picker</td>
+              <td>Provider, Identity, Select, Route</td>
+              <td>Which model is allowed to handle the task.</td>
+            </tr>
+            <tr>
+              <td>System or developer instructions</td>
+              <td>Prompt, Policy, Goal</td>
+              <td>The instruction boundary around the model call.</td>
+            </tr>
+            <tr>
+              <td>Temperature, max output, response format</td>
+              <td>Prompt, Response, Cost, Latency</td>
+              <td>How much variation, output shape, spend, and runtime are allowed.</td>
+            </tr>
+            <tr>
+              <td>Tool calling or function lists</td>
+              <td>Tools, Tool Registry, Guardrails</td>
+              <td>Which external actions the model may request.</td>
+            </tr>
+            <tr>
+              <td>File search, retrieval, context upload</td>
+              <td>Knowledge Retrieval, Context, Memory</td>
+              <td>Which information enters the model context.</td>
+            </tr>
+            <tr>
+              <td>Safety settings, filters, approval rules</td>
+              <td>Safety, Privacy, Policy, Proof Authority</td>
+              <td>What must be blocked, escalated, redacted, or reviewed.</td>
+            </tr>
+            <tr>
+              <td>Logs, traces, evals, usage dashboards</td>
+              <td>Trace, Evidence, Verify, Trust</td>
+              <td>How the run becomes inspectable after it happens.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="section" id="works">
+        <div class="section-header">
+          <div>
+            <p class="kicker">How harnesses work</p>
+            <h2>A harness skill turns judgment into a repeatable boundary.</h2>
+          </div>
+          <p>
+            If you can name the boundary, encode it, run it, observe it, and revise
+            it, you are doing harness engineering.
+          </p>
+        </div>
+
+        <div class="steps">
+          <article class="step-card">
+            <span>1</span>
+            <h3>Intent</h3>
+            <p>What work is this AI step supposed to accomplish?</p>
+          </article>
+          <article class="step-card">
+            <span>2</span>
+            <h3>Inputs</h3>
+            <p>What context, files, memory, and instructions are allowed in?</p>
+          </article>
+          <article class="step-card">
+            <span>3</span>
+            <h3>Authority</h3>
+            <p>What model, tool, route, and action permissions are allowed?</p>
+          </article>
+          <article class="step-card">
+            <span>4</span>
+            <h3>Output</h3>
+            <p>What shape, evidence, trace, and review state must come out?</p>
+          </article>
+          <article class="step-card">
+            <span>5</span>
+            <h3>Recovery</h3>
+            <p>What happens when the result fails, stalls, costs too much, or needs review?</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="build">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Build your own</p>
+            <h2>Start small: build one harness skill around one risky step.</h2>
+          </div>
+          <p>
+            A useful harness skill does not need to control everything. It should
+            control one boundary clearly enough that the behavior can be repeated.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <strong>Build path</strong>
+            <h3>Seven decisions</h3>
+            <ul>
+              <li>Pick one AI action that needs control.</li>
+              <li>Describe what can go wrong.</li>
+              <li>Define allowed input, model route, tools, and output shape.</li>
+              <li>Choose proof: trace, eval, citation, screenshot, log, or review.</li>
+              <li>Define failure behavior: retry, fallback, block, ask, or escalate.</li>
+              <li>Package it as a SKILL.md, script, config, or workflow.</li>
+              <li>Test it with normal, edge, and unsafe examples.</li>
+            </ul>
+          </article>
+
+          <div class="code-panel" aria-label="Harness skill template">
+            <header>
+              <span>Harness skill template</span>
+            </header>
+            <pre><code>Harness skill name:
+
+Controlled action:
+
+Risk being controlled:
+
+Allowed inputs:
+
+Allowed model/tool route:
+
+Required output:
+
+Required proof:
+
+Failure behavior:
+
+What gets logged:
+
+How to test it:
+
+How to package it:
+  SKILL.md / script / config / eval / workflow / gate</code></pre>
+          </div>
         </div>
       </section>
 
@@ -895,85 +919,71 @@
         <div class="section-header">
           <div>
             <p class="kicker">Class exercise</p>
-            <h2>Pick one Harnesses-page card and translate it into a harness.</h2>
+            <h2>Turn one card from the live board into a harness skill design.</h2>
           </div>
           <p>
-            Choose a card from the live page. Use the worksheet to describe how it
-            controls model work, orchestration work, or both.
+            Pick one card. Do not describe the web page. Describe the engineering
+            harness that card represents.
           </p>
         </div>
 
-        <div class="grid-2">
-          <article class="exercise-card">
-            <strong>Suggested cards</strong>
-            <h3>Good starting points</h3>
-            <ul>
-              <li><code>Proof Authority</code>: how the system judges evidence.</li>
-              <li><code>Tool Registry</code>: how tools become permissioned actions.</li>
-              <li><code>Model Router</code>: how work is sent to the right model path.</li>
-              <li><code>Prompt</code>: how admitted input is controlled.</li>
-              <li><code>Trace</code>: how the route and output become auditable.</li>
-              <li><code>Trust</code>: how the system decides what state the result is in.</li>
-            </ul>
+        <div class="grid-3">
+          <article class="card">
+            <strong>Option A</strong>
+            <h3>Prompt harness</h3>
+            <p>Control what instructions and context can enter a model call.</p>
           </article>
+          <article class="card">
+            <strong>Option B</strong>
+            <h3>Tool Registry harness</h3>
+            <p>Control which tools may run, when approval is required, and what gets logged.</p>
+          </article>
+          <article class="card">
+            <strong>Option C</strong>
+            <h3>Evidence harness</h3>
+            <p>Control what proof must be attached before a result can be trusted.</p>
+          </article>
+        </div>
 
-          <div class="code-panel" aria-label="Student worksheet">
-            <header>
-              <span>Worksheet</span>
-            </header>
-            <pre><code>Card chosen:
-
-What does this harness control?
-
-Intent:
-  What goal, policy, task, or session does it bind to?
-
-Context:
-  What information is allowed into the run?
-
-Route:
-  What model, worker, tool, or path does it choose?
-
-Constraints:
-  What safety, privacy, approval, cost, or authority limits apply?
-
-Proof:
-  What evidence, trace, output, or metric is captured?
-
-Trust state:
-  When is the result trusted, reviewed, blocked, expired, or retried?
-
-Development automation:
-  What skill, script, eval, gate, or workflow could package this harness?</code></pre>
+        <div class="section-header" style="margin-top: 38px;">
+          <div>
+            <p class="kicker">Exit ticket</p>
+            <h2>Before you leave, answer this.</h2>
           </div>
+          <p>
+            If you can answer these in plain language, you understand the core of
+            harness engineering.
+          </p>
+        </div>
+
+        <div class="code-panel" aria-label="Exit ticket">
+          <header>
+            <span>Exit ticket</span>
+          </header>
+          <pre><code>1. What AI action are you controlling?
+2. What is allowed into the action?
+3. What is allowed to happen during the action?
+4. What must come out?
+5. What proof makes the result trustworthy?
+6. What happens when the harness blocks, fails, or needs review?</code></pre>
         </div>
       </section>
 
       <section class="section closing" id="close">
-        <div class="section-header">
-          <div>
-            <p class="kicker">Close</p>
-            <h2>The practical takeaway</h2>
-          </div>
+        <div class="callout good">
+          <strong>Final takeaway</strong>
+          <h2>Harness skills are how AI control becomes reusable engineering.</h2>
           <p>
-            A harness turns AI work from "the model said something" into controlled,
-            inspectable, bounded, and repeatable system behavior.
-          </p>
-        </div>
-
-        <div class="panel">
-          <strong>Final line</strong>
-          <h3>Harness engineering is model control plus orchestration control, packaged into development automation.</h3>
-          <p>
-            That is why the Harnesses page matters: it shows the controls,
-            the layers, the levers, the evidence model, and the skill packaging all
-            in one place.
+            Vendor interfaces already give you small harness controls. Harness
+            engineering is the practice of designing those controls deliberately,
+            combining them into workflows, and packaging them so the same safety,
+            proof, routing, and recovery logic can be reused.
           </p>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="footer">
       <div>
         <a class="brand" href="/">
           <span class="brand-mark">M</span>
@@ -983,8 +993,8 @@ Development automation:
       </div>
       <div>
         <b>Class pages</b>
-        <a href="/welcomeback/">Harnesses page</a>
-        <a href="/harness/">Student companion</a>
+        <a href="/welcomeback/">Live skill board</a>
+        <a href="/harness/">Student handout</a>
         <a href="/harnessteach/">Teacher guide</a>
       </div>
       <div>
