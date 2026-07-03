@@ -1,0 +1,1255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Teacher guide for using mojoaistudio.com/welcomeback to teach harness engineering, development automation, orchestration, proof, gates, and installable skills."
+    />
+    <title>WelcomeBack Harness Teacher Guide | Mojo AI Studio</title>
+    <link rel="canonical" href="https://mojoaistudio.com/harnessteach/" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#111827" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/harnessteach/" />
+    <meta property="og:title" content="Teacher Guide for /welcomeback Harness Engineering" />
+    <meta
+      property="og:description"
+      content="Instructor notes, talk track, and cheats for teaching harness concepts from the /welcomeback Neural Orchestrator page."
+    />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <meta property="og:image:secure_url" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1536" />
+    <meta property="og:image:height" content="1024" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Teacher Guide for /welcomeback Harness Engineering" />
+    <meta
+      name="twitter:description"
+      content="Use the live Neural Orchestrator page as the concrete teaching artifact for harness engineering and development automation."
+    />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #172033;
+        --muted: #617087;
+        --line: rgba(23, 32, 51, 0.14);
+        --soft-line: rgba(23, 32, 51, 0.08);
+        --paper: #f6f8fb;
+        --white: #ffffff;
+        --blue: #2563eb;
+        --teal: #0f766e;
+        --gold: #f2c14e;
+        --coral: #e76f51;
+        --green: #22a06b;
+        --plum: #5b3cc4;
+        --shadow: 0 22px 58px rgba(23, 32, 51, 0.13);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 96px;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      a {
+        cursor: pointer;
+      }
+
+      button {
+        border: 0;
+        font: inherit;
+      }
+
+      .site-nav {
+        position: fixed;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(1220px, calc(100% - 32px));
+        z-index: 10;
+        min-height: 68px;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 16px 44px rgba(23, 32, 51, 0.12);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: auto;
+        font-weight: 850;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        border-radius: 8px;
+        background: var(--ink);
+      }
+
+      .nav-links,
+      .nav-actions,
+      .hero-actions,
+      .quick-links,
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nav-links {
+        gap: 22px;
+        color: #435066;
+        font-size: 0.95rem;
+      }
+
+      .nav-links a.active {
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .button {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-weight: 850;
+      }
+
+      .button.dark {
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .button.light {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+      }
+
+      .button.ghost {
+        color: var(--ink);
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 76vh;
+        isolation: isolate;
+        display: flex;
+        align-items: flex-end;
+        padding: 138px 0 56px;
+        overflow: hidden;
+        color: #fff;
+        background-image:
+          linear-gradient(90deg, rgba(9, 14, 26, 0.95) 0%, rgba(9, 14, 26, 0.82) 50%, rgba(9, 14, 26, 0.42) 100%),
+          url("/assets/advanced-ai-concepts/hero.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 42%;
+        z-index: -1;
+        background: linear-gradient(0deg, rgba(7, 12, 22, 0.74), rgba(7, 12, 22, 0));
+      }
+
+      .hero-inner,
+      .section,
+      .site-footer {
+        width: min(1160px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .hero-copy {
+        max-width: 870px;
+      }
+
+      .kicker {
+        margin: 0 0 12px;
+        color: var(--gold);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 940px;
+        margin-bottom: 18px;
+        font-size: 4.25rem;
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .hero-copy > p {
+        max-width: 760px;
+        margin-bottom: 24px;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 1.15rem;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        gap: 12px;
+      }
+
+      .quick-links {
+        width: min(1160px, calc(100% - 32px));
+        margin: -28px auto 0;
+        position: relative;
+        z-index: 2;
+        align-items: stretch;
+      }
+
+      .quick-links a,
+      .quick-links button {
+        flex: 1 1 150px;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 14px 36px rgba(23, 32, 51, 0.08);
+        color: #344052;
+        font-weight: 850;
+      }
+
+      .section {
+        padding: 82px 0 0;
+      }
+
+      .section-header {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(280px, 0.56fr);
+        gap: 34px;
+        align-items: end;
+        margin-bottom: 26px;
+      }
+
+      .section-header h2 {
+        margin-bottom: 0;
+        font-size: 2.58rem;
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      .section-header p {
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .run-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .run-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+
+      .panel,
+      .talk-card,
+      .run-card,
+      .map-card,
+      .cheat-card,
+      .script-card,
+      .walk-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 14px 34px rgba(23, 32, 51, 0.06);
+      }
+
+      .panel,
+      .talk-card,
+      .map-card,
+      .script-card,
+      .walk-card {
+        padding: 26px;
+      }
+
+      .run-card,
+      .cheat-card {
+        padding: 22px;
+      }
+
+      .panel strong,
+      .talk-card strong,
+      .map-card strong,
+      .script-card strong,
+      .walk-card strong {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--teal);
+        font-size: 0.78rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .panel h3,
+      .talk-card h3,
+      .run-card h3,
+      .map-card h3,
+      .cheat-card h3,
+      .script-card h3,
+      .walk-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.18rem;
+      }
+
+      .panel p,
+      .talk-card p,
+      .run-card p,
+      .map-card p,
+      .cheat-card p,
+      .script-card p,
+      .walk-card p,
+      li {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .tag-row {
+        margin-top: 18px;
+      }
+
+      .tag-row span {
+        display: inline-flex;
+        min-height: 34px;
+        align-items: center;
+        border-radius: 8px;
+        padding: 0 10px;
+        background: #eef7f5;
+        color: #0b5f59;
+        font-size: 0.86rem;
+        font-weight: 850;
+      }
+
+      .say {
+        margin: 0;
+        padding: 18px;
+        border-left: 5px solid var(--plum);
+        border-radius: 8px;
+        background: #f4f1ff;
+        color: #38247a;
+        line-height: 1.7;
+      }
+
+      .say b {
+        color: #261756;
+      }
+
+      .run-card {
+        min-height: 188px;
+        border-top: 5px solid var(--blue);
+      }
+
+      .run-card:nth-child(2) {
+        border-top-color: var(--teal);
+      }
+
+      .run-card:nth-child(3) {
+        border-top-color: var(--gold);
+      }
+
+      .run-card:nth-child(4) {
+        border-top-color: var(--coral);
+      }
+
+      .run-card:nth-child(5) {
+        border-top-color: var(--green);
+      }
+
+      .run-card span,
+      .cheat-card span {
+        display: block;
+        margin-bottom: 16px;
+        color: #8b97aa;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .concept-band {
+        padding: 58px;
+        border-radius: 8px;
+        color: #fff;
+        background:
+          linear-gradient(120deg, rgba(23, 32, 51, 0.97), rgba(15, 118, 110, 0.84)),
+          url("/assets/ai-software-showcase.png");
+        background-size: cover;
+        background-position: center;
+        box-shadow: var(--shadow);
+      }
+
+      .concept-band h2 {
+        max-width: 840px;
+        margin-bottom: 18px;
+        font-size: 2.55rem;
+        line-height: 1.04;
+      }
+
+      .concept-band p {
+        max-width: 860px;
+        margin-bottom: 18px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.04rem;
+        line-height: 1.72;
+      }
+
+      .concept-band p:last-child {
+        margin-bottom: 0;
+      }
+
+      .code-panel {
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        background: #101827;
+        color: #e5edf8;
+        box-shadow: 0 22px 48px rgba(10, 16, 29, 0.16);
+      }
+
+      .code-panel header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        min-height: 52px;
+        padding: 0 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+        color: #a7b4c9;
+        font-weight: 850;
+      }
+
+      pre {
+        margin: 0;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+
+      .code-panel pre {
+        padding: 22px;
+        font: 0.95rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      }
+
+      .map-card code,
+      .talk-card code,
+      .walk-card code,
+      .script-card code {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        border-radius: 8px;
+        padding: 0 10px;
+        color: #0f3b38;
+        background: #e7f5f2;
+        font: 800 0.9rem ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      }
+
+      ul {
+        margin: 14px 0 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .callout {
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid #f3d58d;
+        border-radius: 8px;
+        background: #fff8e6;
+        color: #6d4b00;
+        line-height: 1.65;
+      }
+
+      .closing {
+        padding-bottom: 86px;
+      }
+
+      .site-footer {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 24px;
+        padding: 48px 0 56px;
+        color: #475569;
+        border-top: 1px solid var(--line);
+      }
+
+      .site-footer a {
+        display: block;
+        margin-top: 9px;
+      }
+
+      @media (max-width: 1080px) {
+        .run-grid,
+        .grid-4 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 980px) {
+        .site-nav {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .brand {
+          margin-right: 0;
+        }
+
+        .nav-links {
+          gap: 14px;
+        }
+
+        .nav-actions {
+          display: none;
+        }
+
+        .hero {
+          min-height: 70vh;
+          padding-top: 172px;
+        }
+
+        h1 {
+          font-size: 3.1rem;
+        }
+
+        .section-header,
+        .grid-2,
+        .grid-3,
+        .site-footer {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .site-nav,
+        .hero-inner,
+        .section,
+        .site-footer,
+        .quick-links {
+          width: min(100% - 24px, 1160px);
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 180px 0 46px;
+        }
+
+        h1 {
+          font-size: 2.34rem;
+          line-height: 1;
+        }
+
+        .hero-copy > p {
+          font-size: 1rem;
+        }
+
+        .quick-links {
+          margin-top: 12px;
+        }
+
+        .section {
+          padding-top: 58px;
+        }
+
+        .section-header h2,
+        .concept-band h2 {
+          font-size: 2rem;
+        }
+
+        .run-grid,
+        .grid-4 {
+          grid-template-columns: 1fr;
+        }
+
+        .panel,
+        .talk-card,
+        .map-card,
+        .script-card,
+        .walk-card,
+        .concept-band {
+          padding: 22px;
+        }
+      }
+
+      @media print {
+        .site-nav,
+        .hero,
+        .quick-links,
+        .site-footer,
+        .button {
+          display: none;
+        }
+
+        body {
+          background: #fff;
+        }
+
+        .section {
+          width: 100%;
+          padding: 22px 0;
+        }
+
+        .panel,
+        .talk-card,
+        .run-card,
+        .map-card,
+        .cheat-card,
+        .script-card,
+        .walk-card,
+        .code-panel {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="brand" href="/" aria-label="Mojo AI Studio home">
+        <span class="brand-mark">M</span>
+        <span>Mojo AI Studio</span>
+      </a>
+      <div class="nav-links">
+        <a href="/buy/">Buy</a>
+        <a href="/sell">Sell</a>
+        <a href="/request/">Request</a>
+        <a href="/learn/" class="active">Learn</a>
+        <a href="/forum/">Forum</a>
+      </div>
+      <div class="nav-actions">
+        <a class="button ghost" href="/welcomeback/" target="_blank" rel="noopener">Open /welcomeback</a>
+      </div>
+    </nav>
+
+    <header class="hero" id="top">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">Teacher guide for /welcomeback</p>
+          <h1>Teach Harness Engineering From the Neural Orchestrator Page</h1>
+          <p>
+            Use this while students look at <strong>mojoaistudio.com/welcomeback</strong>.
+            It tells you what to point at, what concept it demonstrates, and what
+            words to use live.
+          </p>
+          <div class="hero-actions">
+            <a class="button light" href="/welcomeback/" target="_blank" rel="noopener">Open live page</a>
+            <a class="button dark" href="#run-of-show">Run of show</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="quick-links" aria-label="Teacher guide sections">
+      <a href="#frame">Frame</a>
+      <a href="#run-of-show">Run</a>
+      <a href="#map">Page map</a>
+      <a href="#walkthrough">Walkthrough</a>
+      <a href="#cheats">Cheats</a>
+      <a href="#exercise">Exercise</a>
+      <button type="button" onclick="window.print()">Print</button>
+    </div>
+
+    <main>
+      <section class="section" id="frame">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Correct teaching frame</p>
+            <h2>This is not a generic harness lecture. The page is the harness artifact.</h2>
+          </div>
+          <p>
+            The goal is to teach harness engineering by walking through the actual
+            command-center surface, modals, skill downloads, harness cards, and
+            proof/gate language on `/welcomeback/`.
+          </p>
+        </div>
+
+        <div class="concept-band">
+          <p class="kicker">Opening script</p>
+          <h2>Start by naming what students are looking at.</h2>
+          <p>
+            "This page is not just a class landing page. Treat it as a harness
+            surface. It sets up the teaching context, organizes the work, exposes
+            controls, links skills, shows dependencies, and gives us a way to
+            inspect the system."
+          </p>
+          <p>
+            "Tonight, when I say harness, I do not only mean test harness. I mean a
+            controlled wrapper around work: setup, run, observe, judge, and recover."
+          </p>
+          <p>
+            "The `/welcomeback` page is our working example of that wrapper."
+          </p>
+        </div>
+      </section>
+
+      <section class="section" id="run-of-show">
+        <div class="section-header">
+          <div>
+            <p class="kicker">90-minute class</p>
+            <h2>Run of show tied to /welcomeback</h2>
+          </div>
+          <p>
+            Keep the live page open the whole time. Do not let the class become
+            vocabulary-only. Every concept should point back to a visible page element.
+          </p>
+        </div>
+
+        <div class="run-grid">
+          <article class="run-card">
+            <span>0-10 min</span>
+            <h3>Orient to the surface</h3>
+            <p>Show the top bar, countdown/status, side nav, and repo links. Name them as setup and context.</p>
+          </article>
+          <article class="run-card">
+            <span>10-25 min</span>
+            <h3>Define harness</h3>
+            <p>Use the page itself: it prepares, presents, controls, observes, and offers recovery paths.</p>
+          </article>
+          <article class="run-card">
+            <span>25-45 min</span>
+            <h3>Walk harness cards</h3>
+            <p>Open Class_Agenda cards and the detail modal. Teach function, levers, and proposed skills.</p>
+          </article>
+          <article class="run-card">
+            <span>45-65 min</span>
+            <h3>Open build primer</h3>
+            <p>Teach the nine-step system-design harness: work, stages, workers, contracts, handoffs, memory, tools, gates, tests.</p>
+          </article>
+          <article class="run-card">
+            <span>65-90 min</span>
+            <h3>Exercise and close</h3>
+            <p>Students pick a visible harness card and translate it into setup, run, observe, judge, recover.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="map">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Page map</p>
+            <h2>What each /welcomeback section teaches</h2>
+          </div>
+          <p>
+            Use this as your cheat sheet while screen-sharing. Each visible section
+            maps to one harness concept.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="map-card">
+            <strong>Countdown and status</strong>
+            <h3>Harness setup and run state</h3>
+            <p>
+              The countdown makes the run bounded in time. The status label tells
+              students whether the system is pre-run, in-run, or post-run.
+            </p>
+            <p class="say"><b>Say:</b> "A harness should make state visible before anyone starts clicking."</p>
+          </article>
+
+          <article class="map-card">
+            <strong>Valuable repositories</strong>
+            <h3>Dependencies and reference sources</h3>
+            <p>
+              Obsidianify and Graphify are not decoration. They are source systems
+              the lesson uses to talk about memory, context, and repo understanding.
+            </p>
+            <p class="say"><b>Say:</b> "A harness names its dependencies instead of pretending they are implicit."</p>
+          </article>
+
+          <article class="map-card">
+            <strong>Class_Agenda cards</strong>
+            <h3>Harness inventory</h3>
+            <p>
+              The generated harness cards divide the orchestration system into
+              understandable control surfaces.
+            </p>
+            <p class="say"><b>Say:</b> "This is an inventory of what has to be controlled before an agentic system is trustworthy."</p>
+          </article>
+
+          <article class="map-card">
+            <strong>Harness detail modal</strong>
+            <h3>Function, levers, and proof</h3>
+            <p>
+              Each modal explains the harness function and the knobs that move
+              performance, cost, and capability.
+            </p>
+            <p class="say"><b>Say:</b> "A useful harness is tunable. If nothing can be adjusted, it is just a display."</p>
+          </article>
+
+          <article class="map-card">
+            <strong>Installable skills</strong>
+            <h3>Automation packaging</h3>
+            <p>
+              The SKILL.md downloads show how concepts become portable automation
+              units that can be installed into a coding environment.
+            </p>
+            <p class="say"><b>Say:</b> "Development automation becomes useful when the capability can travel with the project."</p>
+          </article>
+
+          <article class="map-card">
+            <strong>Build primer modal</strong>
+            <h3>System-design harness</h3>
+            <p>
+              The nine collapsible steps are a harness for designing multi-agent
+              systems without jumping straight to naming agents.
+            </p>
+            <p class="say"><b>Say:</b> "This modal protects the design process from premature implementation."</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="walkthrough">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Live walkthrough</p>
+            <h2>Exact teaching sequence on the page</h2>
+          </div>
+          <p>
+            Use these steps as your screen-share script. Each step has a visible
+            action and a concept to say out loud.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="walk-card">
+            <strong>1. Point to the page chrome</strong>
+            <h3>Top nav, side nav, countdown</h3>
+            <p class="say">
+              <b>Say:</b> "Before a harness runs anything, it establishes where we
+              are, what session we are in, and what state we are starting from."
+            </p>
+            <ul>
+              <li>Top nav equals stable global context.</li>
+              <li>Side nav equals related systems and reference destinations.</li>
+              <li>Countdown equals run boundary and status signal.</li>
+            </ul>
+          </article>
+
+          <article class="walk-card">
+            <strong>2. Point to Valuable Repositories</strong>
+            <h3>Dependencies and source-of-truth inputs</h3>
+            <p class="say">
+              <b>Say:</b> "A harness should expose the sources it depends on. If
+              those sources are hidden, students or developers cannot inspect the run."
+            </p>
+            <ul>
+              <li>Obsidianify demonstrates memory injection.</li>
+              <li>Graphify demonstrates repo graph understanding.</li>
+              <li>Other repositories are optional comparison context.</li>
+            </ul>
+          </article>
+
+          <article class="walk-card">
+            <strong>3. Open an Orchestrator card</strong>
+            <h3>Control plane harnesses</h3>
+            <p class="say">
+              <b>Say:</b> "This layer is about the system around the work: routing,
+              proof, session state, memory, tool permissions, release readiness."
+            </p>
+            <ul>
+              <li>Use <code>Proof Authority</code> to teach judgment.</li>
+              <li>Use <code>Tool Registry</code> to teach permission boundaries.</li>
+              <li>Use <code>Session Manager</code> to teach recovery.</li>
+            </ul>
+          </article>
+
+          <article class="walk-card">
+            <strong>4. Open a Model Harness card</strong>
+            <h3>Per-call boundary harnesses</h3>
+            <p class="say">
+              <b>Say:</b> "Every model call is also a tiny harness: select, route,
+              prompt, verify, trace, measure cost, and decide whether to trust it."
+            </p>
+            <ul>
+              <li>Use <code>Prompt</code> to teach controlled input.</li>
+              <li>Use <code>Response</code> to teach captured output.</li>
+              <li>Use <code>Evidence</code> and <code>Trust</code> to teach pass/fail.</li>
+            </ul>
+          </article>
+
+          <article class="walk-card">
+            <strong>5. Show performance/cost/capability</strong>
+            <h3>The three lever model</h3>
+            <p class="say">
+              <b>Say:</b> "A harness is not only a wrapper. It gives us levers.
+              We can tune speed, cost, or capability, but every lever has tradeoffs."
+            </p>
+            <ul>
+              <li>Performance levers change how fast the harness runs.</li>
+              <li>Cost levers limit waste and overuse.</li>
+              <li>Capability levers expand what the harness can safely do.</li>
+            </ul>
+          </article>
+
+          <article class="walk-card">
+            <strong>6. Open Comprehensive Build Primer</strong>
+            <h3>The design harness</h3>
+            <p class="say">
+              <b>Say:</b> "This modal is a harness for thinking. It prevents us
+              from building agents before we understand the work."
+            </p>
+            <ul>
+              <li>Step 1 is setup: define the work.</li>
+              <li>Steps 2-7 are run design: stages, workers, contracts, handoffs, memory, tools.</li>
+              <li>Steps 8-9 are judgment and recovery: gates, tests, observation, improvement.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="script">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Talk track</p>
+            <h2>Verbiage to use while teaching the harness concepts</h2>
+          </div>
+          <p>
+            These lines are specific to `/welcomeback/`, so they should feel
+            connected to the page on screen.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="script-card">
+            <strong>Setup</strong>
+            <h3>When showing the first viewport</h3>
+            <p class="say">
+              <b>Say:</b> "Setup is not just installing packages. Setup is also
+              orienting the operator. This page tells us what session we are in,
+              what resources matter, and what controls are available."
+            </p>
+          </article>
+
+          <article class="script-card">
+            <strong>Run</strong>
+            <h3>When opening cards and modals</h3>
+            <p class="say">
+              <b>Say:</b> "The run here is interactive. We are not executing one
+              shell command. We are walking a controlled teaching surface that
+              reveals one subsystem at a time."
+            </p>
+          </article>
+
+          <article class="script-card">
+            <strong>Observe</strong>
+            <h3>When discussing details and evidence</h3>
+            <p class="say">
+              <b>Say:</b> "Observation means the harness makes hidden state visible:
+              function, route, proof, cost, latency, policy, trace, and trust."
+            </p>
+          </article>
+
+          <article class="script-card">
+            <strong>Judge</strong>
+            <h3>When using Proof Authority and Verify</h3>
+            <p class="say">
+              <b>Say:</b> "A system is not trustworthy because it produced output.
+              It becomes trustworthy when the harness knows how to judge the output."
+            </p>
+          </article>
+
+          <article class="script-card">
+            <strong>Recover</strong>
+            <h3>When using Fallback and Session Manager</h3>
+            <p class="say">
+              <b>Say:</b> "Recovery is designed before failure. Fallback, session
+              lifecycle, rollback gates, and degraded behavior are recovery concepts."
+            </p>
+          </article>
+
+          <article class="script-card">
+            <strong>Package</strong>
+            <h3>When using SKILL.md downloads</h3>
+            <p class="say">
+              <b>Say:</b> "The moment a pattern becomes a skill file, it stops being
+              just a lecture idea and starts becoming reusable development automation."
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="cheats">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Cheats</p>
+            <h2>Use these when students ask the obvious questions</h2>
+          </div>
+          <p>
+            These answers keep the discussion tied to the page instead of drifting
+            into abstract agent theory.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="cheat-card">
+            <span>If they ask "where is the harness?"</span>
+            <h3>Answer</h3>
+            <p>The page is the harness surface. The cards and modals expose the harness components.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they ask "is this automation?"</span>
+            <h3>Answer</h3>
+            <p>Parts are automation-ready: SKILL.md downloads, prompt packets, and harness levers.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they ask "what runs?"</span>
+            <h3>Answer</h3>
+            <p>In this lesson, the run is the controlled walkthrough. In implementation, each skill or harness would execute work.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they ask "what proves it worked?"</span>
+            <h3>Answer</h3>
+            <p>Proof is explicit: Verify, Evidence, Trace, Trust, Proof Authority, and release readiness.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they ask about agents</span>
+            <h3>Answer</h3>
+            <p>The build primer says not to start with agents. Start with work, stages, workers, contracts, and gates.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they get lost in cards</span>
+            <h3>Answer</h3>
+            <p>Group them into two layers: orchestrator harnesses and model-call harnesses.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If they ask why skills matter</span>
+            <h3>Answer</h3>
+            <p>Skills package repeatable behavior. That is where lesson content becomes development automation.</p>
+          </article>
+          <article class="cheat-card">
+            <span>If time is short</span>
+            <h3>Answer</h3>
+            <p>Teach only Proof Authority, Tool Registry, Model Router, Prompt, Verify, Evidence, and Trust.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="exercise">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Student exercise</p>
+            <h2>Make students translate one visible card into a harness design</h2>
+          </div>
+          <p>
+            This exercise uses `/welcomeback/` directly. Students do not invent a
+            random workflow; they pick a card from the page.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <article class="panel">
+            <strong>Instructions</strong>
+            <h3>Give this prompt</h3>
+            <p class="say">
+              <b>Say:</b> "Pick one card on the `/welcomeback` page. It can be
+              Proof Authority, Tool Registry, Model Router, Prompt, Verify, Trust,
+              or anything else. Translate that card into setup, run, observe,
+              judge, and recover."
+            </p>
+            <ul>
+              <li>Give students five minutes to pick and draft.</li>
+              <li>Ask three students to share different cards.</li>
+              <li>Challenge any answer that does not include evidence or recovery.</li>
+            </ul>
+          </article>
+
+          <div class="code-panel" aria-label="Worksheet template">
+            <header>
+              <span>Worksheet for /welcomeback card</span>
+            </header>
+            <pre><code>Card chosen:
+
+What work does this harness control?
+
+Setup:
+  What state, context, policy, or dependency must exist first?
+
+Run:
+  What action does the harness allow, route, trigger, or inspect?
+
+Observe:
+  What evidence, trace, status, metric, or artifact should it capture?
+
+Judge:
+  What makes the result trusted, blocked, reviewed, or expired?
+
+Recover:
+  What happens when the route fails, stalls, violates policy, or needs rollback?
+
+Performance lever:
+
+Cost lever:
+
+Capability lever:
+
+One SKILL.md or automation this could become:</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="examples">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Model answers</p>
+            <h2>Examples you can use if the room needs help</h2>
+          </div>
+          <p>
+            These show students what a strong translation from page card to harness
+            design sounds like.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="talk-card">
+            <strong>Proof Authority</strong>
+            <h3>Judgment harness</h3>
+            <p><b>Setup:</b> define evidence types and sufficiency thresholds.</p>
+            <p><b>Run:</b> score evidence before work is trusted.</p>
+            <p><b>Observe:</b> collect proof bundles, crosschecks, and waivers.</p>
+            <p><b>Judge:</b> trusted, insufficient, waived, or blocked.</p>
+            <p><b>Recover:</b> request more evidence or route to review.</p>
+          </article>
+
+          <article class="talk-card">
+            <strong>Tool Registry</strong>
+            <h3>Permission harness</h3>
+            <p><b>Setup:</b> know allowed tools, credentials, dry-run rules, and reversibility.</p>
+            <p><b>Run:</b> execute only approved tool actions.</p>
+            <p><b>Observe:</b> log commands, outputs, and side effects.</p>
+            <p><b>Judge:</b> allowed, needs approval, denied, or unsafe.</p>
+            <p><b>Recover:</b> rollback, stop, or escalate.</p>
+          </article>
+
+          <article class="talk-card">
+            <strong>Model Router</strong>
+            <h3>Routing harness</h3>
+            <p><b>Setup:</b> model catalog, policy, cost limits, fallback chain.</p>
+            <p><b>Run:</b> route the task to a provider/model path.</p>
+            <p><b>Observe:</b> record route, latency, cost, output, and failures.</p>
+            <p><b>Judge:</b> adequate route, fallback needed, or blocked.</p>
+            <p><b>Recover:</b> retry, fallback, downgrade, or ask for approval.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section closing" id="close">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Close</p>
+            <h2>Closing script for this specific page</h2>
+          </div>
+          <p>
+            End by tying the visual system back to the durable harness model.
+          </p>
+        </div>
+
+        <div class="panel">
+          <p class="say">
+            <b>Say:</b> "What you saw on `/welcomeback` is a command-center version
+            of harness thinking. It exposes state, names dependencies, separates
+            control planes, packages capabilities as skills, opens details for
+            inspection, and puts proof, gates, trust, fallback, and recovery on
+            the surface."
+          </p>
+          <p class="say">
+            <b>Final line:</b> "Harness engineering is the craft of making complex
+            work inspectable enough that automation can be trusted."
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <span class="brand-mark">M</span>
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>Practical AI classes and software for builders.</p>
+      </div>
+      <div>
+        <b>Class pages</b>
+        <a href="/welcomeback/">Live teaching artifact</a>
+        <a href="/harness/">Student companion</a>
+      </div>
+      <div>
+        <b>Teacher</b>
+        <a href="/harnessteach/">Teacher guide</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>

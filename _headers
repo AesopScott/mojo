@@ -28,6 +28,16 @@
   Pragma: no-cache
   Expires: 0
 
+/harnessteach
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+/harnessteach/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
 /MindShare
   Cache-Control: no-cache, no-store, must-revalidate
   Pragma: no-cache
