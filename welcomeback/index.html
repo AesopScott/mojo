@@ -4,6 +4,13 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>NEURAL_ORCHESTRATOR_V1.0 | AI Agent Orchestration</title>
+<!-- Favicons -->
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#0f0f1a"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -255,8 +262,19 @@ Other Repositories
 <h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Class_Agenda</h2>
 <div class="flex-grow data-flow-line"></div>
 </div>
-<!-- Harness skill buttons: one per skill, grouped by harness. Click opens the harness detail modal (mirrors MindShare Central). -->
+<!-- Harness skill cards: one per skill, grouped by harness. Download buttons fetch the related SKILL.md; Details opens the harness modal. -->
 <div class="md:col-span-12" id="harness-skills-root"></div>
+</section>
+<!-- Installable skills: fetched live from skills/manifest.json in the central repo -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-10">
+<div class="md:col-span-12 flex items-center gap-4">
+<h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Installable_Skills</h2>
+<div class="flex-grow data-flow-line"></div>
+</div>
+<div class="md:col-span-12">
+<p class="mb-4 text-xs text-on-surface-variant/70 leading-relaxed">Real harness skills — one-click download to your Claude Code project. Each SKILL.md drops into <code class="rounded bg-black/40 px-1 py-0.5 text-primary-fixed">~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code>.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="installable-skills-root"><div class="col-span-full py-8 text-center text-xs text-on-surface-variant">Loading skills…</div></div>
+</div>
 </section>
 </div>
 </main>
@@ -286,8 +304,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Start with the business process, task, workflow, or outcome. Do not start by naming agents.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-1" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/foundation/SKILL.md" data-skill-slug="foundation" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-1">Help me define the work before I build agents. Ask me what business process, task, workflow, or outcome I want to improve. Then produce a 15-item work-definition checklist that answers:
 1. What work needs to be done?
@@ -313,8 +331,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Turn the work into a practical sequence of stages.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-2" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/shape/SKILL.md" data-skill-slug="shape" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-2">Break this workflow into clear stages. For the full workflow, produce a 15-item stage map that answers:
 1. What is the first stage?
@@ -340,8 +358,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Decide what kind of worker belongs at each stage. A worker may be human, AI, scripted, tool-based, or external.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-3" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-roster/SKILL.md" data-skill-slug="multi-agent-roster" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-3">For each stage of this workflow, identify what kind of worker is needed. The worker may be a human, prompt, tool, script, workflow, assistant, agent, or external system. Produce a 15-item worker map that answers:
 1. What work must be done at this stage?
@@ -367,8 +385,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Define responsibility, authority, boundaries, and failure behavior before implementation.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-4" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-contracts/SKILL.md" data-skill-slug="multi-agent-contracts" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-4">Create an operating contract for each worker in this workflow. For each worker, answer these 15 contract questions:
 1. What is the worker&#39;s purpose?
@@ -394,8 +412,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Specify how work moves from one stage or worker to the next.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-5" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-coordination/SKILL.md" data-skill-slug="multi-agent-coordination" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-5">Design the handoff protocol for this multi-agent workflow. Produce a 15-field handoff packet that includes:
 1. Task ID
@@ -421,8 +439,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Decide what each stage needs to know and what should stay out of context.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-6" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-capabilities/SKILL.md" data-skill-slug="multi-agent-capabilities" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-6">For each stage of this workflow, define what memory and context should be injected. Produce a 15-item context-injection plan that answers:
 1. What context does this stage need?
@@ -448,8 +466,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Give each worker only the tools and permissions required for its stage.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-7" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/equip-agent/SKILL.md" data-skill-slug="equip-agent" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-7">Map the tools and capabilities needed for each worker. Produce a 15-item tool and boundary plan that answers:
 1. What tool or capability is needed?
@@ -475,8 +493,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Place human review before consequential action.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-8" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-orchestration/SKILL.md" data-skill-slug="multi-agent-orchestration" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-8">Identify every point in this workflow where governance or human approval is required. Produce a 15-item approval-gate plan that answers:
 1. What actions have real-world consequence?
@@ -502,8 +520,8 @@ Other Repositories
 <p class="mt-4 text-xs leading-relaxed">Validate the system before trusting it with real work, then observe it after it runs.</p>
 <div class="mt-4 border border-outline-variant/40 p-4">
 <div class="mb-2 flex items-center justify-between gap-4">
-<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Ask AI</span>
-<button class="copy-primer-prompt border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-copy-target="primer-prompt-9" type="button">Copy</button>
+<span class="font-label-caps text-secondary-fixed-dim text-[10px]">Related Skill</span>
+<button class="download-primer-skill border border-primary/30 px-3 py-1 text-[10px] text-primary-fixed" data-skill-raw="https://raw.githubusercontent.com/AesopScott/central/main/skills/multi-agent-evaluate/SKILL.md" data-skill-slug="multi-agent-evaluate" type="button">Download SKILL.md</button>
 </div>
 <pre class="whitespace-pre-wrap font-code-sm text-xs text-on-surface" id="primer-prompt-9">Create a testing, evaluation, and observability plan for this multi-agent workflow. Produce a 15-item validation plan that answers:
 1. What normal test cases should pass?
@@ -529,7 +547,7 @@ Other Repositories
 <ul class="mt-3 space-y-2 text-xs">
 <li>Make the modal usable as a working guide, not just a reading experience.</li>
 <li>Each collapsible step should be independently scannable.</li>
-<li>Use copy buttons for each AI prompt if available.</li>
+<li>Use download buttons for the related MAPS skill at each step.</li>
 <li>Keep the prompt text in monospace/code styling.</li>
 <li>Keep explanations short enough for a pop-up.</li>
 <li>The page should emphasize that multi-agent systems are designed from work, contracts, handoffs, memory, tools, governance, and tests, not from agent names alone.</li>
@@ -698,15 +716,9 @@ Other Repositories
 
         bindModalTrigger(buildPrimerTrigger, buildPrimerModal, buildPrimerClose);
         bindModalTrigger(otherRepositoriesTrigger, otherRepositoriesModal, otherRepositoriesClose);
-        document.querySelectorAll('.copy-primer-prompt').forEach((button) => {
-            button.addEventListener('click', async () => {
-                const target = document.getElementById(button.dataset.copyTarget);
-                if (!target) return;
-                await navigator.clipboard.writeText(target.innerText);
-                button.innerText = 'Copied';
-                setTimeout(() => {
-                    button.innerText = 'Copy';
-                }, 1200);
+        document.querySelectorAll('.download-primer-skill').forEach((button) => {
+            button.addEventListener('click', () => {
+                downloadSkillFile(button.dataset.skillRaw, button.dataset.skillSlug, button);
             });
         });
         document.addEventListener('keydown', (e) => {
@@ -1097,89 +1109,37 @@ Other Repositories
             { key:'cap', label:'Capability', accent:'#48ff91' }
         ];
 
-        // Copy-command control. Clicking copies the slash command to the clipboard so an
-        // operator can paste it straight into Claude Code. These skills are reference-only and
-        // not installable from a web page, so "copy command" is the honest action — no artifact
-        // is downloaded, nothing touches the visitor's filesystem.
-        function copyCtrlHtml(cmd){
-            if(!cmd) return '';
-            return '<span role="button" tabindex="0" data-copy="'+hEscape(cmd)+'"'
-                + ' class="copy-skill inline-flex items-center gap-1 rounded bg-primary/15 hover:bg-primary/25 px-1.5 py-0.5 cursor-pointer select-none font-label-caps text-[9px] uppercase tracking-widest text-primary-fixed transition-colors"'
-                + ' aria-label="Copy command '+hEscape(cmd)+'">'
-                + '<span class="material-symbols-outlined text-[13px] leading-none" aria-hidden="true">content_copy</span>'
-                + '<span class="copy-skill-label">Copy</span></span>';
+        var CENTRAL_SKILL_RAW_BASE = 'https://raw.githubusercontent.com/AesopScott/central/main/skills';
+
+        function cmdToSkillSlug(cmd) {
+            return String(cmd || '').replace(/^\//, '').replace(/\+\+$/, '-plus-plus').replace(/\+(smith|fuse|phoenix)$/, '-$1');
         }
 
-        function cmdRowHtml(cmd){
-            if(!cmd) return '';
-            return '<div class="flex items-center gap-2 flex-wrap">'
-                + '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(cmd)+'</code>'
-                + copyCtrlHtml(cmd)
-                + '</div>';
-        }
-
-        function fallbackCopySkill(text, done){
-            try {
-                var ta = document.createElement('textarea');
-                ta.value = text; ta.setAttribute('readonly','');
-                ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
-                document.body.appendChild(ta); ta.select();
-                var ok = document.execCommand('copy');
-                document.body.removeChild(ta); done(ok);
-            } catch(err){ done(false); }
-        }
-
-        function flashCopied(el, ok){
-            var label = el.querySelector('.copy-skill-label');
-            if(!label) return;
-            label.textContent = ok ? 'Copied' : 'Copy failed';
-            el.classList.add('copied');
-            setTimeout(function(){ label.textContent = 'Copy'; el.classList.remove('copied'); }, 1400);
-        }
-
-        function handleCopySkill(el){
-            var cmd = el.getAttribute('data-copy');
-            if(!cmd) return;
-            var done = function(ok){ flashCopied(el, ok); };
-            if(navigator.clipboard && navigator.clipboard.writeText){
-                navigator.clipboard.writeText(cmd).then(function(){ done(true); }, function(){ fallbackCopySkill(cmd, done); });
-            } else {
-                fallbackCopySkill(cmd, done);
-            }
-        }
-
-        // Capture-phase delegation: stopPropagation here prevents a copy click on a skill bar
-        // from also firing the bar's bubble-phase handler that opens the harness detail modal.
-        function wireCopySkills(){
-            document.addEventListener('click', function(e){
-                var el = e.target.closest ? e.target.closest('.copy-skill') : null;
-                if(!el) return;
-                e.preventDefault(); e.stopPropagation();
-                handleCopySkill(el);
-            }, true);
-            document.addEventListener('keydown', function(e){
-                if(e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
-                var el = e.target.closest ? e.target.closest('.copy-skill') : null;
-                if(!el) return;
-                e.preventDefault(); e.stopPropagation();
-                handleCopySkill(el);
-            }, true);
+        function skillRawUrl(slug) {
+            return CENTRAL_SKILL_RAW_BASE + '/' + encodeURIComponent(slug) + '/SKILL.md';
         }
 
         function skillButtonHtml(harnessName, axis, skill){
             if(!skill || !skill.name) return '';
-            return '<button type="button" data-harness="'+hEscape(harnessName)+'" aria-haspopup="dialog"'
+            var slug = cmdToSkillSlug(skill.cmd || skill.name);
+            return '<div'
                 + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full">'
                 + '<div class="flex items-center gap-2">'
                 + '<span class="h-2 w-2 rounded-full" style="background:'+axis.accent+'"></span>'
                 + '<span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+axis.accent+'">'+hEscape(axis.label)+'</span>'
-                + '<span class="ml-auto material-symbols-outlined text-[16px] text-on-surface-variant/50">tune</span>'
+                + '<span class="ml-auto material-symbols-outlined text-[16px] text-on-surface-variant/50">download</span>'
                 + '</div>'
                 + '<div class="font-body-md font-bold text-on-surface group-hover:text-primary-fixed transition-colors">'+hEscape(skill.name)+'</div>'
-                + (skill.cmd ? cmdRowHtml(skill.cmd) : '')
+                + (skill.cmd ? '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
                 + '<p class="text-xs text-on-surface-variant leading-relaxed">'+hEscape(skill.desc)+'</p>'
-                + '<span class="mt-auto pt-1 font-label-caps text-[9px] uppercase tracking-widest text-secondary-fixed-dim">'+hEscape(harnessName)+'</span>'
-                + '</button>';
+                + '<div class="mt-auto flex flex-wrap items-center gap-2 pt-2">'
+                + '<button type="button" data-skill-raw="'+hEscape(skillRawUrl(slug))+'" data-skill-slug="'+hEscape(slug)+'"'
+                + ' class="inline-flex items-center gap-1.5 rounded border border-primary-fixed/40 bg-primary-fixed/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-fixed transition hover:bg-primary-fixed/20">'
+                + '↓ <span data-dl-label>Download SKILL.md</span></button>'
+                + '<button type="button" data-harness="'+hEscape(harnessName)+'" aria-haspopup="dialog"'
+                + ' class="inline-flex items-center gap-1.5 rounded border border-primary/25 bg-black/30 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-on-surface-variant transition hover:border-primary-fixed/50 hover:text-primary-fixed">Details</button>'
+                + '</div>'
+                + '</div>';
         }
 
         function harnessGroupHtml(title, subtitle, items){
@@ -1211,6 +1171,11 @@ Other Repositories
             root.querySelectorAll('button[data-harness]').forEach(function(btn){
                 btn.addEventListener('click', function(){ openHarnessDetail(btn.dataset.harness); });
             });
+            root.querySelectorAll('[data-skill-raw]').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    downloadSkillFile(btn.dataset.skillRaw, btn.dataset.skillSlug, btn.querySelector('[data-dl-label]'));
+                });
+            });
         }
 
         function leverListHtml(title, accent, items){
@@ -1223,9 +1188,13 @@ Other Repositories
 
         function skillCardHtml(label, accent, skill){
             if(!skill || !skill.name) return '';
+            var slug = cmdToSkillSlug(skill.cmd || skill.name);
             return '<div class="rounded-lg border border-primary/15 bg-black/30 p-3"><div class="mb-1 flex items-center gap-2"><span class="h-2 w-2 rounded-full" style="background:'+accent+'"></span><span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+accent+'">'+hEscape(label)+'</span></div><div class="text-sm font-bold text-on-surface">'+hEscape(skill.name)+'</div>'
-                + (skill.cmd ? '<div class="mt-0.5">'+cmdRowHtml(skill.cmd)+'</div>' : '')
-                + '<p class="mt-0.5 text-xs leading-relaxed text-on-surface-variant">'+hEscape(skill.desc)+'</p></div>';
+                + (skill.cmd ? '<code class="mt-0.5 inline-block rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(skill.cmd)+'</code>' : '')
+                + '<p class="mt-0.5 text-xs leading-relaxed text-on-surface-variant">'+hEscape(skill.desc)+'</p>'
+                + '<button type="button" data-skill-raw="'+hEscape(skillRawUrl(slug))+'" data-skill-slug="'+hEscape(slug)+'"'
+                + ' class="mt-3 inline-flex items-center gap-1.5 rounded border border-primary-fixed/40 bg-primary-fixed/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-primary-fixed transition hover:bg-primary-fixed/20">'
+                + '↓ <span data-dl-label>Download SKILL.md</span></button></div>';
         }
 
         function renderHarnessDetail(name){
@@ -1264,10 +1233,15 @@ Other Repositories
                 +       leverListHtml('Capability','#48ff91', detail && detail.cap)
                 +   '</div></div>'
                 +   (skillCards ? '<div><div class="mb-2 font-label-caps text-[10px] uppercase tracking-[0.2em] text-on-surface-variant/60">Proposed skills</div><div class="grid grid-cols-1 gap-3 sm:grid-cols-3">'+skillCards+'</div></div>' : '')
-                +   '<p class="rounded-md border border-primary/15 bg-black/30 px-3 py-2 text-[11px] leading-relaxed text-on-surface-variant/70">Reference only. These levers and proposed skills describe where skills, plugins, scripts, and config will later attach &mdash; nothing here is wired to act yet. Each change is a gated, reviewed step.</p>'
+                +   '<p class="rounded-md border border-primary/15 bg-black/30 px-3 py-2 text-[11px] leading-relaxed text-on-surface-variant/70">These levers describe where skills, plugins, scripts, and config attach. Skill buttons download SKILL.md files only; live harness changes remain gated, reviewed steps.</p>'
                 + '</div>';
             var cb = document.getElementById('harness-detail-close');
             if(cb) cb.addEventListener('click', closeHarnessDetail);
+            card.querySelectorAll('[data-skill-raw]').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    downloadSkillFile(btn.dataset.skillRaw, btn.dataset.skillSlug, btn.querySelector('[data-dl-label]'));
+                });
+            });
         }
 
         function openHarnessDetail(name){
@@ -1284,16 +1258,75 @@ Other Repositories
             m.classList.add('hidden'); m.classList.remove('flex'); m.setAttribute('aria-hidden','true');
         }
 
+        var MANIFEST_URL = 'https://raw.githubusercontent.com/AesopScott/central/main/skills/manifest.json';
+
+        function downloadSkillFile(rawUrl, slug, labelEl) {
+            if (labelEl) labelEl.textContent = 'Downloading…';
+            fetch(rawUrl)
+                .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.blob(); })
+                .then(function(blob){
+                    var a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = slug + '.SKILL.md';
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    setTimeout(function(){ if(labelEl) labelEl.textContent = 'Download SKILL.md'; }, 1800);
+                })
+                .catch(function(e){
+                    if(labelEl) labelEl.textContent = 'Failed — retry';
+                    console.error('Skill download failed:', e);
+                });
+        }
+
+        function renderInstallableSkills(skills) {
+            var root = document.getElementById('installable-skills-root');
+            if (!root) return;
+            if (!skills || !skills.length) {
+                root.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-on-surface-variant">No skills in manifest.</div>';
+                return;
+            }
+            var sorted = skills.slice().sort(function(a,b){ return String(a.skill).localeCompare(String(b.skill)); });
+            root.innerHTML = sorted.map(function(s){
+                var gatted = s.status === 'owner-gated';
+                var sc = gatted ? '#f6a34d' : '#7df4ff';
+                var ownerLabel = s.owner ? s.owner.replace(/-/g,' ') : '';
+                return '<div class="flex flex-col gap-2 rounded-lg border border-primary/15 bg-black/40 p-4">'
+                    + '<div class="flex items-start justify-between gap-2">'
+                    +   '<code class="text-[11px] text-primary-fixed">' + hEscape(s.skill) + '</code>'
+                    +   '<span class="rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider" style="border-color:'+sc+'60;color:'+sc+'">' + hEscape(s.status || 'draft') + '</span>'
+                    + '</div>'
+                    + '<p class="text-[10px] text-on-surface-variant leading-relaxed">' + hEscape(ownerLabel) + '</p>'
+                    + '<button type="button" data-skill-raw="' + hEscape(s.raw_url) + '" data-skill-slug="' + hEscape(s.skill) + '"'
+                    +   ' class="mt-auto inline-flex items-center gap-1.5 self-start rounded border border-primary-fixed/40 bg-primary-fixed/10 px-2.5 py-1 text-[10px] font-semibold text-primary-fixed transition hover:bg-primary-fixed/20">'
+                    +   '↓ <span data-dl-label>Download SKILL.md</span>'
+                    + '</button>'
+                    + '</div>';
+            }).join('');
+            root.addEventListener('click', function(e){
+                var btn = e.target.closest('[data-skill-raw]');
+                if (!btn) return;
+                downloadSkillFile(btn.dataset.skillRaw, btn.dataset.skillSlug, btn.querySelector('[data-dl-label]'));
+            });
+        }
+
+        function loadInstallableSkills() {
+            fetch(MANIFEST_URL)
+                .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                .then(function(data){ renderInstallableSkills(data.skills || []); })
+                .catch(function(e){
+                    var root = document.getElementById('installable-skills-root');
+                    if (root) root.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-on-surface-variant/60">Could not load skills manifest — ' + hEscape(String(e.message)) + '</div>';
+                });
+        }
+
         (function(){
             var m = document.getElementById('harness-detail-modal');
             if(m) m.addEventListener('click', function(e){ if(e.target === m || (e.target && e.target.id === 'harness-detail-backdrop')) closeHarnessDetail(); });
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.getAttribute('aria-hidden') === 'false') closeHarnessDetail(); });
-            wireCopySkills();
             renderHarnessSkills();
+            loadInstallableSkills();
         })();
 
     </script>
 </body></html>
-
-
-
