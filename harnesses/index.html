@@ -520,7 +520,7 @@ Other Repositories
                 perf: ['Priority weighting model (recency vs. blast-radius vs. deadline)', 'Parallel-lane cap and preemption rules for stalled work', 'Attention slice size per tick'],
                 cost: ['Attention budget per project', 'Ceiling on concurrent high-cost reasoning sessions', 'Idle-session reclaim timer'],
                 cap: ['Pluggable arbitration strategy (skill)', 'Objective-source inputs (Project Scope / Goal feeds)', 'Operator override hooks'] },
-            'Interface': { fn: 'Renders harness, session, and work state to the operator — the command-center surface you are looking at now.',
+            'Interface': { fn: 'Renders harness, session, and work state to the operator inside a production command center.',
                 perf: ['Render cadence / refresh throttle', 'Virtualized lists for large session counts', 'Lazy panel hydration'],
                 cost: ['Poll-vs-push state sync', 'Snapshot interval', 'Suppress redundant repaint'],
                 cap: ['Custom panels / widgets (plugin)', 'Layout presets', 'Drawer extensions like this one'] },
@@ -1020,7 +1020,7 @@ Other Repositories
             if(!root) return;
             var content = activeHarnessLayer === 'model'
                 ? harnessGroupHtml('Model Harness Layer','The per-call boundary: what governs each model request end to end.', HARNESS_MODEL)
-                : harnessGroupHtml('Orchestrator Harnesses','The control plane: what coordinates sessions, work, and authority.', HARNESS_ORCHESTRATOR);
+                : harnessGroupHtml('Orchestrator Harnesses','The control plane: what coordinates sessions, work, and authority. These harnesses can move sessions forward without human gating unless a gate is specified.', HARNESS_ORCHESTRATOR);
             root.innerHTML = '<div class="grid grid-cols-1 md:grid-cols-12 gap-x-6">'
                 + content
                 + '</div>';
@@ -1063,9 +1063,50 @@ Other Repositories
                 + '</div>';
         }
 
-        function manipulationValueText(name, layerLabel){
-            var target = layerLabel === 'Orchestrator Harness' ? 'the surrounding workflow' : 'an individual model call';
-            return 'Manipulating this harness changes the control boundary around ' + target + '. The levers let you improve speed, reduce waste, expand capability, and decide when work should continue, be rerouted, require proof, or stop for review.';
+        const HARNESS_MANIPULATION_VALUE = {
+            'Orchestrator': 'Changing this harness changes the system attention policy: which session gets served next, when work can proceed on its own, when a stalled lane is preempted, and when a human gate is required.',
+            'Interface': 'Changing this harness changes what the operator can see and act on: which session states are visible, which controls are exposed, how fast changes surface, and how much authority is usable from the command center.',
+            'Model Router': 'Changing this harness changes where work goes before a model call is made: which provider path is preferred, when fallback is used, how route quality is learned, and how cost, speed, and quality are traded.',
+            'Health Monitor': 'Changing this harness changes how unattended sessions stay alive: how quickly stalls are detected, when recovery starts, what counts as unhealthy, and which workers can keep moving without manual inspection.',
+            'Guardrails': 'Changing this harness changes the permission boundary around the work: which actions are blocked, which risky moves need approval, what secrets are protected, and which credentials remain out of reach.',
+            'Proof Authority': 'Changing this harness changes what evidence is enough to trust the work: which proofs are required, how strongly they are scored, when waivers are allowed, and what must be crosschecked before progress continues.',
+            'Project Scope': 'Changing this harness changes the map of what the system believes it is allowed to work on: objectives, dependencies, drift signals, and handoff boundaries that keep work inside the right project.',
+            'Session Manager': 'Changing this harness changes session continuity: when sessions open, suspend, resume, migrate, recover, or close, and whether those lifecycle moves happen automatically or wait at a gate.',
+            'Knowledge Retrieval': 'Changing this harness changes what knowledge reaches the work: which sources are searched, which chunks are ranked into context, what citations survive, and how much lineage the system can show.',
+            'File Navigation': 'Changing this harness changes how the system finds the right files: ownership paths, impact depth, capability-to-code links, and proof paths that shape where edits and verification happen.',
+            'Review Queue': 'Changing this harness changes the review pipeline: what severity means, which findings are deduplicated, who or what reviews them, and what proof is required before repair is accepted.',
+            'Sub-agent Dispatch': 'Changing this harness changes parallel execution: how many workers can run, what each worker receives, what result shape they must return, and how their output is merged back into the main session.',
+            'Network Protocol': 'Changing this harness changes multi-node coordination: which remote systems are trusted, how capabilities are discovered, how packets are signed, and what degraded behavior is allowed when a node fails.',
+            'Memory': 'Changing this harness changes what the system carries forward: what gets written, recalled, expired, deduplicated, or treated as conflicting, and how provenance protects future decisions.',
+            'Tool Registry': 'Changing this harness changes executable authority: which tools may run, which require dry-run or sandboxing, which actions must be reversible, and where rollback is defined.',
+            'Git Control': 'Changing this harness changes source-control authority: branch leases, diff-risk scoring, CI gates, merge behavior, and whether the system can write toward main without a human stop.',
+            'Browser Capture': 'Changing this harness changes visual proof collection: when the browser is opened, what can be navigated, which screenshots or DOM evidence are captured, and how visual regressions are detected.',
+            'Release Readiness': 'Changing this harness changes deployment permission: which proof package is enough, which risks block release, which rollback path is required, and when the system can declare a build ready.',
+            Provider: 'Changing this harness changes the vendor boundary for a call: which provider adapters, auth modes, endpoints, regions, and transport rules are available before the model is contacted.',
+            Identity: 'Changing this harness changes reproducibility: the exact provider, model, and version that receive the request, which prevents silent model swaps from changing behavior without a trace.',
+            Select: 'Changing this harness changes candidate choice: how task type, capability, price tier, latency, and trust are weighted before the system decides which model should handle the request.',
+            Route: 'Changing this harness changes dispatch: how the approved request reaches the selected model path, what token ceiling applies, and how much concurrency the route is allowed to use.',
+            Fallback: 'Changing this harness changes recovery behavior: when a model path is considered failed, which backup path is tried, how retries are capped, and whether degradation is acceptable.',
+            Verify: 'Changing this harness changes response trust: which checks confirm provider, route, response, and evidence before the output is allowed to influence downstream work.',
+            Cost: 'Changing this harness changes spend control for the call: budget prechecks, token accounting, halt thresholds, and whether the request is demoted, delayed, or blocked before money is spent.',
+            Latency: 'Changing this harness changes speed behavior: latency targets, slow-route demotion, batch-vs-realtime choices, and availability probes that decide whether the call should wait or move.',
+            Context: 'Changing this harness changes what the model gets to know: context packing, trimming, summarization, chunk reuse, and per-model window rules that decide what fits into the request.',
+            Prompt: 'Changing this harness changes the admitted instruction payload: templates, injection order, cache prefixes, and redundant-context removal that directly shape the model response.',
+            Policy: 'Changing this harness changes the rule set for the call: task constraints, provider constraints, tier limits, and route rules that decide what request shapes are permitted.',
+            Safety: 'Changing this harness changes safety enforcement: which content or actions are blocked, which guards run for the risk level, and when the request cannot proceed.',
+            Privacy: 'Changing this harness changes data exposure: which secrets, credentials, personal data, or sensitive classes are redacted before the model request leaves the system.',
+            Tools: 'Changing this harness changes tool-use authority inside the request: which tools are allowed, how many calls can happen, whether safe calls can run in parallel, and when tool use is denied.',
+            Compare: 'Changing this harness changes model comparison: how many lanes run, which jurors participate, how voting works, and when early consensus is enough to stop spending.',
+            Trace: 'Changing this harness changes auditability: what route, payload hash, response, timing, and evidence are recorded so the call can be debugged, replayed, or reviewed later.',
+            Goal: 'Changing this harness changes objective binding: which orchestrator goal the call is attached to, what context is pruned as irrelevant, and how the response is judged against intent.',
+            Payload: 'Changing this harness changes prompt proof: how the exact request is hashed, signed, or stored so the system can prove what was actually sent.',
+            Response: 'Changing this harness changes output capture: how returned content is streamed, stored, compressed, post-processed, and made available as a controlled artifact.',
+            Evidence: 'Changing this harness changes validation linkage: which tests, citations, reviews, or proof records are attached to the model output before it is trusted.',
+            Trust: 'Changing this harness changes route trust state: whether a provider/model path is direct, reviewed, blocked, expired, or allowed to keep running without repeated review.'
+        };
+
+        function manipulationValueText(name){
+            return HARNESS_MANIPULATION_VALUE[name] || 'Changing this harness changes the control rules for this part of the system.';
         }
 
         function renderHarnessDetail(name){

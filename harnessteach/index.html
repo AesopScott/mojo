@@ -773,11 +773,11 @@
         <div class="grid-2">
           <article class="card">
             <strong>Layer 1</strong>
-            <h3>Orchestration harness skills</h3>
+            <h3>Orchestrator harness skills</h3>
             <p>
-              These control the system around the model work: sessions, tools,
-              memory, proof, review, browser capture, Git, release readiness, and
-              sub-agent dispatch.
+              These are control-plane harnesses: they coordinate sessions, work,
+              and authority. They can move sessions forward without human gating
+              unless a specific gate says to stop, ask, prove, or review.
             </p>
             <div class="pill-row">
               <span>Proof Authority</span>
@@ -792,9 +792,10 @@
             <strong>Layer 2</strong>
             <h3>Model-call harness skills</h3>
             <p>
-              These control a specific model request: provider, model identity,
-              selection, route, fallback, prompt, context, tools, response, evidence,
-              trace, cost, latency, privacy, and trust.
+              These are per-call boundary harnesses: they govern one model request
+              end to end: provider, model identity, selection, route, fallback,
+              prompt, context, tools, response, evidence, trace, cost, latency,
+              privacy, and trust.
             </p>
             <div class="pill-row">
               <span>Provider</span>
