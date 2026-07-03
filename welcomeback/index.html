@@ -151,14 +151,17 @@
 </div>
 <!-- TopNavBar -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-surface/40 backdrop-blur-xl border-b border-primary/20 shadow-[0_0_20px_rgba(0,219,233,0.15)]">
-<div class="flex justify-between items-center w-full px-gutter py-4 max-w-container-max mx-auto">
-<div class="flex items-center gap-6">
+<div class="flex flex-wrap justify-between items-center gap-4 w-full px-gutter py-4 max-w-container-max mx-auto">
+<div class="flex min-w-0 items-center gap-6">
 <a href="https://mojoaistudio.com/learn" rel="noopener" target="_blank">
 <img class="h-10 w-auto drop-shadow-[0_0_10px_rgba(0,219,233,0.5)]" src="/assets/logo.png"/>
 </a>
 <h1 class="font-display-lg text-headline-lg-mobile md:text-headline-lg tracking-tighter text-primary-fixed">Advanced AI Concepts: Multi-Agent Pipelines</h1>
 </div>
+<div class="flex shrink-0 items-center gap-3">
+<span class="border border-primary/30 bg-primary-fixed/10 px-3 py-2 font-label-caps text-[10px] text-primary-fixed" id="page-version-badge">VERSION V1.0</span>
 <button aria-controls="build-primer-modal" aria-haspopup="dialog" class="hidden border border-primary/40 px-4 py-2 font-label-caps text-primary-fixed hover:bg-primary-container/10 md:block" id="build-primer-trigger" type="button">Comprehensive Build Primer</button>
+</div>
 </div>
 </header>
 <!-- SideNavBar -->
@@ -264,6 +267,17 @@ Other Repositories
 </div>
 <!-- Harness skill cards: one per skill, grouped by harness. Download buttons fetch the related SKILL.md; Details opens the harness modal. -->
 <div class="md:col-span-12" id="harness-skills-root"></div>
+</section>
+<!-- Installable skills: fetched live from skills/manifest.json in the central repo -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6 mt-10">
+<div class="md:col-span-12 flex items-center gap-4">
+<h2 class="font-headline-lg text-primary-fixed uppercase tracking-widest">Installable_Skills</h2>
+<div class="flex-grow data-flow-line"></div>
+</div>
+<div class="md:col-span-12">
+<p class="mb-4 text-xs text-on-surface-variant/70 leading-relaxed">Real harness skills — one-click download to your Claude Code project. Each SKILL.md drops into <code class="rounded bg-black/40 px-1 py-0.5 text-primary-fixed">~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code>.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" id="installable-skills-root"><div class="col-span-full py-8 text-center text-xs text-on-surface-variant">Loading skills...</div></div>
+</div>
 </section>
 </div>
 </main>
@@ -1117,10 +1131,7 @@ Other Repositories
 
         function cmdRowHtml(cmd){
             if(!cmd) return '';
-            return '<div class="flex items-center gap-2 flex-wrap">'
-                + '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(cmd)+'</code>'
-                + skillDownloadHtml(cmdToSkillSlug(cmd))
-                + '</div>';
+            return '<code class="inline-block w-fit rounded bg-black/40 px-1.5 py-0.5 font-body-sm text-[11px] text-on-surface-variant">'+hEscape(cmd)+'</code>';
         }
 
         function downloadSkillFile(rawUrl, slug, labelEl) {
@@ -1163,7 +1174,8 @@ Other Repositories
         function skillButtonHtml(harnessName, axis, skill){
             if(!skill || !skill.name) return '';
             return '<div'
-                + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full">'
+                + ' data-harness-card="'+hEscape(harnessName)+'" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open '+hEscape(harnessName)+' harness details"'
+                + ' class="glass-pane p-4 group hover:border-primary/50 transition-all cursor-pointer flex flex-col gap-2 text-left h-full focus:outline-none focus:ring-2 focus:ring-primary-fixed/60">'
                 + '<div class="flex items-center gap-2">'
                 + '<span class="h-2 w-2 rounded-full" style="background:'+axis.accent+'"></span>'
                 + '<span class="font-label-caps text-[10px] uppercase tracking-widest" style="color:'+axis.accent+'">'+hEscape(axis.label)+'</span>'
@@ -1186,7 +1198,7 @@ Other Repositories
                 var btns = HARNESS_AXES.map(function(a){ return skillButtonHtml(h.name, a, sk[a.key]); }).join('');
                 return '<div class="md:col-span-12">'
                     + '<div class="mb-3 flex items-center gap-3">'
-                    + '<span class="font-body-md font-bold text-primary-fixed">'+hEscape(h.name)+'</span>'
+                    + '<button type="button" data-harness="'+hEscape(h.name)+'" aria-haspopup="dialog" class="font-body-md font-bold text-primary-fixed transition hover:text-primary-container focus:outline-none focus:ring-2 focus:ring-primary-fixed/60">'+hEscape(h.name)+'</button>'
                     + '<span class="font-label-caps text-[9px] uppercase tracking-widest text-on-surface-variant/60">'+hEscape(h.sub)+'</span>'
                     + '<div class="flex-grow data-flow-line"></div>'
                     + '</div>'
@@ -1208,6 +1220,17 @@ Other Repositories
                 + '</div>';
             root.querySelectorAll('button[data-harness]').forEach(function(btn){
                 btn.addEventListener('click', function(){ openHarnessDetail(btn.dataset.harness); });
+            });
+            root.querySelectorAll('[data-harness-card]').forEach(function(card){
+                card.addEventListener('click', function(e){
+                    if(e.target.closest && e.target.closest('button, [data-skill-raw]')) return;
+                    openHarnessDetail(card.dataset.harnessCard);
+                });
+                card.addEventListener('keydown', function(e){
+                    if(e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+                    e.preventDefault();
+                    openHarnessDetail(card.dataset.harnessCard);
+                });
             });
         }
 
@@ -1284,12 +1307,51 @@ Other Repositories
             m.classList.add('hidden'); m.classList.remove('flex'); m.setAttribute('aria-hidden','true');
         }
 
+        var MANIFEST_URL = 'https://raw.githubusercontent.com/AesopScott/central/main/skills/manifest.json';
+
+        function renderInstallableSkills(skills) {
+            var root = document.getElementById('installable-skills-root');
+            if (!root) return;
+            if (!skills || !skills.length) {
+                root.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-on-surface-variant">No skills in manifest.</div>';
+                return;
+            }
+            var sorted = skills.slice().sort(function(a,b){ return String(a.skill).localeCompare(String(b.skill)); });
+            root.innerHTML = sorted.map(function(s){
+                var gated = s.status === 'owner-gated';
+                var sc = gated ? '#f6a34d' : '#7df4ff';
+                var ownerLabel = s.owner ? s.owner.replace(/-/g,' ') : '';
+                return '<div class="flex flex-col gap-2 rounded-lg border border-primary/15 bg-black/40 p-4">'
+                    + '<div class="flex items-start justify-between gap-2">'
+                    +   '<code class="text-[11px] text-primary-fixed">' + hEscape(s.skill) + '</code>'
+                    +   '<span class="rounded-full border px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider" style="border-color:'+sc+'60;color:'+sc+'">' + hEscape(s.status || 'draft') + '</span>'
+                    + '</div>'
+                    + '<p class="text-[10px] text-on-surface-variant leading-relaxed">' + hEscape(ownerLabel) + '</p>'
+                    + '<button type="button" data-skill-raw="' + hEscape(s.raw_url) + '" data-skill-slug="' + hEscape(s.skill) + '"'
+                    +   ' class="mt-auto inline-flex items-center gap-1.5 self-start rounded border border-primary-fixed/40 bg-primary-fixed/10 px-2.5 py-1 text-[10px] font-semibold text-primary-fixed transition hover:bg-primary-fixed/20">'
+                    +   '↓ <span data-dl-label>Download SKILL.md</span>'
+                    + '</button>'
+                    + '</div>';
+            }).join('');
+        }
+
+        function loadInstallableSkills() {
+            fetch(MANIFEST_URL)
+                .then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+                .then(function(data){ renderInstallableSkills(data.skills || []); })
+                .catch(function(e){
+                    var root = document.getElementById('installable-skills-root');
+                    if (root) root.innerHTML = '<div class="col-span-full py-8 text-center text-xs text-on-surface-variant/60">Could not load skills manifest - ' + hEscape(String(e.message)) + '</div>';
+                });
+        }
+
         (function(){
             var m = document.getElementById('harness-detail-modal');
             if(m) m.addEventListener('click', function(e){ if(e.target === m || (e.target && e.target.id === 'harness-detail-backdrop')) closeHarnessDetail(); });
             document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && m && m.getAttribute('aria-hidden') === 'false') closeHarnessDetail(); });
             wireSkillDownloads();
             renderHarnessSkills();
+            loadInstallableSkills();
         })();
 
     </script>
