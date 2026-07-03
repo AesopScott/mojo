@@ -1,4 +1,0 @@
-interface:
-  display_name: "Role Agent Builder"
-  short_description: "Create organization role agents"
-  default_prompt: "Use /role to design a role agent for my organization."

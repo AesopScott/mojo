@@ -1,4 +1,0 @@
-interface:
-  display_name: "Scaffold"
-  short_description: "Deprecated alias; use Foundation for MAPS scaffolds."
-  default_prompt: "Route this request to Foundation. Foundation now creates MAPS project foundations, portable path settings, and optional full MAPS framework/org scaffolds."

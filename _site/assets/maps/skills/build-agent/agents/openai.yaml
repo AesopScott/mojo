@@ -1,4 +1,0 @@
-interface:
-  display_name: "Build Agent"
-  short_description: "Implement the agent loop, prompts, state, and orchestration."
-  default_prompt: "Use build-agent to implement a working agent from a design."

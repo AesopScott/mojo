@@ -1,4 +1,0 @@
-interface:
-  display_name: "Observe Agent"
-  short_description: "Design traces, metrics, and review loops."
-  default_prompt: "Use observe-agent to design observability for an agent in production."

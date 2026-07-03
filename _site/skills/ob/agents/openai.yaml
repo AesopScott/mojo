@@ -1,4 +1,0 @@
-interface:
-  display_name: "Obsidian Brief"
-  short_description: "Write architecture/config notes to Obsidian."
-  default_prompt: "Use $ob to capture durable architecture and configuration changes from this session."

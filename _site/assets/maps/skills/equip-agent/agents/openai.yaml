@@ -1,4 +1,0 @@
-interface:
-  display_name: "Equip Agent"
-  short_description: "Map tools, data, permissions, context, and integrations."
-  default_prompt: "Use equip-agent to create the capability and tool map for an agent."

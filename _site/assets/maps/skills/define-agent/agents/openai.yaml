@@ -1,4 +1,0 @@
-interface:
-  display_name: "Define Agent"
-  short_description: "Create scoped agent briefs."
-  default_prompt: "Use define-agent to turn an agent idea into a concise agent brief."

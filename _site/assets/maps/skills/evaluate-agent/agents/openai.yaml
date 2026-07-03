@@ -1,4 +1,0 @@
-interface:
-  display_name: "Evaluate Agent"
-  short_description: "Create evals, scorecards, regression cases, and safety checks."
-  default_prompt: "Use evaluate-agent to prove agent behavior before release."

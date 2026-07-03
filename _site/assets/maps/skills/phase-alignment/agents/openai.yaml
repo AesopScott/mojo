@@ -1,4 +1,0 @@
-interface:
-  display_name: "Phase Alignment"
-  short_description: "Align MAPS scope, structure, and scaffolding."
-  default_prompt: "Use phase-alignment to agree on the MAPS process structure before defining agents."
