@@ -113,6 +113,14 @@ a {
   background: var(--ink);
 }
 
+.brand-logo {
+  width: 54px;
+  height: 36px;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
 .nav-links,
 .nav-actions,
 .hero-proof,
