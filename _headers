@@ -38,6 +38,16 @@
   Pragma: no-cache
   Expires: 0
 
+/harnesses
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
+/harnesses/*
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+  Expires: 0
+
 /MindShare
   Cache-Control: no-cache, no-store, must-revalidate
   Pragma: no-cache
@@ -64,16 +74,6 @@
   Expires: 0
 
 /welcome/*
-  Cache-Control: no-cache, no-store, must-revalidate
-  Pragma: no-cache
-  Expires: 0
-
-/welcomeback
-  Cache-Control: no-cache, no-store, must-revalidate
-  Pragma: no-cache
-  Expires: 0
-
-/welcomeback/*
   Cache-Control: no-cache, no-store, must-revalidate
   Pragma: no-cache
   Expires: 0
