@@ -145,27 +145,6 @@
         gap: 10px;
         justify-content: flex-end;
         align-items: center;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 9;
-        pointer-events: none;
-      }
-
-      .forum-main-actions .button {
-        pointer-events: auto;
-      }
-
-      @media (min-width: 1500px) {
-        .forum-main-actions {
-          justify-content: flex-start;
-          transform: translateX(calc(-100% - 312px));
-        }
-
-        .forum-main-actions .button {
-          width: 118px;
-          padding-inline: 12px;
-        }
       }
 
       .forum-auth {
@@ -196,7 +175,6 @@
         align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
-        padding-right: 260px;
       }
 
       .forum-toolbar > div {
@@ -499,25 +477,12 @@
           padding: 0 14px 14px;
         }
 
-        .forum-main-actions .button {
-          width: 100%;
-        }
-      }
-
-      @media (max-width: 980px) {
         .forum-main-actions {
-          position: fixed;
-          top: auto;
-          right: 12px;
-          bottom: 16px;
-          left: 12px;
-          width: auto;
-          transform: none;
-          justify-content: center;
+          justify-content: stretch;
         }
 
         .forum-main-actions .button {
-          min-width: min(150px, 44vw);
+          flex: 1;
         }
       }
     </style>
@@ -579,11 +544,6 @@
       </aside>
 
       <section class="forum-main" aria-live="polite">
-        <div class="forum-main-actions">
-          <button class="button dark" type="button" data-open-composer>New thread</button>
-          <button class="button ghost" type="button" data-open-poll hidden>New poll</button>
-        </div>
-
         <form class="forum-composer" data-thread-form>
           <h2 data-composer-title>New thread</h2>
           <div class="forum-form-grid">
@@ -623,6 +583,10 @@
           <input class="forum-search" type="search" placeholder="Search threads" data-search />
         </div>
 
+        <div class="forum-main-actions">
+          <button class="button dark" type="button" data-open-composer>New thread</button>
+          <button class="button ghost" type="button" data-open-poll hidden>New poll</button>
+        </div>
         <article class="forum-thread" hidden data-thread-detail></article>
         <div class="forum-replies" data-replies></div>
         <form class="forum-composer" data-reply-form>
