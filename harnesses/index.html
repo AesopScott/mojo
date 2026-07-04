@@ -877,7 +877,7 @@ Other Repositories
         ];
         var activeHarnessLayer = 'orchestrator';
 
-        var CENTRAL_SKILL_RAW_BASE = 'https://raw.githubusercontent.com/AesopScott/central/main/skills';
+        var CENTRAL_SKILL_RAW_BASE = '/harnesses/skills';
 
         function cmdToSkillSlug(cmd){
             return String(cmd || '').replace(/^\//, '').replace(/\+\+$/, '-plus-plus').replace(/\+(smith|fuse|phoenix)$/, '-$1');
@@ -1164,7 +1164,7 @@ Other Repositories
             m.classList.add('hidden'); m.classList.remove('flex'); m.setAttribute('aria-hidden','true');
         }
 
-        var MANIFEST_URL = 'https://raw.githubusercontent.com/AesopScott/central/main/skills/manifest.json';
+        var MANIFEST_URL = '/harnesses/skills/manifest.json';
 
         function renderInstallableSkills(skills) {
             var root = document.getElementById('installable-skills-root');

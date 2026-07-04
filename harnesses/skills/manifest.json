@@ -1,0 +1,1059 @@
+{
+  "generatedAt": "2026-07-04T00:46:27.465Z",
+  "source": "harnesses/index.html",
+  "skills": [
+    {
+      "skill": "agent-types",
+      "name": "Agent Types",
+      "command": "/agent-types",
+      "harness": "Sub-agent Dispatch",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/agent-types/SKILL.md"
+    },
+    {
+      "skill": "arbitration-strategy",
+      "name": "Arbitration Strategy",
+      "command": "/arbitration-strategy",
+      "harness": "Orchestrator",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/arbitration-strategy/SKILL.md"
+    },
+    {
+      "skill": "async-writer",
+      "name": "Async Writer",
+      "command": "/async-writer",
+      "harness": "Trace",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/async-writer/SKILL.md"
+    },
+    {
+      "skill": "attention-governor",
+      "name": "Attention Governor",
+      "command": "/attention-governor",
+      "harness": "Orchestrator",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/attention-governor/SKILL.md"
+    },
+    {
+      "skill": "availability-probes",
+      "name": "Availability Probes",
+      "command": "/availability-probes",
+      "harness": "Latency",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/availability-probes/SKILL.md"
+    },
+    {
+      "skill": "batch-endpoints",
+      "name": "Batch Endpoints",
+      "command": "/batch-endpoints",
+      "harness": "Provider",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/batch-endpoints/SKILL.md"
+    },
+    {
+      "skill": "batch-mode",
+      "name": "Batch Mode",
+      "command": "/batch-mode",
+      "harness": "Latency",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/batch-mode/SKILL.md"
+    },
+    {
+      "skill": "budget-check",
+      "name": "Budget Check",
+      "command": "/budget-check",
+      "harness": "Cost",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/budget-check/SKILL.md"
+    },
+    {
+      "skill": "cache-optimizer",
+      "name": "Cache Optimizer",
+      "command": "/cache-optimizer",
+      "harness": "Prompt",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/cache-optimizer/SKILL.md"
+    },
+    {
+      "skill": "call-budget",
+      "name": "Call Budget",
+      "command": "/call-budget",
+      "harness": "Network Protocol",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/call-budget/SKILL.md"
+    },
+    {
+      "skill": "call-ceiling",
+      "name": "Call Ceiling",
+      "command": "/call-ceiling",
+      "harness": "Tools",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/call-ceiling/SKILL.md"
+    },
+    {
+      "skill": "call-parallelizer",
+      "name": "Call Parallelizer",
+      "command": "/call-parallelizer",
+      "harness": "Tools",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/call-parallelizer/SKILL.md"
+    },
+    {
+      "skill": "chain-builder",
+      "name": "Chain Builder",
+      "command": "/chain-builder",
+      "harness": "Fallback",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/chain-builder/SKILL.md"
+    },
+    {
+      "skill": "change-capture",
+      "name": "Change Capture",
+      "command": "/change-capture",
+      "harness": "Browser Capture",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/change-capture/SKILL.md"
+    },
+    {
+      "skill": "cheap-pinner",
+      "name": "Cheap Pinner",
+      "command": "/cheap-pinner",
+      "harness": "Identity",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/cheap-pinner/SKILL.md"
+    },
+    {
+      "skill": "cheap-recall",
+      "name": "Cheap Recall",
+      "command": "/cheap-recall",
+      "harness": "Knowledge Retrieval",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/cheap-recall/SKILL.md"
+    },
+    {
+      "skill": "ci-gate",
+      "name": "CI Gate",
+      "command": "/ci-gate",
+      "harness": "Git Control",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/ci-gate/SKILL.md"
+    },
+    {
+      "skill": "conflict-predict",
+      "name": "Conflict Predict",
+      "command": "/conflict-predict",
+      "harness": "Git Control",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/conflict-predict/SKILL.md"
+    },
+    {
+      "skill": "conflict-resolution",
+      "name": "Conflict Resolution",
+      "command": "/conflict-resolution",
+      "harness": "Memory",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/conflict-resolution/SKILL.md"
+    },
+    {
+      "skill": "constraint-packs",
+      "name": "Constraint Packs",
+      "command": "/constraint-packs",
+      "harness": "Policy",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/constraint-packs/SKILL.md"
+    },
+    {
+      "skill": "context-compactor",
+      "name": "Context Compactor",
+      "command": "/context-compactor",
+      "harness": "Context",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/context-compactor/SKILL.md"
+    },
+    {
+      "skill": "context-pruner",
+      "name": "Context Pruner",
+      "command": "/context-pruner",
+      "harness": "Goal",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/context-pruner/SKILL.md"
+    },
+    {
+      "skill": "cost-model",
+      "name": "Cost Model",
+      "command": "/cost-model",
+      "harness": "Cost",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/cost-model/SKILL.md"
+    },
+    {
+      "skill": "crosscheck-lanes",
+      "name": "Crosscheck Lanes",
+      "command": "/crosscheck-lanes",
+      "harness": "Proof Authority",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/crosscheck-lanes/SKILL.md"
+    },
+    {
+      "skill": "delta-store",
+      "name": "Delta Store",
+      "command": "/delta-store",
+      "harness": "Response",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/delta-store/SKILL.md"
+    },
+    {
+      "skill": "diff-scanner",
+      "name": "Diff Scanner",
+      "command": "/diff-scanner",
+      "harness": "Guardrails",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/diff-scanner/SKILL.md"
+    },
+    {
+      "skill": "drift-recompute",
+      "name": "Drift Recompute",
+      "command": "/drift-recompute",
+      "harness": "Project Scope",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/drift-recompute/SKILL.md"
+    },
+    {
+      "skill": "dry-run",
+      "name": "Dry Run",
+      "command": "/dry-run",
+      "harness": "Tool Registry",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/dry-run/SKILL.md"
+    },
+    {
+      "skill": "early-consensus",
+      "name": "Early Consensus",
+      "command": "/early-consensus",
+      "harness": "Compare",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/early-consensus/SKILL.md"
+    },
+    {
+      "skill": "evidence-collector",
+      "name": "Evidence Collector",
+      "command": "/evidence-collector",
+      "harness": "Evidence",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/evidence-collector/SKILL.md"
+    },
+    {
+      "skill": "evidence-connectors",
+      "name": "Evidence Connectors",
+      "command": "/evidence-connectors",
+      "harness": "Evidence",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/evidence-connectors/SKILL.md"
+    },
+    {
+      "skill": "evidence-depth",
+      "name": "Evidence Depth",
+      "command": "/evidence-depth",
+      "harness": "Evidence",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/evidence-depth/SKILL.md"
+    },
+    {
+      "skill": "fail-standby",
+      "name": "Fail Standby",
+      "command": "/fail-standby",
+      "harness": "Fallback",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/fail-standby/SKILL.md"
+    },
+    {
+      "skill": "fast-pinner",
+      "name": "Fast Pinner",
+      "command": "/fast-pinner",
+      "harness": "Identity",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/fast-pinner/SKILL.md"
+    },
+    {
+      "skill": "finding-dedup",
+      "name": "Finding Dedup",
+      "command": "/finding-dedup",
+      "harness": "Review Queue",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/finding-dedup/SKILL.md"
+    },
+    {
+      "skill": "goal-cache",
+      "name": "Goal Cache",
+      "command": "/goal-cache",
+      "harness": "Goal",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/goal-cache/SKILL.md"
+    },
+    {
+      "skill": "graph-builder",
+      "name": "Graph Builder",
+      "command": "/graph-builder",
+      "harness": "File Navigation",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/graph-builder/SKILL.md"
+    },
+    {
+      "skill": "guard-cache",
+      "name": "Guard Cache",
+      "command": "/guard-cache",
+      "harness": "Safety",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/guard-cache/SKILL.md"
+    },
+    {
+      "skill": "guardrail-packs",
+      "name": "Guardrail Packs",
+      "command": "/guardrail-packs",
+      "harness": "Guardrails",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/guardrail-packs/SKILL.md"
+    },
+    {
+      "skill": "handshake-cache",
+      "name": "Handshake Cache",
+      "command": "/handshake-cache",
+      "harness": "Network Protocol",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/handshake-cache/SKILL.md"
+    },
+    {
+      "skill": "hash-selector",
+      "name": "Hash Selector",
+      "command": "/hash-selector",
+      "harness": "Payload",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/hash-selector/SKILL.md"
+    },
+    {
+      "skill": "idle-suspend",
+      "name": "Idle Suspend",
+      "command": "/idle-suspend",
+      "harness": "Session Manager",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/idle-suspend/SKILL.md"
+    },
+    {
+      "skill": "index-tuner",
+      "name": "Index Tuner",
+      "command": "/index-tuner",
+      "harness": "Memory",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/index-tuner/SKILL.md"
+    },
+    {
+      "skill": "juror-panel",
+      "name": "Juror Panel",
+      "command": "/juror-panel",
+      "harness": "Compare",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/juror-panel/SKILL.md"
+    },
+    {
+      "skill": "knowledge-connectors",
+      "name": "Knowledge Connectors",
+      "command": "/knowledge-connectors",
+      "harness": "Knowledge Retrieval",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/knowledge-connectors/SKILL.md"
+    },
+    {
+      "skill": "lifecycle-hooks",
+      "name": "Lifecycle Hooks",
+      "command": "/lifecycle-hooks",
+      "harness": "Session Manager",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/lifecycle-hooks/SKILL.md"
+    },
+    {
+      "skill": "main-gate",
+      "name": "Main Gate",
+      "command": "/main-gate",
+      "harness": "Git Control",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/main-gate/SKILL.md"
+    },
+    {
+      "skill": "metadata-audit",
+      "name": "Metadata Audit",
+      "command": "/metadata-audit",
+      "harness": "Payload",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/metadata-audit/SKILL.md"
+    },
+    {
+      "skill": "navigation-policy",
+      "name": "Navigation Policy",
+      "command": "/navigation-policy",
+      "harness": "Browser Capture",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/navigation-policy/SKILL.md"
+    },
+    {
+      "skill": "objective-binding",
+      "name": "Objective Binding",
+      "command": "/objective-binding",
+      "harness": "Goal",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/objective-binding/SKILL.md"
+    },
+    {
+      "skill": "panel-kit",
+      "name": "Panel Kit",
+      "command": "/panel-kit",
+      "harness": "Interface",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/panel-kit/SKILL.md"
+    },
+    {
+      "skill": "parallel-executor",
+      "name": "Parallel Executor",
+      "command": "/parallel-executor",
+      "harness": "Tool Registry",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/parallel-executor/SKILL.md"
+    },
+    {
+      "skill": "partial-reindex",
+      "name": "Partial Reindex",
+      "command": "/partial-reindex",
+      "harness": "File Navigation",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/partial-reindex/SKILL.md"
+    },
+    {
+      "skill": "path-queries",
+      "name": "Path Queries",
+      "command": "/path-queries",
+      "harness": "File Navigation",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/path-queries/SKILL.md"
+    },
+    {
+      "skill": "pool-manager",
+      "name": "Pool Manager",
+      "command": "/pool-manager",
+      "harness": "Provider",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/pool-manager/SKILL.md"
+    },
+    {
+      "skill": "pool-warmup",
+      "name": "Pool Warmup",
+      "command": "/pool-warmup",
+      "harness": "Browser Capture",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/pool-warmup/SKILL.md"
+    },
+    {
+      "skill": "priority-tuner",
+      "name": "Priority Tuner",
+      "command": "/priority-tuner",
+      "harness": "Orchestrator",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/priority-tuner/SKILL.md"
+    },
+    {
+      "skill": "probe-backoff",
+      "name": "Probe Backoff",
+      "command": "/probe-backoff",
+      "harness": "Health Monitor",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/probe-backoff/SKILL.md"
+    },
+    {
+      "skill": "process-hooks",
+      "name": "Process Hooks",
+      "command": "/process-hooks",
+      "harness": "Response",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/process-hooks/SKILL.md"
+    },
+    {
+      "skill": "proof-packager",
+      "name": "Proof Packager",
+      "command": "/proof-packager",
+      "harness": "Release Readiness",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/proof-packager/SKILL.md"
+    },
+    {
+      "skill": "proof-policy",
+      "name": "Proof Policy",
+      "command": "/proof-policy",
+      "harness": "Proof Authority",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/proof-policy/SKILL.md"
+    },
+    {
+      "skill": "proof-registry",
+      "name": "Proof Registry",
+      "command": "/proof-registry",
+      "harness": "Proof Authority",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/proof-registry/SKILL.md"
+    },
+    {
+      "skill": "provider-adapters",
+      "name": "Provider Adapters",
+      "command": "/provider-adapters",
+      "harness": "Model Router",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/provider-adapters/SKILL.md"
+    },
+    {
+      "skill": "recovery-hooks",
+      "name": "Recovery Hooks",
+      "command": "/recovery-hooks",
+      "harness": "Health Monitor",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/recovery-hooks/SKILL.md"
+    },
+    {
+      "skill": "redaction-packs",
+      "name": "Redaction Packs",
+      "command": "/redaction-packs",
+      "harness": "Privacy",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/redaction-packs/SKILL.md"
+    },
+    {
+      "skill": "redaction-precompiler",
+      "name": "Redaction Precompiler",
+      "command": "/redaction-precompiler",
+      "harness": "Privacy",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/redaction-precompiler/SKILL.md"
+    },
+    {
+      "skill": "rerank-tuner",
+      "name": "Rerank Tuner",
+      "command": "/rerank-tuner",
+      "harness": "Knowledge Retrieval",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/rerank-tuner/SKILL.md"
+    },
+    {
+      "skill": "retention-policy",
+      "name": "Retention Policy",
+      "command": "/retention-policy",
+      "harness": "Memory",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/retention-policy/SKILL.md"
+    },
+    {
+      "skill": "retry-cap",
+      "name": "Retry Cap",
+      "command": "/retry-cap",
+      "harness": "Fallback",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/retry-cap/SKILL.md"
+    },
+    {
+      "skill": "reversibility-policy",
+      "name": "Reversibility Policy",
+      "command": "/reversibility-policy",
+      "harness": "Tool Registry",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/reversibility-policy/SKILL.md"
+    },
+    {
+      "skill": "reviewer-pack",
+      "name": "Reviewer Pack",
+      "command": "/reviewer-pack",
+      "harness": "Review Queue",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/reviewer-pack/SKILL.md"
+    },
+    {
+      "skill": "rollback-gate",
+      "name": "Rollback Gate",
+      "command": "/rollback-gate",
+      "harness": "Release Readiness",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/rollback-gate/SKILL.md"
+    },
+    {
+      "skill": "route-demoter",
+      "name": "Route Demoter",
+      "command": "/route-demoter",
+      "harness": "Latency",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/route-demoter/SKILL.md"
+    },
+    {
+      "skill": "route-table",
+      "name": "Route Table",
+      "command": "/route-table",
+      "harness": "Route",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/route-table/SKILL.md"
+    },
+    {
+      "skill": "route-tuner",
+      "name": "Route Tuner",
+      "command": "/route-tuner",
+      "harness": "Model Router",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/route-tuner/SKILL.md"
+    },
+    {
+      "skill": "rule-precompiler",
+      "name": "Rule Precompiler",
+      "command": "/rule-precompiler",
+      "harness": "Policy",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/rule-precompiler/SKILL.md"
+    },
+    {
+      "skill": "safety-packs",
+      "name": "Safety Packs",
+      "command": "/safety-packs",
+      "harness": "Safety",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/safety-packs/SKILL.md"
+    },
+    {
+      "skill": "sampling-policy",
+      "name": "Sampling Policy",
+      "command": "/sampling-policy",
+      "harness": "Verify",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/sampling-policy/SKILL.md"
+    },
+    {
+      "skill": "scaled-gates",
+      "name": "Scaled Gates",
+      "command": "/scaled-gates",
+      "harness": "Release Readiness",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scaled-gates/SKILL.md"
+    },
+    {
+      "skill": "scaled-review",
+      "name": "Scaled Review",
+      "command": "/scaled-review",
+      "harness": "Review Queue",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scaled-review/SKILL.md"
+    },
+    {
+      "skill": "scan-scheduler",
+      "name": "Scan Scheduler",
+      "command": "/scan-scheduler",
+      "harness": "Project Scope",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scan-scheduler/SKILL.md"
+    },
+    {
+      "skill": "scope-connectors",
+      "name": "Scope Connectors",
+      "command": "/scope-connectors",
+      "harness": "Project Scope",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scope-connectors/SKILL.md"
+    },
+    {
+      "skill": "scope-tuner",
+      "name": "Scope Tuner",
+      "command": "/scope-tuner",
+      "harness": "Privacy",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scope-tuner/SKILL.md"
+    },
+    {
+      "skill": "scoped-guards",
+      "name": "Scoped Guards",
+      "command": "/scoped-guards",
+      "harness": "Safety",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/scoped-guards/SKILL.md"
+    },
+    {
+      "skill": "selection-rubric",
+      "name": "Selection Rubric",
+      "command": "/selection-rubric",
+      "harness": "Select",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/selection-rubric/SKILL.md"
+    },
+    {
+      "skill": "session-renderer",
+      "name": "Session Renderer",
+      "command": "/session-renderer",
+      "harness": "Interface",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/session-renderer/SKILL.md"
+    },
+    {
+      "skill": "sign-scheme",
+      "name": "Sign Scheme",
+      "command": "/sign-scheme",
+      "harness": "Payload",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/sign-scheme/SKILL.md"
+    },
+    {
+      "skill": "skip-reviewer",
+      "name": "Skip Reviewer",
+      "command": "/skip-reviewer",
+      "harness": "Trust",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/skip-reviewer/SKILL.md"
+    },
+    {
+      "skill": "speed-matcher",
+      "name": "Speed Matcher",
+      "command": "/speed-matcher",
+      "harness": "Select",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/speed-matcher/SKILL.md"
+    },
+    {
+      "skill": "stage-scheduler",
+      "name": "Stage Scheduler",
+      "command": "/stage-scheduler",
+      "harness": "Sub-agent Dispatch",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/stage-scheduler/SKILL.md"
+    },
+    {
+      "skill": "stall-tuner",
+      "name": "Stall Tuner",
+      "command": "/stall-tuner",
+      "harness": "Health Monitor",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/stall-tuner/SKILL.md"
+    },
+    {
+      "skill": "state-prefetch",
+      "name": "State Prefetch",
+      "command": "/state-prefetch",
+      "harness": "Session Manager",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/state-prefetch/SKILL.md"
+    },
+    {
+      "skill": "stream-capture",
+      "name": "Stream Capture",
+      "command": "/stream-capture",
+      "harness": "Response",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/stream-capture/SKILL.md"
+    },
+    {
+      "skill": "summarize-fit",
+      "name": "Summarize Fit",
+      "command": "/summarize-fit",
+      "harness": "Context",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/summarize-fit/SKILL.md"
+    },
+    {
+      "skill": "sync-optimizer",
+      "name": "Sync Optimizer",
+      "command": "/sync-optimizer",
+      "harness": "Interface",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/sync-optimizer/SKILL.md"
+    },
+    {
+      "skill": "template-library",
+      "name": "Template Library",
+      "command": "/template-library",
+      "harness": "Prompt",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/template-library/SKILL.md"
+    },
+    {
+      "skill": "template-precompiler",
+      "name": "Template Precompiler",
+      "command": "/template-precompiler",
+      "harness": "Prompt",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/template-precompiler/SKILL.md"
+    },
+    {
+      "skill": "threshold-governor",
+      "name": "Threshold Governor",
+      "command": "/threshold-governor",
+      "harness": "Cost",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/threshold-governor/SKILL.md"
+    },
+    {
+      "skill": "tier-constraint",
+      "name": "Tier Constraint",
+      "command": "/tier-constraint",
+      "harness": "Policy",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/tier-constraint/SKILL.md"
+    },
+    {
+      "skill": "tier-down",
+      "name": "Tier Down",
+      "command": "/tier-down",
+      "harness": "Model Router",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/tier-down/SKILL.md"
+    },
+    {
+      "skill": "tier-selector",
+      "name": "Tier Selector",
+      "command": "/tier-selector",
+      "harness": "Select",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/tier-selector/SKILL.md"
+    },
+    {
+      "skill": "tiered-verifier",
+      "name": "Tiered Verifier",
+      "command": "/tiered-verifier",
+      "harness": "Verify",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/tiered-verifier/SKILL.md"
+    },
+    {
+      "skill": "token-cap",
+      "name": "Token Cap",
+      "command": "/token-cap",
+      "harness": "Route",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/token-cap/SKILL.md"
+    },
+    {
+      "skill": "tool-policy",
+      "name": "Tool Policy",
+      "command": "/tool-policy",
+      "harness": "Tools",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/tool-policy/SKILL.md"
+    },
+    {
+      "skill": "trace-connectors",
+      "name": "Trace Connectors",
+      "command": "/trace-connectors",
+      "harness": "Trace",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/trace-connectors/SKILL.md"
+    },
+    {
+      "skill": "trace-sampling",
+      "name": "Trace Sampling",
+      "command": "/trace-sampling",
+      "harness": "Trace",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/trace-sampling/SKILL.md"
+    },
+    {
+      "skill": "transport-adapters",
+      "name": "Transport Adapters",
+      "command": "/transport-adapters",
+      "harness": "Network Protocol",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/transport-adapters/SKILL.md"
+    },
+    {
+      "skill": "trigger-optimizer",
+      "name": "Trigger Optimizer",
+      "command": "/trigger-optimizer",
+      "harness": "Guardrails",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/trigger-optimizer/SKILL.md"
+    },
+    {
+      "skill": "trust-cache",
+      "name": "Trust Cache",
+      "command": "/trust-cache",
+      "harness": "Trust",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/trust-cache/SKILL.md"
+    },
+    {
+      "skill": "trust-machine",
+      "name": "Trust Machine",
+      "command": "/trust-machine",
+      "harness": "Trust",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/trust-machine/SKILL.md"
+    },
+    {
+      "skill": "vendor-adapters",
+      "name": "Vendor Adapters",
+      "command": "/vendor-adapters",
+      "harness": "Provider",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/vendor-adapters/SKILL.md"
+    },
+    {
+      "skill": "verification-checks",
+      "name": "Verification Checks",
+      "command": "/verification-checks",
+      "harness": "Verify",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/verification-checks/SKILL.md"
+    },
+    {
+      "skill": "version-allowlist",
+      "name": "Version Allowlist",
+      "command": "/version-allowlist",
+      "harness": "Identity",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/version-allowlist/SKILL.md"
+    },
+    {
+      "skill": "voting-strategy",
+      "name": "Voting Strategy",
+      "command": "/voting-strategy",
+      "harness": "Compare",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/voting-strategy/SKILL.md"
+    },
+    {
+      "skill": "warm-dispatcher",
+      "name": "Warm Dispatcher",
+      "command": "/warm-dispatcher",
+      "harness": "Route",
+      "axis": "perf",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/warm-dispatcher/SKILL.md"
+    },
+    {
+      "skill": "window-map",
+      "name": "Window Map",
+      "command": "/window-map",
+      "harness": "Context",
+      "axis": "cap",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/window-map/SKILL.md"
+    },
+    {
+      "skill": "worker-ceiling",
+      "name": "Worker Ceiling",
+      "command": "/worker-ceiling",
+      "harness": "Sub-agent Dispatch",
+      "axis": "cost",
+      "status": "demo-ready",
+      "raw_url": "/harnesses/skills/worker-ceiling/SKILL.md"
+    }
+  ]
+}
