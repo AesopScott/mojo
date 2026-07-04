@@ -545,6 +545,23 @@ exports.submitPayoutPreference = onRequest(
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
+      const productsSnap = await db.collection('products')
+        .where('submittedByEmail', '==', email)
+        .where('status', '==', 'pending_seller_onboarding')
+        .get();
+
+      const batch = db.batch();
+      productsSnap.docs.forEach((doc) => {
+        batch.update(doc.ref, {
+          status: 'ready_for_launch',
+          sellerOnboardingCompletedAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      });
+      if (!productsSnap.empty) {
+        await batch.commit();
+      }
+
       console.log('[submitPayoutPreference] Seller', email, 'submitted payout preference:', payoutMethod);
       res.status(200).json({ ok: true, message: 'Payout preference saved' });
     } catch (err) {
@@ -1166,7 +1183,7 @@ exports.adminListProducts = onRequest(
     }
 
     const status = String(req.query.status || 'pending_review');
-    if (!['pending_review', 'live'].includes(status)) {
+    if (!['pending_review', 'pending_seller_onboarding', 'ready_for_launch', 'live'].includes(status)) {
       res.status(400).json({ ok: false, message: 'Invalid status' });
       return;
     }
@@ -1193,10 +1210,11 @@ exports.adminListProducts = onRequest(
 
 /**
  * POST /adminApproveProduct
- * Publishes a pending product with pricing and Polar checkout metadata.
+ * Approves a reviewed product, stores Mojo pricing, and sends the seller into
+ * contract/payout onboarding. The Polar product is created only after onboarding.
  */
 exports.adminApproveProduct = onRequest(
-  { secrets: [ADMIN_PAYOUT_KEY, POLAR_ACCESS_TOKEN] },
+  { secrets: [ADMIN_PAYOUT_KEY] },
   async (req, res) => {
     if (setAdminCors(req, res)) return;
     if (req.method !== 'POST') {
@@ -1224,32 +1242,19 @@ exports.adminApproveProduct = onRequest(
 
       const product = productSnap.data();
       const parsedPriceCents = parsePositiveCents(priceCents);
-      const manualPolarPriceId = String(polarPriceId || '').trim();
-      let polarCreateResult = null;
-      let resolvedPolarPriceId = manualPolarPriceId;
-
-      if (!resolvedPolarPriceId) {
-        if (!parsedPriceCents) {
-          res.status(400).json({ ok: false, message: 'Price is required to create the checkout product in Polar' });
-          return;
-        }
-
-        polarCreateResult = await createPolarProductForMojo(String(productId), product, parsedPriceCents, billingPeriod);
-        resolvedPolarPriceId = polarCreateResult.polarPriceId;
-        if (!resolvedPolarPriceId) {
-          res.status(502).json({ ok: false, message: 'Polar product was created but no price ID was returned' });
-          return;
-        }
+      if (!parsedPriceCents) {
+        res.status(400).json({ ok: false, message: 'Price is required before seller onboarding' });
+        return;
       }
 
       await productRef.update({
-        status: 'live',
-        price: parsedPriceCents || product.price || null,
+        status: 'pending_seller_onboarding',
+        price: parsedPriceCents,
         billingPeriod: normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel),
-        polarPriceId: resolvedPolarPriceId,
-        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
-        polarSyncStatus: polarCreateResult ? 'created' : 'manual_price_id',
-        polarSyncedAt: polarCreateResult ? admin.firestore.FieldValue.serverTimestamp() : product.polarSyncedAt || null,
+        polarPriceId: String(polarPriceId || '').trim() || product.polarPriceId || null,
+        polarProductId: product.polarProductId || null,
+        polarSyncStatus: product.polarPriceId ? 'manual_price_id' : 'pending_seller_onboarding',
+        reviewedAt: admin.firestore.FieldValue.serverTimestamp(),
         featured: Boolean(featured),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
@@ -1276,12 +1281,100 @@ exports.adminApproveProduct = onRequest(
         contactName,
         productName: product.name || null,
         sellerToken,
-        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
-        polarPriceId: resolvedPolarPriceId,
+        status: 'pending_seller_onboarding',
       });
     } catch (err) {
       console.error('[adminApproveProduct] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminFinalizeProduct
+ * Creates the Mojo-owned Polar product after the seller has signed the
+ * agreement and provided payout details, then publishes the marketplace card.
+ */
+exports.adminFinalizeProduct = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY, POLAR_ACCESS_TOKEN] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId, polarPriceId, featured, priceCents, billingPeriod } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      const productRef = db.collection('products').doc(String(productId));
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      const product = productSnap.data();
+      const sellerEmail = product.submittedByEmail || product.sellerId;
+      if (sellerEmail) {
+        const sellerSnap = await db.collection('sellers').doc(String(sellerEmail)).get();
+        const seller = sellerSnap.exists ? sellerSnap.data() : null;
+        const sellerReady = Boolean(seller?.contractSignedAt && (seller?.payoutPreferenceStatus === 'provided' || seller?.payoutPreference));
+        if (!sellerReady) {
+          res.status(409).json({ ok: false, message: 'Seller must sign the agreement and save payout details before publishing' });
+          return;
+        }
+      }
+
+      const parsedPriceCents = parsePositiveCents(priceCents) || parsePositiveCents(product.price);
+      const manualPolarPriceId = String(polarPriceId || product.polarPriceId || '').trim();
+      let polarCreateResult = null;
+      let resolvedPolarPriceId = manualPolarPriceId;
+
+      if (!resolvedPolarPriceId) {
+        if (!parsedPriceCents) {
+          res.status(400).json({ ok: false, message: 'Price is required to create the checkout product in Polar' });
+          return;
+        }
+
+        polarCreateResult = await createPolarProductForMojo(String(productId), product, parsedPriceCents, billingPeriod || product.billingPeriod);
+        resolvedPolarPriceId = polarCreateResult.polarPriceId;
+        if (!resolvedPolarPriceId) {
+          res.status(502).json({ ok: false, message: 'Polar product was created but no price ID was returned' });
+          return;
+        }
+      }
+
+      await productRef.update({
+        status: 'live',
+        price: parsedPriceCents,
+        billingPeriod: normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel),
+        polarPriceId: resolvedPolarPriceId,
+        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
+        polarSyncStatus: polarCreateResult ? 'created' : 'manual_price_id',
+        polarSyncedAt: polarCreateResult ? admin.firestore.FieldValue.serverTimestamp() : product.polarSyncedAt || null,
+        featured: featured === undefined ? Boolean(product.featured) : Boolean(featured),
+        publishedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({
+        ok: true,
+        message: 'Product published',
+        polarProductId: polarCreateResult?.polarProductId || product.polarProductId || null,
+        polarPriceId: resolvedPolarPriceId,
+      });
+    } catch (err) {
+      console.error('[adminFinalizeProduct] error:', err);
+      res.status(500).json({ ok: false, message: err.message || 'Server error' });
     }
   }
 );

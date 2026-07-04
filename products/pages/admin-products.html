@@ -427,12 +427,18 @@
 
       <div class="tabs">
         <button class="tab active" data-tab="pending">Pending Review</button>
+        <button class="tab" data-tab="onboarding">Seller Onboarding</button>
         <button class="tab" data-tab="live">Published</button>
       </div>
 
       <!-- Pending Products Tab -->
       <div id="tab-pending" class="tab-content active">
         <div id="pending-products"></div>
+      </div>
+
+      <!-- Seller Onboarding Tab -->
+      <div id="tab-onboarding" class="tab-content">
+        <div id="onboarding-products"></div>
       </div>
 
       <!-- Published Products Tab -->
@@ -445,6 +451,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="../../scripts/firebase-config.js"></script>
-  <script src="../../scripts/admin-products.js?v=20260702-mojo-polar-api"></script>
+  <script src="../../scripts/admin-products.js?v=20260703-mojo-owned-polar"></script>
 </body>
 </html>

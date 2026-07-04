@@ -6,6 +6,8 @@ import sharp from "sharp";
 const ROOT = path.resolve(new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
 const ENV_PATH = path.join(ROOT, ".env");
 const ENDPOINT = process.env.MOJO_MEETUP_ADMIN_ENDPOINT || "https://mojoaistudio.com/api/meetup-admin";
+const MEETUP_TOKEN_ENDPOINT = "https://secure.meetup.com/oauth2/access";
+const MEETUP_GRAPHQL_ENDPOINT = "https://api.meetup.com/gql-ext";
 const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
 const OUT_DIR = path.join(ROOT, "watch");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
@@ -66,6 +68,120 @@ async function callAdmin(adminKey, params) {
     throw new Error(`Meetup admin request failed for ${params.urlname || params.action}`);
   }
   return payload;
+}
+
+function meetupTokenStorePath(env) {
+  if (env.MEETUP_TOKEN_STORE) return path.resolve(ROOT, env.MEETUP_TOKEN_STORE);
+  return path.join(ROOT, "meetup-oauth-token.json");
+}
+
+async function postForm(url, fields) {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(fields),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(`Meetup token refresh failed (${response.status}).`);
+  }
+  return payload;
+}
+
+async function readMeetupToken(env) {
+  const tokenPath = meetupTokenStorePath(env);
+  const token = JSON.parse(await fs.readFile(tokenPath, "utf8"));
+  if (!token?.access_token) {
+    throw new Error("Stored Meetup token file is missing an access token.");
+  }
+  return { token, tokenPath };
+}
+
+async function refreshMeetupToken(env, tokenPath, token) {
+  if (!env.MEETUP_CLIENT_ID || !env.MEETUP_CLIENT_SECRET || !token?.refresh_token) {
+    throw new Error("Meetup token refresh requires MEETUP_CLIENT_ID, MEETUP_CLIENT_SECRET, and a refresh token.");
+  }
+
+  const refreshed = await postForm(MEETUP_TOKEN_ENDPOINT, {
+    client_id: env.MEETUP_CLIENT_ID,
+    client_secret: env.MEETUP_CLIENT_SECRET,
+    grant_type: "refresh_token",
+    refresh_token: token.refresh_token,
+  });
+  refreshed.stored_at = new Date().toISOString();
+  await fs.writeFile(tokenPath, `${JSON.stringify(refreshed, null, 2)}\n`);
+  return refreshed;
+}
+
+async function meetupGraphQL(env, query, variables) {
+  const { token, tokenPath } = await readMeetupToken(env);
+  let activeToken = token;
+
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const response = await fetch(MEETUP_GRAPHQL_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${activeToken.access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    const invalidToken = JSON.stringify(payload.errors || "").includes("access_token_invalid");
+    if (response.ok && !invalidToken) {
+      if (payload.errors) {
+        throw new Error(`Meetup GraphQL returned errors: ${JSON.stringify(payload.errors)}`);
+      }
+      return { response: payload };
+    }
+
+    if (attempt === 0 && invalidToken) {
+      activeToken = await refreshMeetupToken(env, tokenPath, activeToken);
+      continue;
+    }
+
+    throw new Error(`Meetup GraphQL request failed (${response.status}).`);
+  }
+
+  throw new Error("Meetup GraphQL request failed.");
+}
+
+async function fetchMeetupGroupEvents(env, urlname) {
+  const query = `query ($urlname: String!) {
+  groupByUrlname(urlname: $urlname) {
+    id
+    name
+    urlname
+    link
+    events(first: 50) {
+      totalCount
+      edges {
+        node {
+          id
+          title
+          description
+          eventUrl
+          status
+          dateTime
+          duration
+          networkEvent { id title eventTime groupCount status timezone }
+          howToFindUs
+          venue { id name }
+          featuredEventPhoto { id baseUrl standardUrl thumbUrl }
+        }
+      }
+    }
+  }
+}`;
+
+  try {
+    return await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname });
+  } catch (err) {
+    return {
+      ok: true,
+      result: await meetupGraphQL(env, query, { urlname }),
+    };
+  }
 }
 
 async function pathExists(filePath) {
@@ -287,7 +403,7 @@ ${schemaMarkup}
     <header class="site-header aac-header" id="top">
       <nav class="site-nav" aria-label="Primary navigation">
         <a class="brand" href="/" aria-label="Mojo AI Studio home">
-          <span class="brand-mark">M</span>
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
           <span>Mojo AI Studio</span>
         </a>
         <div class="nav-links">
@@ -804,7 +920,7 @@ async function main() {
 
   const chapters = [];
   for (const city of cities) {
-    const payload = await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname: city.urlname });
+    const payload = await fetchMeetupGroupEvents(env, city.urlname);
     const group = payload.result.response.data.groupByUrlname;
     const events = group.events.edges
       .map((edge) => edge.node)
@@ -817,7 +933,7 @@ async function main() {
     });
   }
 
-  const globalPayload = await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname: GLOBAL_ACTIVITY_GROUP });
+  const globalPayload = await fetchMeetupGroupEvents(env, GLOBAL_ACTIVITY_GROUP);
   const globalGroup = globalPayload.result.response.data.groupByUrlname;
   const globalEvents = globalGroup.events.edges
     .map((edge) => edge.node)

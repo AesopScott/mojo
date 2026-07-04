@@ -67,6 +67,8 @@
 
       if (this.dataset.tab === 'pending') {
         loadPendingProducts();
+      } else if (this.dataset.tab === 'onboarding') {
+        loadOnboardingProducts();
       } else {
         loadLiveProducts();
       }
@@ -105,6 +107,34 @@
     } catch (err) {
       console.error('[admin-products] loadPendingProducts error:', err);
       handleAdminError(err, 'Error loading products');
+    }
+  }
+
+  async function loadOnboardingProducts() {
+    try {
+      const container = document.getElementById('onboarding-products');
+      container.innerHTML = '<p style="text-align: center; color: var(--muted);">Loading...</p>';
+
+      const [waiting, ready] = await Promise.all([
+        adminRequest('adminListProducts?status=pending_seller_onboarding'),
+        adminRequest('adminListProducts?status=ready_for_launch'),
+      ]);
+      const products = waiting.concat(ready)
+        .sort((a, b) => (b.updatedAtMillis || b.createdAtMillis || 0) - (a.updatedAtMillis || a.createdAtMillis || 0));
+
+      if (!products.length) {
+        container.innerHTML = '<div class="empty-state"><p>No products waiting on seller onboarding</p></div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      products.forEach(product => {
+        const card = createOnboardingCard(product.id, product);
+        container.appendChild(card);
+      });
+    } catch (err) {
+      console.error('[admin-products] loadOnboardingProducts error:', err);
+      handleAdminError(err, 'Error loading seller onboarding products');
     }
   }
 
@@ -212,7 +242,7 @@
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
         <div class="form-row">
           <div class="form-group">
-            <label>Price USD <span style="font-weight:400;color:#6b7280">(Mojo creates the Polar checkout product)</span></label>
+            <label>Price USD <span style="font-weight:400;color:#6b7280">(saved now; Polar is created after seller onboarding)</span></label>
             <input type="number" class="price-input" min="1" step="0.01" placeholder="99.00" required>
           </div>
 
@@ -227,7 +257,7 @@
         </div>
 
         <div class="form-group">
-          <label>Existing Polar Price ID <span style="font-weight:400;color:#6b7280">(optional override; leave blank for Mojo to create it)</span></label>
+          <label>Existing Polar Price ID <span style="font-weight:400;color:#6b7280">(optional override; only if this already exists in Mojo Polar)</span></label>
           <input type="text" class="polar-id-input" placeholder="Optional existing Polar price ID">
         </div>
 
@@ -241,7 +271,7 @@
       </div>
 
       <div class="action-buttons">
-        <button class="btn-approve" data-product-id="${productId}">Approve & Publish</button>
+        <button class="btn-approve" data-product-id="${productId}">Approve & Send Contract</button>
         <button class="btn-archive" data-product-id="${productId}">Reject</button>
       </div>
     `;
@@ -263,7 +293,7 @@
 
       try {
         approveBtn.disabled = true;
-        approveBtn.textContent = polarId ? 'Publishing...' : 'Creating checkout...';
+        approveBtn.textContent = 'Approving...';
 
         const result = await adminRequest('adminApproveProduct', {
           method: 'POST',
@@ -286,14 +316,13 @@
           });
         }
 
-        const checkoutNote = result.polarPriceId ? ` Checkout ID: ${result.polarPriceId}` : '';
-        showMessage(`Published ${product.name} — onboarding email sent.${checkoutNote}`, 'success');
+        showMessage(`Approved ${product.name} — onboarding email sent. Publish after seller signs and saves payout details.`, 'success');
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
         console.error('[admin-products] approve error:', err);
-        showMessage('Error approving product', 'error');
+        showMessage(err.message || 'Error approving product', 'error');
         approveBtn.disabled = false;
-        approveBtn.textContent = 'Approve & Publish';
+        approveBtn.textContent = 'Approve & Send Contract';
       }
     });
 
@@ -318,6 +347,149 @@
     return div;
   }
 
+  function createOnboardingCard(productId, product) {
+    const div = document.createElement('div');
+    div.className = 'product-card';
+
+    const seller = product.sellerEmail || product.submittedByEmail || product.sellerId || 'Unknown';
+    const sellerName = product.sellerContactName || product.submitterName || (seller.includes('@') ? seller.split('@')[0] : seller);
+    const canResendContract = Boolean(product.sellerToken && seller.includes('@'));
+    const payoutStatus = product.sellerPayoutPreferenceStatus || 'not submitted';
+    const payoutMethod = formatPayoutMethod(product.sellerPayoutMethod);
+    const payoutContact = product.sellerPayoutContact || '—';
+    const payoutNotes = product.sellerPayoutNotes || '';
+    const sellerReady = product.status === 'ready_for_launch' || payoutStatus === 'provided';
+    const price = formatPrice(product.price, product.billingPeriod);
+    const productUrl = product.productUrl || product.externalUrl || '';
+    const safeProductUrl = safeUrl(productUrl);
+
+    div.innerHTML = `
+      <div class="product-header">
+        <div class="product-info">
+          <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
+          <div class="product-seller">by ${escapeHtml(sellerName)} (${escapeHtml(seller)})</div>
+        </div>
+        <span class="status-badge status-pending">${sellerReady ? 'Ready to Publish' : 'Seller Onboarding'}</span>
+      </div>
+
+      <p class="product-description">${escapeHtml(product.description || '')}</p>
+
+      <div class="product-meta">
+        <div class="meta-item">
+          <div class="meta-label">Price</div>
+          <div class="meta-value">${escapeHtml(price)}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Seller Status</div>
+          <div class="meta-value">${escapeHtml(formatValue(product.sellerStatus, 'Unknown'))}</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Product URL / Demo</div>
+          <div class="meta-value">${safeProductUrl ? `<a href="${escapeAttribute(safeProductUrl)}" target="_blank" rel="noopener">${escapeHtml(productUrl)}</a>` : escapeHtml(formatValue(productUrl, 'Not provided'))}</div>
+        </div>
+      </div>
+
+      <div class="seller-payout">
+        <h4 class="seller-payout-title">Seller Payout</h4>
+        <div class="seller-payout-grid">
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-value">${escapeHtml(formatValue(payoutStatus, 'Not submitted'))}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Method</div>
+            <div class="meta-value">${escapeHtml(payoutMethod)}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Pay To / Contact</div>
+            <div class="meta-value">${escapeHtml(payoutContact)}</div>
+          </div>
+        </div>
+        ${payoutNotes ? `<div class="seller-payout-notes"><strong>Notes:</strong> ${escapeHtml(payoutNotes)}</div>` : ''}
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-approve" data-product-id="${productId}" ${sellerReady ? '' : 'disabled'} title="${sellerReady ? 'Create the Mojo-owned Polar product and publish this listing' : 'Seller must sign contract and save payout details first'}">Create Polar Product & Publish</button>
+        <button class="btn-resend" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller onboarding email' : 'Seller token unavailable'}">Resend Contract</button>
+        <button class="btn-archive" data-product-id="${productId}">Archive</button>
+      </div>
+    `;
+
+    const publishBtn = div.querySelector('.btn-approve');
+    const resendBtn = div.querySelector('.btn-resend');
+    const archiveBtn = div.querySelector('.btn-archive');
+
+    publishBtn.addEventListener('click', async () => {
+      try {
+        publishBtn.disabled = true;
+        publishBtn.textContent = 'Creating in Polar...';
+
+        const result = await adminRequest('adminFinalizeProduct', {
+          method: 'POST',
+          body: {
+            productId,
+            priceCents: product.price,
+            billingPeriod: product.billingPeriod,
+            featured: product.featured,
+          },
+        });
+
+        const checkoutNote = result.polarPriceId ? ` Checkout ID: ${result.polarPriceId}` : '';
+        showMessage(`Published ${product.name}.${checkoutNote}`, 'success');
+        setTimeout(() => loadOnboardingProducts(), 1500);
+      } catch (err) {
+        console.error('[admin-products] finalize error:', err);
+        showMessage(err.message || 'Error publishing product', 'error');
+        publishBtn.disabled = false;
+        publishBtn.textContent = 'Create Polar Product & Publish';
+      }
+    });
+
+    resendBtn.addEventListener('click', async () => {
+      try {
+        resendBtn.disabled = true;
+        resendBtn.textContent = 'Sending...';
+        await sendSellerOnboardingEmail({
+          email: seller,
+          contactName: sellerName,
+          productName: product.name || 'your product',
+          sellerToken: product.sellerToken,
+        });
+        showMessage(`Contract email resent to ${seller}`, 'success');
+        resendBtn.textContent = 'Resent';
+        setTimeout(() => {
+          resendBtn.disabled = false;
+          resendBtn.textContent = 'Resend Contract';
+        }, 2000);
+      } catch (err) {
+        console.error('[admin-products] resend onboarding error:', err);
+        showMessage(err.message || 'Error resending contract email', 'error');
+        resendBtn.disabled = false;
+        resendBtn.textContent = 'Resend Contract';
+      }
+    });
+
+    archiveBtn.addEventListener('click', async () => {
+      if (!confirm(`Archive "${product.name}"?`)) return;
+
+      try {
+        archiveBtn.disabled = true;
+        await adminRequest('adminArchiveProduct', {
+          method: 'POST',
+          body: { productId },
+        });
+        showMessage(`Archived ${product.name}`, 'success');
+        setTimeout(() => loadOnboardingProducts(), 1500);
+      } catch (err) {
+        console.error('[admin-products] archive onboarding error:', err);
+        showMessage('Error archiving product', 'error');
+        archiveBtn.disabled = false;
+      }
+    });
+
+    return div;
+  }
+
   function createLiveCard(productId, product) {
     const div = document.createElement('div');
     div.className = 'product-card';
@@ -325,7 +497,7 @@
     const seller = product.sellerEmail || product.sellerId || 'Mojo';
     const sellerName = product.sellerContactName || (seller.includes('@') ? seller.split('@')[0] : seller);
     const canResendContract = Boolean(product.sellerToken && seller.includes('@'));
-    const price = product.price ? `$${(product.price / 100).toFixed(2)}/mo` : 'Custom';
+    const price = formatPrice(product.price, product.billingPeriod);
     const payoutStatus = product.sellerPayoutPreferenceStatus || 'not submitted';
     const payoutMethod = formatPayoutMethod(product.sellerPayoutMethod);
     const payoutContact = product.sellerPayoutContact || '—';
@@ -523,6 +695,13 @@
       other: 'Other',
     };
     return labels[value] || formatValue(value, '—');
+  }
+
+  function formatPrice(priceCents, billingPeriod) {
+    if (!priceCents) return 'Custom';
+    const period = String(billingPeriod || 'month');
+    const suffix = period === 'one_time' ? ' one-time' : `/${period === 'year' ? 'yr' : 'mo'}`;
+    return `$${(Number(priceCents) / 100).toFixed(2)}${suffix}`;
   }
 
   function escapeHtml(value) {
