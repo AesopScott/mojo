@@ -37,6 +37,58 @@ const cities = [
   { city: "OKC", state: "OK", slug: "okc", urlname: "advanced-ai-concepts-okc" },
 ];
 
+const fallbackUpcomingSessions = [
+  {
+    id: "fallback-global-harness-2026-07-12",
+    title: "Global - Dev Automation and Harness Engineering I",
+    eventUrl: "https://www.meetup.com/advanced-ai-concepts-atlanta/events/315556783/",
+    status: "ACTIVE",
+    dateTime: "2026-07-12T08:00:00-06:00",
+    duration: 7200000,
+  },
+  {
+    id: "fallback-anthropic-cert-2026-07-17",
+    title: "Anthropic Certified Architect Prep",
+    eventUrl: "https://www.meetup.com/advanced-ai-concepts/events/315536188/",
+    status: "ACTIVE",
+    dateTime: "2026-07-17T18:00:00-06:00",
+    duration: 7200000,
+  },
+  {
+    id: "fallback-global-anthropic-cert-2026-07-19",
+    title: "Global - Anthropic Certified Architect Prep",
+    eventUrl: "https://www.meetup.com/advanced-ai-concepts-the-triangle/events/315538152/",
+    status: "ACTIVE",
+    dateTime: "2026-07-19T08:00:00-06:00",
+    duration: 7200000,
+  },
+  {
+    id: "fallback-governance-2026-07-24",
+    title: "AI Governance for AI Developers",
+    eventUrl: "https://www.meetup.com/advanced-ai-concepts/events/315538414/",
+    status: "ACTIVE",
+    dateTime: "2026-07-24T18:00:00-06:00",
+    duration: 7200000,
+  },
+  {
+    id: "fallback-global-governance-2026-07-26",
+    title: "Global - AI Governance for AI Developers",
+    eventUrl: "https://www.meetup.com/advanced-ai-concepts/events/315538632/",
+    status: "ACTIVE",
+    dateTime: "2026-07-26T08:00:00-06:00",
+    duration: 7200000,
+  },
+];
+
+function fallbackEvents() {
+  return fallbackUpcomingSessions.map((event) => ({
+    ...event,
+    featuredEventPhoto: {
+      standardUrl: "/assets/advanced-ai-concepts/og-hub.jpg",
+    },
+  }));
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -353,7 +405,7 @@ function gmtActivityTimeLabel(dateTime, daysToAdd, hour) {
 function activityDateLabel(event, pairedEvent) {
   const isGlobal = /^Global\s*-\s*/i.test(event.title || "");
   const sourceEvent = isGlobal && pairedEvent ? pairedEvent : event;
-  const daysToAdd = isGlobal ? 2 : 0;
+  const daysToAdd = isGlobal && pairedEvent ? 2 : 0;
   const hour = isGlobal ? 8 : 18;
   const dayLabel = activityDateFromSource(sourceEvent.dateTime, daysToAdd);
   if (!dayLabel) return eventDateLabel(event.dateTime).replace("local time", "Mountain time");
@@ -409,6 +461,7 @@ ${schemaMarkup}
         <div class="nav-links">
           <a href="/buy/">Buy</a>
           <a href="/sell">Sell</a>
+          <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
           <a href="/request/">Request</a>
           <a href="/learn/" class="${active}">Learn</a>
           <a href="/forum/">Forum</a>
@@ -496,22 +549,18 @@ function isPublicUpcomingEvent(event) {
 }
 
 function zoomEventLinksMarkup(events, globalEvents = []) {
-  const globalByTopic = new Map();
-  for (const event of globalEvents.filter(isPublicUpcomingEvent)) {
-    const key = activityTopicKey(event.title);
-    if (key && !globalByTopic.has(key)) {
-      globalByTopic.set(key, event);
-    }
-  }
-
-  const activityEvents = [];
-  for (const event of events.slice(0, 4)) {
-    activityEvents.push({ event });
-    const globalEvent = globalByTopic.get(activityTopicKey(event.title));
-    if (globalEvent) {
-      activityEvents.push({ event: globalEvent, pairedEvent: event });
-    }
-  }
+  const seen = new Set();
+  const activityEvents = [...events, ...globalEvents]
+    .filter(isPublicUpcomingEvent)
+    .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+    .filter((event) => {
+      const key = event.eventUrl || `${activityTopicKey(event.title)}-${event.dateTime}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 5)
+    .map((event) => ({ event }));
 
   return activityEvents.map(({ event, pairedEvent }) => {
     const zoomUrl = event.howToFindUs || event.eventUrl;
@@ -912,39 +961,65 @@ async function generateOgImage(sourceImage, chapter, filename) {
 }
 
 async function main() {
-  const env = readEnv(await fs.readFile(ENV_PATH, "utf8"));
-  if (!env.MEETUP_ADMIN_KEY) throw new Error("MEETUP_ADMIN_KEY is missing.");
+  let env = {};
+  try {
+    env = readEnv(await fs.readFile(ENV_PATH, "utf8"));
+  } catch (error) {
+    console.warn(`Using fallback Advanced AI Concepts sessions: ${path.basename(ENV_PATH)} could not be read.`);
+  }
+
+  if (!env.MEETUP_ADMIN_KEY) {
+    console.warn("Using fallback Advanced AI Concepts sessions: MEETUP_ADMIN_KEY is missing.");
+  }
 
   await fs.mkdir(ASSET_DIR, { recursive: true });
   await fs.mkdir(OUT_DIR, { recursive: true });
 
   const chapters = [];
   for (const city of cities) {
-    const payload = await fetchMeetupGroupEvents(env, city.urlname);
-    const group = payload.result.response.data.groupByUrlname;
-    const events = group.events.edges
-      .map((edge) => edge.node)
-      .filter((event) => event.status === "ACTIVE")
-      .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+    let group = null;
+    let events = [];
+    try {
+      if (!env.MEETUP_ADMIN_KEY) throw new Error("MEETUP_ADMIN_KEY is missing.");
+      const payload = await fetchMeetupGroupEvents(env, city.urlname);
+      group = payload.result.response.data.groupByUrlname;
+      events = group.events.edges
+        .map((edge) => edge.node)
+        .filter((event) => event.status === "ACTIVE")
+        .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+    } catch (error) {
+      console.warn(`Using fallback Advanced AI Concepts sessions for ${city.urlname}: ${error.message}`);
+      events = fallbackEvents();
+    }
     chapters.push({
       ...city,
       events,
-      meetupUrl: group.link || `https://www.meetup.com/${city.urlname}/`,
+      meetupUrl: group?.link || `https://www.meetup.com/${city.urlname}/`,
     });
   }
 
-  const globalPayload = await fetchMeetupGroupEvents(env, GLOBAL_ACTIVITY_GROUP);
-  const globalGroup = globalPayload.result.response.data.groupByUrlname;
-  const globalEvents = globalGroup.events.edges
-    .map((edge) => edge.node)
-    .filter((event) => event.status === "ACTIVE" && /^Global\s*-\s*/i.test(event.title))
-    .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+  let globalEvents = [];
+  try {
+    if (!env.MEETUP_ADMIN_KEY) throw new Error("MEETUP_ADMIN_KEY is missing.");
+    const globalPayload = await fetchMeetupGroupEvents(env, GLOBAL_ACTIVITY_GROUP);
+    const globalGroup = globalPayload.result.response.data.groupByUrlname;
+    globalEvents = globalGroup.events.edges
+      .map((edge) => edge.node)
+      .filter((event) => event.status === "ACTIVE" && /^Global\s*-\s*/i.test(event.title))
+      .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+  } catch (error) {
+    console.warn(`Using fallback global Advanced AI Concepts sessions: ${error.message}`);
+    globalEvents = fallbackEvents().filter((event) => /^Global\s*-\s*/i.test(event.title));
+  }
 
   const heroSource = await resolveHeroImageSource(env, chapters);
-  await sharp(heroSource)
-    .resize(1600, 880, { fit: "cover", position: "center" })
-    .jpeg({ quality: 84, mozjpeg: true })
-    .toFile(path.join(ASSET_DIR, "hero.jpg"));
+  const heroOutput = path.join(ASSET_DIR, "hero.jpg");
+  if (Buffer.isBuffer(heroSource) || path.resolve(heroSource) !== path.resolve(heroOutput)) {
+    await sharp(heroSource)
+      .resize(1600, 880, { fit: "cover", position: "center" })
+      .jpeg({ quality: 84, mozjpeg: true })
+      .toFile(heroOutput);
+  }
 
   await generateOgImage(heroSource, {
     city: "Advanced AI Concepts",
