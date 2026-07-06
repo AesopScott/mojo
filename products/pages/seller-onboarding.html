@@ -301,7 +301,57 @@
 
     <div id="form-error" class="form-error"></div>
 
-    <!-- Step 1: Sign Contract -->
+    <!-- Step 1: Listing Fee -->
+    <div id="step-fee" class="step">
+      <div class="step-title">Pay Listing Fee</div>
+
+      <div class="status-indicator complete">
+        <div class="status-check">✓</div>
+        <span>Product approved</span>
+      </div>
+
+      <form id="listing-fee-form">
+        <p class="form-note">A $100 listing fee is due before you can review and sign the seller agreement. Choose PayPal or Zelle, send the payment to Mojo, then enter the confirmation details below.</p>
+
+        <div class="form-group">
+          <label for="listing-fee-method">Payment method</label>
+          <select id="listing-fee-method" name="listingFeeMethod" required>
+            <option value="">Select a payment method</option>
+            <option value="paypal">PayPal</option>
+            <option value="zelle">Zelle</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Send $100 to</label>
+          <div class="contract-display" style="max-height:none;margin-bottom:0;">
+            <p><strong>PayPal:</strong> admin@mojoaistudio.com</p>
+            <p><strong>Zelle:</strong> admin@mojoaistudio.com</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="listing-fee-payer">Name or email used for payment</label>
+          <input type="text" id="listing-fee-payer" name="listingFeePayer" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+          <label for="listing-fee-reference">Confirmation, transaction ID, or note</label>
+          <input type="text" id="listing-fee-reference" name="listingFeeReference" autocomplete="off" required>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button-primary" id="btn-submit-listing-fee" type="submit">Submit Payment Details</button>
+        </div>
+      </form>
+
+      <div id="listing-fee-pending" class="status-indicator pending" style="display:none;">
+        <div class="status-check">!</div>
+        <span>Your payment details were submitted. Mojo will verify the payment before the contract can be signed.</span>
+      </div>
+    </div>
+
+    <!-- Step 2: Sign Contract -->
     <div id="step-contract" class="step active">
       <div class="step-title">Review & Sign Contract</div>
 
@@ -324,7 +374,7 @@
       </div>
     </div>
 
-    <!-- Step 2: Payout Preference -->
+    <!-- Step 3: Payout Preference -->
     <div id="step-payout" class="step">
       <div class="step-title">Choose Payout Method</div>
 
@@ -365,7 +415,7 @@
       </form>
     </div>
 
-    <!-- Step 3: Success -->
+    <!-- Step 4: Success -->
     <div id="step-success" class="step">
       <div class="success-message">
         <h2>✓ You're all set!</h2>
@@ -388,6 +438,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
   <script src="../../scripts/firebase-config.js"></script>
-  <script src="../../scripts/seller-onboarding.js?v=20260702-no-seller-polar"></script>
+  <script src="../../scripts/seller-onboarding-v2026070605.js"></script>
 </body>
 </html>

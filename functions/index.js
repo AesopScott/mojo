@@ -394,19 +394,118 @@ exports.getSellerOnboardingState = onRequest(
         return;
       }
 
+      const product = await findSellerOnboardingProduct(email);
+      const listingFeeStatus = product?.data?.listingFeeStatus || null;
+      const listingFeeWaived = Boolean(product?.data?.listingFeeWaived || listingFeeStatus === 'waived');
+      const listingFeePaid = listingFeeStatus === 'paid';
+      const listingFeePaymentSubmitted = listingFeeStatus === 'payment_submitted';
+      const listingFeeReady = Boolean(!product || listingFeeWaived || listingFeePaid);
       const contractSigned = Boolean(seller.contractSignedAt);
       const payoutPreferenceProvided = Boolean(seller.payoutPreferenceStatus === 'provided' || seller.payoutPreference);
-      const nextStep = payoutPreferenceProvided ? 'success' : contractSigned ? 'payout' : 'contract';
+      const nextStep = !listingFeeReady ? 'fee' : payoutPreferenceProvided ? 'success' : contractSigned ? 'payout' : 'contract';
 
       res.status(200).json({
         ok: true,
         status: seller.status || null,
+        productId: product?.id || null,
+        productName: product?.data?.name || null,
+        listingFeeStatus,
+        listingFeeWaived,
+        listingFeePaid,
+        listingFeePaymentSubmitted,
+        listingFeeReady,
         contractSigned,
         payoutPreferenceProvided,
         nextStep,
       });
     } catch (err) {
       console.error('[getSellerOnboardingState] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /sellers/submit-listing-fee-payment
+ * Records seller-submitted PayPal/Zelle payment details for the $100 listing fee.
+ * Admin must verify and mark the fee paid before the contract can be signed.
+ */
+exports.submitListingFeePayment = onRequest(
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sellerToken = String(req.body?.sellerToken || '').trim();
+    const productId = String(req.body?.productId || '').trim();
+    const paymentMethod = String(req.body?.paymentMethod || '').trim().toLowerCase();
+    const payerName = String(req.body?.payerName || '').trim();
+    const paymentReference = String(req.body?.paymentReference || '').trim();
+    const allowedMethods = new Set(['paypal', 'zelle']);
+
+    if (!email || !sellerToken || !paymentMethod || !payerName || !paymentReference) {
+      res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+    if (!allowedMethods.has(paymentMethod)) {
+      res.status(400).json({ ok: false, message: 'Choose PayPal or Zelle for the listing fee' });
+      return;
+    }
+
+    try {
+      const sellerRef = db.collection('sellers').doc(email);
+      const sellerSnap = await sellerRef.get();
+      if (!sellerSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Seller record not found' });
+        return;
+      }
+
+      const seller = sellerSnap.data();
+      if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
+        res.status(401).json({ ok: false, message: 'Invalid token' });
+        return;
+      }
+
+      const product = await findSellerOnboardingProduct(email, productId);
+      if (!product) {
+        res.status(404).json({ ok: false, message: 'Approved product not found' });
+        return;
+      }
+
+      const productData = product.data;
+      if (productData.listingFeeWaived || productData.listingFeeStatus === 'waived') {
+        res.status(200).json({ ok: true, message: 'Listing fee is waived' });
+        return;
+      }
+      if (productData.listingFeeStatus === 'paid') {
+        res.status(200).json({ ok: true, message: 'Listing fee is already marked paid' });
+        return;
+      }
+
+      await product.ref.update({
+        listingFeeAmount: productData.listingFeeAmount || productData.listingFee || 10000,
+        listingFeeStatus: 'payment_submitted',
+        listingFeePayment: {
+          method: paymentMethod,
+          payerName: payerName.slice(0, 240),
+          reference: paymentReference.slice(0, 240),
+          submittedAt: admin.firestore.FieldValue.serverTimestamp(),
+        },
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({
+        ok: true,
+        productId: product.id,
+        listingFeeStatus: 'payment_submitted',
+        message: 'Listing fee payment details submitted. Mojo will verify the payment before contract signing.',
+      });
+    } catch (err) {
+      console.error('[submitListingFeePayment] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
     }
   }
@@ -455,6 +554,16 @@ exports.signContract = onRequest(
       if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
         res.status(401).json({ ok: false, message: 'Invalid token' });
         return;
+      }
+
+      const product = await findSellerOnboardingProduct(email);
+      if (product) {
+        const listingFeeStatus = product.data?.listingFeeStatus || null;
+        const listingFeeReady = Boolean(product.data?.listingFeeWaived || listingFeeStatus === 'waived' || listingFeeStatus === 'paid');
+        if (!listingFeeReady) {
+          res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid or waived before signing the seller agreement.' });
+          return;
+        }
       }
 
       // Update seller: sign contract, move to payout preference collection.
@@ -1355,6 +1464,41 @@ function normalizeEmail(value) {
   return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? email : '';
 }
 
+async function findSellerOnboardingProduct(email, productId = '') {
+  const rawEmail = String(email || '').trim();
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) return null;
+
+  if (productId) {
+    const productRef = db.collection('products').doc(String(productId));
+    const productSnap = await productRef.get();
+    if (!productSnap.exists) return null;
+    const product = productSnap.data();
+    const ownerEmail = normalizeEmail(product.submittedByEmail || product.sellerId);
+    if (ownerEmail !== normalizedEmail) return null;
+    return { id: productSnap.id, ref: productRef, data: product };
+  }
+
+  const statuses = ['pending_seller_onboarding', 'pending_payout_preference', 'ready_for_launch'];
+  const emailCandidates = Array.from(new Set([rawEmail, normalizedEmail].filter(Boolean)));
+  const snapshots = await Promise.all(statuses.flatMap((status) => emailCandidates.map((candidate) => db.collection('products')
+    .where('submittedByEmail', '==', candidate)
+    .where('status', '==', status)
+    .get())));
+
+  const docs = snapshots.flatMap((snapshot) => snapshot.docs);
+  if (!docs.length) return null;
+
+  docs.sort((a, b) => {
+    const aTime = timestampMillis(a.data().updatedAt) || timestampMillis(a.data().createdAt) || 0;
+    const bTime = timestampMillis(b.data().updatedAt) || timestampMillis(b.data().createdAt) || 0;
+    return bTime - aTime;
+  });
+
+  const doc = docs[0];
+  return { id: doc.id, ref: doc.ref, data: doc.data() };
+}
+
 async function sendSellerPortalInviteEmail({ to, contactName, sellerToken, introHtml }) {
   const email = normalizeEmail(to);
   const cleanName = String(contactName || 'Seller').trim() || 'Seller';
@@ -1510,6 +1654,7 @@ function sellerProductPayload(doc) {
     listingFeeAmount: product.listingFeeAmount || product.listingFee || 10000,
     listingFeeStatus: product.listingFeeStatus || null,
     listingFeeWaived: Boolean(product.listingFeeWaived),
+    listingFeePayment: product.listingFeePayment || null,
     listingFeePolarPriceId: product.listingFeePolarPriceId || null,
     featured: Boolean(product.featured),
     createdAtMillis: timestampMillis(product.createdAt),
@@ -2255,6 +2400,53 @@ exports.adminSetListingFeeWaiver = onRequest(
       });
     } catch (err) {
       console.error('[adminSetListingFeeWaiver] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminMarkListingFeePaid
+ * Marks a seller-submitted PayPal/Zelle listing fee as verified and paid.
+ */
+exports.adminMarkListingFeePaid = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      const productRef = db.collection('products').doc(String(productId));
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      await productRef.update({
+        listingFeeAmount: 10000,
+        listingFeeStatus: 'paid',
+        listingFeePaidAt: admin.firestore.FieldValue.serverTimestamp(),
+        listingFeeVerifiedAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({ ok: true, listingFeeStatus: 'paid', message: 'Listing fee marked paid' });
+    } catch (err) {
+      console.error('[adminMarkListingFeePaid] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
     }
   }

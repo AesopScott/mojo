@@ -1037,7 +1037,8 @@ async function handleSellerOnboardingEmail(request, env) {
 <p><a href="${onboardingUrl}">${onboardingUrl}</a></p>
 <p>What happens next:</p>
 <ol>
-<li>Review and sign the seller agreement</li>
+<li>If the listing fee was not waived, choose PayPal or Zelle and submit your $100 payment details</li>
+<li>After Mojo verifies the fee payment, review and sign the seller agreement</li>
 <li>Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option</li>
 <li>Mojo sends your seller portal link so you can finish product details and launch setup</li>
 <li>Mojo creates and syncs the Polar checkout product under the Mojo account</li>
