@@ -2113,14 +2113,35 @@ exports.adminApproveProduct = onRequest(
       let sellerToken = null;
       let contactName = null;
       if (product.submittedByEmail) {
-        const sellerSnap = await db.collection('sellers')
-          .where('email', '==', product.submittedByEmail)
-          .limit(1)
-          .get();
-        if (!sellerSnap.empty) {
-          const seller = sellerSnap.docs[0].data();
+        const normalizedSellerEmail = normalizeEmail(product.submittedByEmail) || String(product.submittedByEmail).trim();
+        let sellerRef = db.collection('sellers').doc(normalizedSellerEmail);
+        let sellerDoc = await sellerRef.get();
+
+        if (!sellerDoc.exists) {
+          const sellerSnap = await db.collection('sellers')
+            .where('email', '==', product.submittedByEmail)
+            .limit(1)
+            .get();
+          if (!sellerSnap.empty) {
+            sellerDoc = sellerSnap.docs[0];
+            sellerRef = sellerDoc.ref;
+          }
+        }
+
+        if (sellerDoc.exists) {
+          const seller = sellerDoc.data();
           sellerToken = seller.sellerToken || null;
           contactName = seller.contactName || null;
+
+          await sellerRef.update({
+            status: 'pending_contract',
+            contractSignedAt: null,
+            contractVersion: null,
+            contractIpAddress: null,
+            payoutPreference: null,
+            payoutPreferenceStatus: null,
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
         }
       }
 
