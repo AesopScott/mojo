@@ -4,7 +4,7 @@
  * Features:
  * - Admin key authentication
  * - View pending products for review
- * - Approve products and set pricing
+ * - Approve products and manage seller onboarding
  * - View published products
  * - Archive products
  */
@@ -178,6 +178,8 @@
     const pricingModel = product.pricingModel || product.billingPeriod || '';
     const targetUser = product.targetUser || product.inputs || '';
     const additionalContext = product.anythingElse || '';
+    const initialListingFeeWaived = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived');
+    const sellerInviteSent = product.sellerInviteStatus === 'sent' || Boolean(product.sellerInviteSentAtMillis);
 
     div.innerHTML = `
       <div class="product-header">
@@ -256,13 +258,18 @@
 
         <div class="form-group" style="margin-top:12px;">
           <label style="margin-bottom:8px;">Listing Fee</label>
-          <button class="btn-waive-fee" type="button" data-waived="false">Waive $100 Fee</button>
+          <button class="btn-waive-fee ${initialListingFeeWaived ? 'success' : ''}" type="button" data-waived="${initialListingFeeWaived ? 'true' : 'false'}">${initialListingFeeWaived ? 'Fee Waived' : 'Waive $100 Fee'}</button>
           <div class="subtle" style="margin-top:8px;">Use this when Mojo wants to approve the seller without collecting the one-time listing fee.</div>
         </div>
       </div>
 
+      <div class="meta-item seller-invite-status" style="margin-bottom:16px;">
+        <div class="meta-label">Seller Contract</div>
+        <div class="meta-value">${sellerInviteSent ? `Sent${product.sellerInviteSentAtMillis ? ` ${formatDate(product.sellerInviteSentAtMillis)}` : ''}` : 'Not sent yet'}</div>
+      </div>
+
       <div class="action-buttons">
-        <button class="btn-approve" data-product-id="${productId}">Approve & Send Seller Invite</button>
+        <button class="btn-approve" data-product-id="${productId}" ${sellerInviteSent ? 'disabled' : ''}>${sellerInviteSent ? 'Seller Contract Sent' : 'Approve & Send Seller Contract'}</button>
         <button class="btn-archive" data-product-id="${productId}">Reject</button>
       </div>
     `;
@@ -271,12 +278,31 @@
     const rejectBtn = div.querySelector('.btn-archive');
     const waiveFeeBtn = div.querySelector('.btn-waive-fee');
 
-    waiveFeeBtn.addEventListener('click', () => {
+    waiveFeeBtn.addEventListener('click', async () => {
       const waived = waiveFeeBtn.dataset.waived === 'true';
       const nextWaived = !waived;
-      waiveFeeBtn.dataset.waived = nextWaived ? 'true' : 'false';
-      waiveFeeBtn.textContent = nextWaived ? 'Fee Waived' : 'Waive $100 Fee';
-      waiveFeeBtn.classList.toggle('success', nextWaived);
+
+      try {
+        waiveFeeBtn.disabled = true;
+        waiveFeeBtn.textContent = nextWaived ? 'Saving waiver...' : 'Removing waiver...';
+        await adminRequest('adminSetListingFeeWaiver', {
+          method: 'POST',
+          body: {
+            productId,
+            listingFeeWaived: nextWaived,
+          },
+        });
+        waiveFeeBtn.dataset.waived = nextWaived ? 'true' : 'false';
+        waiveFeeBtn.textContent = nextWaived ? 'Fee Waived' : 'Waive $100 Fee';
+        waiveFeeBtn.classList.toggle('success', nextWaived);
+        showMessage(nextWaived ? 'Listing fee waiver saved' : 'Listing fee waiver removed', 'success');
+      } catch (err) {
+        console.error('[admin-products] listing fee waiver error:', err);
+        showMessage(err.message || 'Error saving listing fee waiver', 'error');
+        waiveFeeBtn.textContent = waived ? 'Fee Waived' : 'Waive $100 Fee';
+      } finally {
+        waiveFeeBtn.disabled = false;
+      }
     });
 
     approveBtn.addEventListener('click', async () => {
@@ -298,7 +324,7 @@
           },
         });
 
-        // Send seller portal invite now that product is approved.
+        // Send seller contract email now that product is approved.
         if (result.sellerToken && result.email) {
           await sendSellerOnboardingEmail({
             email: result.email,
@@ -306,15 +332,28 @@
             productName: result.productName || product.name,
             sellerToken: result.sellerToken,
           });
+          await adminRequest('adminRecordSellerInviteSent', {
+            method: 'POST',
+            body: {
+              productId,
+              email: result.email,
+            },
+          });
         }
 
-        showMessage(`Approved ${product.name} — seller invite sent.${listingFeeWaived ? ' Listing fee waived.' : ' Listing fee payment required before launch.'}`, 'success');
+        showMessage(`Approved ${product.name} — seller contract sent.${listingFeeWaived ? ' Listing fee waived.' : ' Listing fee payment required before launch.'}`, 'success');
+        const inviteStatus = div.querySelector('.seller-invite-status .meta-value');
+        if (inviteStatus) {
+          inviteStatus.textContent = 'Sent just now';
+        }
+        approveBtn.disabled = true;
+        approveBtn.textContent = 'Seller Contract Sent';
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
         console.error('[admin-products] approve error:', err);
         showMessage(err.message || 'Error approving product', 'error');
         approveBtn.disabled = false;
-        approveBtn.textContent = 'Approve & Send Seller Invite';
+        approveBtn.textContent = 'Approve & Send Seller Contract';
       }
     });
 

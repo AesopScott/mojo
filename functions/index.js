@@ -1480,8 +1480,10 @@ function productPayload(doc) {
     ...product,
     createdAtMillis: timestampMillis(product.createdAt),
     updatedAtMillis: timestampMillis(product.updatedAt),
+    sellerInviteSentAtMillis: timestampMillis(product.sellerInviteSentAt),
     createdAt: undefined,
     updatedAt: undefined,
+    sellerInviteSentAt: undefined,
   };
 }
 
@@ -2054,7 +2056,7 @@ exports.adminListProducts = onRequest(
  * onboarding. Price is optional here; sellers can finish pricing before launch.
  */
 exports.adminApproveProduct = onRequest(
-  { secrets: [ADMIN_PAYOUT_KEY, POLAR_ACCESS_TOKEN] },
+  { secrets: [ADMIN_PAYOUT_KEY] },
   async (req, res) => {
     if (setAdminCors(req, res)) return;
     if (req.method !== 'POST') {
@@ -2083,16 +2085,7 @@ exports.adminApproveProduct = onRequest(
       const product = productSnap.data();
       const parsedPriceCents = parsePositiveCents(priceCents);
       const resolvedBillingPeriod = normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel);
-      const feeWaived = Boolean(listingFeeWaived);
-      let listingFeeResult = null;
-
-      if (!feeWaived && product.listingFeeStatus !== 'paid' && !product.listingFeePolarPriceId) {
-        listingFeeResult = await createListingFeePolarProduct(String(productId), product);
-        if (!listingFeeResult.polarPriceId) {
-          res.status(502).json({ ok: false, message: 'Polar listing fee product was created but no price ID was returned' });
-          return;
-        }
-      }
+      const feeWaived = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived');
 
       const update = {
         status: 'pending_seller_onboarding',
@@ -2103,8 +2096,8 @@ exports.adminApproveProduct = onRequest(
         listingFeeAmount: 10000,
         listingFeeWaived: feeWaived,
         listingFeeStatus: feeWaived ? 'waived' : (product.listingFeeStatus === 'paid' ? 'paid' : 'pending'),
-        listingFeePolarProductId: feeWaived ? null : (listingFeeResult?.polarProductId || product.listingFeePolarProductId || null),
-        listingFeePolarPriceId: feeWaived ? null : (listingFeeResult?.polarPriceId || product.listingFeePolarPriceId || null),
+        listingFeePolarProductId: feeWaived ? null : (product.listingFeePolarProductId || null),
+        listingFeePolarPriceId: feeWaived ? null : (product.listingFeePolarPriceId || null),
         reviewedAt: admin.firestore.FieldValue.serverTimestamp(),
         featured: Boolean(featured),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -2144,6 +2137,103 @@ exports.adminApproveProduct = onRequest(
       });
     } catch (err) {
       console.error('[adminApproveProduct] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminRecordSellerInviteSent
+ * Marks the seller contract/portal invite as sent after the Pages email route succeeds.
+ */
+exports.adminRecordSellerInviteSent = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId, email } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      const productRef = db.collection('products').doc(String(productId));
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      await productRef.update({
+        sellerInviteStatus: 'sent',
+        sellerInviteSentAt: admin.firestore.FieldValue.serverTimestamp(),
+        sellerInviteSentTo: String(email || '').trim() || null,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({ ok: true, message: 'Seller invite marked sent' });
+    } catch (err) {
+      console.error('[adminRecordSellerInviteSent] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /adminSetListingFeeWaiver
+ * Persists whether Mojo is waiving the $100 listing fee before product approval.
+ */
+exports.adminSetListingFeeWaiver = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId, listingFeeWaived } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      const feeWaived = Boolean(listingFeeWaived);
+      const productRef = db.collection('products').doc(String(productId));
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      await productRef.update({
+        listingFeeAmount: 10000,
+        listingFeeWaived: feeWaived,
+        listingFeeStatus: feeWaived ? 'waived' : 'pending',
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      res.status(200).json({
+        ok: true,
+        listingFeeWaived: feeWaived,
+        listingFeeStatus: feeWaived ? 'waived' : 'pending',
+      });
+    } catch (err) {
+      console.error('[adminSetListingFeeWaiver] error:', err);
       res.status(500).json({ ok: false, message: 'Server error' });
     }
   }
@@ -2412,7 +2502,7 @@ exports.createProductFromSubmission = onRequest(
         description: productDescription,
         category: category || 'other',
         tags: ['submitted'], // Mark as submitted for admin review
-        price: null, // Admin sets pricing
+        price: null, // Seller sets pricing before launch
         billingPeriod: pricingModel || 'month',
         pricingModel: pricingModel || null,
         polarPriceId: null, // Admin links this later

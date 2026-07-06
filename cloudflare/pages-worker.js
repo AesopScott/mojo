@@ -1019,7 +1019,7 @@ async function handleSellerOnboardingEmail(request, env) {
   }
 
   const { email, contactName, productName, sellerToken } = data;
-  const portalUrl = `https://mojoaistudio.com/products/pages/seller-portal.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+  const onboardingUrl = `https://mojoaistudio.com/products/pages/seller-onboarding.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -1030,17 +1030,16 @@ async function handleSellerOnboardingEmail(request, env) {
     body: JSON.stringify({
       from: "Mojo AI Studio <noreply@mojoaistudio.com>",
       to: [email],
-      subject: "Create Your Mojo Seller Portal Account",
+      subject: "Complete Your Seller Contract - Mojo AI Studio",
       html: `<p>Hi ${contactName},</p>
 <p>Thanks for submitting <strong>${productName}</strong> to the Mojo AI Studio marketplace!</p>
-<p>Your product has been approved for seller onboarding. Create your Mojo seller portal account here:</p>
-<p><a href="${portalUrl}">${portalUrl}</a></p>
+<p>Your product has been approved for seller onboarding. Please review and sign the seller agreement here:</p>
+<p><a href="${onboardingUrl}">${onboardingUrl}</a></p>
 <p>What happens next:</p>
 <ol>
-<li>Create your Mojo seller portal account</li>
 <li>Review and sign the seller agreement</li>
 <li>Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option</li>
-<li>Manage your product listing details in the Mojo seller portal</li>
+<li>Mojo sends your seller portal link so you can finish product details and launch setup</li>
 <li>Mojo creates and syncs the Polar checkout product under the Mojo account</li>
 <li>Buyers purchase through the Mojo marketplace checkout</li>
 </ol>
