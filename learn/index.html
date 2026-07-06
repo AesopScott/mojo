@@ -38,14 +38,14 @@
           <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
           <span>Mojo AI Studio</span>
         </a>
-        <div class="nav-links">
-          <a href="/buy/">Buy</a>
-          <a href="/sell">Sell</a>
-                    <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
-<a href="/request/">Request</a>
-          <a href="/learn/" class="active">Learn</a>
-          <a href="/forum/">Forum</a>
-        </div>
+      <div class="nav-links">
+        <a href="/buy/">Buy</a>
+        <a href="/sell">Sell</a>
+        <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
+        <a href="/request/">Request</a>
+        <a href="/learn/" class="active">Learn</a>
+        <a href="/forum/">Forum</a>
+      </div>
         <div class="nav-actions">
           <a class="button dark" href="/learn/#events">Join on Meetup</a>
         </div>
@@ -96,26 +96,17 @@
           </div>
           <div class="aac-zoom-status" id="aac-zoom-status">
             <div class="aac-zoom-status-head">
-              <span>Registration activity</span>
-              <b>Upcoming sessions</b>
+              <span>Class schedule</span>
+              <b>Upcoming classes</b>
             </div>
             <div class="aac-zoom-metrics">
               <span><b data-meetup-rsvps>0</b> RSVP count</span>
             </div>
-            <div class="aac-zoom-feed">
-              
-              <a class="aac-zoom-event" href="https://us06web.zoom.us/j/82707047151?pwd=FIB0TQk1baAWzLG3ecUMcVDle1EOMo.1" target="_blank" rel="noopener">
-                <span><b>Dev Automation and Harness Engineering I</b> Fri, Jul 3, 6:00 PM Mountain / Sat, Jul 4, 12:00 AM GMT</span>
-                <small>https://us06web.zoom.us/j/82707047151?pwd=FIB0TQk1baAWzLG3ecUMcVDle1EOMo.1</small>
-              </a>
-              <a class="aac-zoom-event" href="https://us06web.zoom.us/j/83807077130?pwd=nWRWVcUhdntdUeDHqTw2XLnebkVepi.1" target="_blank" rel="noopener">
-                <span><b>Global - Dev Automation and Harness Engineering I</b> Sun, Jul 5, 8:00 AM Mountain / Sun, Jul 5, 2:00 PM GMT</span>
-                <small>https://us06web.zoom.us/j/83807077130?pwd=nWRWVcUhdntdUeDHqTw2XLnebkVepi.1</small>
-              </a>
-              <a class="aac-zoom-event" href="https://watchmebuildai.com/api/join-session.php?id=anthro-cert" target="_blank" rel="noopener">
-                <span><b>Anthropic Certified Architect Prep</b> Fri, Jul 17, 6:00 PM Mountain / Sat, Jul 18, 12:00 AM GMT</span>
-                <small>https://watchmebuildai.com/api/join-session.php?id=anthro-cert</small>
-              </a>
+            <div class="aac-zoom-feed" data-featured-classes>
+              <span class="aac-zoom-event">
+                <span><b>Loading actual Meetup schedule...</b> Mountain Time will appear here.</span>
+                <small>Updated from Meetup every 24 hours.</small>
+              </span>
             </div>
           </div>
         </div>
@@ -379,45 +370,118 @@
           (() => {
             const select = document.querySelector("[data-city-select]");
             const groupLink = document.querySelector("[data-city-group-link]");
-            const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
-            const chapterSlugs = {"advanced-ai-concepts":"colorado-springs","advanced-ai-concepts-dallas":"dallas","advanced-ai-concepts-san-francisco":"san-francisco","advanced-ai-concepts-chicago":"chicago","advanced-ai-concepts-los-angeles":"los-angeles","advanced-ai-concepts-new-york":"new-york","advanced-ai-concepts-boston":"boston","advanced-ai-concepts-miami":"miami","advanced-ai-concepts-atlanta":"atlanta","advanced-ai-concepts-seattle":"seattle","advanced-ai-concepts-phoenix":"phoenix","advanced-ai-concepts-houston":"houston","advanced-ai-concepts-san-antonio":"san-antonio","advanced-ai-concepts-the-triangle":"the-triangle","advanced-ai-concepts-kansas-city":"kansas-city","advanced-ai-concepts-columbus":"columbus","advanced-ai-concepts-philadelphia":"philadelphia","advanced-ai-concepts-washington-dc":"washington-dc","advanced-ai-concepts-okc":"okc"};
-            if (!select || !cards.length) return;
+            const eventList = document.querySelector("[data-city-events]");
+            const featuredList = document.querySelector("[data-featured-classes]");
+            if (!select || !eventList) return;
+
+            const state = { groups: [], events: [] };
+            const formatter = (timeZone, options = {}) => new Intl.DateTimeFormat("en-US", {
+              timeZone,
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "2-digit",
+              timeZoneName: "short",
+              ...options,
+            });
+            const localFormatter = (timeZone) => formatter(timeZone || "America/Denver");
+            const mountainFormatter = formatter("America/Denver");
+            const clean = (value) => String(value || "");
+            const cityLabel = (group) => clean(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
+            const groupUrl = (group) => clean(group.link || (group.urlname ? "https://www.meetup.com/" + group.urlname + "/" : ""));
+            const html = (strings, ...values) => strings.map((part, index) => part + escapeHtml(values[index] || "")).join("");
+            const escapeHtml = (value) => clean(value)
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;");
+
+            eventList.innerHTML = '<span class="aac-row-card aac-session-card">Loading actual Meetup schedule...</span>';
+
             const syncCity = () => {
               const selected = select.selectedOptions[0];
+              const group = state.groups.find((item) => item.urlname === selected?.dataset.urlname);
               if (groupLink && selected) {
                 groupLink.href = selected.dataset.groupUrl || groupLink.href;
                 groupLink.textContent = "Join the " + selected.textContent + " group";
               }
-              cards.forEach((card) => {
-                card.hidden = card.dataset.city !== select.value;
-              });
+              renderCityEvents(group);
             };
+
             const renderCityOptions = (groups) => {
               if (!Array.isArray(groups) || !groups.length) return;
               const currentUrlname = select.selectedOptions[0]?.dataset.urlname || "";
               select.innerHTML = groups.map((group) => {
                 const urlname = String(group.urlname || "");
-                const value = chapterSlugs[urlname] || urlname;
-                const label = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
-                const link = String(group.link || (urlname ? "https://www.meetup.com/" + urlname + "/" : ""));
+                const label = cityLabel(group);
+                const link = groupUrl(group);
                 const option = document.createElement("option");
-                option.value = value;
+                option.value = urlname;
                 option.dataset.urlname = urlname;
                 option.dataset.groupUrl = link;
                 option.textContent = label;
-                if (urlname === currentUrlname) option.selected = true;
+                if (urlname === currentUrlname || (!currentUrlname && urlname === "advanced-ai-concepts")) option.selected = true;
                 return option.outerHTML;
               }).join("");
               syncCity();
             };
-            fetch('/api/meetup-group-leaders?limit=100')
+
+            const renderCityEvents = (group) => {
+              if (!group) return;
+              const events = state.events.filter((event) => event.groupUrlname === group.urlname);
+              if (!events.length) {
+                eventList.innerHTML = '<span class="aac-row-card aac-session-card">No upcoming Meetup classes are currently listed for this city.</span>';
+                return;
+              }
+              eventList.innerHTML = events.map((event) => {
+                const date = new Date(event.dateTime);
+                const local = localFormatter(event.timezone).format(date);
+                const mountain = mountainFormatter.format(date);
+                const link = clean(event.eventUrl || groupUrl(group));
+                const join = event.joinUrl
+                  ? `<small>Class link: ${escapeHtml(event.joinUrl)}</small>`
+                  : `<small>RSVP on Meetup for class access.</small>`;
+                return `<a class="aac-row-card aac-session-card" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+                  <span>${escapeHtml(local)} local time<br>${escapeHtml(mountain)} Mountain Time</span>
+                  <p>${escapeHtml(event.title)}</p>
+                  ${join}
+                  <strong>RSVP</strong>
+                </a>`;
+              }).join("");
+            };
+
+            const renderFeatured = (events) => {
+              if (!featuredList) return;
+              if (!Array.isArray(events) || !events.length) {
+                featuredList.innerHTML = '<span class="aac-zoom-event"><span><b>No upcoming classes found.</b></span><small>Meetup may still be updating.</small></span>';
+                return;
+              }
+              featuredList.innerHTML = events.slice(0, 6).map((event) => {
+                const date = new Date(event.dateTime);
+                const mountain = mountainFormatter.format(date);
+                const link = clean(event.joinUrl || event.eventUrl || "/learn/#events");
+                const linkText = event.joinUrl ? event.joinUrl : "RSVP on Meetup";
+                return html`<a class="aac-zoom-event" href="${link}" target="_blank" rel="noopener">
+                  <span><b>${event.title}</b> ${mountain}</span>
+                  <small>${linkText}</small>
+                </a>`;
+              }).join("");
+            };
+
+            fetch('/api/learn-schedule')
               .then((response) => response.ok ? response.json() : null)
               .then((data) => {
-                if (data && data.ok) renderCityOptions(data.groups);
+                if (!data || !data.ok) return;
+                state.groups = Array.isArray(data.groups) ? data.groups : [];
+                state.events = Array.isArray(data.events) ? data.events : [];
+                renderCityOptions(state.groups);
+                renderFeatured(data.featured || state.events);
               })
-              .catch(() => {});
+              .catch(() => {
+                eventList.innerHTML = '<span class="aac-row-card aac-session-card">The live Meetup schedule could not load. Use the city group link above to RSVP.</span>';
+              });
             select.addEventListener("change", syncCity);
-            syncCity();
           })();
         </script>
       </section>
