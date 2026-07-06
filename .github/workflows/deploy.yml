@@ -54,7 +54,7 @@ jobs:
           find _site -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
           find _site -name "*.js"   -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
           if [ -n "$ORG" ]; then
-            find _site -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
+          find _site -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
           fi
           if [ -n "$FIREBASE_API_KEY" ]; then
             find _site -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +

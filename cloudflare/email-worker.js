@@ -42,23 +42,25 @@ async function handleSellerOnboarding(request, env) {
 
   const { email, contactName, productName, sellerToken } = data;
   const from = "noreply@mojoaistudio.com";
-  const subject = "Complete Your Seller Setup — Mojo AI Studio";
-  const onboardingUrl = `https://mojoaistudio.com/products/pages/seller-onboarding.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+  const subject = "Create Your Mojo Seller Portal Account";
+  const portalUrl = `https://mojoaistudio.com/products/pages/seller-portal.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
 
   const body = [
     `Hi ${contactName},`,
     ``,
     `Thanks for submitting "${productName}" to the Mojo AI Studio marketplace!`,
     ``,
-    `To complete your seller setup, please sign the seller agreement:`,
+    `Your product has been approved for seller onboarding. Create your Mojo seller portal account here:`,
     ``,
-    onboardingUrl,
+    portalUrl,
     ``,
     `What happens next:`,
-    `1. Review and sign the seller agreement`,
-    `2. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option`,
-    `3. Mojo reviews your submitted product assets and connects the approved product to the marketplace checkout`,
-    `4. Buyers purchase through the Mojo marketplace checkout`,
+    `1. Create your Mojo seller portal account`,
+    `2. Review and sign the seller agreement`,
+    `3. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option`,
+    `4. Manage your product listing details in the Mojo seller portal`,
+    `5. Mojo creates and syncs the Polar checkout product under the Mojo account`,
+    `6. Buyers purchase through the Mojo marketplace checkout`,
     ``,
     `If you have any questions, reply to this email or contact us at admin@MojoAiStudio.com.`,
     ``,

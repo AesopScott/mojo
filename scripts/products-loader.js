@@ -125,8 +125,15 @@
     const iconLetter = product.iconLetter || String(product.name || '?').charAt(0).toUpperCase();
     const imageUrl = safeUrl(product.imageUrl || product.screenshotUrl || '');
     const logoUrl = safeUrl(product.logoUrl || '');
-    const price = product.price ? `$${(product.price / 100).toFixed(0)}/mo` : 'Custom';
+    const price = product.price ? formatPrice(product.price, product.billingPeriod) : 'Custom';
     const sellerName = product.sellerId ? `by ${product.sellerId.split('@')[0]}` : 'by Mojo';
+    const polarPriceId = String(product.polarPriceId || '').trim();
+    const productUrl = safeUrl(product.externalUrl || product.productUrl || '');
+    const primaryAction = polarPriceId
+      ? `<button class="button dark" type="button" data-polar-checkout="${escapeAttribute(polarPriceId)}">Buy Now</button>`
+      : productUrl
+        ? `<a class="button dark" href="${escapeAttribute(productUrl)}" target="_blank" rel="noopener">Learn More</a>`
+        : '<button type="button" disabled>Coming Soon</button>';
 
     card.innerHTML = `
       ${imageUrl ? `<div class="app-image"><img src="${escapeAttribute(imageUrl)}" alt="${escapeAttribute(product.name || 'Product')} screenshot" loading="lazy"></div>` : ''}
@@ -143,7 +150,8 @@
       <footer>
         <b>${escapeHtml(price)}</b>
         <div class="card-actions">
-          ${safeUrl(product.externalUrl) ? `<a class="button dark" href="${escapeAttribute(safeUrl(product.externalUrl))}" target="_blank" rel="noopener">Learn More</a>` : '<button type="button" disabled>Coming Soon</button>'}
+          ${productUrl && polarPriceId ? `<a class="button ghost" href="${escapeAttribute(productUrl)}" target="_blank" rel="noopener">Details</a>` : ''}
+          ${primaryAction}
         </div>
       </footer>
     `;
@@ -182,5 +190,13 @@
     } catch {
       return '';
     }
+  }
+
+  function formatPrice(cents, billingPeriod) {
+    const dollars = `$${(Number(cents) / 100).toFixed(0)}`;
+    const period = String(billingPeriod || 'month').toLowerCase();
+    if (['one_time', 'one-time', 'once'].includes(period)) return `${dollars} one time`;
+    if (['year', 'yearly', 'annual', 'annually'].includes(period)) return `${dollars}/yr`;
+    return `${dollars}/mo`;
   }
 }());

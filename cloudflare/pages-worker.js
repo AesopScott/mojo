@@ -13,6 +13,43 @@ const FORUM_SESSION_TTL_SECONDS = 60 * 60 * 24 * 30;
 const FORUM_LOGIN_CODE_TTL_MINUTES = 15;
 const FORUM_ADMIN_EMAILS = new Set(["scott@mojoaistudio.com"]);
 
+const JOIN_SESSIONS = {
+  harness: {
+    title: "Global - Dev Automation and Harness Engineering I",
+    date: "2026-07-12T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/83807077130?pwd=nWRWVcUhdntdUeDHqTw2XLnebkVepi.1",
+  },
+  "anthro-cert": {
+    title: "Anthropic Certified Architect Prep",
+    date: "2026-07-18T00:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85138194775?pwd=jtMvJyC6ficqZ4L4H30N8YTgP6PSt8.1",
+  },
+  "anthro-cert-global": {
+    title: "Global - Anthropic Certified Architect Prep",
+    date: "2026-07-19T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/81322966426?pwd=CuThxc5YARefRgufvgogQA5kK7H1RJ.1",
+  },
+  govern: {
+    title: "AI Governance for AI Developers",
+    date: "2026-07-25T00:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/82609616968?pwd=LYxMUuIbHoStB6YnQb6IvPPdaOssmi.1",
+  },
+  "govern-global": {
+    title: "Global - AI Governance for AI Developers",
+    date: "2026-07-26T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/81053958115?pwd=eY5KL5ZHFVAUIkieefFhPHKLDwXpZm.1",
+  },
+};
+
+const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
+const LEARN_SCHEDULE_CACHE_SECONDS = 60 * 60 * 24;
+const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule";
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -31,8 +68,16 @@ export default {
       return handleSmsReminders(request, env);
     }
 
+    if (url.pathname === "/api/learn-schedule") {
+      return handleLearnSchedule(request, env, url);
+    }
+
     if (url.pathname === "/api/zoom-webhook" || url.pathname === "/api/zoom-webhook.php") {
       return handleZoomWebhook(request, env);
+    }
+
+    if (url.pathname === "/api/join-session" || url.pathname === "/api/join-session.php") {
+      return handleJoinSession(url);
     }
 
     if (url.pathname === "/api/submit-product" || url.pathname === "/api/submit-product.php") {
@@ -58,6 +103,481 @@ export default {
     return env.ASSETS.fetch(request);
   },
 };
+
+function handleJoinSession(url) {
+  const id = (url.searchParams.get("id") || "").trim();
+  const session = JOIN_SESSIONS[id];
+  if (!session) {
+    return new Response("Session not found.\n", {
+      status: 404,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+  }
+
+  const start = Date.parse(session.date);
+  const now = Date.now();
+  const windowOpen = start - 15 * 60 * 1000;
+  const windowClose = start + session.duration * 60 * 1000 + 45 * 60 * 1000;
+
+  if (Number.isFinite(start) && now < windowOpen) {
+    const minutes = Math.ceil((windowOpen - now) / 60000);
+    return joinSessionPage(
+      session.title,
+      "Session has not started yet",
+      `The join link opens 15 minutes before the session. Come back in about ${minutes} minute${minutes === 1 ? "" : "s"}.`,
+      null,
+    );
+  }
+
+  if (Number.isFinite(start) && now > windowClose) {
+    return joinSessionPage(
+      session.title,
+      "Session has ended",
+      "This session is over. Recordings will be posted after the session.",
+      null,
+    );
+  }
+
+  if (url.searchParams.has("go")) {
+    return Response.redirect(session.zoomUrl, 302);
+  }
+
+  const goUrl = `/api/join-session.php?id=${encodeURIComponent(id)}&go=1`;
+  return joinSessionPage(
+    session.title,
+    "Joining session",
+    "The verified Zoom room is open. Click the join button when you are ready.",
+    goUrl,
+    formatMountainDate(session.date),
+  );
+}
+
+function joinSessionPage(title, heading, body, goUrl, dateLabel = "") {
+  const safeTitle = escapeHtml(title);
+  const safeHeading = escapeHtml(heading);
+  const safeBody = escapeHtml(body);
+  const safeDate = escapeHtml(dateLabel);
+  const learningLinks = `
+  <nav class="learn-links" aria-label="Learning links">
+    <a href="https://mojoaistudio.com/learn">Mojo AI Studio Learning</a>
+    <a href="https://aesopacademy.org">Aesop AI Academy</a>
+    <a href="https://25experts.com/videos.html">25 AI Experts Video Curation</a>
+  </nav>`;
+  const button = goUrl
+    ? `<a class="button" href="${escapeHtml(goUrl)}" id="join">Join Now</a>`
+    : "";
+
+  return new Response(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${safeTitle} - Mojo AI Studio</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #0b1020; color: #f8fafc; }
+    main { max-width: 680px; margin: 64px auto; padding: 0 24px; text-align: center; }
+    .eyebrow { color: #67e8f9; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { font-size: 30px; line-height: 1.2; margin: 14px 0 10px; }
+    p { color: #cbd5e1; line-height: 1.6; }
+    .date { color: #94a3b8; font-size: 14px; margin-bottom: 28px; }
+    a.button { display: inline-block; margin-top: 22px; padding: 13px 18px; color: #06121f; background: #67e8f9; border-radius: 8px; font-weight: 700; text-decoration: none; }
+    .learn-links { display: grid; gap: 10px; margin: 34px auto 0; max-width: 420px; }
+    .learn-links a { color: #67e8f9; text-decoration: none; border: 1px solid rgba(103,232,249,.32); border-radius: 8px; padding: 11px 14px; }
+    .learn-links a:hover { background: rgba(103,232,249,.1); }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">${safeHeading}</div>
+  <h1>${safeTitle}</h1>
+  ${safeDate ? `<div class="date">${safeDate}</div>` : ""}
+  <p>${safeBody}</p>
+  ${button}
+  ${learningLinks}
+</main>
+</body>
+</html>`, {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
+}
+
+function formatMountainDate(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Denver",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZoneName: "short",
+  }).format(new Date(date));
+}
+
+async function handleLearnSchedule(request, env, url) {
+  const force = url.searchParams.get("refresh") === "1";
+  const cache = caches.default;
+  const cacheRequest = new Request(LEARN_SCHEDULE_CACHE_KEY);
+
+  if (!force) {
+    const cached = await cache.match(cacheRequest);
+    if (cached) return cached;
+  }
+
+  try {
+    const payload = await buildLearnSchedule(env);
+    const response = jsonWithHeaders(payload, 200, {
+      "Cache-Control": `public, max-age=${LEARN_SCHEDULE_CACHE_SECONDS}`,
+    });
+    await cache.put(cacheRequest, response.clone());
+    return response;
+  } catch (error) {
+    if (!force) {
+      const cached = await cache.match(cacheRequest);
+      if (cached) return cached;
+    }
+
+    const fallback = learnScheduleFallback(error);
+    return jsonWithHeaders(fallback, 200, {
+      "Cache-Control": "public, max-age=300",
+      "X-Mojo-Schedule-Source": "fallback",
+    });
+  }
+}
+
+async function buildLearnSchedule(env) {
+  const token = await meetupAccessToken(env).catch(() => "");
+  const groups = await meetupNetworkGroups(token);
+  const eventsByGroup = {};
+
+  for (const batch of chunk(groups, 20)) {
+    Object.assign(eventsByGroup, await meetupGroupEventsBatch(token, batch));
+  }
+
+  const events = [];
+  for (const group of groups) {
+    for (const event of eventsByGroup[group.urlname] || []) {
+      if (Date.parse(event.dateTime) < Date.now() - 60 * 60 * 1000) continue;
+      events.push(normalizeLearnEvent(event, group));
+    }
+  }
+
+  events.sort((a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime) || a.title.localeCompare(b.title));
+
+  return {
+    ok: true,
+    source: "meetup",
+    refreshedAt: new Date().toISOString(),
+    cacheSeconds: LEARN_SCHEDULE_CACHE_SECONDS,
+    mountainTimezone: "America/Denver",
+    groupCount: groups.length,
+    eventCount: events.length,
+    groups,
+    events,
+    featured: featuredLearnEvents(events),
+  };
+}
+
+async function meetupAccessToken(env) {
+  const direct = String(env.MEETUP_ACCESS_TOKEN || "").trim();
+  if (direct) return direct;
+
+  const jsonToken = String(env.MEETUP_OAUTH_TOKEN_JSON || "").trim();
+  if (jsonToken) {
+    const parsed = JSON.parse(jsonToken);
+    if (parsed.access_token) return parsed.access_token;
+  }
+
+  if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
+    return meetupJwtAccessToken(env);
+  }
+
+  if (String(env.MEETUP_ENABLE_REFRESH_TOKEN || "") !== "1") return "";
+
+  const refreshToken = String(env.MEETUP_REFRESH_TOKEN || "").trim();
+  const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
+  const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  if (!refreshToken || !clientId || !clientSecret) {
+    throw new Error("Meetup credentials are not configured for learn schedule refresh.");
+  }
+
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+  });
+  const response = await fetch("https://secure.meetup.com/oauth2/access", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.access_token) {
+    throw new Error("Meetup token refresh failed.");
+  }
+  return payload.access_token;
+}
+
+async function meetupJwtAccessToken(env) {
+  const assertion = await meetupSignedJwt(env);
+  const body = new URLSearchParams({
+    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+    assertion,
+  });
+  const response = await fetch("https://secure.meetup.com/oauth2/access", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.access_token) {
+    throw new Error("Meetup JWT token request failed.");
+  }
+  return payload.access_token;
+}
+
+async function meetupSignedJwt(env) {
+  const header = {
+    kid: String(env.MEETUP_SIGNING_KEY_ID || "").trim(),
+    typ: "JWT",
+    alg: "RS256",
+  };
+  const payload = {
+    iss: String(env.MEETUP_CLIENT_ID || "").trim(),
+    sub: String(env.MEETUP_MEMBER_ID || "").trim(),
+    aud: "api.meetup.com",
+    exp: Math.floor(Date.now() / 1000) + 120,
+  };
+  const signingInput = `${base64UrlEncode(JSON.stringify(header))}.${base64UrlEncode(JSON.stringify(payload))}`;
+  const key = await importRsaPrivateKey(String(env.MEETUP_PRIVATE_KEY || ""));
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    key,
+    new TextEncoder().encode(signingInput),
+  );
+  return `${signingInput}.${base64UrlEncode(signature)}`;
+}
+
+async function importRsaPrivateKey(pem) {
+  const normalized = pem.replaceAll("\\n", "\n");
+  const body = normalized
+    .replace(/-----BEGIN [^-]+-----/g, "")
+    .replace(/-----END [^-]+-----/g, "")
+    .replace(/\s+/g, "");
+  const binary = Uint8Array.from(atob(body), (char) => char.charCodeAt(0));
+  return crypto.subtle.importKey(
+    "pkcs8",
+    binary,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+}
+
+function base64UrlEncode(value) {
+  const bytes = typeof value === "string"
+    ? new TextEncoder().encode(value)
+    : new Uint8Array(value);
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+}
+
+async function meetupGraphQL(token, query, variables = {}) {
+  const headers = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch("https://api.meetup.com/gql-ext", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ query, variables }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || payload.errors) {
+    throw new Error("Meetup GraphQL request failed.");
+  }
+  return payload.data;
+}
+
+async function meetupNetworkGroups(token) {
+  const groups = [];
+  let after = null;
+  do {
+    const data = await meetupGraphQL(token, `query($urlname:String!,$after:String){
+      groupByUrlname(urlname:$urlname){
+        proNetwork{
+          groupsSearch(input:{first:100,after:$after,sort:"NAME",filter:{activeGroups:true}}){
+            pageInfo{ hasNextPage endCursor }
+            edges{ node{ urlname name city state country timezone link } }
+          }
+        }
+      }
+    }`, { urlname: LEARN_SOURCE_GROUP, after });
+    const search = data.groupByUrlname?.proNetwork?.groupsSearch;
+    if (!search) break;
+    groups.push(...search.edges.map((edge) => normalizeLearnGroup(edge.node)));
+    after = search.pageInfo?.hasNextPage ? search.pageInfo.endCursor : null;
+  } while (after);
+
+  return groups
+    .filter((group) => group.urlname)
+    .sort((a, b) => learnGroupLabel(a).localeCompare(learnGroupLabel(b)));
+}
+
+async function meetupGroupEventsBatch(token, groups) {
+  const fields = groups.map((group, index) => `g${index}: groupByUrlname(urlname:${JSON.stringify(group.urlname)}){
+    events(first:100,status:ACTIVE,sort:ASC){
+      edges{ node{ id title dateTime eventUrl howToFindUs } }
+    }
+  }`).join("\n");
+  const data = await meetupGraphQL(token, `query{
+    ${fields}
+  }`);
+  const eventsByGroup = {};
+  groups.forEach((group, index) => {
+    eventsByGroup[group.urlname] = data[`g${index}`]?.events?.edges?.map((edge) => edge.node) || [];
+  });
+  return eventsByGroup;
+}
+
+function chunk(items, size) {
+  const chunks = [];
+  for (let index = 0; index < items.length; index += size) {
+    chunks.push(items.slice(index, index + size));
+  }
+  return chunks;
+}
+
+function normalizeLearnGroup(group) {
+  const urlname = String(group.urlname || "").trim();
+  return {
+    urlname,
+    name: String(group.name || "Advanced AI Concepts").trim(),
+    city: String(group.city || "Meetup").trim(),
+    state: String(group.state || "").trim(),
+    country: String(group.country || "").trim(),
+    timezone: String(group.timezone || "America/Denver").trim(),
+    link: String(group.link || (urlname ? `https://www.meetup.com/${urlname}/` : "")).trim(),
+  };
+}
+
+function normalizeLearnEvent(event, group) {
+  const dateTime = String(event.dateTime || "").trim();
+  const joinUrl = publicJoinSessionUrl(event.howToFindUs) || joinSessionUrlForEvent(event);
+  return {
+    id: String(event.id || "").trim(),
+    title: String(event.title || "Advanced AI Concepts").trim(),
+    dateTime,
+    mountainTime: formatMountainDate(dateTime),
+    eventUrl: String(event.eventUrl || "").trim(),
+    groupUrlname: group.urlname,
+    groupName: group.name,
+    city: group.city,
+    timezone: group.timezone,
+    joinUrl,
+    hasPhpJoinLink: Boolean(joinUrl),
+  };
+}
+
+function joinSessionUrlForEvent(event) {
+  const title = String(event.title || "").trim();
+  const instant = Date.parse(event.dateTime || "");
+  if (!title || !Number.isFinite(instant)) return "";
+
+  const match = Object.entries(JOIN_SESSIONS).find(([, session]) => (
+    session.title === title && Date.parse(session.date) === instant
+  ));
+  return match ? `https://mojoaistudio.com/api/join-session.php?id=${encodeURIComponent(match[0])}` : "";
+}
+
+function publicJoinSessionUrl(value) {
+  const text = String(value || "");
+  const matches = text.match(/https?:\/\/[^\s<>"')]+\/api\/join-session(?:\.php)?\?id=[A-Za-z0-9_-]+/g) || [];
+  const mojo = matches.find((match) => {
+    try {
+      const url = new URL(match);
+      return url.hostname === "mojoaistudio.com";
+    } catch {
+      return false;
+    }
+  });
+  return mojo || "";
+}
+
+function featuredLearnEvents(events) {
+  const seen = new Set();
+  const featured = [];
+  for (const event of events) {
+    const key = `${event.title}|${new Date(event.dateTime).toISOString().slice(0, 16)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    featured.push(event);
+    if (featured.length >= 6) break;
+  }
+  return featured;
+}
+
+function learnScheduleFallback(error) {
+  const events = Object.entries(JOIN_SESSIONS).map(([id, session]) => ({
+    id,
+    title: session.title,
+    dateTime: session.date,
+    mountainTime: formatMountainDate(session.date),
+    eventUrl: "",
+    groupUrlname: LEARN_SOURCE_GROUP,
+    groupName: "Advanced AI Concepts",
+    city: "Colorado Springs",
+    timezone: "America/Denver",
+    joinUrl: `https://mojoaistudio.com/api/join-session.php?id=${encodeURIComponent(id)}`,
+    hasPhpJoinLink: true,
+  }));
+
+  return {
+    ok: true,
+    source: "fallback",
+    warning: String(error?.message || "Meetup schedule refresh failed."),
+    refreshedAt: new Date().toISOString(),
+    cacheSeconds: 300,
+    mountainTimezone: "America/Denver",
+    groupCount: 1,
+    eventCount: events.length,
+    groups: [{
+      urlname: LEARN_SOURCE_GROUP,
+      name: "Advanced AI Concepts",
+      city: "Colorado Springs",
+      state: "CO",
+      country: "us",
+      timezone: "America/Denver",
+      link: "https://www.meetup.com/advanced-ai-concepts/",
+    }],
+    events,
+    featured: events,
+  };
+}
+
+async function mapLimit(items, limit, iteratee) {
+  const queue = [...items];
+  const workers = Array.from({ length: Math.min(limit, queue.length) }, async () => {
+    while (queue.length) {
+      const item = queue.shift();
+      await iteratee(item);
+    }
+  });
+  await Promise.all(workers);
+}
+
+function learnGroupLabel(group) {
+  return `${group.city || ""} ${group.state || ""} ${group.country || ""}`.trim();
+}
 
 async function handleMeetupAdmin(request, env, url) {
   if (!isAuthorized(request, env, url)) {
@@ -499,7 +1019,7 @@ async function handleSellerOnboardingEmail(request, env) {
   }
 
   const { email, contactName, productName, sellerToken } = data;
-  const onboardingUrl = `https://mojoaistudio.com/products/pages/seller-onboarding.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+  const portalUrl = `https://mojoaistudio.com/products/pages/seller-portal.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -510,16 +1030,18 @@ async function handleSellerOnboardingEmail(request, env) {
     body: JSON.stringify({
       from: "Mojo AI Studio <noreply@mojoaistudio.com>",
       to: [email],
-      subject: "Complete Your Seller Setup — Mojo AI Studio",
+      subject: "Create Your Mojo Seller Portal Account",
       html: `<p>Hi ${contactName},</p>
 <p>Thanks for submitting <strong>${productName}</strong> to the Mojo AI Studio marketplace!</p>
-<p>To complete your seller setup, please review and sign the seller agreement:</p>
-<p><a href="${onboardingUrl}">${onboardingUrl}</a></p>
+<p>Your product has been approved for seller onboarding. Create your Mojo seller portal account here:</p>
+<p><a href="${portalUrl}">${portalUrl}</a></p>
 <p>What happens next:</p>
 <ol>
+<li>Create your Mojo seller portal account</li>
 <li>Review and sign the seller agreement</li>
 <li>Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option</li>
-<li>Mojo reviews your submitted product assets and connects the approved product to the marketplace checkout</li>
+<li>Manage your product listing details in the Mojo seller portal</li>
+<li>Mojo creates and syncs the Polar checkout product under the Mojo account</li>
 <li>Buyers purchase through the Mojo marketplace checkout</li>
 </ol>
 <p>Questions? Reply to this email or contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
@@ -1590,7 +2112,7 @@ async function handleSubmitProduct(request, env, ctx) {
     return json({ ok: false, message: "Expected JSON body." }, 400);
   }
 
-  const required = ["productName", "contactName", "contactEmail", "productDescription", "logoUrl", "screenshotUrl"];
+  const required = ["productName", "contactName", "contactEmail", "productDescription"];
   const missing = required.filter((f) => !String(data[f] || "").trim());
   if (missing.length) {
     return json({ ok: false, message: "Missing required fields: " + missing.join(", ") }, 422);
@@ -1604,8 +2126,11 @@ async function handleSubmitProduct(request, env, ctx) {
   const logoUrl = String(data.logoUrl || "").trim();
   const screenshotUrl = String(data.screenshotUrl || "").trim();
   const productUrl = String(data.productUrl || "").trim();
-  if (!isHttpUrl(logoUrl) || !isHttpUrl(screenshotUrl)) {
-    return json({ ok: false, message: "Logo and screenshot must be valid public image URLs." }, 422);
+  if (logoUrl && !isHttpUrl(logoUrl)) {
+    return json({ ok: false, message: "Logo must be a valid public image URL." }, 422);
+  }
+  if (screenshotUrl && !isHttpUrl(screenshotUrl)) {
+    return json({ ok: false, message: "Screenshot must be a valid public image URL." }, 422);
   }
   if (productUrl && !isHttpUrl(productUrl)) {
     return json({ ok: false, message: "Product URL must be a valid public URL." }, 422);
@@ -1656,8 +2181,8 @@ async function handleSubmitProduct(request, env, ctx) {
 <tr><td><strong>Category</strong></td><td>${escapeHtml(record.category || "(not specified)")}</td></tr>
 <tr><td><strong>Pricing model</strong></td><td>${escapeHtml(record.pricingModel || "(not specified)")}</td></tr>
 <tr><td><strong>Product URL</strong></td><td>${record.productUrl ? `<a href="${escapeAttribute(record.productUrl)}">${escapeHtml(record.productUrl)}</a>` : "(not provided)"}</td></tr>
-<tr><td><strong>Logo</strong></td><td><a href="${escapeAttribute(record.logoUrl)}">${escapeHtml(record.logoUrl)}</a></td></tr>
-<tr><td><strong>Screenshot</strong></td><td><a href="${escapeAttribute(record.screenshotUrl)}">${escapeHtml(record.screenshotUrl)}</a></td></tr>
+<tr><td><strong>Logo</strong></td><td>${record.logoUrl ? `<a href="${escapeAttribute(record.logoUrl)}">${escapeHtml(record.logoUrl)}</a>` : "(not provided)"}</td></tr>
+<tr><td><strong>Screenshot</strong></td><td>${record.screenshotUrl ? `<a href="${escapeAttribute(record.screenshotUrl)}">${escapeHtml(record.screenshotUrl)}</a>` : "(not provided)"}</td></tr>
 <tr><td><strong>Target user</strong></td><td>${escapeHtml(record.targetUser || "(not specified)")}</td></tr>
 </table>
 <h3>Product Description</h3>

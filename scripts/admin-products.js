@@ -117,6 +117,7 @@
 
       const [waiting, ready] = await Promise.all([
         adminRequest('adminListProducts?status=pending_seller_onboarding'),
+        adminRequest('adminListProducts?status=pending_payout_preference'),
         adminRequest('adminListProducts?status=ready_for_launch'),
       ]);
       const products = waiting.concat(ready)
@@ -240,23 +241,7 @@
       ` : ''}
 
       <div style="background: #f9fafb; padding: 16px; border-radius: 6px; margin-bottom: 16px;">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Price USD <span style="font-weight:400;color:#6b7280">(saved now; Polar is created after seller onboarding)</span></label>
-            <input type="number" class="price-input" min="1" step="0.01" placeholder="99.00" required>
-          </div>
-
-          <div class="form-group">
-            <label>Billing</label>
-            <select class="billing-select">
-              <option value="month">Monthly</option>
-              <option value="year">Yearly</option>
-              <option value="one_time">One-time</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
+<div class="form-group">
           <label>Existing Polar Price ID <span style="font-weight:400;color:#6b7280">(optional override; only if this already exists in Mojo Polar)</span></label>
           <input type="text" class="polar-id-input" placeholder="Optional existing Polar price ID">
         </div>
@@ -268,28 +253,36 @@
             <option value="true">Yes</option>
           </select>
         </div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <label style="margin-bottom:8px;">Listing Fee</label>
+          <button class="btn-waive-fee" type="button" data-waived="false">Waive $100 Fee</button>
+          <div class="subtle" style="margin-top:8px;">Use this when Mojo wants to approve the seller without collecting the one-time listing fee.</div>
+        </div>
       </div>
 
       <div class="action-buttons">
-        <button class="btn-approve" data-product-id="${productId}">Approve & Send Contract</button>
+        <button class="btn-approve" data-product-id="${productId}">Approve & Send Seller Invite</button>
         <button class="btn-archive" data-product-id="${productId}">Reject</button>
       </div>
     `;
 
     const approveBtn = div.querySelector('.btn-approve');
     const rejectBtn = div.querySelector('.btn-archive');
+    const waiveFeeBtn = div.querySelector('.btn-waive-fee');
+
+    waiveFeeBtn.addEventListener('click', () => {
+      const waived = waiveFeeBtn.dataset.waived === 'true';
+      const nextWaived = !waived;
+      waiveFeeBtn.dataset.waived = nextWaived ? 'true' : 'false';
+      waiveFeeBtn.textContent = nextWaived ? 'Fee Waived' : 'Waive $100 Fee';
+      waiveFeeBtn.classList.toggle('success', nextWaived);
+    });
 
     approveBtn.addEventListener('click', async () => {
       const polarId = div.querySelector('.polar-id-input').value.trim();
-      const priceDollars = Number(div.querySelector('.price-input').value);
-      const priceCents = Number.isFinite(priceDollars) ? Math.round(priceDollars * 100) : null;
-      const billingPeriod = div.querySelector('.billing-select').value;
       const featured = div.querySelector('.featured-select').value === 'true';
-
-      if (!polarId && (!priceCents || priceCents <= 0)) {
-        showMessage('Enter a price so Mojo can create the Polar checkout product', 'error');
-        return;
-      }
+      const listingFeeWaived = div.querySelector('.btn-waive-fee').dataset.waived === 'true';
 
       try {
         approveBtn.disabled = true;
@@ -300,13 +293,12 @@
           body: {
             productId,
             polarPriceId: polarId,
-            priceCents,
-            billingPeriod,
             featured,
+            listingFeeWaived,
           },
         });
 
-        // Send seller onboarding email now that product is approved
+        // Send seller portal invite now that product is approved.
         if (result.sellerToken && result.email) {
           await sendSellerOnboardingEmail({
             email: result.email,
@@ -316,13 +308,13 @@
           });
         }
 
-        showMessage(`Approved ${product.name} — onboarding email sent. Publish after seller signs and saves payout details.`, 'success');
+        showMessage(`Approved ${product.name} — seller invite sent.${listingFeeWaived ? ' Listing fee waived.' : ' Listing fee payment required before launch.'}`, 'success');
         setTimeout(() => loadPendingProducts(), 1500);
       } catch (err) {
         console.error('[admin-products] approve error:', err);
         showMessage(err.message || 'Error approving product', 'error');
         approveBtn.disabled = false;
-        approveBtn.textContent = 'Approve & Send Contract';
+        approveBtn.textContent = 'Approve & Send Seller Invite';
       }
     });
 
@@ -353,11 +345,18 @@
 
     const seller = product.sellerEmail || product.submittedByEmail || product.sellerId || 'Unknown';
     const sellerName = product.sellerContactName || product.submitterName || (seller.includes('@') ? seller.split('@')[0] : seller);
-    const canResendContract = Boolean(product.sellerToken && seller.includes('@'));
+    const canResendContract = Boolean(product.sellerToken && seller.includes('@') && product.sellerStatus === 'pending_contract');
+    const canResendOnboarding = Boolean(product.sellerToken && seller.includes('@') && product.sellerStatus !== 'pending_contract');
     const payoutStatus = product.sellerPayoutPreferenceStatus || 'not submitted';
     const payoutMethod = formatPayoutMethod(product.sellerPayoutMethod);
     const payoutContact = product.sellerPayoutContact || '—';
     const payoutNotes = product.sellerPayoutNotes || '';
+    const listingFeeStatus = product.listingFeeStatus || (product.listingFeeWaived ? 'waived' : 'pending');
+    const listingFeeLabel = listingFeeStatus === 'paid'
+      ? 'Paid'
+      : listingFeeStatus === 'waived'
+        ? 'Waived'
+        : 'Pending';
     const sellerReady = product.status === 'ready_for_launch' || payoutStatus === 'provided';
     const price = formatPrice(product.price, product.billingPeriod);
     const productUrl = product.productUrl || product.externalUrl || '';
@@ -369,7 +368,7 @@
           <h3>${escapeHtml(product.name || 'Untitled product')}</h3>
           <div class="product-seller">by ${escapeHtml(sellerName)} (${escapeHtml(seller)})</div>
         </div>
-        <span class="status-badge status-pending">${sellerReady ? 'Ready to Publish' : 'Seller Onboarding'}</span>
+        <span class="status-badge status-pending">${sellerReady ? 'Ready for Seller Publish' : 'Signed Seller Onboarding'}</span>
       </div>
 
       <p class="product-description">${escapeHtml(product.description || '')}</p>
@@ -383,10 +382,14 @@
           <div class="meta-label">Seller Status</div>
           <div class="meta-value">${escapeHtml(formatValue(product.sellerStatus, 'Unknown'))}</div>
         </div>
-        <div class="meta-item">
-          <div class="meta-label">Product URL / Demo</div>
-          <div class="meta-value">${safeProductUrl ? `<a href="${escapeAttribute(safeProductUrl)}" target="_blank" rel="noopener">${escapeHtml(productUrl)}</a>` : escapeHtml(formatValue(productUrl, 'Not provided'))}</div>
-        </div>
+          <div class="meta-item">
+            <div class="meta-label">Product URL / Demo</div>
+            <div class="meta-value">${safeProductUrl ? `<a href="${escapeAttribute(safeProductUrl)}" target="_blank" rel="noopener">${escapeHtml(productUrl)}</a>` : escapeHtml(formatValue(productUrl, 'Not provided'))}</div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">$100 Listing Fee</div>
+            <div class="meta-value">${escapeHtml(listingFeeLabel)}</div>
+          </div>
       </div>
 
       <div class="seller-payout">
@@ -409,63 +412,81 @@
       </div>
 
       <div class="action-buttons">
-        <button class="btn-approve" data-product-id="${productId}" ${sellerReady ? '' : 'disabled'} title="${sellerReady ? 'Create the Mojo-owned Polar product and publish this listing' : 'Seller must sign contract and save payout details first'}">Create Polar Product & Publish</button>
-        <button class="btn-resend" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller onboarding email' : 'Seller token unavailable'}">Resend Contract</button>
+        <button class="btn-resend-contract" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller contract invite' : 'Contract already signed'}">Resend Contract</button>
+        <button class="btn-resend-onboarding" data-product-id="${productId}" ${canResendOnboarding ? '' : 'disabled'} title="${canResendOnboarding ? 'Resend seller onboarding invite' : 'Seller must sign contract first'}">Resend Onboarding Invite</button>
+        <button class="btn-delete" data-product-id="${productId}">Delete Product</button>
         <button class="btn-archive" data-product-id="${productId}">Archive</button>
       </div>
     `;
 
-    const publishBtn = div.querySelector('.btn-approve');
-    const resendBtn = div.querySelector('.btn-resend');
+    const resendContractBtn = div.querySelector('.btn-resend-contract');
+    const resendOnboardingBtn = div.querySelector('.btn-resend-onboarding');
+    const deleteBtn = div.querySelector('.btn-delete');
     const archiveBtn = div.querySelector('.btn-archive');
 
-    publishBtn.addEventListener('click', async () => {
+    resendContractBtn.addEventListener('click', async () => {
       try {
-        publishBtn.disabled = true;
-        publishBtn.textContent = 'Creating in Polar...';
-
-        const result = await adminRequest('adminFinalizeProduct', {
-          method: 'POST',
-          body: {
-            productId,
-            priceCents: product.price,
-            billingPeriod: product.billingPeriod,
-            featured: product.featured,
-          },
-        });
-
-        const checkoutNote = result.polarPriceId ? ` Checkout ID: ${result.polarPriceId}` : '';
-        showMessage(`Published ${product.name}.${checkoutNote}`, 'success');
-        setTimeout(() => loadOnboardingProducts(), 1500);
-      } catch (err) {
-        console.error('[admin-products] finalize error:', err);
-        showMessage(err.message || 'Error publishing product', 'error');
-        publishBtn.disabled = false;
-        publishBtn.textContent = 'Create Polar Product & Publish';
-      }
-    });
-
-    resendBtn.addEventListener('click', async () => {
-      try {
-        resendBtn.disabled = true;
-        resendBtn.textContent = 'Sending...';
+        resendContractBtn.disabled = true;
+        resendContractBtn.textContent = 'Sending...';
         await sendSellerOnboardingEmail({
           email: seller,
           contactName: sellerName,
           productName: product.name || 'your product',
           sellerToken: product.sellerToken,
         });
-        showMessage(`Contract email resent to ${seller}`, 'success');
-        resendBtn.textContent = 'Resent';
+        showMessage(`Contract invite resent to ${seller}`, 'success');
+        resendContractBtn.textContent = 'Resent';
         setTimeout(() => {
-          resendBtn.disabled = false;
-          resendBtn.textContent = 'Resend Contract';
+          resendContractBtn.disabled = false;
+          resendContractBtn.textContent = 'Resend Contract';
+        }, 2000);
+      } catch (err) {
+        console.error('[admin-products] resend contract error:', err);
+        showMessage(err.message || 'Error resending contract invite', 'error');
+        resendContractBtn.disabled = false;
+        resendContractBtn.textContent = 'Resend Contract';
+      }
+    });
+
+    resendOnboardingBtn.addEventListener('click', async () => {
+      try {
+        resendOnboardingBtn.disabled = true;
+        resendOnboardingBtn.textContent = 'Sending...';
+        await adminRequest('adminResendSellerPortalInvite', {
+          method: 'POST',
+          body: { email: seller },
+        });
+        showMessage(`Seller onboarding invite resent to ${seller}`, 'success');
+        resendOnboardingBtn.textContent = 'Resent';
+        setTimeout(() => {
+          resendOnboardingBtn.disabled = false;
+          resendOnboardingBtn.textContent = 'Resend Onboarding Invite';
         }, 2000);
       } catch (err) {
         console.error('[admin-products] resend onboarding error:', err);
-        showMessage(err.message || 'Error resending contract email', 'error');
-        resendBtn.disabled = false;
-        resendBtn.textContent = 'Resend Contract';
+        showMessage(err.message || 'Error resending seller onboarding invite', 'error');
+        resendOnboardingBtn.disabled = false;
+        resendOnboardingBtn.textContent = 'Resend Onboarding Invite';
+      }
+    });
+
+    deleteBtn.addEventListener('click', async () => {
+      if (!confirm(`Permanently delete "${product.name}"? This cannot be undone.`)) return;
+
+      try {
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+        await adminRequest('adminDeleteProduct', {
+          method: 'POST',
+          body: { productId },
+        });
+        showMessage(`Deleted ${product.name}`, 'success');
+        setTimeout(() => loadOnboardingProducts(), 1500);
+      } catch (err) {
+        console.error('[admin-products] delete onboarding error:', err);
+        showMessage(err.message || 'Error deleting product', 'error');
+        deleteBtn.disabled = false;
+        deleteBtn.textContent = 'Delete Product';
       }
     });
 
@@ -496,7 +517,8 @@
 
     const seller = product.sellerEmail || product.sellerId || 'Mojo';
     const sellerName = product.sellerContactName || (seller.includes('@') ? seller.split('@')[0] : seller);
-    const canResendContract = Boolean(product.sellerToken && seller.includes('@'));
+    const canResendContract = Boolean(product.sellerToken && seller.includes('@') && product.sellerStatus === 'pending_contract');
+    const canResendOnboarding = Boolean(product.sellerToken && seller.includes('@') && product.sellerStatus !== 'pending_contract');
     const price = formatPrice(product.price, product.billingPeriod);
     const payoutStatus = product.sellerPayoutPreferenceStatus || 'not submitted';
     const payoutMethod = formatPayoutMethod(product.sellerPayoutMethod);
@@ -557,37 +579,81 @@
       </div>
 
       <div class="action-buttons">
-        <button class="btn-resend" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller contract email' : 'Seller token unavailable'}">Resend Contract</button>
+        <button class="btn-resend-contract" data-product-id="${productId}" ${canResendContract ? '' : 'disabled'} title="${canResendContract ? 'Resend seller contract invite' : 'Contract already signed'}">Resend Contract</button>
+        <button class="btn-resend-onboarding" data-product-id="${productId}" ${canResendOnboarding ? '' : 'disabled'} title="${canResendOnboarding ? 'Resend seller onboarding invite' : 'Seller must sign contract first'}">Resend Onboarding Invite</button>
+        <button class="btn-delete" data-product-id="${productId}">Delete Product</button>
         <button class="btn-archive" data-product-id="${productId}">Archive</button>
       </div>
     `;
 
-    const resendBtn = div.querySelector('.btn-resend');
+    const resendContractBtn = div.querySelector('.btn-resend-contract');
+    const resendOnboardingBtn = div.querySelector('.btn-resend-onboarding');
+    const deleteBtn = div.querySelector('.btn-delete');
     const archiveBtn = div.querySelector('.btn-archive');
 
-    resendBtn.addEventListener('click', async () => {
+    resendContractBtn.addEventListener('click', async () => {
       try {
-        resendBtn.disabled = true;
-        resendBtn.textContent = 'Sending...';
-
+        resendContractBtn.disabled = true;
+        resendContractBtn.textContent = 'Sending...';
         await sendSellerOnboardingEmail({
           email: seller,
           contactName: sellerName,
           productName: product.name || 'your product',
           sellerToken: product.sellerToken,
         });
-
-        showMessage(`Contract email resent to ${seller}`, 'success');
-        resendBtn.textContent = 'Resent';
+        showMessage(`Contract invite resent to ${seller}`, 'success');
+        resendContractBtn.textContent = 'Resent';
         setTimeout(() => {
-          resendBtn.disabled = false;
-          resendBtn.textContent = 'Resend Contract';
+          resendContractBtn.disabled = false;
+          resendContractBtn.textContent = 'Resend Contract';
         }, 2000);
       } catch (err) {
         console.error('[admin-products] resend contract error:', err);
-        showMessage(err.message || 'Error resending contract email', 'error');
-        resendBtn.disabled = false;
-        resendBtn.textContent = 'Resend Contract';
+        showMessage(err.message || 'Error resending contract invite', 'error');
+        resendContractBtn.disabled = false;
+        resendContractBtn.textContent = 'Resend Contract';
+      }
+    });
+
+    resendOnboardingBtn.addEventListener('click', async () => {
+      try {
+        resendOnboardingBtn.disabled = true;
+        resendOnboardingBtn.textContent = 'Sending...';
+        await adminRequest('adminResendSellerPortalInvite', {
+          method: 'POST',
+          body: { email: seller },
+        });
+        showMessage(`Seller onboarding invite resent to ${seller}`, 'success');
+        resendOnboardingBtn.textContent = 'Resent';
+        setTimeout(() => {
+          resendOnboardingBtn.disabled = false;
+          resendOnboardingBtn.textContent = 'Resend Onboarding Invite';
+        }, 2000);
+      } catch (err) {
+        console.error('[admin-products] resend onboarding error:', err);
+        showMessage(err.message || 'Error resending seller onboarding invite', 'error');
+        resendOnboardingBtn.disabled = false;
+        resendOnboardingBtn.textContent = 'Resend Onboarding Invite';
+      }
+    });
+
+    deleteBtn.addEventListener('click', async () => {
+      if (!confirm(`Permanently delete "${product.name}"? This cannot be undone.`)) return;
+
+      try {
+        deleteBtn.disabled = true;
+        deleteBtn.textContent = 'Deleting...';
+        await adminRequest('adminDeleteProduct', {
+          method: 'POST',
+          body: { productId },
+        });
+        showMessage(`Deleted ${product.name}`, 'success');
+        setTimeout(() => loadLiveProducts(), 1500);
+      } catch (err) {
+        console.error('[admin-products] delete error:', err);
+        showMessage(err.message || 'Error deleting product', 'error');
+        deleteBtn.disabled = false;
+        deleteBtn.textContent = 'Delete Product';
       }
     });
 

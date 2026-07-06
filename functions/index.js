@@ -144,6 +144,24 @@ async function trackSaleIfApplicable(order) {
       return;
     }
 
+    const listingFeeSnap = await db
+      .collection('products')
+      .where('listingFeePolarPriceId', '==', polarPriceId)
+      .limit(1)
+      .get();
+
+    if (!listingFeeSnap.empty) {
+      const productDoc = listingFeeSnap.docs[0];
+      await productDoc.ref.update({
+        listingFeeStatus: 'paid',
+        listingFeePaidAt: admin.firestore.FieldValue.serverTimestamp(),
+        listingFeePolarOrderId: order.id,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+      console.log('[trackSaleIfApplicable] marked listing fee paid for product', productDoc.id);
+      return;
+    }
+
     // Find product by Polar price ID
     const productSnap = await db
       .collection('products')
@@ -401,6 +419,7 @@ exports.getSellerOnboardingState = onRequest(
  * Body: { email, contactName, sellerToken, contractVersion }
  */
 exports.signContract = onRequest(
+  { secrets: [RESEND_API_KEY] },
   async (req, res) => {
     if (setPublicCors(req, res)) return;
 
@@ -448,6 +467,18 @@ exports.signContract = onRequest(
         status: 'pending_payout_preference',
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
+
+      const sellerEmail = seller.email || email;
+      const sellerName = seller.contactName || 'Seller';
+      const sendResult = await sendSellerPortalInviteEmail({
+        to: sellerEmail,
+        contactName: sellerName,
+        sellerToken,
+        introHtml: 'Thanks for signing the seller agreement. Your seller portal link is ready for the next step.',
+      });
+      if (!sendResult.ok) {
+        console.error('[signContract] onboarding email failed:', sendResult.error);
+      }
 
       console.log('[signContract] Seller', email, 'signed contract version', contractVersion);
       res.status(200).json({
@@ -572,6 +603,511 @@ exports.submitPayoutPreference = onRequest(
 );
 
 /**
+ * POST /adminResendSellerPortalInvite
+ * Manually re-sends the seller portal invite after contract signing.
+ */
+exports.adminResendSellerPortalInvite = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY, RESEND_API_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    if (!email) {
+      res.status(400).json({ ok: false, message: 'Missing email' });
+      return;
+    }
+
+    try {
+      const sellerRef = db.collection('sellers').doc(email);
+      const sellerSnap = await sellerRef.get();
+      if (!sellerSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Seller not found' });
+        return;
+      }
+
+      const seller = sellerSnap.data();
+      if (!seller.contractSignedAt) {
+        res.status(409).json({ ok: false, message: 'Seller has not signed the contract yet' });
+        return;
+      }
+      if (!seller.sellerToken) {
+        res.status(409).json({ ok: false, message: 'Seller token unavailable' });
+        return;
+      }
+
+      const sendResult = await sendSellerPortalInviteEmail({
+        to: seller.email || email,
+        contactName: seller.contactName || 'Seller',
+        sellerToken: seller.sellerToken,
+        introHtml: 'This is a manual resend of your seller portal invite so you can continue configuring your product.',
+      });
+      if (!sendResult.ok) {
+        res.status(500).json({ ok: false, message: sendResult.error || 'Failed to send invite' });
+        return;
+      }
+
+      res.status(200).json({ ok: true, message: 'Seller portal invite resent' });
+    } catch (err) {
+      console.error('[adminResendSellerPortalInvite] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /sellers/create-account
+ * Creates a password-backed Mojo seller portal account from the approved seller
+ * invite token. Sellers do not create or manage Polar accounts.
+ *
+ * Body: { email, sellerToken, password }
+ */
+exports.sellerCreateAccount = onRequest(
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sellerToken = String(req.body?.sellerToken || '').trim();
+    const password = String(req.body?.password || '');
+
+    if (!email || !sellerToken || !password) {
+      res.status(400).json({ ok: false, message: 'Missing required fields' });
+      return;
+    }
+
+    if (password.length < 10) {
+      res.status(400).json({ ok: false, message: 'Use a password with at least 10 characters' });
+      return;
+    }
+
+    try {
+      const sellerRef = db.collection('sellers').doc(email);
+      const sellerSnap = await sellerRef.get();
+      if (!sellerSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Seller record not found' });
+        return;
+      }
+
+      const seller = sellerSnap.data();
+      if (!seller.sellerToken || seller.sellerToken !== sellerToken) {
+        res.status(401).json({ ok: false, message: 'Invalid seller invite link' });
+        return;
+      }
+
+      if (seller.portalPasswordHash && seller.portalPasswordSalt) {
+        res.status(409).json({ ok: false, message: 'A seller portal account already exists. Sign in instead.' });
+        return;
+      }
+
+      const salt = crypto.randomBytes(16).toString('hex');
+      await sellerRef.update({
+        portalPasswordSalt: salt,
+        portalPasswordHash: hashSellerPassword(password, salt),
+        portalAccountCreatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        portalLastLoginAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      const sessionToken = await createSellerPortalSession(sellerRef);
+      res.status(200).json({
+        ok: true,
+        email,
+        sessionToken,
+        message: 'Seller portal account created',
+      });
+    } catch (err) {
+      console.error('[sellerCreateAccount] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /sellers/login
+ * Body: { email, password }
+ */
+exports.sellerLogin = onRequest(
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const password = String(req.body?.password || '');
+    if (!email || !password) {
+      res.status(400).json({ ok: false, message: 'Missing email or password' });
+      return;
+    }
+
+    try {
+      const sellerRef = db.collection('sellers').doc(email);
+      const sellerSnap = await sellerRef.get();
+      if (!sellerSnap.exists) {
+        res.status(401).json({ ok: false, message: 'Invalid email or password' });
+        return;
+      }
+
+      const seller = sellerSnap.data();
+      if (!seller.portalPasswordHash || !seller.portalPasswordSalt) {
+        res.status(409).json({ ok: false, message: 'Create your seller portal account from your approval email first.' });
+        return;
+      }
+
+      if (!verifySellerPassword(password, seller.portalPasswordSalt, seller.portalPasswordHash)) {
+        res.status(401).json({ ok: false, message: 'Invalid email or password' });
+        return;
+      }
+
+      await sellerRef.update({
+        portalLastLoginAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      const sessionToken = await createSellerPortalSession(sellerRef);
+      res.status(200).json({
+        ok: true,
+        email,
+        sessionToken,
+        seller: sellerPortalPayload(email, seller),
+      });
+    } catch (err) {
+      console.error('[sellerLogin] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
+ * POST /sellers/list-products
+ * Body: { email, sessionToken }
+ */
+exports.sellerListProducts = onRequest(
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sessionToken = String(req.body?.sessionToken || '').trim();
+
+    try {
+      const session = await requireSellerPortalSession(email, sessionToken);
+      const productsSnap = await db.collection('products')
+        .where('submittedByEmail', '==', email)
+        .get();
+
+      const products = productsSnap.docs
+        .map(sellerProductPayload)
+        .sort((a, b) => (b.updatedAtMillis || b.createdAtMillis || 0) - (a.updatedAtMillis || a.createdAtMillis || 0));
+
+      res.status(200).json({
+        ok: true,
+        seller: sellerPortalPayload(email, session.seller),
+        products,
+      });
+    } catch (err) {
+      const status = err.statusCode || 500;
+      console.error('[sellerListProducts] error:', err.message || err);
+      res.status(status).json({ ok: false, message: status === 500 ? 'Server error' : err.message });
+    }
+  }
+);
+
+/**
+ * POST /sellers/update-product
+ * Body: { email, sessionToken, productId, ...product fields }
+ */
+exports.sellerUpdateProduct = onRequest(
+  { secrets: [POLAR_ACCESS_TOKEN] },
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sessionToken = String(req.body?.sessionToken || '').trim();
+    const productId = String(req.body?.productId || '').trim();
+
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      await requireSellerPortalSession(email, sessionToken);
+
+      const productRef = db.collection('products').doc(productId);
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      const product = productSnap.data();
+      const ownerEmail = normalizeEmail(product.submittedByEmail || product.sellerId);
+      if (ownerEmail !== email) {
+        res.status(403).json({ ok: false, message: 'You do not have access to this product' });
+        return;
+      }
+
+      const currentPriceCents = parsePositiveCents(product.price);
+      const requestedPriceCents = parsePositiveCents(req.body?.priceCents);
+      const requestedBillingPeriod = normalizeBillingPeriod(req.body?.billingPeriod || product.billingPeriod || product.pricingModel);
+      const update = buildSellerProductUpdate(req.body, product);
+      const priceChanged = Boolean(requestedPriceCents && currentPriceCents && requestedPriceCents !== currentPriceCents);
+      const billingChanged = Boolean(requestedBillingPeriod && requestedBillingPeriod !== normalizeBillingPeriod(product.billingPeriod || product.pricingModel));
+
+      if (product.status === 'live' && (priceChanged || billingChanged)) {
+        update.pendingPricingUpdate = {
+          price: requestedPriceCents,
+          billingPeriod: requestedBillingPeriod,
+          requestedAt: admin.firestore.FieldValue.serverTimestamp(),
+        };
+        update.polarSyncStatus = 'pricing_update_pending_admin';
+      } else if (requestedPriceCents) {
+        update.price = requestedPriceCents;
+        update.billingPeriod = requestedBillingPeriod;
+      }
+
+      let polarResult = null;
+      if (product.status === 'live' && product.polarProductId && !priceChanged && !billingChanged) {
+        try {
+          polarResult = await updatePolarProductForMojo(product.polarProductId, {
+            ...product,
+            ...update,
+          }, productId);
+          update.polarSyncStatus = 'updated';
+          update.polarSyncedAt = admin.firestore.FieldValue.serverTimestamp();
+          update.polarSyncError = null;
+        } catch (polarErr) {
+          console.error('[sellerUpdateProduct] Polar update failed:', polarErr);
+          update.polarSyncStatus = 'update_failed';
+          update.polarSyncError = String(polarErr.message || polarErr).slice(0, 500);
+        }
+      } else if (product.status !== 'live') {
+        update.polarSyncStatus = product.polarProductId ? 'pending_update' : (product.polarSyncStatus || 'pending_seller_onboarding');
+      }
+
+      await productRef.update(update);
+      const refreshed = await productRef.get();
+
+      res.status(200).json({
+        ok: true,
+        product: sellerProductPayload(refreshed),
+        polarUpdated: Boolean(polarResult),
+        message: update.polarSyncStatus === 'update_failed'
+          ? 'Saved in Mojo, but Polar did not accept the update yet.'
+          : 'Product saved',
+      });
+    } catch (err) {
+      const status = err.statusCode || 500;
+      console.error('[sellerUpdateProduct] error:', err.message || err);
+      res.status(status).json({ ok: false, message: status === 500 ? 'Server error' : err.message });
+    }
+  }
+);
+
+/**
+ * POST /sellers/submit-product-for-launch
+ * Saves the seller's completed listing details, creates or updates the Mojo-owned
+ * Polar product, and publishes the listing when contract and payout are complete.
+ *
+ * Body: { email, sessionToken, productId, ...product fields }
+ */
+exports.sellerSubmitProductForLaunch = onRequest(
+  { secrets: [POLAR_ACCESS_TOKEN] },
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sessionToken = String(req.body?.sessionToken || '').trim();
+    const productId = String(req.body?.productId || '').trim();
+
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      const session = await requireSellerPortalSession(email, sessionToken);
+      const sellerReady = Boolean(
+        session.seller?.contractSignedAt
+        && (session.seller?.payoutPreferenceStatus === 'provided' || session.seller?.payoutPreference)
+      );
+      if (!sellerReady) {
+        res.status(409).json({
+          ok: false,
+          message: 'Sign the seller agreement and save a payout preference before submitting the product for launch.',
+        });
+        return;
+      }
+
+      const productRef = db.collection('products').doc(productId);
+      const productSnap = await productRef.get();
+      if (!productSnap.exists) {
+        res.status(404).json({ ok: false, message: 'Product not found' });
+        return;
+      }
+
+      const product = productSnap.data();
+      const ownerEmail = normalizeEmail(product.submittedByEmail || product.sellerId);
+      if (ownerEmail !== email) {
+        res.status(403).json({ ok: false, message: 'You do not have access to this product' });
+        return;
+      }
+
+      const update = buildSellerProductUpdate(req.body, product);
+      const priceCents = parsePositiveCents(req.body?.priceCents) || parsePositiveCents(product.price);
+      const billingPeriod = normalizeBillingPeriod(req.body?.billingPeriod || product.billingPeriod || product.pricingModel);
+      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid');
+
+      if (!listingFeeReady) {
+        res.status(409).json({
+          ok: false,
+          message: 'The $100 listing fee must be paid or waived before this product can launch.',
+        });
+        return;
+      }
+
+      if (!priceCents) {
+        res.status(400).json({ ok: false, message: 'Price is required before submitting for launch' });
+        return;
+      }
+
+      update.price = priceCents;
+      update.billingPeriod = billingPeriod;
+
+      let polarResult = null;
+      let resolvedPolarProductId = product.polarProductId || null;
+      let resolvedPolarPriceId = product.polarPriceId || null;
+      let polarSyncStatus = 'updated';
+
+      if (resolvedPolarProductId) {
+        polarResult = await updatePolarProductForMojo(resolvedPolarProductId, { ...product, ...update }, productId);
+        resolvedPolarPriceId = firstPolarPriceId(polarResult) || resolvedPolarPriceId;
+      } else if (resolvedPolarPriceId) {
+        polarSyncStatus = 'manual_price_id';
+      } else {
+        polarResult = await createPolarProductForMojo(productId, { ...product, ...update }, priceCents, billingPeriod);
+        resolvedPolarProductId = polarResult.polarProductId;
+        resolvedPolarPriceId = polarResult.polarPriceId;
+        polarSyncStatus = 'created';
+      }
+
+      if (!resolvedPolarPriceId) {
+        res.status(502).json({ ok: false, message: 'Polar did not return a checkout price ID' });
+        return;
+      }
+
+      await productRef.update({
+        ...update,
+        status: 'live',
+        polarProductId: resolvedPolarProductId || null,
+        polarPriceId: resolvedPolarPriceId,
+        polarSyncStatus,
+        polarSyncError: null,
+        polarSyncedAt: admin.firestore.FieldValue.serverTimestamp(),
+        sellerSubmittedForLaunchAt: admin.firestore.FieldValue.serverTimestamp(),
+        publishedAt: product.publishedAt || admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      });
+
+      const refreshed = await productRef.get();
+      res.status(200).json({
+        ok: true,
+        product: sellerProductPayload(refreshed),
+        polarProductId: resolvedPolarProductId,
+        polarPriceId: resolvedPolarPriceId,
+        message: 'Product submitted, Polar checkout synced, and marketplace listing published.',
+      });
+    } catch (err) {
+      const status = err.statusCode || 500;
+      console.error('[sellerSubmitProductForLaunch] error:', err.message || err);
+      res.status(status).json({ ok: false, message: status === 500 ? 'Server error' : err.message });
+    }
+  }
+);
+
+/**
+ * POST /sellerResendOnboardingInvite
+ * Re-sends the seller onboarding invite to the signed-in seller.
+ */
+exports.sellerResendOnboardingInvite = onRequest(
+  { secrets: [RESEND_API_KEY] },
+  async (req, res) => {
+    if (setPublicCors(req, res)) return;
+
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+
+    const email = normalizeEmail(req.body?.email);
+    const sessionToken = String(req.body?.sessionToken || '').trim();
+    if (!email || !sessionToken) {
+      res.status(400).json({ ok: false, message: 'Missing email or sessionToken' });
+      return;
+    }
+
+    try {
+      const session = await requireSellerPortalSession(email, sessionToken);
+      const seller = session.seller;
+      if (!seller.contractSignedAt) {
+        res.status(409).json({ ok: false, message: 'Sign the seller agreement before requesting the onboarding invite.' });
+        return;
+      }
+      if (!seller.sellerToken) {
+        res.status(409).json({ ok: false, message: 'Seller token unavailable' });
+        return;
+      }
+
+      const sendResult = await sendSellerPortalInviteEmail({
+        to: email,
+        contactName: seller.contactName || 'Seller',
+        sellerToken: seller.sellerToken,
+        introHtml: 'Here is your seller onboarding link again so you can finish configuring your product.',
+      });
+      if (!sendResult.ok) {
+        res.status(500).json({ ok: false, message: sendResult.error || 'Failed to send invite' });
+        return;
+      }
+
+      res.status(200).json({ ok: true, message: 'Seller onboarding invite resent' });
+    } catch (err) {
+      const status = err.statusCode || 500;
+      console.error('[sellerResendOnboardingInvite] error:', err.message || err);
+      res.status(status).json({ ok: false, message: status === 500 ? 'Server error' : err.message });
+    }
+  }
+);
+
+/**
  * POST /sellers/create-from-product-submission
  * Creates seller record after product submission
  * Called by the form after submit-product.php succeeds
@@ -635,23 +1171,27 @@ exports.createSellerFromProductSubmission = onRequest(
         console.log('[createSellerFromProductSubmission] Updated seller', email, 'with new product');
       }
 
-      // Send onboarding email with token
-      const onboardingUrl = `https://mojoaistudio.com/products/pages/seller-onboarding.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+      // Approval email is sent by the Pages worker/admin UI after review. If
+      // this function is used directly, the seller should still be sent to the
+      // Mojo portal instead of Polar or the standalone contract page.
+      const portalUrl = `https://mojoaistudio.com/products/pages/seller-portal.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
 
-      const subject = 'Complete Your Seller Setup — Mojo AI Studio';
+      const subject = 'Create Your Mojo Seller Portal Account';
       const emailBody = `Hi ${contactName},
 
 Thanks for submitting "${productName}" to the Mojo AI Studio marketplace!
 
-To complete your seller setup, please sign the seller agreement:
+After approval, create your Mojo seller portal account here:
 
-${onboardingUrl}
+${portalUrl}
 
 What happens next:
-1. Review and sign the seller agreement
-2. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option
-3. Mojo reviews your submitted product assets and connects the approved product to the marketplace checkout
-4. Buyers purchase through the Mojo marketplace checkout
+1. Create your Mojo seller portal account
+2. Review and sign the seller agreement
+3. Choose a payout method such as PayPal, Zelle, Venmo, Cash App, mailed check, or another option
+4. Manage your product listing details in the Mojo seller portal
+5. Mojo creates and syncs the Polar checkout product under the Mojo account
+6. Buyers purchase through the Mojo marketplace checkout
 
 If you have any questions, reply to this email or contact us at admin@MojoAiStudio.com.
 
@@ -810,6 +1350,129 @@ function timestampMillis(value) {
   return value && typeof value.toMillis === 'function' ? value.toMillis() : null;
 }
 
+function normalizeEmail(value) {
+  const email = String(value || '').trim().toLowerCase();
+  return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) ? email : '';
+}
+
+async function sendSellerPortalInviteEmail({ to, contactName, sellerToken, introHtml }) {
+  const email = normalizeEmail(to);
+  const cleanName = String(contactName || 'Seller').trim() || 'Seller';
+  if (!email || !sellerToken) {
+    return { ok: false, error: 'Missing email or seller token' };
+  }
+  if (!RESEND_API_KEY.value()) {
+    return { ok: false, error: 'Email service not configured' };
+  }
+
+  const portalUrl = `https://mojoaistudio.com/products/pages/seller-portal.html?email=${encodeURIComponent(email)}&token=${encodeURIComponent(sellerToken)}`;
+  const html = `
+    <p>Hi ${cleanName},</p>
+    <p>${introHtml}</p>
+    <p><a href="${portalUrl}">${portalUrl}</a></p>
+    <p>What happens next:</p>
+    <ol>
+      <li>Create your Mojo seller portal account</li>
+      <li>Sign in to the seller portal</li>
+      <li>Choose a payout method</li>
+      <li>Finish your product listing details</li>
+    </ol>
+    <p>If you have any questions, reply to this email or contact <a href="mailto:admin@MojoAiStudio.com">admin@MojoAiStudio.com</a>.</p>
+    <p>— Mojo AI Studio Team</p>
+  `;
+
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY.value()}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: 'Mojo AI Studio <noreply@mojoaistudio.com>',
+      to: [email],
+      subject: 'Create Your Mojo Seller Portal Account',
+      html,
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    return { ok: false, error: err.message || err.name || JSON.stringify(err) };
+  }
+
+  return { ok: true };
+}
+
+function hashSellerPassword(password, salt) {
+  return crypto.scryptSync(String(password), String(salt), 64).toString('hex');
+}
+
+function verifySellerPassword(password, salt, expectedHash) {
+  const expected = Buffer.from(String(expectedHash || ''), 'hex');
+  const actual = Buffer.from(hashSellerPassword(password, salt), 'hex');
+  return expected.length === actual.length && crypto.timingSafeEqual(expected, actual);
+}
+
+function hashPortalSession(token) {
+  return crypto.createHash('sha256').update(String(token || '')).digest('hex');
+}
+
+async function createSellerPortalSession(sellerRef) {
+  const token = crypto.randomBytes(32).toString('hex');
+  await sellerRef.update({
+    portalSessionHash: hashPortalSession(token),
+    portalSessionExpiresAt: admin.firestore.Timestamp.fromDate(new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
+  return token;
+}
+
+async function requireSellerPortalSession(email, sessionToken) {
+  const normalizedEmail = normalizeEmail(email);
+  const token = String(sessionToken || '').trim();
+  if (!normalizedEmail || !token) {
+    const err = new Error('Sign in to the seller portal first.');
+    err.statusCode = 401;
+    throw err;
+  }
+
+  const sellerRef = db.collection('sellers').doc(normalizedEmail);
+  const sellerSnap = await sellerRef.get();
+  if (!sellerSnap.exists) {
+    const err = new Error('Seller record not found');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const seller = sellerSnap.data();
+  const expectedHash = String(seller.portalSessionHash || '');
+  const actualHash = hashPortalSession(token);
+  const sessionMatches = expectedHash && expectedHash.length === actualHash.length
+    && crypto.timingSafeEqual(Buffer.from(expectedHash), Buffer.from(actualHash));
+  const expiresAt = seller.portalSessionExpiresAt?.toMillis ? seller.portalSessionExpiresAt.toMillis() : 0;
+
+  if (!sessionMatches || expiresAt < Date.now()) {
+    const err = new Error('Your seller portal session expired. Sign in again.');
+    err.statusCode = 401;
+    throw err;
+  }
+
+  return { sellerRef, seller };
+}
+
+function sellerPortalPayload(email, seller) {
+  return {
+    email,
+    contactName: seller.contactName || null,
+    status: seller.status || null,
+    sellerToken: seller.sellerToken || null,
+    contractSigned: Boolean(seller.contractSignedAt),
+    payoutPreferenceProvided: Boolean(seller.payoutPreferenceStatus === 'provided' || seller.payoutPreference),
+    payoutMethod: seller.payoutPreference?.method || null,
+    payoutContact: seller.payoutPreference?.contact || null,
+  };
+}
+
 function productPayload(doc) {
   const product = doc.data();
   return {
@@ -819,6 +1482,37 @@ function productPayload(doc) {
     updatedAtMillis: timestampMillis(product.updatedAt),
     createdAt: undefined,
     updatedAt: undefined,
+  };
+}
+
+function sellerProductPayload(doc) {
+  const product = doc.data();
+  return {
+    id: doc.id,
+    name: product.name || '',
+    description: product.description || '',
+    category: product.category || '',
+    productUrl: product.productUrl || product.externalUrl || '',
+    logoUrl: product.logoUrl || '',
+    screenshotUrl: product.screenshotUrl || product.imageUrl || '',
+    targetUser: product.targetUser || product.inputs || '',
+    anythingElse: product.anythingElse || '',
+    status: product.status || 'pending_review',
+    price: product.price || null,
+    billingPeriod: product.billingPeriod || product.pricingModel || 'month',
+    polarProductId: product.polarProductId || null,
+    polarPriceId: product.polarPriceId || null,
+    polarSyncStatus: product.polarSyncStatus || null,
+    polarSyncError: product.polarSyncError || null,
+    pendingPricingUpdate: product.pendingPricingUpdate || null,
+    listingFeeAmount: product.listingFeeAmount || product.listingFee || 10000,
+    listingFeeStatus: product.listingFeeStatus || null,
+    listingFeeWaived: Boolean(product.listingFeeWaived),
+    listingFeePolarPriceId: product.listingFeePolarPriceId || null,
+    featured: Boolean(product.featured),
+    createdAtMillis: timestampMillis(product.createdAt),
+    updatedAtMillis: timestampMillis(product.updatedAt),
+    publishedAtMillis: timestampMillis(product.publishedAt),
   };
 }
 
@@ -872,6 +1566,70 @@ function parsePositiveCents(value) {
   const numberValue = Number(value);
   if (!Number.isFinite(numberValue) || numberValue <= 0) return null;
   return Math.round(numberValue);
+}
+
+function buildSellerProductUpdate(body, existingProduct) {
+  const name = nullableString(body?.name || body?.productName, 64);
+  const description = nullableString(body?.description || body?.productDescription, 2000);
+  const category = nullableString(body?.category, 120);
+  const productUrl = nullableString(body?.productUrl || body?.externalUrl, 1000);
+  const logoUrl = nullableString(body?.logoUrl, 1000);
+  const screenshotUrl = nullableString(body?.screenshotUrl || body?.imageUrl, 1000);
+  const targetUser = nullableString(body?.targetUser || body?.inputs, 1200);
+  const anythingElse = nullableString(body?.anythingElse, 2000);
+
+  if (!name || name.length < 3) {
+    const err = new Error('Product name must be at least 3 characters');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (!description) {
+    const err = new Error('Product description is required');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (productUrl && !isPublicHttpUrl(productUrl)) {
+    const err = new Error('Product URL must be a public http or https URL');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (logoUrl && !isPublicHttpUrl(logoUrl)) {
+    const err = new Error('Logo URL must be a public http or https URL');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  if (screenshotUrl && !isPublicHttpUrl(screenshotUrl)) {
+    const err = new Error('Product image URL must be a public http or https URL');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const update = {
+    name,
+    description,
+    category: category || existingProduct.category || null,
+    productUrl: productUrl || existingProduct.productUrl || existingProduct.externalUrl || null,
+    externalUrl: productUrl || existingProduct.externalUrl || existingProduct.productUrl || null,
+    logoUrl: logoUrl || existingProduct.logoUrl || null,
+    screenshotUrl: screenshotUrl || existingProduct.screenshotUrl || existingProduct.imageUrl || null,
+    imageUrl: screenshotUrl || existingProduct.imageUrl || existingProduct.screenshotUrl || existingProduct.logoUrl || null,
+    targetUser: targetUser || existingProduct.targetUser || existingProduct.inputs || null,
+    inputs: targetUser || existingProduct.inputs || existingProduct.targetUser || null,
+    anythingElse: anythingElse || existingProduct.anythingElse || null,
+    sellerUpdatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+  };
+
+  const imageUrls = [update.logoUrl, update.screenshotUrl].filter(Boolean);
+  if (imageUrls.length) {
+    update.imageUrls = Array.from(new Set(imageUrls));
+  }
+
+  return update;
 }
 
 function normalizeBillingPeriod(value) {
@@ -935,6 +1693,88 @@ async function createPolarProductForMojo(productId, product, priceCents, billing
     polarPriceId: firstPolarPriceId(responseBody),
     billingPeriod: normalizedBillingPeriod,
   };
+}
+
+async function createListingFeePolarProduct(productId, product) {
+  const token = POLAR_ACCESS_TOKEN.value();
+  if (!token) {
+    throw new Error('POLAR_ACCESS_TOKEN is not configured');
+  }
+
+  const body = {
+    name: `Mojo listing fee - ${String(product.name || productId).slice(0, 80)}`,
+    description: 'One-time Mojo AI Studio marketplace listing fee.',
+    visibility: 'private',
+    prices: [
+      {
+        price_currency: 'usd',
+        price_amount: 10000,
+      },
+    ],
+    metadata: {
+      mojo_product_id: String(productId || '').slice(0, 500),
+      mojo_seller_email: String(product.submittedByEmail || product.sellerId || '').slice(0, 500),
+      mojo_source: 'seller_listing_fee',
+    },
+  };
+
+  const response = await fetch('https://api.polar.sh/v1/products', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const responseBody = await response.json().catch(async () => ({ raw: await response.text().catch(() => '') }));
+  if (!response.ok) {
+    console.error('[createListingFeePolarProduct] Polar create failed:', response.status, responseBody);
+    throw new Error(responseBody?.detail?.[0]?.msg || responseBody?.message || 'Polar listing fee creation failed');
+  }
+
+  return {
+    polarProduct: responseBody,
+    polarProductId: responseBody.id || null,
+    polarPriceId: firstPolarPriceId(responseBody),
+  };
+}
+
+async function updatePolarProductForMojo(polarProductId, product, productId) {
+  const token = POLAR_ACCESS_TOKEN.value();
+  if (!token) {
+    throw new Error('POLAR_ACCESS_TOKEN is not configured');
+  }
+
+  const body = {
+    name: String(product.name || 'Mojo product').slice(0, 64),
+    description: String(product.description || '').slice(0, 2000) || null,
+    metadata: {
+      mojo_product_id: String(productId || '').slice(0, 500),
+      mojo_seller_email: String(product.submittedByEmail || product.sellerId || '').slice(0, 500),
+      mojo_source: 'seller_portal',
+      mojo_product_url: String(product.productUrl || product.externalUrl || '').slice(0, 500),
+      mojo_logo_url: String(product.logoUrl || '').slice(0, 500),
+      mojo_image_url: String(product.screenshotUrl || product.imageUrl || '').slice(0, 500),
+    },
+  };
+
+  const response = await fetch(`https://api.polar.sh/v1/products/${encodeURIComponent(polarProductId)}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  const responseBody = await response.json().catch(async () => ({ raw: await response.text().catch(() => '') }));
+  if (!response.ok) {
+    console.error('[updatePolarProductForMojo] Polar update failed:', response.status, responseBody);
+    throw new Error(responseBody?.detail?.[0]?.msg || responseBody?.message || 'Polar product update failed');
+  }
+
+  return responseBody;
 }
 
 function socialPostPayload(doc) {
@@ -1183,7 +2023,7 @@ exports.adminListProducts = onRequest(
     }
 
     const status = String(req.query.status || 'pending_review');
-    if (!['pending_review', 'pending_seller_onboarding', 'ready_for_launch', 'live'].includes(status)) {
+    if (!['pending_review', 'pending_seller_onboarding', 'pending_payout_preference', 'ready_for_launch', 'live'].includes(status)) {
       res.status(400).json({ ok: false, message: 'Invalid status' });
       return;
     }
@@ -1210,11 +2050,11 @@ exports.adminListProducts = onRequest(
 
 /**
  * POST /adminApproveProduct
- * Approves a reviewed product, stores Mojo pricing, and sends the seller into
- * contract/payout onboarding. The Polar product is created only after onboarding.
+ * Approves a reviewed product and sends the seller into contract/payout
+ * onboarding. Price is optional here; sellers can finish pricing before launch.
  */
 exports.adminApproveProduct = onRequest(
-  { secrets: [ADMIN_PAYOUT_KEY] },
+  { secrets: [ADMIN_PAYOUT_KEY, POLAR_ACCESS_TOKEN] },
   async (req, res) => {
     if (setAdminCors(req, res)) return;
     if (req.method !== 'POST') {
@@ -1242,22 +2082,39 @@ exports.adminApproveProduct = onRequest(
 
       const product = productSnap.data();
       const parsedPriceCents = parsePositiveCents(priceCents);
-      if (!parsedPriceCents) {
-        res.status(400).json({ ok: false, message: 'Price is required before seller onboarding' });
-        return;
+      const resolvedBillingPeriod = normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel);
+      const feeWaived = Boolean(listingFeeWaived);
+      let listingFeeResult = null;
+
+      if (!feeWaived && product.listingFeeStatus !== 'paid' && !product.listingFeePolarPriceId) {
+        listingFeeResult = await createListingFeePolarProduct(String(productId), product);
+        if (!listingFeeResult.polarPriceId) {
+          res.status(502).json({ ok: false, message: 'Polar listing fee product was created but no price ID was returned' });
+          return;
+        }
       }
 
-      await productRef.update({
+      const update = {
         status: 'pending_seller_onboarding',
-        price: parsedPriceCents,
-        billingPeriod: normalizeBillingPeriod(billingPeriod || product.billingPeriod || product.pricingModel),
+        billingPeriod: resolvedBillingPeriod,
         polarPriceId: String(polarPriceId || '').trim() || product.polarPriceId || null,
         polarProductId: product.polarProductId || null,
         polarSyncStatus: product.polarPriceId ? 'manual_price_id' : 'pending_seller_onboarding',
+        listingFeeAmount: 10000,
+        listingFeeWaived: feeWaived,
+        listingFeeStatus: feeWaived ? 'waived' : (product.listingFeeStatus === 'paid' ? 'paid' : 'pending'),
+        listingFeePolarProductId: feeWaived ? null : (listingFeeResult?.polarProductId || product.listingFeePolarProductId || null),
+        listingFeePolarPriceId: feeWaived ? null : (listingFeeResult?.polarPriceId || product.listingFeePolarPriceId || null),
         reviewedAt: admin.firestore.FieldValue.serverTimestamp(),
         featured: Boolean(featured),
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
+      };
+
+      if (parsedPriceCents) {
+        update.price = parsedPriceCents;
+      }
+
+      await productRef.update(update);
 
       // Look up seller record to return token for onboarding email
       let sellerToken = null;
@@ -1276,12 +2133,14 @@ exports.adminApproveProduct = onRequest(
 
       res.status(200).json({
         ok: true,
-        message: 'Product published',
+        message: feeWaived ? 'Product approved; listing fee waived' : 'Product approved; listing fee required',
         email: product.submittedByEmail || null,
         contactName,
         productName: product.name || null,
         sellerToken,
         status: 'pending_seller_onboarding',
+        listingFeeStatus: update.listingFeeStatus,
+        listingFeePolarPriceId: update.listingFeePolarPriceId || null,
       });
     } catch (err) {
       console.error('[adminApproveProduct] error:', err);
@@ -1323,6 +2182,12 @@ exports.adminFinalizeProduct = onRequest(
       }
 
       const product = productSnap.data();
+      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid');
+      if (!listingFeeReady) {
+        res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid or waived before publishing' });
+        return;
+      }
+
       const sellerEmail = product.submittedByEmail || product.sellerId;
       if (sellerEmail) {
         const sellerSnap = await db.collection('sellers').doc(String(sellerEmail)).get();
@@ -1449,6 +2314,39 @@ exports.adminArchiveProduct = onRequest(
 );
 
 /**
+ * POST /adminDeleteProduct
+ * Permanently deletes a product record.
+ */
+exports.adminDeleteProduct = onRequest(
+  { secrets: [ADMIN_PAYOUT_KEY] },
+  async (req, res) => {
+    if (setAdminCors(req, res)) return;
+    if (req.method !== 'POST') {
+      res.status(405).json({ ok: false, message: 'Method not allowed' });
+      return;
+    }
+    if (!isAuthorizedAdmin(req)) {
+      res.status(401).json({ ok: false, message: 'Unauthorized' });
+      return;
+    }
+
+    const { productId } = req.body || {};
+    if (!productId) {
+      res.status(400).json({ ok: false, message: 'Missing productId' });
+      return;
+    }
+
+    try {
+      await db.collection('products').doc(String(productId)).delete();
+      res.status(200).json({ ok: true, message: 'Product deleted' });
+    } catch (err) {
+      console.error('[adminDeleteProduct] error:', err);
+      res.status(500).json({ ok: false, message: 'Server error' });
+    }
+  }
+);
+
+/**
  * POST /products/create-from-submission
  * Creates a product listing in Firestore from seller submission
  * Called by product-form.js after submit-product succeeds
@@ -1478,13 +2376,18 @@ exports.createProductFromSubmission = onRequest(
       anythingElse,
     } = req.body;
 
-    if (!email || !productName || !productDescription || !logoUrl || !screenshotUrl) {
+    if (!email || !productName || !productDescription) {
       res.status(400).json({ ok: false, message: 'Missing required fields' });
       return;
     }
 
-    if (!isPublicHttpUrl(logoUrl) || !isPublicHttpUrl(screenshotUrl)) {
-      res.status(400).json({ ok: false, message: 'Logo and screenshot must be valid public image URLs' });
+    if (logoUrl && !isPublicHttpUrl(logoUrl)) {
+      res.status(400).json({ ok: false, message: 'Logo must be a valid public image URL' });
+      return;
+    }
+
+    if (screenshotUrl && !isPublicHttpUrl(screenshotUrl)) {
+      res.status(400).json({ ok: false, message: 'Screenshot must be a valid public image URL' });
       return;
     }
 

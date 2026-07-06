@@ -40,6 +40,11 @@
         color: var(--ink);
       }
 
+      .required-mark {
+        color: #b42318;
+        font-weight: 950;
+      }
+
       .field input,
       .field select,
       .field textarea {
@@ -131,7 +136,8 @@
         <div class="nav-links">
           <a href="/buy/" class="active">Buy</a>
           <a href="/sell">Sell</a>
-          <a href="/request/">Request</a>
+                    <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
+<a href="/request/">Request</a>
           <a href="/learn/">Learn</a>
           <a href="/forum/">Forum</a>
         </div>
@@ -169,7 +175,7 @@
           novalidate
         >
           <div class="field">
-            <label for="product-name">Product name</label>
+            <label for="product-name">Product name <span class="required-mark">*</span></label>
             <input
               id="product-name"
               name="productName"
@@ -180,7 +186,7 @@
           </div>
 
           <div class="field">
-            <label for="contact-name">Your name or company</label>
+            <label for="contact-name">Your name or company <span class="required-mark">*</span></label>
             <input
               id="contact-name"
               name="contactName"
@@ -191,7 +197,7 @@
           </div>
 
           <div class="field">
-            <label for="contact-email">Email address</label>
+            <label for="contact-email">Email address <span class="required-mark">*</span></label>
             <input
               id="contact-email"
               name="contactEmail"
@@ -219,7 +225,6 @@
               name="logoUrl"
               type="url"
               placeholder="https://yourproduct.com/logo.png"
-              required
             />
             <span class="hint">Use a public square PNG, JPG, SVG, or WebP. This appears in the marketplace card and admin review.</span>
           </div>
@@ -231,7 +236,6 @@
               name="screenshotUrl"
               type="url"
               placeholder="https://yourproduct.com/screenshot.png"
-              required
             />
             <span class="hint">Show the actual product interface, not a generic stock image. Public PNG, JPG, or WebP preferred.</span>
           </div>
@@ -251,7 +255,7 @@
           </div>
 
           <div class="field">
-            <label for="product-description">What does your product do?</label>
+            <label for="product-description">What does your product do? <span class="required-mark">*</span></label>
             <textarea
               id="product-description"
               name="productDescription"
