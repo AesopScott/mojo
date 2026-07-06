@@ -59,6 +59,7 @@ jobs:
           if [ -n "$FIREBASE_API_KEY" ]; then
             find _site -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
           fi
+          node scripts/inject-fractional-caio-ciso-nav.mjs
           cp cloudflare/pages-worker.js _site/_worker.js
 
       - name: Provision KV namespaces
