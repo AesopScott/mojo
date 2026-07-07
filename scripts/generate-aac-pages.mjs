@@ -10,6 +10,7 @@ const MEETUP_TOKEN_ENDPOINT = "https://secure.meetup.com/oauth2/access";
 const MEETUP_GRAPHQL_ENDPOINT = "https://api.meetup.com/gql-ext";
 const DEFAULT_SOURCE_IMAGE = "G:/My Drive/Obsidian/Advanced_AI_Concepts_Build/advancedaiconcepts2.png";
 const OUT_DIR = path.join(ROOT, "watch");
+const LEARN_DIR = path.join(ROOT, "learn");
 const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
 const FALLBACK_HERO_IMAGE = path.join(ASSET_DIR, "hero.jpg");
 const FALLBACK_OG_IMAGE = path.join(ASSET_DIR, "og-hub.jpg");
@@ -974,6 +975,7 @@ async function main() {
 
   await fs.mkdir(ASSET_DIR, { recursive: true });
   await fs.mkdir(OUT_DIR, { recursive: true });
+  await fs.mkdir(LEARN_DIR, { recursive: true });
 
   const chapters = [];
   for (const city of cities) {
@@ -1037,7 +1039,9 @@ async function main() {
     await fs.writeFile(path.join(cityDir, "index.html"), cityPage(chapter));
   }
 
-  await fs.writeFile(path.join(OUT_DIR, "index.html"), hubPage(chapters, globalEvents));
+  const hubMarkup = hubPage(chapters, globalEvents);
+  await fs.writeFile(path.join(OUT_DIR, "index.html"), hubMarkup);
+  await fs.writeFile(path.join(LEARN_DIR, "index.html"), hubMarkup);
   console.log(JSON.stringify({
     ok: true,
     city_count: chapters.length,
