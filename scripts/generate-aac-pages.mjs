@@ -588,8 +588,8 @@ function recordingsMarkup() {
             <a href="https://us06web.zoom.us/rec/share/4ftkrnvu4CLYJx2rpxGV5TUWhH3CEP6ctiHSUtTruQABPjVAcnleUSQTQhbYOFTP.8OU90dklGyCDA728" target="_blank" rel="noopener">
               <b>Multi-Agent Systems</b>
             </a>
-            <a href="/assets/advanced-ai-concepts/optimizing-ai-memory.zip" download>
-              <b>Optimizing AI Memory.zip</b>
+            <a href="https://us06web.zoom.us/rec/share/fF6ap-TIucLP-EpSZiWXs7KyG267hqB1nALwNLgsb2EMaRLAj7iK6l7TGV-Ue_pN.LuAGfMZoWqvPK5FZ" target="_blank" rel="noopener">
+              <b>Orchestrator-led AI Development I</b>
             </a>
           </div>`;
 }
