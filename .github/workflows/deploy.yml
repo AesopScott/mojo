@@ -21,6 +21,8 @@ jobs:
         env:
           POLAR_ORG:        ${{ vars.POLAR_ORG }}
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          MOJO_PAYPAL_PAY_TO: ${{ vars.MOJO_PAYPAL_PAY_TO }}
+          MOJO_ZELLE_PAY_TO:  ${{ vars.MOJO_ZELLE_PAY_TO }}
         run: |
           mkdir -p _site
           rsync -av ./ _site/ \
@@ -51,11 +53,15 @@ jobs:
           cp _headers _site/_headers
           BUST="${GITHUB_SHA:0:7}"
           ORG="${POLAR_ORG:-}"
+          PAYPAL_PAY_TO="${MOJO_PAYPAL_PAY_TO:-admin@mojoaistudio.com}"
+          ZELLE_PAY_TO="${MOJO_ZELLE_PAY_TO:-Contact Mojo for the Zelle phone number}"
           find _site -name "*.html" -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
           find _site -name "*.js"   -exec sed -i "s/__CACHE_BUST__/$BUST/g" {} +
           if [ -n "$ORG" ]; then
           find _site -name "*.html" -exec sed -i "s|__POLAR_ORG__|$ORG|g" {} +
           fi
+          find _site -name "*.html" -exec sed -i "s|__MOJO_PAYPAL_PAY_TO__|$PAYPAL_PAY_TO|g" {} +
+          find _site -name "*.html" -exec sed -i "s|__MOJO_ZELLE_PAY_TO__|$ZELLE_PAY_TO|g" {} +
           if [ -n "$FIREBASE_API_KEY" ]; then
             find _site -name "*.js" -exec sed -i "s|__FIREBASE_API_KEY__|$FIREBASE_API_KEY|g" {} +
           fi
