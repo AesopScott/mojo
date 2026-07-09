@@ -61,6 +61,8 @@ const JOIN_SESSIONS = {
 const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
 const LEARN_SCHEDULE_CACHE_SECONDS = 60 * 60 * 24;
 const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule";
+const LEARN_RSVP_CACHE_SECONDS = 300;
+const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count";
 
 export default {
   async fetch(request, env, ctx) {
@@ -82,6 +84,14 @@ export default {
 
     if (url.pathname === "/api/learn-schedule") {
       return handleLearnSchedule(request, env, url);
+    }
+
+    if (url.pathname === "/api/meetup-rsvp-count" || url.pathname === "/api/meetup-rsvp-count.php") {
+      return handleLearnRsvpCount(request, env, url);
+    }
+
+    if (url.pathname === "/api/meetup-group-leaders" || url.pathname === "/api/meetup-group-leaders.php") {
+      return handleLearnGroupLeaders(request, env, url);
     }
 
     if (url.pathname === "/api/zoom-webhook" || url.pathname === "/api/zoom-webhook.php") {
@@ -265,6 +275,76 @@ async function handleLearnSchedule(request, env, url) {
   }
 }
 
+async function handleLearnRsvpCount(request, env, url) {
+  const force = url.searchParams.get("refresh") === "1" || url.searchParams.get("refresh") === "true";
+  const cache = caches.default;
+  const cacheRequest = new Request(LEARN_RSVP_CACHE_KEY);
+
+  if (!force) {
+    const cached = await cache.match(cacheRequest);
+    if (cached) return cached;
+  }
+
+  try {
+    const payload = await buildLearnSchedule(env);
+    const response = jsonWithHeaders(learnRsvpPayload(payload), 200, {
+      "Cache-Control": `public, max-age=${LEARN_RSVP_CACHE_SECONDS}`,
+    });
+    await cache.put(cacheRequest, response.clone());
+    return response;
+  } catch (error) {
+    const fallback = learnScheduleFallback(error);
+    return jsonWithHeaders(learnRsvpPayload(fallback), 200, {
+      "Cache-Control": "public, max-age=300",
+      "X-Mojo-Schedule-Source": "fallback",
+    });
+  }
+}
+
+async function handleLearnGroupLeaders(request, env, url) {
+  const limit = Math.max(1, Math.min(Number(url.searchParams.get("limit") || 20), 100));
+  try {
+    const payload = await buildLearnSchedule(env);
+    return jsonWithHeaders({
+      ok: true,
+      source: payload.source,
+      refreshedAt: payload.refreshedAt,
+      group_count: payload.groupCount || 0,
+      groups: [...(payload.groups || [])]
+        .sort((a, b) => Number(b.members || 0) - Number(a.members || 0))
+        .slice(0, limit)
+        .map((group) => ({
+        urlname: group.urlname,
+        name: group.name,
+        city: group.city,
+        state: group.state,
+        country: group.country,
+        timezone: group.timezone,
+        link: group.link,
+        members: Number(group.members || 0),
+      })),
+    }, 200, {
+      "Cache-Control": "public, max-age=3600",
+    });
+  } catch (error) {
+    const fallback = learnScheduleFallback(error);
+    return jsonWithHeaders({
+      ok: true,
+      source: fallback.source,
+      warning: fallback.warning,
+      refreshedAt: fallback.refreshedAt,
+      group_count: fallback.groupCount || 0,
+      groups: fallback.groups.slice(0, limit).map((group) => ({
+        ...group,
+        members: Number(group.members || 0),
+      })),
+    }, 200, {
+      "Cache-Control": "public, max-age=300",
+      "X-Mojo-Schedule-Source": "fallback",
+    });
+  }
+}
+
 async function buildLearnSchedule(env) {
   const token = await meetupAccessToken(env).catch(() => "");
   const groups = await meetupNetworkGroups(token);
@@ -292,6 +372,7 @@ async function buildLearnSchedule(env) {
     mountainTimezone: "America/Denver",
     groupCount: groups.length,
     eventCount: events.length,
+    rsvpCount: learnRsvpTotal(events),
     groups,
     events,
     featured: featuredLearnEvents(events),
@@ -456,7 +537,7 @@ async function meetupNetworkGroups(token) {
         proNetwork{
           groupsSearch(input:{first:100,after:$after,sort:"NAME",filter:{activeGroups:true}}){
             pageInfo{ hasNextPage endCursor }
-            edges{ node{ urlname name city state country timezone link } }
+            edges{ node{ urlname name city state country timezone link stats{ memberCounts{ all } } } }
           }
         }
       }
@@ -475,7 +556,7 @@ async function meetupNetworkGroups(token) {
 async function meetupGroupEventsBatch(token, groups) {
   const fields = groups.map((group, index) => `g${index}: groupByUrlname(urlname:${JSON.stringify(group.urlname)}){
     events(first:100,status:ACTIVE,sort:ASC){
-      edges{ node{ id title dateTime eventUrl howToFindUs } }
+      edges{ node{ id title dateTime eventUrl howToFindUs rsvps{ totalCount } } }
     }
   }`).join("\n");
   const data = await meetupGraphQL(token, `query{
@@ -506,6 +587,7 @@ function normalizeLearnGroup(group) {
     country: String(group.country || "").trim(),
     timezone: String(group.timezone || "America/Denver").trim(),
     link: String(group.link || (urlname ? `https://www.meetup.com/${urlname}/` : "")).trim(),
+    members: Number(group.stats?.memberCounts?.all || group.members || 0),
   };
 }
 
@@ -524,6 +606,7 @@ function normalizeLearnEvent(event, group) {
     timezone: group.timezone,
     joinUrl,
     hasPhpJoinLink: Boolean(joinUrl),
+    rsvps: Number(event.rsvps?.totalCount || 0),
   };
 }
 
@@ -565,6 +648,37 @@ function featuredLearnEvents(events) {
   return featured;
 }
 
+function learnRsvpTotal(events) {
+  const seen = new Set();
+  let total = 0;
+  for (const event of events || []) {
+    const key = String(event.id || event.eventUrl || `${event.groupUrlname}|${event.title}|${event.dateTime}`);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    total += Number(event.rsvps || 0);
+  }
+  return total;
+}
+
+function learnRsvpPayload(payload) {
+  const events = Array.isArray(payload.events) ? payload.events : [];
+  return {
+    ok: true,
+    count: Number(payload.rsvpCount ?? learnRsvpTotal(events)),
+    event_count: Number(payload.eventCount || events.length || 0),
+    source: payload.source || "meetup",
+    updatedAt: payload.refreshedAt || new Date().toISOString(),
+    breakdown: events.map((event) => ({
+      id: event.id,
+      title: event.title,
+      dateTime: event.dateTime,
+      eventUrl: event.eventUrl,
+      groupUrlname: event.groupUrlname,
+      rsvps: Number(event.rsvps || 0),
+    })),
+  };
+}
+
 function learnScheduleFallback(error) {
   const events = Object.entries(JOIN_SESSIONS).map(([id, session]) => ({
     id,
@@ -578,6 +692,7 @@ function learnScheduleFallback(error) {
     timezone: "America/Denver",
     joinUrl: `https://mojoaistudio.com/api/join-session.php?id=${encodeURIComponent(id)}`,
     hasPhpJoinLink: true,
+    rsvps: 0,
   }));
 
   return {
@@ -589,6 +704,7 @@ function learnScheduleFallback(error) {
     mountainTimezone: "America/Denver",
     groupCount: 1,
     eventCount: events.length,
+    rsvpCount: 0,
     groups: [{
       urlname: LEARN_SOURCE_GROUP,
       name: "Advanced AI Concepts",
