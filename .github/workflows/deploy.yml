@@ -35,6 +35,8 @@ jobs:
             --exclude 'CLAUDE.md' \
             --exclude 'README.md' \
             --exclude 'SELLER_PAYOUT_SYSTEM.md' \
+            --exclude 'Claude_Architect_Practice_Exam.md' \
+            --exclude 'Claude_Architect_Two_Hour_Trainer_Syllabus.md' \
             --exclude 'api/' \
             --exclude 'cloudflare/' \
             --exclude 'docs/' \

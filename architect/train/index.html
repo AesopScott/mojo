@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Instructor-only trainer guide for the Claude Architect two-hour session." />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Claude Architect Trainer Syllabus | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/architect/train/" />
+    <meta name="theme-color" content="#0f0f1a" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/architect/train/" />
+    <meta property="og:title" content="Claude Architect Trainer Syllabus | Mojo AI Studio" />
+    <meta property="og:description" content="Instructor-only trainer guide for the Claude Architect two-hour session." />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      :root { color-scheme: light; }
+      body { background: #f7f5ef; color: #161618; }
+      .architect-header { background: #101018; color: #fff; }
+      .architect-header .site-nav a { color: inherit; }
+      .architect-hero { max-width: 1120px; margin: 0 auto; padding: 72px 24px 58px; display: grid; gap: 18px; }
+      .architect-hero h1 { max-width: 880px; margin: 0; font-size: clamp(2.2rem, 5vw, 4.8rem); line-height: .95; letter-spacing: 0; }
+      .architect-hero p { max-width: 760px; margin: 0; color: rgba(255,255,255,.78); font-size: 1.08rem; }
+      .architect-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+      .architect-button { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 16px; border-radius: 8px; background: #f5d36b; color: #111; text-decoration: none; font-weight: 800; }
+      .architect-shell { max-width: 1120px; margin: 0 auto; padding: 42px 24px 80px; }
+      .architect-content { background: #fff; border: 1px solid #e5dfd2; border-radius: 8px; padding: clamp(22px, 4vw, 42px); box-shadow: 0 20px 60px rgba(16,16,24,.08); }
+      .architect-content h2 { margin-top: 2.2rem; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: 0; }
+      .architect-content h3 { margin-top: 1.8rem; font-size: 1.25rem; letter-spacing: 0; }
+      .architect-content h4 { margin-top: 1.4rem; font-size: 1.05rem; letter-spacing: 0; }
+      .architect-content p, .architect-content li { line-height: 1.68; }
+      .architect-content code { background: #f2eee4; border: 1px solid #e4dccb; border-radius: 6px; padding: 0 5px; font-size: .92em; }
+      .architect-content pre { overflow-x: auto; background: #11131a; color: #f9f6ed; padding: 18px; border-radius: 8px; }
+      .architect-content pre code { background: transparent; border: 0; color: inherit; padding: 0; }
+      .table-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid #e5dfd2; border-radius: 8px; }
+      table { border-collapse: collapse; width: 100%; min-width: 620px; }
+      th, td { padding: 12px 14px; border-bottom: 1px solid #eee7d8; text-align: left; vertical-align: top; }
+      th { background: #f4efe5; font-size: .88rem; text-transform: uppercase; letter-spacing: .04em; }
+      tr:last-child td { border-bottom: 0; }
+      .architect-footer { max-width: 1120px; margin: 0 auto; padding: 0 24px 52px; color: #5d5b55; }
+      .architect-footer a { color: #181817; font-weight: 700; }
+      @media (max-width: 760px) {
+        .architect-hero { padding-top: 42px; }
+        .architect-content { padding: 20px; }
+        table { min-width: 520px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="architect-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/">Learn</a>
+          <a href="/forum/">Forum</a>
+        </div>
+      </nav>
+      <section class="architect-hero">
+        <p class="kicker">Trainer guide</p>
+        <h1>Claude Architect Trainer Syllabus</h1>
+        <p>Instructor-facing guide with timing, talk tracks, drills, and official exam alignment.</p>
+        
+      </section>
+    </header>
+    <main class="architect-shell">
+      <article class="architect-content">
+<h2 id="claude-architect-two-hour-trainer-syllabus">Claude Architect Two-Hour Trainer Syllabus</h2>
+<p>Instructor-facing guide for a two-hour prep session aligned to the official <strong>Claude Certified Architect - Foundations Exam Guide</strong>, version 1.0, effective July 2026, exam code <code>CCAR-F</code>.</p>
+<p>Companion files:</p>
+<ul>
+<li>Student crash agenda: <code>docs/anthropic-architect-exam-prep-two-hour-session.md</code></li>
+<li>Long syllabus/reference: <code>docs/anthropic-architect-exam-prep-syllabus.md</code></li>
+<li>Practice exam: <code>Claude_Architect_Practice_Exam.md</code></li>
+<li>Official guide source: <code>C:\Users\scott\Downloads\Claude+Certified+Architect+–+Foundations+Exam+Guide.pdf</code></li>
+</ul>
+<h3 id="trainer-goal">Trainer Goal</h3>
+<p>Train scenario judgment, not feature trivia. The official exam tests whether candidates can make production architecture tradeoffs across Claude Agent SDK, Claude Code, Claude API, and MCP.</p>
+<p>Students must leave able to:</p>
+<ul>
+<li>Read a production scenario and identify the tested domain.</li>
+<li>Choose correct control flow for agentic loops using <code>stop_reason</code>.</li>
+<li>Design coordinator-subagent systems with explicit context passing.</li>
+<li>Use hooks, tool restrictions, and structured errors for deterministic reliability.</li>
+<li>Choose the right Claude Code configuration primitive.</li>
+<li>Design structured output with JSON Schema, validation, retries, and confidence handling.</li>
+<li>Manage context, provenance, escalation, and human review.</li>
+</ul>
+<h3 id="official-exam-facts">Official Exam Facts</h3>
+<div class="table-wrap"><table><thead><tr><th>Fact</th><th>Value</th></tr></thead><tbody><tr><td>Exam code</td><td><code>CCAR-F</code></td></tr><tr><td>Items</td><td>60</td></tr><tr><td>Format</td><td>Multiple-choice and multiple-response; each item says how many to select</td></tr><tr><td>Structure</td><td>4 scenarios drawn from a bank of 6</td></tr><tr><td>Time</td><td>120 minutes</td></tr><tr><td>Passing score</td><td>720 scaled score, 100-1000 scale</td></tr><tr><td>Fee</td><td>$125 USD</td></tr><tr><td>Validity</td><td>12 months</td></tr></tbody></table></div>
+<h3 id="official-domains">Official Domains</h3>
+<div class="table-wrap"><table><thead><tr><th>Domain</th><th>Weight</th><th>Trainer Emphasis</th></tr></thead><tbody><tr><td>Agentic Architecture &amp; Orchestration</td><td>27%</td><td>Agent loops, coordinator-subagent systems, hooks, decomposition, sessions</td></tr><tr><td>Tool Design &amp; MCP Integration</td><td>18%</td><td>Tool descriptions, structured errors, scoped tools, MCP config, built-in tools</td></tr><tr><td>Claude Code Configuration &amp; Workflows</td><td>20%</td><td><code>CLAUDE.md</code>, rules, commands, skills, plan mode, CI/CD</td></tr><tr><td>Prompt Engineering &amp; Structured Output</td><td>20%</td><td>Few-shot, JSON Schema, tool_use, validation loops, batches, reviews</td></tr><tr><td>Context Management &amp; Reliability</td><td>15%</td><td>Context preservation, escalation, error propagation, provenance, confidence</td></tr></tbody></table></div>
+<h3 id="official-scenario-bank">Official Scenario Bank</h3>
+<p>Teach from these, because exam presents 4 of 6:</p>
+<ol>
+<li><strong>Customer Support Resolution Agent</strong></li>
+<p>- MCP tools: <code>get_customer</code>, <code>lookup_order</code>, <code>process_refund</code>, <code>escalate_to_human</code> - Themes: escalation, refund gates, first-contact resolution, structured handoff</p>
+</ol>
+<ol>
+<li><strong>Code Generation with Claude Code</strong></li>
+<p>- Themes: custom slash commands, <code>CLAUDE.md</code>, plan mode vs direct execution</p>
+</ol>
+<ol>
+<li><strong>Multi-Agent Research System</strong></li>
+<p>- Coordinator delegates to web search, document analysis, synthesis, report agents - Themes: explicit context passing, attribution, iterative refinement</p>
+</ol>
+<ol>
+<li><strong>Developer Productivity with Claude</strong></li>
+<p>- Built-in tools: Read, Write, Edit, Bash, Grep, Glob - Themes: codebase exploration, boilerplate, legacy understanding, MCP integrations</p>
+</ol>
+<ol>
+<li><strong>Claude Code for CI/CD</strong></li>
+<p>- Themes: <code>claude -p</code>, JSON output, PR review, false positives, Message Batches API</p>
+</ol>
+<ol>
+<li><strong>Structured Data Extraction</strong></li>
+<p>- Themes: JSON Schema, Pydantic validation, confidence scoring, edge cases</p>
+</ol>
+<h3 id="two-hour-run-of-show">Two-Hour Run Of Show</h3>
+<div class="table-wrap"><table><thead><tr><th>Time</th><th>Segment</th><th>Outcome</th></tr></thead><tbody><tr><td>0:00-0:07</td><td>Exam Reality</td><td>Students know official format, scenarios, weights</td></tr><tr><td>0:07-0:25</td><td>Agent SDK Loops &amp; Orchestration</td><td>Students can answer Domain 1 operational questions</td></tr><tr><td>0:25-0:43</td><td>Tools &amp; MCP</td><td>Students can design tools, errors, and MCP resources/tools</td></tr><tr><td>0:43-1:02</td><td>Claude Code Workflows</td><td>Students can choose config, plan mode, commands, skills, CI flags</td></tr><tr><td>1:02-1:18</td><td>Structured Output &amp; Evals</td><td>Students can design schema, retries, few-shot, batch, review systems</td></tr><tr><td>1:18-1:33</td><td>Context &amp; Reliability</td><td>Students can handle escalation, context limits, provenance, confidence</td></tr><tr><td>1:33-1:53</td><td>Scenario Quiz</td><td>Students answer official-style questions under time</td></tr><tr><td>1:53-2:00</td><td>Debrief &amp; Study Plan</td><td>Students leave with exam heuristics</td></tr></tbody></table></div>
+<h3 id="segment-1-exam-reality">Segment 1 - Exam Reality</h3>
+<p>Time: 0:00-0:07.</p>
+<h4 id="talk-track">Talk Track</h4>
+<p>"This exam is not broad AI literacy. It is a production Claude architect exam. Expect scenario blocks, multiple-response items, and questions about exact control flow: <code>stop_reason</code>, <code>tool_choice</code>, MCP <code>isError</code>, Claude Code <code>-p</code>, <code>CLAUDE.md</code> hierarchy, plan mode, and structured output validation."</p>
+<p>"Your job is to choose the design that is reliable, bounded, observable, and appropriate for the scenario."</p>
+<h4 id="whiteboard">Whiteboard</h4>
+<pre><code>Scenario -&gt; Domain -&gt; Failure mode -&gt; Correct primitive -&gt; Reliability gate</code></pre>
+<h3 id="segment-2-agent-sdk-loops-orchestration">Segment 2 - Agent SDK Loops &amp; Orchestration</h3>
+<p>Time: 0:07-0:25.</p>
+<h4 id="must-teach">Must Teach</h4>
+<ul>
+<li>Agentic loop lifecycle:</li>
+<p>- Send request to Claude. - If <code>stop_reason == "tool_use"</code>, execute requested tools. - Append tool results to conversation. - Continue. - If <code>stop_reason == "end_turn"</code>, terminate.</p>
+<li>Avoid loop anti-patterns:</li>
+<p>- Parsing natural language to decide completion. - Using arbitrary iteration caps as primary stopping condition. - Checking assistant text instead of <code>stop_reason</code>.</p>
+<li>Coordinator-subagent architecture:</li>
+<p>- Hub-and-spoke coordinator handles routing, aggregation, errors. - Subagents have isolated context. - Context must be explicitly passed in prompt. - Coordinator should dynamically select subagents, not always run full pipeline.</p>
+<li>Subagent spawning:</li>
+<p>- Coordinator needs <code>allowedTools</code> including <code>Task</code>. - Spawn parallel subagents by emitting multiple <code>Task</code> tool calls in one response. - Pass structured data with metadata/source attribution.</p>
+<li>Hooks:</li>
+<p>- <code>PostToolUse</code> normalizes tool results before model sees them. - Tool-call interception blocks policy violations. - Use hooks for deterministic guarantees, prompts for guidance.</p>
+<li>Sessions:</li>
+<p>- <code>--resume &lt;session-name&gt;</code> for valid prior context. - <code>fork_session</code> for divergent approaches. - Start fresh with structured summary when prior tool results are stale.</p>
+</ul>
+<h4 id="instructor-drill">Instructor Drill</h4>
+<p>Ask: "A refund agent must never call <code>process_refund</code> before verified customer lookup. Prompt instruction or programmatic gate?"</p>
+<p>Answer: programmatic prerequisite/hook/gate. Prompt alone has non-zero failure rate.</p>
+<p>Ask: "Research coordinator wants web search and document analysis in parallel. How?"</p>
+<p>Answer: emit multiple <code>Task</code> tool calls in one coordinator response and pass each subagent scoped context/goals.</p>
+<h4 id="common-wrong-answers">Common Wrong Answers</h4>
+<ul>
+<li>"Always run every subagent." Wrong: dynamic selection reduces cost/latency and avoids irrelevant work.</li>
+<li>"Subagents inherit all parent context." Wrong: pass needed context explicitly.</li>
+<li>"Retry forever." Wrong: structured error propagation and local recovery first.</li>
+</ul>
+<h3 id="segment-3-tools-mcp">Segment 3 - Tools &amp; MCP</h3>
+<p>Time: 0:25-0:43.</p>
+<h4 id="must-teach">Must Teach</h4>
+<ul>
+<li>Tool descriptions drive model selection.</li>
+<li>Include input formats, examples, edge cases, and boundaries.</li>
+<li>Split generic tools into purpose-specific tools when ambiguity hurts selection.</li>
+<li>Avoid keyword-sensitive system prompts that accidentally bias tool choice.</li>
+<li>MCP error responses should include:</li>
+<p>- <code>isError</code> - <code>errorCategory</code>: transient, validation, permission, business - <code>isRetryable</code> - human-readable explanation - partial results/attempted actions when relevant</p>
+<li>Distribute tools by role:</li>
+<p>- Too many tools degrades selection. - Give each subagent only role-relevant tools. - Add scoped cross-role tools for high-frequency needs.</p>
+<li><code>tool_choice</code>:</li>
+<p>- <code>auto</code>: model may choose tool or text. - <code>any</code>: model must call some tool. - forced tool: model must call named tool first.</p>
+<li>MCP config:</li>
+<p>- Project vs user scope. - Environment variable expansion. - Multiple MCP servers can be available simultaneously.</p>
+<li>Built-in tools:</li>
+<p>- <code>Read</code>: inspect file. - <code>Write</code>: create/overwrite file. - <code>Edit</code>: targeted modification. - <code>Bash</code>: run shell command. - <code>Grep</code>: search contents. - <code>Glob</code>: find files by pattern.</p>
+</ul>
+<h4 id="instructor-drill">Instructor Drill</h4>
+<p>Bad error:</p>
+<pre><code>{ "error": "Operation failed" }</code></pre>
+<p>Better:</p>
+<pre><code>{
+  "isError": true,
+  "errorCategory": "business",
+  "isRetryable": false,
+  "message": "Refund exceeds $500 policy limit.",
+  "recommendedAction": "Escalate to human approval."
+}</code></pre>
+<p>Ask: "Why is second better?"</p>
+<p>Answer: agent can choose no retry, explain policy, and escalate.</p>
+<h3 id="segment-4-claude-code-workflows">Segment 4 - Claude Code Workflows</h3>
+<p>Time: 0:43-1:02.</p>
+<h4 id="must-teach">Must Teach</h4>
+<ul>
+<li><code>CLAUDE.md</code> hierarchy:</li>
+<p>- user/project/directory context. - <code>@import</code> patterns.</p>
+<li><code>.claude/rules/</code>:</li>
+<p>- YAML frontmatter with glob/path scoping. - Conditional convention loading.</p>
+<li><code>.claude/commands/</code>:</li>
+<p>- custom slash commands. - project vs user scope.</p>
+<li><code>.claude/skills/</code>:</li>
+<p>- <code>SKILL.md</code> frontmatter. - <code>context: fork</code>. - <code>allowed-tools</code>. - <code>argument-hint</code>.</p>
+<li>Plan mode vs direct execution:</li>
+<p>- Plan mode for complex, multi-file, architectural, ambiguous work. - Direct execution for simple, localized, low-risk edits.</p>
+<li>Claude Code CLI in CI:</li>
+<p>- Use <code>claude -p</code> / <code>--print</code> for non-interactive pipeline execution. - Use <code>--output-format json</code> and <code>--json-schema</code> for structured CI output.</p>
+<li>Memory/context:</li>
+<p>- <code>/memory</code> for persistent useful project knowledge. - <code>/compact</code> for long sessions. - <code>--resume</code> for named sessions. - <code>fork_session</code> for divergent approaches. - Explore subagent for codebase exploration.</p>
+</ul>
+<h4 id="instructor-drill">Instructor Drill</h4>
+<p>Ask: "Pipeline hangs because Claude waits for interactive input. Fix?"</p>
+<p>Answer: use <code>claude -p "..."</code>.</p>
+<p>Ask: "Large PR review misses issues across files. Fix?"</p>
+<p>Answer: split into per-file local passes plus cross-file integration pass.</p>
+<p>Ask: "Simple single-file typo fix: plan mode or direct execution?"</p>
+<p>Answer: direct execution.</p>
+<p>Ask: "Architectural refactor touching several modules: plan mode or direct execution?"</p>
+<p>Answer: plan mode.</p>
+<h3 id="segment-5-structured-output-evals">Segment 5 - Structured Output &amp; Evals</h3>
+<p>Time: 1:02-1:18.</p>
+<h4 id="must-teach">Must Teach</h4>
+<ul>
+<li>Structured output via <code>tool_use</code> with JSON Schema.</li>
+<li><code>tool_choice</code> can force schema-producing tool.</li>
+<li>JSON Schema:</li>
+<p>- required vs optional. - enum types. - nullable fields. - <code>"other"</code> plus detail string for categories that do not fit enum. - strict mode to reduce syntax errors.</p>
+<li>Pydantic:</li>
+<p>- schema validation. - semantic validation errors. - validation-retry loops.</p>
+<li>Few-shot prompting:</li>
+<p>- use for ambiguous cases. - demonstrate format. - reduce false positives.</p>
+<li>Batch processing:</li>
+<p>- Message Batches API gives 50% cost savings. - Up to 24-hour processing window. - Use <code>custom_id</code> for request/response correlation. - No multi-turn tool calling support. - Good for overnight reports, bad for blocking pre-merge checks.</p>
+<li>Multi-pass review:</li>
+<p>- Sequential focused passes beat one overloaded pass. - Parallel issue resolution can create conflicts when changes overlap.</p>
+</ul>
+<h4 id="instructor-drill">Instructor Drill</h4>
+<p>Ask: "Extraction system hallucinates value when field missing. Schema fix?"</p>
+<p>Answer: make field nullable and require evidence/confidence; do not force fabricated string.</p>
+<p>Ask: "Technical debt report due next morning: batch or real-time?"</p>
+<p>Answer: batch.</p>
+<p>Ask: "Blocking PR check: batch or real-time?"</p>
+<p>Answer: real-time.</p>
+<h3 id="segment-6-context-reliability">Segment 6 - Context &amp; Reliability</h3>
+<p>Time: 1:18-1:33.</p>
+<h4 id="must-teach">Must Teach</h4>
+<ul>
+<li>Context window management:</li>
+<p>- token budgets. - progressive summarization. - lost-in-the-middle effects. - context extraction. - scratchpad files.</p>
+<li>Large codebase exploration:</li>
+<p>- start with Glob/Grep/Read mapping. - do not paste whole repo. - preserve key findings in compact summaries.</p>
+<li>Escalation:</li>
+<p>- explicit criteria. - honor customer preferences. - policy gap identification. - structured handoff summary for humans without transcript.</p>
+<li>Error propagation:</li>
+<p>- local recovery for transient failures. - coordinator gets unresolved errors with attempted actions and partial results. - never mark timeout as successful empty result.</p>
+<li>Human review:</li>
+<p>- field-level confidence. - calibration with labeled validation sets. - stratified sampling by document type/field. - segment accuracy by field and source type.</p>
+<li>Provenance:</li>
+<p>- claim-source mappings. - temporal data handling. - conflict annotation. - coverage gap reporting.</p>
+</ul>
+<h4 id="instructor-drill">Instructor Drill</h4>
+<p>Ask: "Research report has conflicting dates from two sources. What should system do?"</p>
+<p>Answer: preserve both sources, annotate conflict, report uncertainty, do not silently choose one without criteria.</p>
+<p>Ask: "Extraction accuracy overall is 94%, but legal documents fail often. What evaluation?"</p>
+<p>Answer: stratify by document type and field; calibrate confidence per segment.</p>
+<h3 id="segment-7-scenario-quiz">Segment 7 - Scenario Quiz</h3>
+<p>Time: 1:33-1:53.</p>
+<p>Use <code>Claude_Architect_Practice_Exam.md</code>, questions 1-20. Include at least 3 multiple-response questions.</p>
+<p>Timing:</p>
+<ul>
+<li>10 minutes silent.</li>
+<li>7 minutes answer review.</li>
+<li>3 minutes "why wrong answers were tempting."</li>
+</ul>
+<p>Debrief each miss:</p>
+<ol>
+<li>Which official scenario/domain?</li>
+<li>Which exact primitive was tested?</li>
+<li>What reliability risk mattered?</li>
+<li>Why was the wrong option tempting?</li>
+</ol>
+<h3 id="segment-8-close">Segment 8 - Close</h3>
+<p>Time: 1:53-2:00.</p>
+<h4 id="closeout-script">Closeout Script</h4>
+<p>"The exam rewards operational architecture judgment. Watch for exact signals: <code>stop_reason</code>, Task tool, explicit context passing, hooks for deterministic rules, MCP <code>isError</code>, scoped tools, <code>CLAUDE.md</code> hierarchy, plan mode, <code>claude -p</code>, JSON Schema validation, batch latency, confidence calibration, and provenance."</p>
+<p>"When stuck, pick the answer that makes the system more bounded, observable, recoverable, and faithful to source evidence."</p>
+<h3 id="trainer-cheat-sheet">Trainer Cheat Sheet</h3>
+<h4 id="agent-loop">Agent Loop</h4>
+<pre><code>request -&gt; stop_reason tool_use -&gt; execute tool -&gt; append result -&gt; continue
+request -&gt; stop_reason end_turn -&gt; stop</code></pre>
+<h4 id="mcp">MCP</h4>
+<pre><code>Tool = action
+Resource = read-only context
+Prompt = reusable workflow
+isError + category + retryable = recoverable tool failures</code></pre>
+<h4 id="claude-code">Claude Code</h4>
+<pre><code>CLAUDE.md = instruction hierarchy
+.claude/rules = path scoped conventions
+.claude/commands = slash commands
+.claude/skills = reusable procedures/assets
+plan mode = complex/architectural/ambiguous
+direct execution = simple/local/low-risk
+claude -p = non-interactive CI</code></pre>
+<h4 id="structured-output">Structured Output</h4>
+<pre><code>tool_use + JSON Schema
+required/optional/nullable/enums
+Pydantic validation
+retry with validation feedback
+confidence + evidence</code></pre>
+<h4 id="reliability">Reliability</h4>
+<pre><code>explicit escalation criteria
+local recovery before coordinator escalation
+structured handoff
+field-level confidence
+stratified sampling
+claim-source mapping</code></pre>
+<h3 id="topics-to-de-emphasize">Topics To De-Emphasize</h3>
+<p>Official guide lists these as out of scope:</p>
+<ul>
+<li>Fine-tuning/training custom models.</li>
+<li>API authentication, billing, account management.</li>
+<li>MCP hosting/infrastructure.</li>
+<li>Claude internal architecture, model weights, Constitutional AI, RLHF.</li>
+<li>Embedding/vector database implementation details.</li>
+<li>Computer use.</li>
+<li>Vision/image analysis.</li>
+<li>Streaming/SSE implementation.</li>
+<li>Rate limits/quotas/pricing calculations.</li>
+<li>OAuth/API key rotation.</li>
+<li>Cloud provider configuration.</li>
+<li>Benchmarking/model comparisons.</li>
+<li>Prompt caching implementation details beyond knowing it exists.</li>
+<li>Tokenization algorithms.</li>
+</ul>
+<h3 id="homework">Homework</h3>
+<p>Assign:</p>
+<ul>
+<li>Practice exam questions 1-200.</li>
+<li>For every miss, write:</li>
+<p>- official domain. - scenario type. - correct primitive. - reliability principle missed.</p>
+</ul>
+
+      </article>
+    </main>
+    <footer class="architect-footer">
+      <p><a href="/">Mojo AI Studio</a> · Claude Architect preparation material.</p>
+    </footer>
+  </body>
+</html>
