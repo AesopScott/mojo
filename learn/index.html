@@ -686,7 +686,11 @@
               select.innerHTML = groups.map((group) => {
                 const urlname = String(group.urlname || "");
                 const value = chapterSlugs[urlname] || urlname;
-                const label = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
+                const state = String(group.state || "").trim();
+                const country = String(group.country || "").trim().toUpperCase();
+                const region = state && !/^\d+$/.test(state) ? state : country;
+                const city = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
+                const label = region ? city + ", " + region : city;
                 const link = String(group.link || (urlname ? "https://www.meetup.com/" + urlname + "/" : ""));
                 const option = document.createElement("option");
                 option.value = value;
