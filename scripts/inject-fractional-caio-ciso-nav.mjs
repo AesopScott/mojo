@@ -3,8 +3,9 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const ROOT = path.join(process.cwd(), process.env.MOJO_INJECT_ROOT || "_site");
-const SKIP_DIRS = new Set([".git", ".github", ".claude", ".obsidian", ".obsidian-memory", ".wrangler", "node_modules", "tmp"]);
-const NAV_LINK = '<a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>';
+const SKIP_DIRS = new Set([".git", ".github", ".claude", ".obsidian", ".obsidian-memory", ".wrangler", "_site", "node_modules", "tmp"]);
+const FRACTIONAL_LINK = '<a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>';
+const ARCHITECT_LINK = '<a href="/architect/learn/">Architect Training</a>';
 
 async function walk(dir, files = []) {
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
@@ -20,11 +21,26 @@ async function walk(dir, files = []) {
 }
 
 function injectNav(html) {
-  if (html.includes(NAV_LINK)) return html;
-  return html.replace(
-    /(<a href="\/sell">Sell<\/a>\s*)<a href="\/request\/">Request<\/a>/,
-    `$1${NAV_LINK}\n        <a href="/request/">Request</a>`,
-  );
+  let updated = html;
+  if (!updated.includes(FRACTIONAL_LINK)) {
+    updated = updated.replace(
+      /(<a href="\/sell">Sell<\/a>\s*)<a href="\/request\/">Request<\/a>/,
+      `$1${FRACTIONAL_LINK}\n        <a href="/request/">Request</a>`,
+    );
+  }
+  if (!updated.includes(ARCHITECT_LINK)) {
+    updated = updated.replace(
+      /(<a href="\/learn\/"[^>]*>Learn<\/a>\s*)<a href="\/forum\/"/,
+      `$1${ARCHITECT_LINK}\n        <a href="/forum/"`,
+    );
+    if (!updated.includes(ARCHITECT_LINK)) {
+      updated = updated.replace(
+        /(\s*)(<button class="(?:ghost-button|button)" type="button" id="printPage">)/,
+        `$1${ARCHITECT_LINK}$1$2`,
+      );
+    }
+  }
+  return updated;
 }
 
 const files = await walk(ROOT);
