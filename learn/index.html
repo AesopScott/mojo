@@ -698,7 +698,7 @@
               }).join("");
               syncCity();
             };
-            fetch('/api/meetup-group-leaders?limit=100')
+            fetch('/api/learn-schedule')
               .then((response) => response.ok ? response.json() : null)
               .then((data) => {
                 if (data && data.ok) renderCityOptions(data.groups);
@@ -751,11 +751,17 @@
         }
 
         function loadRsvpCount() {
-          fetch('/api/meetup-rsvp-count')
+          fetch('/api/learn-schedule')
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(data) {
               if (!data || !data.ok) return;
-              setText(rsvps, Number(data.count || 0).toLocaleString());
+              var count = Number(data.rsvpCount || 0);
+              if (!count && Array.isArray(data.events)) {
+                count = data.events.reduce(function(sum, event) {
+                  return sum + Number(event.rsvps || 0);
+                }, 0);
+              }
+              setText(rsvps, count.toLocaleString());
               panel.hidden = false;
             })
             .catch(function() {});
@@ -763,11 +769,14 @@
 
         function loadGroupLeaders() {
           if (!leaders || !leaderList) return;
-          fetch('/api/meetup-group-leaders?limit=20')
+          fetch('/api/learn-schedule')
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(data) {
               if (!data || !data.ok || !Array.isArray(data.groups)) return;
-              leaderList.innerHTML = data.groups.map(function(group) {
+              var groups = data.groups.slice().sort(function(a, b) {
+                return Number(b.members || 0) - Number(a.members || 0);
+              }).slice(0, 20);
+              leaderList.innerHTML = groups.map(function(group) {
                 var item = document.createElement('span');
                 var city = document.createElement('b');
                 var count = document.createElement('small');
@@ -777,7 +786,7 @@
                 item.appendChild(count);
                 return item.outerHTML;
               }).join('');
-              leaders.hidden = data.groups.length === 0;
+              leaders.hidden = groups.length === 0;
             })
             .catch(function() {});
         }

@@ -60,7 +60,7 @@ const JOIN_SESSIONS = {
 
 const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
 const LEARN_SCHEDULE_CACHE_SECONDS = 60 * 60 * 24;
-const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule";
+const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule:v2-rsvps";
 const LEARN_RSVP_CACHE_SECONDS = 300;
 const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count";
 
