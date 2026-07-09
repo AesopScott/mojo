@@ -777,6 +777,31 @@
           if (el) el.textContent = value;
         }
 
+        var regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
+        var stateNames = {
+          AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado',
+          CT: 'Connecticut', DC: 'District of Columbia', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
+          HI: 'Hawaii', IA: 'Iowa', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', KS: 'Kansas',
+          KY: 'Kentucky', LA: 'Louisiana', MA: 'Massachusetts', MD: 'Maryland', ME: 'Maine',
+          MI: 'Michigan', MN: 'Minnesota', MO: 'Missouri', MS: 'Mississippi', MT: 'Montana',
+          NC: 'North Carolina', ND: 'North Dakota', NE: 'Nebraska', NH: 'New Hampshire',
+          NJ: 'New Jersey', NM: 'New Mexico', NV: 'Nevada', NY: 'New York', OH: 'Ohio',
+          OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island',
+          SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah',
+          VA: 'Virginia', VT: 'Vermont', WA: 'Washington', WI: 'Wisconsin', WV: 'West Virginia',
+          WY: 'Wyoming', AB: 'Alberta', BC: 'British Columbia', MB: 'Manitoba', NB: 'New Brunswick',
+          NL: 'Newfoundland and Labrador', NS: 'Nova Scotia', NT: 'Northwest Territories',
+          NU: 'Nunavut', ON: 'Ontario', PE: 'Prince Edward Island', QC: 'Quebec',
+          SK: 'Saskatchewan', YT: 'Yukon'
+        };
+
+        function regionLabel(group) {
+          var state = String(group.state || '').trim().toUpperCase();
+          var country = String(group.country || '').trim().toUpperCase();
+          if (state && !/^\d+$/.test(state) && stateNames[state]) return stateNames[state];
+          return country ? (regionNames.of(country) || country) : '';
+        }
+
         function loadRsvpCount() {
           fetch('/api/learn-schedule?v=learn-members-rsvps-20260709')
             .then(function(r) { return r.ok ? r.json() : null; })
@@ -807,9 +832,7 @@
                 var item = document.createElement('span');
                 var city = document.createElement('b');
                 var count = document.createElement('small');
-                var state = String(group.state || '').trim();
-                var country = String(group.country || '').trim().toUpperCase();
-                var region = state && !/^\d+$/.test(state) ? state : country;
+                var region = regionLabel(group);
                 var cityName = String(group.city || 'Meetup').replace('Washington, DC', 'Washington,' + String.fromCharCode(160) + 'DC');
                 city.textContent = region ? cityName + ', ' + region : cityName;
                 count.textContent = Number(group.members || 0).toLocaleString() + ' members';
