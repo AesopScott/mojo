@@ -669,6 +669,29 @@
             const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
             const chapterSlugs = {"advanced-ai-concepts":"colorado-springs","advanced-ai-concepts-dallas":"dallas","advanced-ai-concepts-san-francisco":"san-francisco","advanced-ai-concepts-chicago":"chicago","advanced-ai-concepts-los-angeles":"los-angeles","advanced-ai-concepts-new-york":"new-york","advanced-ai-concepts-boston":"boston","advanced-ai-concepts-miami":"miami","advanced-ai-concepts-atlanta":"atlanta","advanced-ai-concepts-seattle":"seattle","advanced-ai-concepts-phoenix":"phoenix","advanced-ai-concepts-houston":"houston","advanced-ai-concepts-san-antonio":"san-antonio","advanced-ai-concepts-the-triangle":"the-triangle","advanced-ai-concepts-kansas-city":"kansas-city","advanced-ai-concepts-columbus":"columbus","advanced-ai-concepts-philadelphia":"philadelphia","advanced-ai-concepts-washington-dc":"washington-dc","advanced-ai-concepts-okc":"okc"};
+            const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
+            const stateNames = {
+              AL: "Alabama", AK: "Alaska", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado",
+              CT: "Connecticut", DC: "District of Columbia", DE: "Delaware", FL: "Florida", GA: "Georgia",
+              HI: "Hawaii", IA: "Iowa", ID: "Idaho", IL: "Illinois", IN: "Indiana", KS: "Kansas",
+              KY: "Kentucky", LA: "Louisiana", MA: "Massachusetts", MD: "Maryland", ME: "Maine",
+              MI: "Michigan", MN: "Minnesota", MO: "Missouri", MS: "Mississippi", MT: "Montana",
+              NC: "North Carolina", ND: "North Dakota", NE: "Nebraska", NH: "New Hampshire",
+              NJ: "New Jersey", NM: "New Mexico", NV: "Nevada", NY: "New York", OH: "Ohio",
+              OK: "Oklahoma", OR: "Oregon", PA: "Pennsylvania", RI: "Rhode Island",
+              SC: "South Carolina", SD: "South Dakota", TN: "Tennessee", TX: "Texas", UT: "Utah",
+              VA: "Virginia", VT: "Vermont", WA: "Washington", WI: "Wisconsin", WV: "West Virginia",
+              WY: "Wyoming", AB: "Alberta", BC: "British Columbia", MB: "Manitoba", NB: "New Brunswick",
+              NL: "Newfoundland and Labrador", NS: "Nova Scotia", NT: "Northwest Territories",
+              NU: "Nunavut", ON: "Ontario", PE: "Prince Edward Island", QC: "Quebec",
+              SK: "Saskatchewan", YT: "Yukon"
+            };
+            const regionLabel = (group) => {
+              const state = String(group.state || "").trim().toUpperCase();
+              const country = String(group.country || "").trim().toUpperCase();
+              if (state && !/^\d+$/.test(state) && stateNames[state]) return stateNames[state];
+              return country ? (regionNames.of(country) || country) : "";
+            };
             if (!select || !cards.length) return;
             const syncCity = () => {
               const selected = select.selectedOptions[0];
@@ -686,9 +709,7 @@
               select.innerHTML = groups.map((group) => {
                 const urlname = String(group.urlname || "");
                 const value = chapterSlugs[urlname] || urlname;
-                const state = String(group.state || "").trim();
-                const country = String(group.country || "").trim().toUpperCase();
-                const region = state && !/^\d+$/.test(state) ? state : country;
+                const region = regionLabel(group);
                 const city = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
                 const members = Number(group.members || 0);
                 const memberLabel = members ? " (" + members.toLocaleString() + " members)" : "";
