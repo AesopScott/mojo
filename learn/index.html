@@ -725,7 +725,7 @@
               }).join("");
               syncCity();
             };
-            fetch('/api/learn-schedule')
+            fetch('/api/learn-schedule?v=learn-members-rsvps-20260709')
               .then((response) => response.ok ? response.json() : null)
               .then((data) => {
                 if (data && data.ok) renderCityOptions(data.groups);
@@ -778,7 +778,7 @@
         }
 
         function loadRsvpCount() {
-          fetch('/api/learn-schedule')
+          fetch('/api/learn-schedule?v=learn-members-rsvps-20260709')
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(data) {
               if (!data || !data.ok) return;
@@ -796,7 +796,7 @@
 
         function loadGroupLeaders() {
           if (!leaders || !leaderList) return;
-          fetch('/api/learn-schedule')
+          fetch('/api/learn-schedule?v=learn-members-rsvps-20260709')
             .then(function(r) { return r.ok ? r.json() : null; })
             .then(function(data) {
               if (!data || !data.ok || !Array.isArray(data.groups)) return;
