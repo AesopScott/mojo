@@ -340,6 +340,129 @@ const questionSet = [
 
 const practiceCases = cases.slice(0, 20);
 
+const speedRoundTopics = {
+  [domains[0]]: [
+    ["What controls the Agent SDK loop after Claude returns tool_use?", "Execute the requested tool, append the tool result, and call Claude again.", "The loop is driven by stop_reason, not by parsing the assistant's prose."],
+    ["What stop_reason normally ends an agent loop?", "end_turn.", "When Claude is done using tools, the final answer is returned on end_turn."],
+    ["What is the anti-pattern for loop completion?", "Checking assistant text for words like complete or done.", "Text parsing is brittle; use explicit stop_reason values."],
+    ["What is a coordinator responsible for in a multi-agent system?", "Decomposition, routing, aggregation, and error handling.", "Subagents do focused work; the coordinator owns the overall task state."],
+    ["Do subagents automatically inherit parent context?", "No.", "Pass source material, constraints, and expected output explicitly."],
+    ["How do you spawn parallel subagents?", "Emit multiple Task tool calls in one coordinator response.", "Parallel delegation is a coordination pattern, not separate user turns."],
+    ["When should a workflow use a deterministic gate or hook?", "When a rule must be enforced reliably before an action.", "Refund thresholds, identity checks, and permission checks should not rely on prompt text alone."],
+    ["What should the coordinator do when subagent coverage is incomplete?", "Send targeted follow-up tasks or escalate the gap.", "Iterative refinement is expected when evidence is missing."],
+    ["What is context isolation good for?", "Reducing cross-task contamination and keeping specialists focused.", "Isolation helps, but only if the coordinator passes needed context."],
+    ["What should happen to partial failures in a multi-agent system?", "They should be captured, surfaced, and handled by the coordinator.", "Hiding failures creates false confidence."],
+    ["What is the safest way to handle an irreversible action?", "Require explicit prerequisites and a programmatic control before tool execution.", "The exam favors enforceable guardrails for high-impact actions."],
+    ["What is a good subagent prompt include?", "Task, relevant context, sources, constraints, output schema, and success criteria.", "A subagent cannot reliably infer missing context."],
+    ["What should a coordinator aggregate?", "Findings, confidence, sources, errors, and unresolved gaps.", "Aggregation is more than summarization."],
+    ["When should a coordinator ask for clarification?", "When required inputs or decision criteria are missing.", "Clarification beats guessing."],
+    ["What is over-decomposition?", "Splitting work so narrowly that important coverage is lost.", "Subtasks should map to meaningful responsibility boundaries."],
+    ["What is under-decomposition?", "Giving one agent too much broad work without specialization.", "Complex scenarios often benefit from role-based subagents."],
+    ["What makes a routing decision exam-worthy?", "It is explicit, evidence-based, and tied to agent/tool capability.", "Do not route based on vague labels."],
+    ["What should happen after a tool error?", "Record the error, decide retry/escalation policy, and avoid claiming success.", "Tool errors are part of the state."],
+    ["Why use a coordinator instead of peer agents only?", "To preserve task state, resolve conflicts, and produce a coherent final answer.", "Peer-only systems can lose authority and accountability."],
+    ["What is the core architecture instinct for Domain 1?", "Make control flow explicit and keep authority boundaries clear.", "Agentic architecture questions usually test orchestration discipline."],
+  ],
+  [domains[1]]: [
+    ["What makes a good tool description?", "It clearly states purpose, required inputs, side effects, and when not to use it.", "Claude chooses tools based heavily on descriptions."],
+    ["What is a poor tool design?", "A broad do_everything tool with free-text arguments.", "Broad tools obscure intent, validation, and safety boundaries."],
+    ["How should tool errors be returned?", "Structured status with a clear error message and recoverable details.", "The model needs machine-readable failure context."],
+    ["What does tool_choice help control?", "Whether Claude may, must, or must not use tools.", "Use it to constrain tool behavior for the task."],
+    ["When is a read-only MCP resource appropriate?", "When Claude needs stable context such as policy, schema, or documentation.", "Resources provide context; tools perform actions."],
+    ["When is an MCP tool appropriate?", "When Claude needs to perform a controlled operation with typed inputs.", "Tools should have scoped authority."],
+    ["What metadata should MCP resources preserve?", "Version, source, date, owner, and access context when relevant.", "Metadata supports provenance and freshness decisions."],
+    ["Why avoid arbitrary code execution tools?", "They create broad security and reliability risk.", "Constrain tools to purposeful operations."],
+    ["What should a tool schema validate?", "Required identifiers, allowed values, formats, and action prerequisites.", "Validation catches failures before unsafe execution."],
+    ["What is the best response to missing required tool input?", "Ask for the missing input or use a lookup tool if available.", "Do not invent identifiers."],
+    ["How should side effects be documented?", "Explicitly in the tool description and guarded by prerequisites.", "Claude must know when a tool changes external state."],
+    ["What is the difference between a resource and a tool?", "A resource supplies context; a tool performs work.", "Mixing the two leads to unclear authority."],
+    ["How should authentication failures be handled?", "Return structured permission error context and escalation guidance.", "Retry loops cannot fix missing permissions."],
+    ["What should happen when a tool times out?", "Classify the failure, retry only if policy allows, and disclose uncertainty.", "Timeouts are evidence gaps."],
+    ["What is a good tool naming pattern?", "Specific verb-noun names like lookup_order or create_refund_request.", "Names should reveal intent."],
+    ["What is an isError-style signal for?", "Letting Claude distinguish failed tool results from successful data.", "Without an error signal, failures can be treated as facts."],
+    ["What should tool outputs avoid?", "Unstructured blobs when the next step requires reliable parsing.", "Structured outputs support downstream decisions."],
+    ["How do you reduce unsafe tool use?", "Limit allowed tools, use precise descriptions, validate inputs, and gate risky calls.", "Defense is layered."],
+    ["What is an MCP integration trap?", "Assuming resources are automatically available to all agents.", "Context still has to be routed intentionally."],
+    ["What is the core architecture instinct for Domain 2?", "Design narrow, typed, well-described tools with explicit errors and authority.", "Tool questions usually test contract quality."],
+  ],
+  [domains[2]]: [
+    ["What should Claude Code read before editing?", "Repository instructions such as AGENTS.md, CLAUDE.md, and relevant local docs.", "Local rules are part of the task contract."],
+    ["What is Plan Mode for?", "Thinking through scope and approach before making changes.", "Use it for risky or multi-step edits."],
+    ["What should Claude Code do before broad refactors?", "Confirm scope and match existing patterns.", "Unrelated churn is a review risk."],
+    ["What belongs in a slash command?", "Repeatable repo-specific workflows or checks.", "Commands make common workflows consistent."],
+    ["What belongs in a skill?", "Reusable procedural knowledge with clear trigger conditions.", "Skills help standardize complex workflows."],
+    ["How should Claude Code report tests?", "List exactly what ran, what passed, what failed, and what was not run.", "Do not imply verification that did not happen."],
+    ["What is a destructive git operation?", "Commands like reset hard or checkout that discard work.", "These require explicit user approval."],
+    ["How should generated files be handled?", "Respect repo rules; do not edit protected generated files unless instructed.", "Generated artifacts often have source owners."],
+    ["What should a PR summary emphasize?", "Behavioral change, tests, risks, and reviewer notes.", "A file list is not enough."],
+    ["What should happen when tests time out?", "Report the timeout and run narrower diagnostics if useful.", "Do not claim success."],
+    ["Why inspect existing patterns first?", "To avoid inventing incompatible abstractions.", "Claude Code should work with the codebase."],
+    ["When should Claude Code ask before changing lockfiles?", "When repo policy or risk indicates dependency changes need approval.", "Lockfiles can affect broad dependency state."],
+    ["What is a focused verification command?", "The smallest meaningful test or lint command for the changed surface.", "Focused tests provide faster evidence."],
+    ["What is a CI repair anti-pattern?", "Changing snapshots or dependencies without proving the root cause.", "Fix evidence, not symptoms."],
+    ["How should Claude Code handle unresolved failures?", "Document them plainly with likely cause and next step.", "Transparency matters."],
+    ["What should repository memory files contain?", "Durable project guidance, not ad hoc hidden assumptions.", "Memory should be explicit and maintainable."],
+    ["What is a good Claude Code handoff?", "Context, files changed, commands run, residual risk, and suggested next action.", "Handoffs should let a human resume easily."],
+    ["How should Claude Code handle conflicting instructions?", "Follow precedence and ask if the conflict blocks safe action.", "Instruction hierarchy matters."],
+    ["What is the risk of oversized context in Claude Code?", "Important constraints can get lost or stale.", "Summaries and scoped reads help."],
+    ["What is the core architecture instinct for Domain 3?", "Use repo-local rules, plan before risky edits, verify honestly, and keep diffs scoped.", "Claude Code questions test workflow discipline."],
+  ],
+  [domains[3]]: [
+    ["When should you use structured output?", "When downstream code or review needs reliable fields.", "Schemas reduce ambiguity."],
+    ["What should a retry include after schema validation fails?", "The validation errors and the original task context.", "Specific feedback beats vague retry instructions."],
+    ["What is few-shot prompting best for?", "Teaching format and edge-case distinctions.", "Examples shape behavior more concretely than abstract rules."],
+    ["What is a structured extraction risk?", "Valid-looking JSON with wrong or unsupported content.", "Validation must check semantics when possible."],
+    ["What should be included for source-grounded answers?", "Citations, source labels, or evidence references.", "Grounding enables review."],
+    ["What should the model do when evidence is incomplete?", "Flag uncertainty or request missing context.", "Do not fill gaps with invention."],
+    ["What is an output schema field good for?", "Making required decisions explicit and machine-checkable.", "Schema design is part of prompt engineering."],
+    ["Why separate assumptions from facts?", "So reviewers can see what is proven and what is inferred.", "This is common in exam scenarios."],
+    ["What is a batch-processing risk?", "Systematic errors scale across many records.", "Use evals, sampling, and review queues."],
+    ["How should prompts treat critical constraints?", "Put them clearly near the task and output requirements.", "Avoid burying them in long context."],
+    ["What is a good review pass for extraction?", "Check missing fields, conflicts, confidence, and source references.", "Second passes catch omissions."],
+    ["Why avoid parsing polished prose?", "It is less reliable than constrained structured output.", "Use JSON/schema when a machine consumes the result."],
+    ["What should a confidence field mean?", "A defined signal tied to evidence quality.", "Uncalibrated confidence is weak."],
+    ["How do you handle multiple-response questions in prompts?", "State exactly how many selections are expected.", "Ambiguity creates scoring errors."],
+    ["What should a prompt do with policy exceptions?", "Ask the model to flag exception conditions explicitly.", "Exceptions often drive escalation."],
+    ["What is a common prompt anti-pattern?", "One huge prompt with hidden goals and no output contract.", "Clarity and structure win."],
+    ["When should human review be routed?", "Low confidence, high impact, policy conflict, or missing evidence.", "Review criteria should be explicit."],
+    ["What makes guidance useful?", "It explains the principle, not just the answer.", "Guidance helps transfer to new scenarios."],
+    ["What should be avoided in final answers?", "Hidden chain-of-thought requests and unsupported certainty.", "Use concise rationale instead."],
+    ["What is the core architecture instinct for Domain 4?", "Constrain outputs, teach edge cases, validate, and preserve evidence.", "Prompt questions test reliability under ambiguity."],
+  ],
+  [domains[4]]: [
+    ["What is lost-in-the-middle?", "Important context being underused when buried in long inputs.", "Position and compactness matter."],
+    ["How should critical context be ordered?", "Place instructions, constraints, and current evidence where the model can use them.", "Do not bury decisive facts."],
+    ["What should happen when context is too large?", "Summarize, retrieve selectively, or split work with explicit handoffs.", "More context is not always better."],
+    ["Why preserve source metadata?", "It supports provenance, freshness checks, and review.", "Context without sources is harder to trust."],
+    ["What is a good escalation trigger?", "Missing required evidence, low confidence, high-impact action, or policy conflict.", "Escalation should be rule-based."],
+    ["What should be disclosed in internal handoffs?", "Tool errors, missing inputs, assumptions, confidence, and attempted actions.", "Handoffs need operational truth."],
+    ["Why avoid stale tool results?", "Files, records, or policies may have changed.", "Refresh or summarize with timestamps."],
+    ["What is confidence calibration?", "Tying confidence to evidence quality and uncertainty.", "Confidence should not be a vibes score."],
+    ["What should happen with contradictory sources?", "Surface the conflict and resolve or escalate it.", "Do not average contradictions into a false answer."],
+    ["What is a reliable final answer?", "Grounded, appropriately scoped, and honest about uncertainty.", "Reliability includes saying what is not known."],
+    ["How should long documents be chunked?", "With section boundaries, page/source metadata, and task-relevant retrieval.", "Chunking should preserve meaning."],
+    ["What is a context handoff?", "A structured package of relevant facts, sources, constraints, and next task.", "Handoffs prevent context loss."],
+    ["When should the system ask a clarifying question?", "When the answer depends on missing user intent or required data.", "Guessing can create unsafe outcomes."],
+    ["What does provenance mean?", "Where a claim or field came from.", "Provenance enables audit."],
+    ["What is an evidence gap?", "A required fact that the system does not have.", "Gaps should be visible."],
+    ["How should tool failures affect confidence?", "They should lower confidence or trigger retry/escalation.", "Failures are not neutral."],
+    ["What is a reliability anti-pattern?", "Returning a confident answer after missing or failed evidence.", "This is a common exam trap."],
+    ["What should be compacted in a long-running session?", "Stable conclusions and relevant state, not raw noise.", "Compaction should preserve decisions and evidence."],
+    ["Why label user-provided claims?", "They are not the same as verified records.", "This matters in support, legal, and healthcare scenarios."],
+    ["What is the core architecture instinct for Domain 5?", "Manage context deliberately and make uncertainty operationally visible.", "Reliability questions test evidence discipline."],
+  ],
+};
+
+const speedRounds = domains.map((domain) => ({
+  domain,
+  items: speedRoundTopics[domain].map(([prompt, answer, guidance], index) => ({
+    id: `${slug(domain)}-${index + 1}`,
+    prompt,
+    answer,
+    guidance,
+  })),
+}));
+
 function esc(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -427,9 +550,39 @@ ${questionSet.map((q, idx) => renderQuestionHtml(q, firstQuestion + idx, caseInd
 </section>`;
 }
 
+function renderSpeedRoundMd(round) {
+  const lines = [];
+  lines.push(`## Speed Round: ${round.domain}`);
+  lines.push("");
+  round.items.forEach((item, index) => {
+    lines.push(`${index + 1}. ${item.prompt}`);
+    lines.push(`   Answer: ${item.answer}`);
+    lines.push(`   Guidance: ${item.guidance}`);
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function renderSpeedRoundHtml(round) {
+  return `<section class="speed-domain" id="speed-${slug(round.domain)}">
+  <h3>${esc(round.domain)}</h3>
+${round.items.map((item, index) => `<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed ${index + 1}</span>
+      <button class="answer-toggle" type="button" data-target="speed-${item.id}" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>${esc(item.prompt)}</h4>
+    <div class="answer-panel" id="speed-${item.id}" hidden>
+      <p><strong>Answer:</strong> ${esc(item.answer)}</p>
+      <p><strong>Guidance:</strong> ${esc(item.guidance)}</p>
+    </div>
+  </article>`).join("\n")}
+</section>`;
+}
+
 const md = `# Claude Architect Scenario Practice Exam
 
-200 original practice questions aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code \`CCAR-F\`.
+200 original scenario practice questions plus 100 speed-round drills aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code \`CCAR-F\`.
 
 This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.
 
@@ -449,12 +602,20 @@ This prep bank is structured like the exam: read a scenario case file, then answ
 - 200 total questions
 - Mixed single-select and multiple-response questions
 - Questions test all five official domains inside realistic case contexts
+- 100 speed-round drills for fast domain review
 
 ${practiceCases.map((item, index) => renderCaseMd(item, index + 1, index * questionSet.length + 1)).join("\n\n")}
+
+# Speed Round
+
+These are not exam scenarios. They are fast recall drills for teaching, warmups, and end-of-class review. Each official domain has 20 short prompts with an answer and guidance.
+
+${speedRounds.map(renderSpeedRoundMd).join("\n\n")}
 
 ## Instructor Notes
 
 - For a 60-question simulation, assign any 6 scenario sets.
+- For a 20-minute review block, assign one speed-round domain and have students answer aloud before revealing guidance.
 - For every miss, identify the scenario evidence, official domain, primitive tested, and reliability principle missed.
 - This practice exam is original training material, not copied exam content.
 `;
@@ -474,6 +635,10 @@ const css = `      :root { color-scheme: light; }
       .architect-content > p { max-width: 850px; }
       .architect-content p, .architect-content li { line-height: 1.68; }
       .architect-content code { background: #f2eee4; border: 1px solid #e4dccb; border-radius: 6px; padding: 0 5px; font-size: .92em; }
+      .mode-toggle { position: sticky; top: 96px; z-index: 7; display: inline-flex; gap: 4px; margin: 24px 0 12px; padding: 5px; border: 1px solid #d9ceb9; border-radius: 8px; background: rgba(255,255,255,.94); box-shadow: 0 10px 28px rgba(16,16,24,.08); }
+      .mode-toggle button { appearance: none; border: 0; border-radius: 6px; min-height: 38px; padding: 0 14px; background: transparent; color: #3b372f; font-weight: 900; cursor: pointer; }
+      .mode-toggle button[aria-pressed="true"] { background: #161618; color: #fff; }
+      .exam-mode[hidden] { display: none; }
       .case-file { border: 1px solid #d9ceb9; border-radius: 8px; margin: 34px 0 46px; background: #fffaf0; overflow: hidden; }
       .case-file-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; background: #17171f; color: #fff; }
       .case-file h3 { margin: 0; padding: 22px 20px 0; font-size: clamp(1.45rem, 2.8vw, 2.15rem); letter-spacing: 0; }
@@ -497,15 +662,26 @@ const css = `      :root { color-scheme: light; }
       .answer-toggle { appearance: none; border: 1px solid #2d2b25; background: #161618; color: #fff; border-radius: 8px; min-height: 34px; padding: 0 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
       .answer-toggle:hover { background: #2a2a31; }
       .answer-panel { margin-top: 12px; border-left: 4px solid #e0b33c; background: #fff7df; padding: 12px 14px; border-radius: 6px; line-height: 1.6; }
+      .answer-panel p { margin: 0; }
+      .answer-panel p + p { margin-top: 8px; }
+      .speed-intro { max-width: 850px; margin: 0 0 20px; }
+      .speed-domain { border-top: 1px solid #eadfc9; padding-top: 26px; margin-top: 28px; }
+      .speed-domain h3 { margin: 0 0 14px; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: 0; }
+      .speed-card { border: 1px solid #e6dece; border-radius: 8px; padding: 16px; margin: 12px 0; background: #fffdf8; }
+      .speed-card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+      .speed-card h4 { margin: 0; font-size: 1.03rem; line-height: 1.45; letter-spacing: 0; }
       .architect-footer { max-width: 1120px; margin: 0 auto; padding: 0 24px 52px; color: #5d5b55; }
       .architect-footer a { color: #181817; font-weight: 700; }
       @media (max-width: 980px) {
         .architect-hero { padding-top: 160px; }
+        .mode-toggle { top: 144px; }
       }
       @media (max-width: 640px) {
         .architect-hero { padding-top: 204px; }
         .architect-content { padding: 20px; }
-        .case-file-head, .exam-question-head { align-items: flex-start; flex-direction: column; }
+        .mode-toggle { top: 188px; width: 100%; }
+        .mode-toggle button { flex: 1; }
+        .case-file-head, .exam-question-head, .speed-card-head { align-items: flex-start; flex-direction: column; }
         .case-type { text-align: left; }
       }`;
 
@@ -514,7 +690,7 @@ const html = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Scenario-based Claude Certified Architect practice exam with 200 questions and answer reveals." />
+    <meta name="description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
     <title>Claude Architect Practice Exam | Mojo AI Studio</title>
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
@@ -527,7 +703,7 @@ const html = `<!doctype html>
     <meta property="og:site_name" content="Mojo AI Studio" />
     <meta property="og:url" content="https://mojoaistudio.com/architect/exam/" />
     <meta property="og:title" content="Claude Architect Practice Exam | Mojo AI Studio" />
-    <meta property="og:description" content="Scenario-based Claude Certified Architect practice exam with 200 questions and answer reveals." />
+    <meta property="og:description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
     <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
@@ -555,19 +731,33 @@ ${css}
       <section class="architect-hero">
         <p class="kicker">Practice exam</p>
         <h1>Claude Architect Practice Exam</h1>
-        <p>Twenty full scenario case files with two hundred attached questions aligned to the official CCAR-F exam guide.</p>
+        <p>Twenty full scenario case files with two hundred attached questions, plus speed-round drills for each official domain.</p>
         <div class="architect-actions"><a class="architect-button" href="/architect/learn/">Study syllabus</a></div>
       </section>
     </header>
     <main class="architect-shell">
       <article class="architect-content">
-        <h2>Scenario-Based Practice Bank</h2>
-        <p>This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.</p>
-        <p>Each question states how many answers to select. Use the answer buttons only after committing to a choice.</p>
+        <h2>Architect Exam Prep</h2>
+        <p>Use Scenarios for exam-like case files with attached multiple-choice questions. Use Speed Round for fast domain recall with answer and guidance.</p>
+        <div class="mode-toggle" role="group" aria-label="Practice mode">
+          <button type="button" data-mode-target="scenario-mode" aria-pressed="true">Scenarios</button>
+          <button type="button" data-mode-target="speed-mode" aria-pressed="false">Speed Round</button>
+        </div>
+        <section class="exam-mode" id="scenario-mode">
+          <h3>Scenario-Based Practice Bank</h3>
+          <p>This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.</p>
+          <p>Each question states how many answers to select. Use the answer buttons only after committing to a choice.</p>
 ${practiceCases.map((item, index) => renderCaseHtml(item, index + 1, index * questionSet.length + 1)).join("\n")}
+        </section>
+        <section class="exam-mode" id="speed-mode" hidden>
+          <h3>Speed Round</h3>
+          <p class="speed-intro">These are fast drills, not exam scenarios. Each official domain has 20 short prompts with an answer and guidance so you can run warmups, review blocks, or quick oral checks.</p>
+${speedRounds.map(renderSpeedRoundHtml).join("\n")}
+        </section>
         <h3>Instructor Notes</h3>
         <ul>
           <li>For a 60-question simulation, assign any 6 scenario sets.</li>
+          <li>For a 20-minute review block, assign one speed-round domain and have students answer aloud before revealing guidance.</li>
           <li>For every miss, identify the scenario evidence, official domain, primitive tested, and reliability principle missed.</li>
           <li>This practice exam is original training material, not copied exam content.</li>
         </ul>
@@ -578,6 +768,21 @@ ${practiceCases.map((item, index) => renderCaseHtml(item, index + 1, index * que
     </footer>
     <script>
       document.addEventListener('click', (event) => {
+        const modeButton = event.target.closest('[data-mode-target]');
+        if (modeButton) {
+          const targetId = modeButton.dataset.modeTarget;
+          document.querySelectorAll('[data-mode-target]').forEach((button) => {
+            button.setAttribute('aria-pressed', String(button === modeButton));
+          });
+          document.querySelectorAll('.exam-mode').forEach((section) => {
+            if (section.id === targetId) {
+              section.removeAttribute('hidden');
+            } else {
+              section.setAttribute('hidden', '');
+            }
+          });
+          return;
+        }
         const button = event.target.closest('.answer-toggle');
         if (!button) return;
         const panel = document.getElementById(button.dataset.target);

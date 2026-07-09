@@ -1,6 +1,6 @@
 # Claude Architect Scenario Practice Exam
 
-200 original practice questions aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
+200 original scenario practice questions plus 100 speed-round drills aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
 
 This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.
 
@@ -20,6 +20,7 @@ This prep bank is structured like the exam: read a scenario case file, then answ
 - 200 total questions
 - Mixed single-select and multiple-response questions
 - Questions test all five official domains inside realistic case contexts
+- 100 speed-round drills for fast domain review
 
 ## Scenario 1: Refunds with identity and policy gates
 
@@ -1941,8 +1942,428 @@ The initial postmortem mixed speculation with facts and lost timezone informatio
    Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
 
+# Speed Round
+
+These are not exam scenarios. They are fast recall drills for teaching, warmups, and end-of-class review. Each official domain has 20 short prompts with an answer and guidance.
+
+## Speed Round: Agentic Architecture & Orchestration
+
+1. What controls the Agent SDK loop after Claude returns tool_use?
+   Answer: Execute the requested tool, append the tool result, and call Claude again.
+   Guidance: The loop is driven by stop_reason, not by parsing the assistant's prose.
+
+2. What stop_reason normally ends an agent loop?
+   Answer: end_turn.
+   Guidance: When Claude is done using tools, the final answer is returned on end_turn.
+
+3. What is the anti-pattern for loop completion?
+   Answer: Checking assistant text for words like complete or done.
+   Guidance: Text parsing is brittle; use explicit stop_reason values.
+
+4. What is a coordinator responsible for in a multi-agent system?
+   Answer: Decomposition, routing, aggregation, and error handling.
+   Guidance: Subagents do focused work; the coordinator owns the overall task state.
+
+5. Do subagents automatically inherit parent context?
+   Answer: No.
+   Guidance: Pass source material, constraints, and expected output explicitly.
+
+6. How do you spawn parallel subagents?
+   Answer: Emit multiple Task tool calls in one coordinator response.
+   Guidance: Parallel delegation is a coordination pattern, not separate user turns.
+
+7. When should a workflow use a deterministic gate or hook?
+   Answer: When a rule must be enforced reliably before an action.
+   Guidance: Refund thresholds, identity checks, and permission checks should not rely on prompt text alone.
+
+8. What should the coordinator do when subagent coverage is incomplete?
+   Answer: Send targeted follow-up tasks or escalate the gap.
+   Guidance: Iterative refinement is expected when evidence is missing.
+
+9. What is context isolation good for?
+   Answer: Reducing cross-task contamination and keeping specialists focused.
+   Guidance: Isolation helps, but only if the coordinator passes needed context.
+
+10. What should happen to partial failures in a multi-agent system?
+   Answer: They should be captured, surfaced, and handled by the coordinator.
+   Guidance: Hiding failures creates false confidence.
+
+11. What is the safest way to handle an irreversible action?
+   Answer: Require explicit prerequisites and a programmatic control before tool execution.
+   Guidance: The exam favors enforceable guardrails for high-impact actions.
+
+12. What is a good subagent prompt include?
+   Answer: Task, relevant context, sources, constraints, output schema, and success criteria.
+   Guidance: A subagent cannot reliably infer missing context.
+
+13. What should a coordinator aggregate?
+   Answer: Findings, confidence, sources, errors, and unresolved gaps.
+   Guidance: Aggregation is more than summarization.
+
+14. When should a coordinator ask for clarification?
+   Answer: When required inputs or decision criteria are missing.
+   Guidance: Clarification beats guessing.
+
+15. What is over-decomposition?
+   Answer: Splitting work so narrowly that important coverage is lost.
+   Guidance: Subtasks should map to meaningful responsibility boundaries.
+
+16. What is under-decomposition?
+   Answer: Giving one agent too much broad work without specialization.
+   Guidance: Complex scenarios often benefit from role-based subagents.
+
+17. What makes a routing decision exam-worthy?
+   Answer: It is explicit, evidence-based, and tied to agent/tool capability.
+   Guidance: Do not route based on vague labels.
+
+18. What should happen after a tool error?
+   Answer: Record the error, decide retry/escalation policy, and avoid claiming success.
+   Guidance: Tool errors are part of the state.
+
+19. Why use a coordinator instead of peer agents only?
+   Answer: To preserve task state, resolve conflicts, and produce a coherent final answer.
+   Guidance: Peer-only systems can lose authority and accountability.
+
+20. What is the core architecture instinct for Domain 1?
+   Answer: Make control flow explicit and keep authority boundaries clear.
+   Guidance: Agentic architecture questions usually test orchestration discipline.
+
+
+## Speed Round: Tool Design & MCP Integration
+
+1. What makes a good tool description?
+   Answer: It clearly states purpose, required inputs, side effects, and when not to use it.
+   Guidance: Claude chooses tools based heavily on descriptions.
+
+2. What is a poor tool design?
+   Answer: A broad do_everything tool with free-text arguments.
+   Guidance: Broad tools obscure intent, validation, and safety boundaries.
+
+3. How should tool errors be returned?
+   Answer: Structured status with a clear error message and recoverable details.
+   Guidance: The model needs machine-readable failure context.
+
+4. What does tool_choice help control?
+   Answer: Whether Claude may, must, or must not use tools.
+   Guidance: Use it to constrain tool behavior for the task.
+
+5. When is a read-only MCP resource appropriate?
+   Answer: When Claude needs stable context such as policy, schema, or documentation.
+   Guidance: Resources provide context; tools perform actions.
+
+6. When is an MCP tool appropriate?
+   Answer: When Claude needs to perform a controlled operation with typed inputs.
+   Guidance: Tools should have scoped authority.
+
+7. What metadata should MCP resources preserve?
+   Answer: Version, source, date, owner, and access context when relevant.
+   Guidance: Metadata supports provenance and freshness decisions.
+
+8. Why avoid arbitrary code execution tools?
+   Answer: They create broad security and reliability risk.
+   Guidance: Constrain tools to purposeful operations.
+
+9. What should a tool schema validate?
+   Answer: Required identifiers, allowed values, formats, and action prerequisites.
+   Guidance: Validation catches failures before unsafe execution.
+
+10. What is the best response to missing required tool input?
+   Answer: Ask for the missing input or use a lookup tool if available.
+   Guidance: Do not invent identifiers.
+
+11. How should side effects be documented?
+   Answer: Explicitly in the tool description and guarded by prerequisites.
+   Guidance: Claude must know when a tool changes external state.
+
+12. What is the difference between a resource and a tool?
+   Answer: A resource supplies context; a tool performs work.
+   Guidance: Mixing the two leads to unclear authority.
+
+13. How should authentication failures be handled?
+   Answer: Return structured permission error context and escalation guidance.
+   Guidance: Retry loops cannot fix missing permissions.
+
+14. What should happen when a tool times out?
+   Answer: Classify the failure, retry only if policy allows, and disclose uncertainty.
+   Guidance: Timeouts are evidence gaps.
+
+15. What is a good tool naming pattern?
+   Answer: Specific verb-noun names like lookup_order or create_refund_request.
+   Guidance: Names should reveal intent.
+
+16. What is an isError-style signal for?
+   Answer: Letting Claude distinguish failed tool results from successful data.
+   Guidance: Without an error signal, failures can be treated as facts.
+
+17. What should tool outputs avoid?
+   Answer: Unstructured blobs when the next step requires reliable parsing.
+   Guidance: Structured outputs support downstream decisions.
+
+18. How do you reduce unsafe tool use?
+   Answer: Limit allowed tools, use precise descriptions, validate inputs, and gate risky calls.
+   Guidance: Defense is layered.
+
+19. What is an MCP integration trap?
+   Answer: Assuming resources are automatically available to all agents.
+   Guidance: Context still has to be routed intentionally.
+
+20. What is the core architecture instinct for Domain 2?
+   Answer: Design narrow, typed, well-described tools with explicit errors and authority.
+   Guidance: Tool questions usually test contract quality.
+
+
+## Speed Round: Claude Code Configuration & Workflows
+
+1. What should Claude Code read before editing?
+   Answer: Repository instructions such as AGENTS.md, CLAUDE.md, and relevant local docs.
+   Guidance: Local rules are part of the task contract.
+
+2. What is Plan Mode for?
+   Answer: Thinking through scope and approach before making changes.
+   Guidance: Use it for risky or multi-step edits.
+
+3. What should Claude Code do before broad refactors?
+   Answer: Confirm scope and match existing patterns.
+   Guidance: Unrelated churn is a review risk.
+
+4. What belongs in a slash command?
+   Answer: Repeatable repo-specific workflows or checks.
+   Guidance: Commands make common workflows consistent.
+
+5. What belongs in a skill?
+   Answer: Reusable procedural knowledge with clear trigger conditions.
+   Guidance: Skills help standardize complex workflows.
+
+6. How should Claude Code report tests?
+   Answer: List exactly what ran, what passed, what failed, and what was not run.
+   Guidance: Do not imply verification that did not happen.
+
+7. What is a destructive git operation?
+   Answer: Commands like reset hard or checkout that discard work.
+   Guidance: These require explicit user approval.
+
+8. How should generated files be handled?
+   Answer: Respect repo rules; do not edit protected generated files unless instructed.
+   Guidance: Generated artifacts often have source owners.
+
+9. What should a PR summary emphasize?
+   Answer: Behavioral change, tests, risks, and reviewer notes.
+   Guidance: A file list is not enough.
+
+10. What should happen when tests time out?
+   Answer: Report the timeout and run narrower diagnostics if useful.
+   Guidance: Do not claim success.
+
+11. Why inspect existing patterns first?
+   Answer: To avoid inventing incompatible abstractions.
+   Guidance: Claude Code should work with the codebase.
+
+12. When should Claude Code ask before changing lockfiles?
+   Answer: When repo policy or risk indicates dependency changes need approval.
+   Guidance: Lockfiles can affect broad dependency state.
+
+13. What is a focused verification command?
+   Answer: The smallest meaningful test or lint command for the changed surface.
+   Guidance: Focused tests provide faster evidence.
+
+14. What is a CI repair anti-pattern?
+   Answer: Changing snapshots or dependencies without proving the root cause.
+   Guidance: Fix evidence, not symptoms.
+
+15. How should Claude Code handle unresolved failures?
+   Answer: Document them plainly with likely cause and next step.
+   Guidance: Transparency matters.
+
+16. What should repository memory files contain?
+   Answer: Durable project guidance, not ad hoc hidden assumptions.
+   Guidance: Memory should be explicit and maintainable.
+
+17. What is a good Claude Code handoff?
+   Answer: Context, files changed, commands run, residual risk, and suggested next action.
+   Guidance: Handoffs should let a human resume easily.
+
+18. How should Claude Code handle conflicting instructions?
+   Answer: Follow precedence and ask if the conflict blocks safe action.
+   Guidance: Instruction hierarchy matters.
+
+19. What is the risk of oversized context in Claude Code?
+   Answer: Important constraints can get lost or stale.
+   Guidance: Summaries and scoped reads help.
+
+20. What is the core architecture instinct for Domain 3?
+   Answer: Use repo-local rules, plan before risky edits, verify honestly, and keep diffs scoped.
+   Guidance: Claude Code questions test workflow discipline.
+
+
+## Speed Round: Prompt Engineering & Structured Output
+
+1. When should you use structured output?
+   Answer: When downstream code or review needs reliable fields.
+   Guidance: Schemas reduce ambiguity.
+
+2. What should a retry include after schema validation fails?
+   Answer: The validation errors and the original task context.
+   Guidance: Specific feedback beats vague retry instructions.
+
+3. What is few-shot prompting best for?
+   Answer: Teaching format and edge-case distinctions.
+   Guidance: Examples shape behavior more concretely than abstract rules.
+
+4. What is a structured extraction risk?
+   Answer: Valid-looking JSON with wrong or unsupported content.
+   Guidance: Validation must check semantics when possible.
+
+5. What should be included for source-grounded answers?
+   Answer: Citations, source labels, or evidence references.
+   Guidance: Grounding enables review.
+
+6. What should the model do when evidence is incomplete?
+   Answer: Flag uncertainty or request missing context.
+   Guidance: Do not fill gaps with invention.
+
+7. What is an output schema field good for?
+   Answer: Making required decisions explicit and machine-checkable.
+   Guidance: Schema design is part of prompt engineering.
+
+8. Why separate assumptions from facts?
+   Answer: So reviewers can see what is proven and what is inferred.
+   Guidance: This is common in exam scenarios.
+
+9. What is a batch-processing risk?
+   Answer: Systematic errors scale across many records.
+   Guidance: Use evals, sampling, and review queues.
+
+10. How should prompts treat critical constraints?
+   Answer: Put them clearly near the task and output requirements.
+   Guidance: Avoid burying them in long context.
+
+11. What is a good review pass for extraction?
+   Answer: Check missing fields, conflicts, confidence, and source references.
+   Guidance: Second passes catch omissions.
+
+12. Why avoid parsing polished prose?
+   Answer: It is less reliable than constrained structured output.
+   Guidance: Use JSON/schema when a machine consumes the result.
+
+13. What should a confidence field mean?
+   Answer: A defined signal tied to evidence quality.
+   Guidance: Uncalibrated confidence is weak.
+
+14. How do you handle multiple-response questions in prompts?
+   Answer: State exactly how many selections are expected.
+   Guidance: Ambiguity creates scoring errors.
+
+15. What should a prompt do with policy exceptions?
+   Answer: Ask the model to flag exception conditions explicitly.
+   Guidance: Exceptions often drive escalation.
+
+16. What is a common prompt anti-pattern?
+   Answer: One huge prompt with hidden goals and no output contract.
+   Guidance: Clarity and structure win.
+
+17. When should human review be routed?
+   Answer: Low confidence, high impact, policy conflict, or missing evidence.
+   Guidance: Review criteria should be explicit.
+
+18. What makes guidance useful?
+   Answer: It explains the principle, not just the answer.
+   Guidance: Guidance helps transfer to new scenarios.
+
+19. What should be avoided in final answers?
+   Answer: Hidden chain-of-thought requests and unsupported certainty.
+   Guidance: Use concise rationale instead.
+
+20. What is the core architecture instinct for Domain 4?
+   Answer: Constrain outputs, teach edge cases, validate, and preserve evidence.
+   Guidance: Prompt questions test reliability under ambiguity.
+
+
+## Speed Round: Context Management & Reliability
+
+1. What is lost-in-the-middle?
+   Answer: Important context being underused when buried in long inputs.
+   Guidance: Position and compactness matter.
+
+2. How should critical context be ordered?
+   Answer: Place instructions, constraints, and current evidence where the model can use them.
+   Guidance: Do not bury decisive facts.
+
+3. What should happen when context is too large?
+   Answer: Summarize, retrieve selectively, or split work with explicit handoffs.
+   Guidance: More context is not always better.
+
+4. Why preserve source metadata?
+   Answer: It supports provenance, freshness checks, and review.
+   Guidance: Context without sources is harder to trust.
+
+5. What is a good escalation trigger?
+   Answer: Missing required evidence, low confidence, high-impact action, or policy conflict.
+   Guidance: Escalation should be rule-based.
+
+6. What should be disclosed in internal handoffs?
+   Answer: Tool errors, missing inputs, assumptions, confidence, and attempted actions.
+   Guidance: Handoffs need operational truth.
+
+7. Why avoid stale tool results?
+   Answer: Files, records, or policies may have changed.
+   Guidance: Refresh or summarize with timestamps.
+
+8. What is confidence calibration?
+   Answer: Tying confidence to evidence quality and uncertainty.
+   Guidance: Confidence should not be a vibes score.
+
+9. What should happen with contradictory sources?
+   Answer: Surface the conflict and resolve or escalate it.
+   Guidance: Do not average contradictions into a false answer.
+
+10. What is a reliable final answer?
+   Answer: Grounded, appropriately scoped, and honest about uncertainty.
+   Guidance: Reliability includes saying what is not known.
+
+11. How should long documents be chunked?
+   Answer: With section boundaries, page/source metadata, and task-relevant retrieval.
+   Guidance: Chunking should preserve meaning.
+
+12. What is a context handoff?
+   Answer: A structured package of relevant facts, sources, constraints, and next task.
+   Guidance: Handoffs prevent context loss.
+
+13. When should the system ask a clarifying question?
+   Answer: When the answer depends on missing user intent or required data.
+   Guidance: Guessing can create unsafe outcomes.
+
+14. What does provenance mean?
+   Answer: Where a claim or field came from.
+   Guidance: Provenance enables audit.
+
+15. What is an evidence gap?
+   Answer: A required fact that the system does not have.
+   Guidance: Gaps should be visible.
+
+16. How should tool failures affect confidence?
+   Answer: They should lower confidence or trigger retry/escalation.
+   Guidance: Failures are not neutral.
+
+17. What is a reliability anti-pattern?
+   Answer: Returning a confident answer after missing or failed evidence.
+   Guidance: This is a common exam trap.
+
+18. What should be compacted in a long-running session?
+   Answer: Stable conclusions and relevant state, not raw noise.
+   Guidance: Compaction should preserve decisions and evidence.
+
+19. Why label user-provided claims?
+   Answer: They are not the same as verified records.
+   Guidance: This matters in support, legal, and healthcare scenarios.
+
+20. What is the core architecture instinct for Domain 5?
+   Answer: Manage context deliberately and make uncertainty operationally visible.
+   Guidance: Reliability questions test evidence discipline.
+
+
 ## Instructor Notes
 
 - For a 60-question simulation, assign any 6 scenario sets.
+- For a 20-minute review block, assign one speed-round domain and have students answer aloud before revealing guidance.
 - For every miss, identify the scenario evidence, official domain, primitive tested, and reliability principle missed.
 - This practice exam is original training material, not copied exam content.

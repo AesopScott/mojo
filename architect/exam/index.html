@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Scenario-based Claude Certified Architect practice exam with 200 questions and answer reveals." />
+    <meta name="description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
     <title>Claude Architect Practice Exam | Mojo AI Studio</title>
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
@@ -16,7 +16,7 @@
     <meta property="og:site_name" content="Mojo AI Studio" />
     <meta property="og:url" content="https://mojoaistudio.com/architect/exam/" />
     <meta property="og:title" content="Claude Architect Practice Exam | Mojo AI Studio" />
-    <meta property="og:description" content="Scenario-based Claude Certified Architect practice exam with 200 questions and answer reveals." />
+    <meta property="og:description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
     <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
@@ -36,6 +36,10 @@
       .architect-content > p { max-width: 850px; }
       .architect-content p, .architect-content li { line-height: 1.68; }
       .architect-content code { background: #f2eee4; border: 1px solid #e4dccb; border-radius: 6px; padding: 0 5px; font-size: .92em; }
+      .mode-toggle { position: sticky; top: 96px; z-index: 7; display: inline-flex; gap: 4px; margin: 24px 0 12px; padding: 5px; border: 1px solid #d9ceb9; border-radius: 8px; background: rgba(255,255,255,.94); box-shadow: 0 10px 28px rgba(16,16,24,.08); }
+      .mode-toggle button { appearance: none; border: 0; border-radius: 6px; min-height: 38px; padding: 0 14px; background: transparent; color: #3b372f; font-weight: 900; cursor: pointer; }
+      .mode-toggle button[aria-pressed="true"] { background: #161618; color: #fff; }
+      .exam-mode[hidden] { display: none; }
       .case-file { border: 1px solid #d9ceb9; border-radius: 8px; margin: 34px 0 46px; background: #fffaf0; overflow: hidden; }
       .case-file-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; background: #17171f; color: #fff; }
       .case-file h3 { margin: 0; padding: 22px 20px 0; font-size: clamp(1.45rem, 2.8vw, 2.15rem); letter-spacing: 0; }
@@ -59,15 +63,26 @@
       .answer-toggle { appearance: none; border: 1px solid #2d2b25; background: #161618; color: #fff; border-radius: 8px; min-height: 34px; padding: 0 12px; font-weight: 800; cursor: pointer; white-space: nowrap; }
       .answer-toggle:hover { background: #2a2a31; }
       .answer-panel { margin-top: 12px; border-left: 4px solid #e0b33c; background: #fff7df; padding: 12px 14px; border-radius: 6px; line-height: 1.6; }
+      .answer-panel p { margin: 0; }
+      .answer-panel p + p { margin-top: 8px; }
+      .speed-intro { max-width: 850px; margin: 0 0 20px; }
+      .speed-domain { border-top: 1px solid #eadfc9; padding-top: 26px; margin-top: 28px; }
+      .speed-domain h3 { margin: 0 0 14px; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: 0; }
+      .speed-card { border: 1px solid #e6dece; border-radius: 8px; padding: 16px; margin: 12px 0; background: #fffdf8; }
+      .speed-card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+      .speed-card h4 { margin: 0; font-size: 1.03rem; line-height: 1.45; letter-spacing: 0; }
       .architect-footer { max-width: 1120px; margin: 0 auto; padding: 0 24px 52px; color: #5d5b55; }
       .architect-footer a { color: #181817; font-weight: 700; }
       @media (max-width: 980px) {
         .architect-hero { padding-top: 160px; }
+        .mode-toggle { top: 144px; }
       }
       @media (max-width: 640px) {
         .architect-hero { padding-top: 204px; }
         .architect-content { padding: 20px; }
-        .case-file-head, .exam-question-head { align-items: flex-start; flex-direction: column; }
+        .mode-toggle { top: 188px; width: 100%; }
+        .mode-toggle button { flex: 1; }
+        .case-file-head, .exam-question-head, .speed-card-head { align-items: flex-start; flex-direction: column; }
         .case-type { text-align: left; }
       }
     </style>
@@ -92,15 +107,22 @@
       <section class="architect-hero">
         <p class="kicker">Practice exam</p>
         <h1>Claude Architect Practice Exam</h1>
-        <p>Twenty full scenario case files with two hundred attached questions aligned to the official CCAR-F exam guide.</p>
+        <p>Twenty full scenario case files with two hundred attached questions, plus speed-round drills for each official domain.</p>
         <div class="architect-actions"><a class="architect-button" href="/architect/learn/">Study syllabus</a></div>
       </section>
     </header>
     <main class="architect-shell">
       <article class="architect-content">
-        <h2>Scenario-Based Practice Bank</h2>
-        <p>This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.</p>
-        <p>Each question states how many answers to select. Use the answer buttons only after committing to a choice.</p>
+        <h2>Architect Exam Prep</h2>
+        <p>Use Scenarios for exam-like case files with attached multiple-choice questions. Use Speed Round for fast domain recall with answer and guidance.</p>
+        <div class="mode-toggle" role="group" aria-label="Practice mode">
+          <button type="button" data-mode-target="scenario-mode" aria-pressed="true">Scenarios</button>
+          <button type="button" data-mode-target="speed-mode" aria-pressed="false">Speed Round</button>
+        </div>
+        <section class="exam-mode" id="scenario-mode">
+          <h3>Scenario-Based Practice Bank</h3>
+          <p>This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.</p>
+          <p>Each question states how many answers to select. Use the answer buttons only after committing to a choice.</p>
 <section class="case-file" id="scenario-1">
   <div class="case-file-head">
     <span class="scenario-pill">Scenario 1</span>
@@ -3461,9 +3483,1130 @@
     <div class="answer-panel" id="answer-20-10" hidden><strong>Correct answer:</strong> A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.</div>
   </section>
 </section>
+        </section>
+        <section class="exam-mode" id="speed-mode" hidden>
+          <h3>Speed Round</h3>
+          <p class="speed-intro">These are fast drills, not exam scenarios. Each official domain has 20 short prompts with an answer and guidance so you can run warmups, review blocks, or quick oral checks.</p>
+<section class="speed-domain" id="speed-agentic-architecture-orchestration">
+  <h3>Agentic Architecture &amp; Orchestration</h3>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 1</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-1" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What controls the Agent SDK loop after Claude returns tool_use?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-1" hidden>
+      <p><strong>Answer:</strong> Execute the requested tool, append the tool result, and call Claude again.</p>
+      <p><strong>Guidance:</strong> The loop is driven by stop_reason, not by parsing the assistant's prose.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 2</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-2" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What stop_reason normally ends an agent loop?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-2" hidden>
+      <p><strong>Answer:</strong> end_turn.</p>
+      <p><strong>Guidance:</strong> When Claude is done using tools, the final answer is returned on end_turn.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 3</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-3" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the anti-pattern for loop completion?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-3" hidden>
+      <p><strong>Answer:</strong> Checking assistant text for words like complete or done.</p>
+      <p><strong>Guidance:</strong> Text parsing is brittle; use explicit stop_reason values.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 4</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-4" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a coordinator responsible for in a multi-agent system?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-4" hidden>
+      <p><strong>Answer:</strong> Decomposition, routing, aggregation, and error handling.</p>
+      <p><strong>Guidance:</strong> Subagents do focused work; the coordinator owns the overall task state.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 5</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-5" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Do subagents automatically inherit parent context?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-5" hidden>
+      <p><strong>Answer:</strong> No.</p>
+      <p><strong>Guidance:</strong> Pass source material, constraints, and expected output explicitly.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 6</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-6" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How do you spawn parallel subagents?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-6" hidden>
+      <p><strong>Answer:</strong> Emit multiple Task tool calls in one coordinator response.</p>
+      <p><strong>Guidance:</strong> Parallel delegation is a coordination pattern, not separate user turns.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 7</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-7" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should a workflow use a deterministic gate or hook?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-7" hidden>
+      <p><strong>Answer:</strong> When a rule must be enforced reliably before an action.</p>
+      <p><strong>Guidance:</strong> Refund thresholds, identity checks, and permission checks should not rely on prompt text alone.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 8</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-8" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should the coordinator do when subagent coverage is incomplete?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-8" hidden>
+      <p><strong>Answer:</strong> Send targeted follow-up tasks or escalate the gap.</p>
+      <p><strong>Guidance:</strong> Iterative refinement is expected when evidence is missing.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 9</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-9" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is context isolation good for?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-9" hidden>
+      <p><strong>Answer:</strong> Reducing cross-task contamination and keeping specialists focused.</p>
+      <p><strong>Guidance:</strong> Isolation helps, but only if the coordinator passes needed context.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 10</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-10" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen to partial failures in a multi-agent system?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-10" hidden>
+      <p><strong>Answer:</strong> They should be captured, surfaced, and handled by the coordinator.</p>
+      <p><strong>Guidance:</strong> Hiding failures creates false confidence.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 11</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-11" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the safest way to handle an irreversible action?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-11" hidden>
+      <p><strong>Answer:</strong> Require explicit prerequisites and a programmatic control before tool execution.</p>
+      <p><strong>Guidance:</strong> The exam favors enforceable guardrails for high-impact actions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 12</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-12" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a good subagent prompt include?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-12" hidden>
+      <p><strong>Answer:</strong> Task, relevant context, sources, constraints, output schema, and success criteria.</p>
+      <p><strong>Guidance:</strong> A subagent cannot reliably infer missing context.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 13</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-13" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a coordinator aggregate?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-13" hidden>
+      <p><strong>Answer:</strong> Findings, confidence, sources, errors, and unresolved gaps.</p>
+      <p><strong>Guidance:</strong> Aggregation is more than summarization.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 14</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-14" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should a coordinator ask for clarification?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-14" hidden>
+      <p><strong>Answer:</strong> When required inputs or decision criteria are missing.</p>
+      <p><strong>Guidance:</strong> Clarification beats guessing.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 15</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-15" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is over-decomposition?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-15" hidden>
+      <p><strong>Answer:</strong> Splitting work so narrowly that important coverage is lost.</p>
+      <p><strong>Guidance:</strong> Subtasks should map to meaningful responsibility boundaries.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 16</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-16" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is under-decomposition?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-16" hidden>
+      <p><strong>Answer:</strong> Giving one agent too much broad work without specialization.</p>
+      <p><strong>Guidance:</strong> Complex scenarios often benefit from role-based subagents.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 17</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-17" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What makes a routing decision exam-worthy?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-17" hidden>
+      <p><strong>Answer:</strong> It is explicit, evidence-based, and tied to agent/tool capability.</p>
+      <p><strong>Guidance:</strong> Do not route based on vague labels.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 18</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-18" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen after a tool error?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-18" hidden>
+      <p><strong>Answer:</strong> Record the error, decide retry/escalation policy, and avoid claiming success.</p>
+      <p><strong>Guidance:</strong> Tool errors are part of the state.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 19</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-19" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why use a coordinator instead of peer agents only?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-19" hidden>
+      <p><strong>Answer:</strong> To preserve task state, resolve conflicts, and produce a coherent final answer.</p>
+      <p><strong>Guidance:</strong> Peer-only systems can lose authority and accountability.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 20</span>
+      <button class="answer-toggle" type="button" data-target="speed-agentic-architecture-orchestration-20" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the core architecture instinct for Domain 1?</h4>
+    <div class="answer-panel" id="speed-agentic-architecture-orchestration-20" hidden>
+      <p><strong>Answer:</strong> Make control flow explicit and keep authority boundaries clear.</p>
+      <p><strong>Guidance:</strong> Agentic architecture questions usually test orchestration discipline.</p>
+    </div>
+  </article>
+</section>
+<section class="speed-domain" id="speed-tool-design-mcp-integration">
+  <h3>Tool Design &amp; MCP Integration</h3>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 1</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-1" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What makes a good tool description?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-1" hidden>
+      <p><strong>Answer:</strong> It clearly states purpose, required inputs, side effects, and when not to use it.</p>
+      <p><strong>Guidance:</strong> Claude chooses tools based heavily on descriptions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 2</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-2" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a poor tool design?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-2" hidden>
+      <p><strong>Answer:</strong> A broad do_everything tool with free-text arguments.</p>
+      <p><strong>Guidance:</strong> Broad tools obscure intent, validation, and safety boundaries.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 3</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-3" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should tool errors be returned?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-3" hidden>
+      <p><strong>Answer:</strong> Structured status with a clear error message and recoverable details.</p>
+      <p><strong>Guidance:</strong> The model needs machine-readable failure context.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 4</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-4" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What does tool_choice help control?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-4" hidden>
+      <p><strong>Answer:</strong> Whether Claude may, must, or must not use tools.</p>
+      <p><strong>Guidance:</strong> Use it to constrain tool behavior for the task.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 5</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-5" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When is a read-only MCP resource appropriate?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-5" hidden>
+      <p><strong>Answer:</strong> When Claude needs stable context such as policy, schema, or documentation.</p>
+      <p><strong>Guidance:</strong> Resources provide context; tools perform actions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 6</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-6" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When is an MCP tool appropriate?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-6" hidden>
+      <p><strong>Answer:</strong> When Claude needs to perform a controlled operation with typed inputs.</p>
+      <p><strong>Guidance:</strong> Tools should have scoped authority.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 7</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-7" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What metadata should MCP resources preserve?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-7" hidden>
+      <p><strong>Answer:</strong> Version, source, date, owner, and access context when relevant.</p>
+      <p><strong>Guidance:</strong> Metadata supports provenance and freshness decisions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 8</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-8" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why avoid arbitrary code execution tools?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-8" hidden>
+      <p><strong>Answer:</strong> They create broad security and reliability risk.</p>
+      <p><strong>Guidance:</strong> Constrain tools to purposeful operations.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 9</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-9" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a tool schema validate?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-9" hidden>
+      <p><strong>Answer:</strong> Required identifiers, allowed values, formats, and action prerequisites.</p>
+      <p><strong>Guidance:</strong> Validation catches failures before unsafe execution.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 10</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-10" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the best response to missing required tool input?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-10" hidden>
+      <p><strong>Answer:</strong> Ask for the missing input or use a lookup tool if available.</p>
+      <p><strong>Guidance:</strong> Do not invent identifiers.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 11</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-11" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should side effects be documented?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-11" hidden>
+      <p><strong>Answer:</strong> Explicitly in the tool description and guarded by prerequisites.</p>
+      <p><strong>Guidance:</strong> Claude must know when a tool changes external state.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 12</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-12" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the difference between a resource and a tool?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-12" hidden>
+      <p><strong>Answer:</strong> A resource supplies context; a tool performs work.</p>
+      <p><strong>Guidance:</strong> Mixing the two leads to unclear authority.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 13</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-13" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should authentication failures be handled?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-13" hidden>
+      <p><strong>Answer:</strong> Return structured permission error context and escalation guidance.</p>
+      <p><strong>Guidance:</strong> Retry loops cannot fix missing permissions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 14</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-14" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen when a tool times out?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-14" hidden>
+      <p><strong>Answer:</strong> Classify the failure, retry only if policy allows, and disclose uncertainty.</p>
+      <p><strong>Guidance:</strong> Timeouts are evidence gaps.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 15</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-15" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a good tool naming pattern?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-15" hidden>
+      <p><strong>Answer:</strong> Specific verb-noun names like lookup_order or create_refund_request.</p>
+      <p><strong>Guidance:</strong> Names should reveal intent.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 16</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-16" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is an isError-style signal for?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-16" hidden>
+      <p><strong>Answer:</strong> Letting Claude distinguish failed tool results from successful data.</p>
+      <p><strong>Guidance:</strong> Without an error signal, failures can be treated as facts.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 17</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-17" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should tool outputs avoid?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-17" hidden>
+      <p><strong>Answer:</strong> Unstructured blobs when the next step requires reliable parsing.</p>
+      <p><strong>Guidance:</strong> Structured outputs support downstream decisions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 18</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-18" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How do you reduce unsafe tool use?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-18" hidden>
+      <p><strong>Answer:</strong> Limit allowed tools, use precise descriptions, validate inputs, and gate risky calls.</p>
+      <p><strong>Guidance:</strong> Defense is layered.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 19</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-19" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is an MCP integration trap?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-19" hidden>
+      <p><strong>Answer:</strong> Assuming resources are automatically available to all agents.</p>
+      <p><strong>Guidance:</strong> Context still has to be routed intentionally.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 20</span>
+      <button class="answer-toggle" type="button" data-target="speed-tool-design-mcp-integration-20" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the core architecture instinct for Domain 2?</h4>
+    <div class="answer-panel" id="speed-tool-design-mcp-integration-20" hidden>
+      <p><strong>Answer:</strong> Design narrow, typed, well-described tools with explicit errors and authority.</p>
+      <p><strong>Guidance:</strong> Tool questions usually test contract quality.</p>
+    </div>
+  </article>
+</section>
+<section class="speed-domain" id="speed-claude-code-configuration-workflows">
+  <h3>Claude Code Configuration &amp; Workflows</h3>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 1</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-1" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should Claude Code read before editing?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-1" hidden>
+      <p><strong>Answer:</strong> Repository instructions such as AGENTS.md, CLAUDE.md, and relevant local docs.</p>
+      <p><strong>Guidance:</strong> Local rules are part of the task contract.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 2</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-2" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is Plan Mode for?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-2" hidden>
+      <p><strong>Answer:</strong> Thinking through scope and approach before making changes.</p>
+      <p><strong>Guidance:</strong> Use it for risky or multi-step edits.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 3</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-3" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should Claude Code do before broad refactors?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-3" hidden>
+      <p><strong>Answer:</strong> Confirm scope and match existing patterns.</p>
+      <p><strong>Guidance:</strong> Unrelated churn is a review risk.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 4</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-4" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What belongs in a slash command?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-4" hidden>
+      <p><strong>Answer:</strong> Repeatable repo-specific workflows or checks.</p>
+      <p><strong>Guidance:</strong> Commands make common workflows consistent.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 5</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-5" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What belongs in a skill?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-5" hidden>
+      <p><strong>Answer:</strong> Reusable procedural knowledge with clear trigger conditions.</p>
+      <p><strong>Guidance:</strong> Skills help standardize complex workflows.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 6</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-6" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should Claude Code report tests?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-6" hidden>
+      <p><strong>Answer:</strong> List exactly what ran, what passed, what failed, and what was not run.</p>
+      <p><strong>Guidance:</strong> Do not imply verification that did not happen.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 7</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-7" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a destructive git operation?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-7" hidden>
+      <p><strong>Answer:</strong> Commands like reset hard or checkout that discard work.</p>
+      <p><strong>Guidance:</strong> These require explicit user approval.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 8</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-8" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should generated files be handled?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-8" hidden>
+      <p><strong>Answer:</strong> Respect repo rules; do not edit protected generated files unless instructed.</p>
+      <p><strong>Guidance:</strong> Generated artifacts often have source owners.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 9</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-9" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a PR summary emphasize?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-9" hidden>
+      <p><strong>Answer:</strong> Behavioral change, tests, risks, and reviewer notes.</p>
+      <p><strong>Guidance:</strong> A file list is not enough.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 10</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-10" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen when tests time out?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-10" hidden>
+      <p><strong>Answer:</strong> Report the timeout and run narrower diagnostics if useful.</p>
+      <p><strong>Guidance:</strong> Do not claim success.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 11</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-11" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why inspect existing patterns first?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-11" hidden>
+      <p><strong>Answer:</strong> To avoid inventing incompatible abstractions.</p>
+      <p><strong>Guidance:</strong> Claude Code should work with the codebase.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 12</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-12" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should Claude Code ask before changing lockfiles?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-12" hidden>
+      <p><strong>Answer:</strong> When repo policy or risk indicates dependency changes need approval.</p>
+      <p><strong>Guidance:</strong> Lockfiles can affect broad dependency state.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 13</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-13" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a focused verification command?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-13" hidden>
+      <p><strong>Answer:</strong> The smallest meaningful test or lint command for the changed surface.</p>
+      <p><strong>Guidance:</strong> Focused tests provide faster evidence.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 14</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-14" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a CI repair anti-pattern?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-14" hidden>
+      <p><strong>Answer:</strong> Changing snapshots or dependencies without proving the root cause.</p>
+      <p><strong>Guidance:</strong> Fix evidence, not symptoms.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 15</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-15" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should Claude Code handle unresolved failures?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-15" hidden>
+      <p><strong>Answer:</strong> Document them plainly with likely cause and next step.</p>
+      <p><strong>Guidance:</strong> Transparency matters.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 16</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-16" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should repository memory files contain?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-16" hidden>
+      <p><strong>Answer:</strong> Durable project guidance, not ad hoc hidden assumptions.</p>
+      <p><strong>Guidance:</strong> Memory should be explicit and maintainable.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 17</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-17" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a good Claude Code handoff?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-17" hidden>
+      <p><strong>Answer:</strong> Context, files changed, commands run, residual risk, and suggested next action.</p>
+      <p><strong>Guidance:</strong> Handoffs should let a human resume easily.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 18</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-18" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should Claude Code handle conflicting instructions?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-18" hidden>
+      <p><strong>Answer:</strong> Follow precedence and ask if the conflict blocks safe action.</p>
+      <p><strong>Guidance:</strong> Instruction hierarchy matters.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 19</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-19" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the risk of oversized context in Claude Code?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-19" hidden>
+      <p><strong>Answer:</strong> Important constraints can get lost or stale.</p>
+      <p><strong>Guidance:</strong> Summaries and scoped reads help.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 20</span>
+      <button class="answer-toggle" type="button" data-target="speed-claude-code-configuration-workflows-20" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the core architecture instinct for Domain 3?</h4>
+    <div class="answer-panel" id="speed-claude-code-configuration-workflows-20" hidden>
+      <p><strong>Answer:</strong> Use repo-local rules, plan before risky edits, verify honestly, and keep diffs scoped.</p>
+      <p><strong>Guidance:</strong> Claude Code questions test workflow discipline.</p>
+    </div>
+  </article>
+</section>
+<section class="speed-domain" id="speed-prompt-engineering-structured-output">
+  <h3>Prompt Engineering &amp; Structured Output</h3>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 1</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-1" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should you use structured output?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-1" hidden>
+      <p><strong>Answer:</strong> When downstream code or review needs reliable fields.</p>
+      <p><strong>Guidance:</strong> Schemas reduce ambiguity.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 2</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-2" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a retry include after schema validation fails?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-2" hidden>
+      <p><strong>Answer:</strong> The validation errors and the original task context.</p>
+      <p><strong>Guidance:</strong> Specific feedback beats vague retry instructions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 3</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-3" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is few-shot prompting best for?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-3" hidden>
+      <p><strong>Answer:</strong> Teaching format and edge-case distinctions.</p>
+      <p><strong>Guidance:</strong> Examples shape behavior more concretely than abstract rules.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 4</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-4" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a structured extraction risk?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-4" hidden>
+      <p><strong>Answer:</strong> Valid-looking JSON with wrong or unsupported content.</p>
+      <p><strong>Guidance:</strong> Validation must check semantics when possible.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 5</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-5" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should be included for source-grounded answers?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-5" hidden>
+      <p><strong>Answer:</strong> Citations, source labels, or evidence references.</p>
+      <p><strong>Guidance:</strong> Grounding enables review.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 6</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-6" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should the model do when evidence is incomplete?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-6" hidden>
+      <p><strong>Answer:</strong> Flag uncertainty or request missing context.</p>
+      <p><strong>Guidance:</strong> Do not fill gaps with invention.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 7</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-7" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is an output schema field good for?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-7" hidden>
+      <p><strong>Answer:</strong> Making required decisions explicit and machine-checkable.</p>
+      <p><strong>Guidance:</strong> Schema design is part of prompt engineering.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 8</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-8" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why separate assumptions from facts?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-8" hidden>
+      <p><strong>Answer:</strong> So reviewers can see what is proven and what is inferred.</p>
+      <p><strong>Guidance:</strong> This is common in exam scenarios.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 9</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-9" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a batch-processing risk?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-9" hidden>
+      <p><strong>Answer:</strong> Systematic errors scale across many records.</p>
+      <p><strong>Guidance:</strong> Use evals, sampling, and review queues.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 10</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-10" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should prompts treat critical constraints?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-10" hidden>
+      <p><strong>Answer:</strong> Put them clearly near the task and output requirements.</p>
+      <p><strong>Guidance:</strong> Avoid burying them in long context.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 11</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-11" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a good review pass for extraction?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-11" hidden>
+      <p><strong>Answer:</strong> Check missing fields, conflicts, confidence, and source references.</p>
+      <p><strong>Guidance:</strong> Second passes catch omissions.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 12</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-12" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why avoid parsing polished prose?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-12" hidden>
+      <p><strong>Answer:</strong> It is less reliable than constrained structured output.</p>
+      <p><strong>Guidance:</strong> Use JSON/schema when a machine consumes the result.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 13</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-13" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a confidence field mean?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-13" hidden>
+      <p><strong>Answer:</strong> A defined signal tied to evidence quality.</p>
+      <p><strong>Guidance:</strong> Uncalibrated confidence is weak.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 14</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-14" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How do you handle multiple-response questions in prompts?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-14" hidden>
+      <p><strong>Answer:</strong> State exactly how many selections are expected.</p>
+      <p><strong>Guidance:</strong> Ambiguity creates scoring errors.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 15</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-15" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should a prompt do with policy exceptions?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-15" hidden>
+      <p><strong>Answer:</strong> Ask the model to flag exception conditions explicitly.</p>
+      <p><strong>Guidance:</strong> Exceptions often drive escalation.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 16</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-16" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a common prompt anti-pattern?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-16" hidden>
+      <p><strong>Answer:</strong> One huge prompt with hidden goals and no output contract.</p>
+      <p><strong>Guidance:</strong> Clarity and structure win.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 17</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-17" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should human review be routed?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-17" hidden>
+      <p><strong>Answer:</strong> Low confidence, high impact, policy conflict, or missing evidence.</p>
+      <p><strong>Guidance:</strong> Review criteria should be explicit.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 18</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-18" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What makes guidance useful?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-18" hidden>
+      <p><strong>Answer:</strong> It explains the principle, not just the answer.</p>
+      <p><strong>Guidance:</strong> Guidance helps transfer to new scenarios.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 19</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-19" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should be avoided in final answers?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-19" hidden>
+      <p><strong>Answer:</strong> Hidden chain-of-thought requests and unsupported certainty.</p>
+      <p><strong>Guidance:</strong> Use concise rationale instead.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 20</span>
+      <button class="answer-toggle" type="button" data-target="speed-prompt-engineering-structured-output-20" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the core architecture instinct for Domain 4?</h4>
+    <div class="answer-panel" id="speed-prompt-engineering-structured-output-20" hidden>
+      <p><strong>Answer:</strong> Constrain outputs, teach edge cases, validate, and preserve evidence.</p>
+      <p><strong>Guidance:</strong> Prompt questions test reliability under ambiguity.</p>
+    </div>
+  </article>
+</section>
+<section class="speed-domain" id="speed-context-management-reliability">
+  <h3>Context Management &amp; Reliability</h3>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 1</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-1" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is lost-in-the-middle?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-1" hidden>
+      <p><strong>Answer:</strong> Important context being underused when buried in long inputs.</p>
+      <p><strong>Guidance:</strong> Position and compactness matter.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 2</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-2" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should critical context be ordered?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-2" hidden>
+      <p><strong>Answer:</strong> Place instructions, constraints, and current evidence where the model can use them.</p>
+      <p><strong>Guidance:</strong> Do not bury decisive facts.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 3</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-3" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen when context is too large?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-3" hidden>
+      <p><strong>Answer:</strong> Summarize, retrieve selectively, or split work with explicit handoffs.</p>
+      <p><strong>Guidance:</strong> More context is not always better.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 4</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-4" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why preserve source metadata?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-4" hidden>
+      <p><strong>Answer:</strong> It supports provenance, freshness checks, and review.</p>
+      <p><strong>Guidance:</strong> Context without sources is harder to trust.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 5</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-5" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a good escalation trigger?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-5" hidden>
+      <p><strong>Answer:</strong> Missing required evidence, low confidence, high-impact action, or policy conflict.</p>
+      <p><strong>Guidance:</strong> Escalation should be rule-based.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 6</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-6" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should be disclosed in internal handoffs?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-6" hidden>
+      <p><strong>Answer:</strong> Tool errors, missing inputs, assumptions, confidence, and attempted actions.</p>
+      <p><strong>Guidance:</strong> Handoffs need operational truth.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 7</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-7" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why avoid stale tool results?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-7" hidden>
+      <p><strong>Answer:</strong> Files, records, or policies may have changed.</p>
+      <p><strong>Guidance:</strong> Refresh or summarize with timestamps.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 8</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-8" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is confidence calibration?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-8" hidden>
+      <p><strong>Answer:</strong> Tying confidence to evidence quality and uncertainty.</p>
+      <p><strong>Guidance:</strong> Confidence should not be a vibes score.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 9</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-9" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should happen with contradictory sources?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-9" hidden>
+      <p><strong>Answer:</strong> Surface the conflict and resolve or escalate it.</p>
+      <p><strong>Guidance:</strong> Do not average contradictions into a false answer.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 10</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-10" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a reliable final answer?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-10" hidden>
+      <p><strong>Answer:</strong> Grounded, appropriately scoped, and honest about uncertainty.</p>
+      <p><strong>Guidance:</strong> Reliability includes saying what is not known.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 11</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-11" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should long documents be chunked?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-11" hidden>
+      <p><strong>Answer:</strong> With section boundaries, page/source metadata, and task-relevant retrieval.</p>
+      <p><strong>Guidance:</strong> Chunking should preserve meaning.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 12</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-12" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a context handoff?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-12" hidden>
+      <p><strong>Answer:</strong> A structured package of relevant facts, sources, constraints, and next task.</p>
+      <p><strong>Guidance:</strong> Handoffs prevent context loss.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 13</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-13" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>When should the system ask a clarifying question?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-13" hidden>
+      <p><strong>Answer:</strong> When the answer depends on missing user intent or required data.</p>
+      <p><strong>Guidance:</strong> Guessing can create unsafe outcomes.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 14</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-14" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What does provenance mean?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-14" hidden>
+      <p><strong>Answer:</strong> Where a claim or field came from.</p>
+      <p><strong>Guidance:</strong> Provenance enables audit.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 15</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-15" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is an evidence gap?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-15" hidden>
+      <p><strong>Answer:</strong> A required fact that the system does not have.</p>
+      <p><strong>Guidance:</strong> Gaps should be visible.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 16</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-16" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>How should tool failures affect confidence?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-16" hidden>
+      <p><strong>Answer:</strong> They should lower confidence or trigger retry/escalation.</p>
+      <p><strong>Guidance:</strong> Failures are not neutral.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 17</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-17" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is a reliability anti-pattern?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-17" hidden>
+      <p><strong>Answer:</strong> Returning a confident answer after missing or failed evidence.</p>
+      <p><strong>Guidance:</strong> This is a common exam trap.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 18</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-18" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What should be compacted in a long-running session?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-18" hidden>
+      <p><strong>Answer:</strong> Stable conclusions and relevant state, not raw noise.</p>
+      <p><strong>Guidance:</strong> Compaction should preserve decisions and evidence.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 19</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-19" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>Why label user-provided claims?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-19" hidden>
+      <p><strong>Answer:</strong> They are not the same as verified records.</p>
+      <p><strong>Guidance:</strong> This matters in support, legal, and healthcare scenarios.</p>
+    </div>
+  </article>
+<article class="speed-card">
+    <div class="speed-card-head">
+      <span class="scenario-pill">Speed 20</span>
+      <button class="answer-toggle" type="button" data-target="speed-context-management-reliability-20" aria-expanded="false">Show answer</button>
+    </div>
+    <h4>What is the core architecture instinct for Domain 5?</h4>
+    <div class="answer-panel" id="speed-context-management-reliability-20" hidden>
+      <p><strong>Answer:</strong> Manage context deliberately and make uncertainty operationally visible.</p>
+      <p><strong>Guidance:</strong> Reliability questions test evidence discipline.</p>
+    </div>
+  </article>
+</section>
+        </section>
         <h3>Instructor Notes</h3>
         <ul>
           <li>For a 60-question simulation, assign any 6 scenario sets.</li>
+          <li>For a 20-minute review block, assign one speed-round domain and have students answer aloud before revealing guidance.</li>
           <li>For every miss, identify the scenario evidence, official domain, primitive tested, and reliability principle missed.</li>
           <li>This practice exam is original training material, not copied exam content.</li>
         </ul>
@@ -3474,6 +4617,21 @@
     </footer>
     <script>
       document.addEventListener('click', (event) => {
+        const modeButton = event.target.closest('[data-mode-target]');
+        if (modeButton) {
+          const targetId = modeButton.dataset.modeTarget;
+          document.querySelectorAll('[data-mode-target]').forEach((button) => {
+            button.setAttribute('aria-pressed', String(button === modeButton));
+          });
+          document.querySelectorAll('.exam-mode').forEach((section) => {
+            if (section.id === targetId) {
+              section.removeAttribute('hidden');
+            } else {
+              section.setAttribute('hidden', '');
+            }
+          });
+          return;
+        }
         const button = event.target.closest('.answer-toggle');
         if (!button) return;
         const panel = document.getElementById(button.dataset.target);
