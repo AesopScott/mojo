@@ -32,6 +32,18 @@ $sessions = [
         'duration' => 120,
         'zoom_url' => 'https://us06web.zoom.us/j/81053958115?pwd=eY5KL5ZHFVAUIkieefFhPHKLDwXpZm.1',
     ],
+    'fable5-quality' => [
+        'title' => 'Get Fable 5 Quality From Low-Cost AI Models',
+        'date' => '2026-08-08T00:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1',
+    ],
+    'fable5-quality-global' => [
+        'title' => 'Global - Get Fable 5 Quality From Low-Cost AI Models',
+        'date' => '2026-08-09T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1',
+    ],
 ];
 
 $id = trim((string) ($_GET['id'] ?? ''));

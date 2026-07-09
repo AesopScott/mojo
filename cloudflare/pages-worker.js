@@ -44,6 +44,18 @@ const JOIN_SESSIONS = {
     duration: 120,
     zoomUrl: "https://us06web.zoom.us/j/81053958115?pwd=eY5KL5ZHFVAUIkieefFhPHKLDwXpZm.1",
   },
+  "fable5-quality": {
+    title: "Get Fable 5 Quality From Low-Cost AI Models",
+    date: "2026-08-08T00:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1",
+  },
+  "fable5-quality-global": {
+    title: "Global - Get Fable 5 Quality From Low-Cost AI Models",
+    date: "2026-08-09T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1",
+  },
 };
 
 const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
@@ -730,6 +742,82 @@ async function handleMeetupAdmin(request, env, url) {
       bodyLength: body.length,
       sends,
     }, failed.length === 0 ? 200 : 207);
+  }
+
+  if (action === "meetup-events") {
+    const token = await meetupAccessToken(env);
+    const urlname = String(url.searchParams.get("urlname") || "").trim();
+    const title = String(url.searchParams.get("title") || "").trim().toLowerCase();
+    if (!/^[a-z0-9-]{3,120}$/.test(urlname)) {
+      return json({ ok: false, error: "Provide a valid urlname." }, 422);
+    }
+
+    const data = await meetupGraphQL(token, `query($urlname:String!){
+      groupByUrlname(urlname:$urlname){
+        id
+        name
+        urlname
+        events(first:100,status:ACTIVE,sort:ASC){
+          edges{ node{
+            id
+            title
+            eventUrl
+            status
+            dateTime
+            duration
+            description
+            howToFindUs
+            venue{ id name }
+            venues{ id name }
+            networkEvent{ id title eventTime groupCount status timezone }
+          } }
+        }
+      }
+    }`, { urlname });
+
+    const events = (data.groupByUrlname?.events?.edges || [])
+      .map((edge) => edge.node)
+      .filter((event) => !title || String(event.title || "").toLowerCase().includes(title));
+    return json({ ok: true, group: data.groupByUrlname, events });
+  }
+
+  if (action === "meetup-create-event") {
+    if (request.method !== "POST") {
+      return json({ ok: false, error: "Use POST for meetup-create-event." }, 405);
+    }
+
+    const payload = await request.json().catch(() => ({}));
+    const input = payload.input;
+    if (payload.confirm !== "meetup-create-event" || !input || typeof input !== "object") {
+      return json({
+        ok: false,
+        error: "Provide confirm=meetup-create-event and input.",
+      }, 422);
+    }
+
+    const token = await meetupAccessToken(env);
+    const data = await meetupGraphQL(token, `mutation($input:CreateEventInput!){
+      createEvent(input:$input){
+        event{
+          id
+          title
+          eventUrl
+          status
+          dateTime
+          duration
+          group{ id name urlname }
+          networkEvent{ id title eventTime groupCount status timezone }
+        }
+        errors{ message field code }
+      }
+    }`, { input });
+    const result = data.createEvent || {};
+    const errors = result.errors || [];
+    return json({
+      ok: errors.length === 0 && Boolean(result.event),
+      event: result.event || null,
+      errors,
+    }, errors.length === 0 && result.event ? 200 : 500);
   }
 
   return json({ ok: false, error: "Unknown action." }, 404);
