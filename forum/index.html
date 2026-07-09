@@ -209,6 +209,20 @@
         text-align: left;
       }
 
+      [data-thread-list] {
+        display: grid;
+        gap: 12px;
+      }
+
+      [data-thread-list] .forum-thread {
+        border-top-width: 3px;
+        border-top-color: #8fc7ea;
+      }
+
+      [data-thread-list] .forum-thread:nth-child(even) {
+        background: #f2faff;
+      }
+
       .forum-thread h2,
       .forum-thread h3 {
         margin: 0;
