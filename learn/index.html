@@ -690,7 +690,9 @@
                 const country = String(group.country || "").trim().toUpperCase();
                 const region = state && !/^\d+$/.test(state) ? state : country;
                 const city = String(group.city || "Meetup").replace("Washington, DC", "Washington,\u00a0DC");
-                const label = region ? city + ", " + region : city;
+                const members = Number(group.members || 0);
+                const memberLabel = members ? " (" + members.toLocaleString() + " members)" : "";
+                const label = (region ? city + ", " + region : city) + memberLabel;
                 const link = String(group.link || (urlname ? "https://www.meetup.com/" + urlname + "/" : ""));
                 const option = document.createElement("option");
                 option.value = value;
@@ -784,7 +786,11 @@
                 var item = document.createElement('span');
                 var city = document.createElement('b');
                 var count = document.createElement('small');
-                city.textContent = String(group.city || 'Meetup').replace('Washington, DC', 'Washington,' + String.fromCharCode(160) + 'DC');
+                var state = String(group.state || '').trim();
+                var country = String(group.country || '').trim().toUpperCase();
+                var region = state && !/^\d+$/.test(state) ? state : country;
+                var cityName = String(group.city || 'Meetup').replace('Washington, DC', 'Washington,' + String.fromCharCode(160) + 'DC');
+                city.textContent = region ? cityName + ', ' + region : cityName;
                 count.textContent = Number(group.members || 0).toLocaleString() + ' members';
                 item.appendChild(city);
                 item.appendChild(count);
