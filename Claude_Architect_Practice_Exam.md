@@ -1,6 +1,6 @@
-# Claude Architect Scenario Practice Exam
+# Anthropic Architect Foundations Scenario Practice Exam
 
-200 original scenario practice questions plus 100 speed-round drills aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
+200 original scenario practice questions plus 100 speed-round drills aligned to the official Anthropic Architect Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
 
 This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.
 

@@ -580,9 +580,9 @@ ${round.items.map((item, index) => `<article class="speed-card">
 </section>`;
 }
 
-const md = `# Claude Architect Scenario Practice Exam
+const md = `# Anthropic Architect Foundations Scenario Practice Exam
 
-200 original scenario practice questions plus 100 speed-round drills aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code \`CCAR-F\`.
+200 original scenario practice questions plus 100 speed-round drills aligned to the official Anthropic Architect Foundations Exam Guide, version 1.0, effective July 2026, exam code \`CCAR-F\`.
 
 This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank gives you 20 scenario sets with 10 questions each so you can drill the pattern repeatedly.
 
@@ -691,8 +691,8 @@ const html = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
-    <title>Claude Architect Practice Exam | Mojo AI Studio</title>
+    <meta name="description" content="Scenario-based Anthropic Architect Foundations practice exam with 200 questions, plus speed-round domain drills." />
+    <title>Anthropic Architect Foundations Practice Exam | Mojo AI Studio</title>
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
@@ -703,8 +703,8 @@ const html = `<!doctype html>
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Mojo AI Studio" />
     <meta property="og:url" content="https://mojoaistudio.com/architect/exam/" />
-    <meta property="og:title" content="Claude Architect Practice Exam | Mojo AI Studio" />
-    <meta property="og:description" content="Scenario-based Claude Certified Architect practice exam with 200 questions, plus speed-round domain drills." />
+    <meta property="og:title" content="Anthropic Architect Foundations Practice Exam | Mojo AI Studio" />
+    <meta property="og:description" content="Scenario-based Anthropic Architect Foundations practice exam with 200 questions, plus speed-round domain drills." />
     <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
@@ -731,14 +731,14 @@ ${css}
       </nav>
       <section class="architect-hero">
         <p class="kicker">Practice exam</p>
-        <h1>Claude Architect Practice Exam</h1>
+        <h1>Anthropic Architect Foundations Practice Exam</h1>
         <p>Twenty full scenario case files with two hundred attached questions, plus speed-round drills for each official domain.</p>
         <div class="architect-actions"><a class="architect-button" href="/architect/learn/">Study syllabus</a></div>
       </section>
     </header>
     <main class="architect-shell">
       <article class="architect-content">
-        <h2>Architect Exam Prep</h2>
+        <h2>Anthropic Architect Foundations Exam Prep</h2>
         <p>Use Scenarios for exam-like case files with attached multiple-choice questions. Use Speed Round for fast domain recall with answer and guidance.</p>
         <div class="mode-toggle" role="group" aria-label="Practice mode">
           <button type="button" data-mode-target="scenario-mode" aria-pressed="true">Scenarios</button>
@@ -765,7 +765,7 @@ ${speedRounds.map(renderSpeedRoundHtml).join("\n")}
       </article>
     </main>
     <footer class="architect-footer">
-      <p><a href="/">Mojo AI Studio</a> - Claude Architect preparation material.</p>
+      <p><a href="/">Mojo AI Studio</a> - Anthropic Architect Foundations preparation material.</p>
     </footer>
     <script>
       document.addEventListener('click', (event) => {

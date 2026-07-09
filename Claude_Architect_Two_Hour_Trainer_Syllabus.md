@@ -1,6 +1,6 @@
-# Claude Architect Two-Hour Trainer Syllabus
+# Anthropic Architect Foundations Two-Hour Trainer Syllabus
 
-Instructor-facing guide for a two-hour prep session aligned to the official **Claude Certified Architect - Foundations Exam Guide**, version 1.0, effective July 2026, exam code `CCAR-F`.
+Instructor-facing guide for a two-hour prep session aligned to the official **Anthropic Architect Foundations Exam Guide**, version 1.0, effective July 2026, exam code `CCAR-F`.
 
 Companion files:
 

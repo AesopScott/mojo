@@ -1,10 +1,10 @@
-# Anthropic Architect Exam Prep Course
+# Anthropic Architect Foundations Exam Prep Course
 
-Audience: developers, solution architects, AI platform leads, and technical consultants preparing for the Claude Certified Architect - Foundations exam.
+Audience: developers, solution architects, AI platform leads, and technical consultants preparing for the Anthropic Architect Foundations exam.
 
 Format: 4 sessions, 2.5 hours each, plus self-study and practice exam. Adjust to 2 full days by combining Sessions 1-2 and 3-4.
 
-Last updated: 2026-07-09. Revised against official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
+Last updated: 2026-07-09. Revised against official Anthropic Architect Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
 
 ## Source Baseline
 
@@ -466,7 +466,7 @@ Ask students to complete or skim:
 
 - Anthropic Academy: Building with the Claude API.
 - Anthropic Academy: Introduction to Model Context Protocol.
-- Official Claude Certified Architect - Foundations Exam Guide.
+- Official Anthropic Architect Foundations Exam Guide.
 - Claude Code docs: `CLAUDE.md`, rules, commands, skills, plan mode, CI usage.
 - Claude Agent SDK docs: agent loops, subagents, hooks, sessions.
 - Tool use docs: JSON Schema, `tool_choice`, `stop_reason`.

@@ -1,6 +1,6 @@
-# Anthropic Architect Exam Prep - Two-Hour Session
+# Anthropic Architect Foundations Exam Prep - Two-Hour Session
 
-Student-facing crash session aligned to the official Claude Certified Architect - Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
+Student-facing crash session aligned to the official Anthropic Architect Foundations Exam Guide, version 1.0, effective July 2026, exam code `CCAR-F`.
 
 Format: one 2-hour instructor-led session.
 
