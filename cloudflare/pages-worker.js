@@ -344,25 +344,23 @@ async function meetupWriteAccessToken(env) {
     return meetupJwtAccessToken(env);
   }
 
-  if (String(env.MEETUP_ENABLE_REFRESH_TOKEN || "") === "1") {
-    const refreshToken = String(env.MEETUP_REFRESH_TOKEN || "").trim();
-    const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
-    const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
-    if (refreshToken && clientId && clientSecret) {
-      const body = new URLSearchParams({
-        client_id: clientId,
-        client_secret: clientSecret,
-        grant_type: "refresh_token",
-        refresh_token: refreshToken,
-      });
-      const response = await fetch("https://secure.meetup.com/oauth2/access", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body,
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (response.ok && payload.access_token) return payload.access_token;
-    }
+  const refreshToken = String(env.MEETUP_REFRESH_TOKEN || "").trim();
+  const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
+  const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  if (refreshToken && clientId && clientSecret) {
+    const body = new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+    });
+    const response = await fetch("https://secure.meetup.com/oauth2/access", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (response.ok && payload.access_token) return payload.access_token;
   }
 
   return meetupAccessToken(env);
