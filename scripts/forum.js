@@ -220,6 +220,18 @@
     const article = document.createElement('article');
     article.className = 'forum-thread';
     article.classList.toggle('is-pinned', Boolean(thread.pinned));
+    article.tabIndex = 0;
+    article.setAttribute('role', 'button');
+    article.setAttribute('aria-label', `Open thread: ${thread.title}`);
+    article.addEventListener('click', function (event) {
+      if (event.target.closest('button, a')) return;
+      loadThread(thread.id);
+    });
+    article.addEventListener('keydown', function (event) {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      loadThread(thread.id);
+    });
 
     const meta = metaRow([
       thread.categoryName,

@@ -217,10 +217,20 @@
       [data-thread-list] .forum-thread {
         border-top-width: 3px;
         border-top-color: #8fc7ea;
+        cursor: pointer;
+        transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
       }
 
       [data-thread-list] .forum-thread:nth-child(even) {
         background: #f2faff;
+      }
+
+      [data-thread-list] .forum-thread:hover,
+      [data-thread-list] .forum-thread:focus-visible {
+        border-color: #67add8;
+        box-shadow: 0 16px 38px rgba(23, 84, 128, 0.16);
+        outline: none;
+        transform: translateY(-1px);
       }
 
       .forum-thread h2,
