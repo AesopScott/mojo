@@ -125,9 +125,9 @@ If stop_reason == "end_turn":
 </ul>
 <h4 id="hooks">Hooks</h4>
 <ul>
-<li>Use hooks when compliance must be deterministic.</li>
-<li><code>PostToolUse</code> can normalize tool results before Claude sees them.</li>
-<li>Tool-call interception can block policy violations, such as refunds over threshold.</li>
+<li>Use hooks when compliance must be deterministic.<br><span style="color:red;">Use the hook name when you want exact scripted behavior, not a vague behavioral hint.</span></li>
+<li><code>PostToolUse</code> can normalize tool results before Claude sees them.<br><span style="color:red;">This is the right place to inspect, rewrite, redact, or reject tool output after execution.</span></li>
+<li>Tool-call interception can block policy violations, such as refunds over threshold.<br><span style="color:red;">If the tool runs first and the hook filters the result, that is still post-tool-use interception.</span></li>
 </ul>
 <h4 id="tools-and-mcp">Tools and MCP</h4>
 <ul>
