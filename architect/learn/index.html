@@ -180,44 +180,16 @@ If stop_reason == "end_turn":
 <h3 id="live-drill-set">Live Drill Set</h3>
 <p>Answer with the specific primitive or design choice.</p>
 <ol>
-<li>Pipeline hangs waiting for input.</li>
-<p><span style="color:red;">Use <code>claude -p</code> so the pipeline runs non-interactively and exits with a result instead of waiting on a human.</span></p>
-</ol>
-<ol>
-<li>Refund must never happen before identity verification.</li>
-<p><span style="color:red;">Use a programmatic prerequisite or hook, not prompt-only guidance, so the check is enforced before the refund action runs.</span></p>
-</ol>
-<ol>
-<li>Synthesis subagent needs web findings.</li>
-<p><span style="color:red;">Pass the findings explicitly in the prompt with source metadata so the subagent sees the evidence it is supposed to synthesize.</span></p>
-</ol>
-<ol>
-<li>MCP timeout occurs during research.</li>
-<p><span style="color:red;">Return a structured error with category, retryable flag, attempted actions, and partial results so the coordinator can decide what to do next.</span></p>
-</ol>
-<ol>
-<li>CI output must be machine-readable.</li>
-<p><span style="color:red;">Use <code>--output-format json</code> and <code>--json-schema</code> so the pipeline can parse the output reliably.</span></p>
-</ol>
-<ol>
-<li>Extraction hallucinates missing field.</li>
-<p><span style="color:red;">Use a nullable field, require evidence, and retry validation so the model can leave the value empty instead of inventing one.</span></p>
-</ol>
-<ol>
-<li>Large PR review misses cross-file bugs.</li>
-<p><span style="color:red;">Do per-file passes first, then add a cross-file integration pass so local correctness does not hide system-level bugs.</span></p>
-</ol>
-<ol>
-<li>Technical debt report due tomorrow morning.</li>
-<p><span style="color:red;">Use the Message Batches API because the job is deferred, cost-sensitive, and does not need an immediate response.</span></p>
-</ol>
-<ol>
-<li>Blocking PR review before merge.</li>
-<p><span style="color:red;">Use a real-time call, not batch processing, because this needs fast feedback before the merge happens.</span></p>
-</ol>
-<ol>
-<li>Report has conflicting dates from sources.</li>
-<p><span style="color:red;">Preserve both sources, annotate the conflict, and report uncertainty instead of pretending one date is certain.</span></p>
+<li>Pipeline hangs waiting for input.<br><span style="color:red;">Use <code>claude -p</code> so the pipeline runs non-interactively and exits with a result instead of waiting on a human.</span></li>
+<li>Refund must never happen before identity verification.<br><span style="color:red;">Use a programmatic prerequisite or hook, not prompt-only guidance, so the check is enforced before the refund action runs.</span></li>
+<li>Synthesis subagent needs web findings.<br><span style="color:red;">Pass the findings explicitly in the prompt with source metadata so the subagent sees the evidence it is supposed to synthesize.</span></li>
+<li>MCP timeout occurs during research.<br><span style="color:red;">Return a structured error with category, retryable flag, attempted actions, and partial results so the coordinator can decide what to do next.</span></li>
+<li>CI output must be machine-readable.<br><span style="color:red;">Use <code>--output-format json</code> and <code>--json-schema</code> so the pipeline can parse the output reliably.</span></li>
+<li>Extraction hallucinates missing field.<br><span style="color:red;">Use a nullable field, require evidence, and retry validation so the model can leave the value empty instead of inventing one.</span></li>
+<li>Large PR review misses cross-file bugs.<br><span style="color:red;">Do per-file passes first, then add a cross-file integration pass so local correctness does not hide system-level bugs.</span><br><span style="color:blue;">Build a cross-boundary audit to verify registries, manifests, schemas, and other required artifacts exist before production.</span></li>
+<li>Technical debt report due tomorrow morning.<br><span style="color:red;">Use the Message Batches API because the job is deferred, cost-sensitive, and does not need an immediate response.</span></li>
+<li>Blocking PR review before merge.<br><span style="color:red;">Use a real-time call, not batch processing, because this needs fast feedback before the merge happens.</span></li>
+<li>Report has conflicting dates from sources.<br><span style="color:red;">Preserve both sources, annotate the conflict, and report uncertainty instead of pretending one date is certain.</span></li>
 </ol>
 <h3 id="exam-traps">Exam Traps</h3>
 <ul>
