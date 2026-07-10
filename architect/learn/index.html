@@ -135,13 +135,13 @@ If stop_reason == "end_turn":
 <li>Split vague generic tools into purpose-specific tools.</li>
 <li>Too many tools degrades selection reliability.</li>
 <li>Give each subagent only role-relevant tools.</li>
-<li>MCP tool = action.</li>
-<li>MCP resource = read-only context.</li>
-<li>MCP prompt = reusable workflow template.</li>
-<li>MCP errors should include <code>isError</code>, category, retryable flag, and human-readable explanation.</li>
+<li>MCP tool = an executable action the model can invoke.<br><span style="color:red;">Use tools for things that do work, like creating, updating, searching, sending, or changing state.</span></li>
+<li>MCP resource = read-only context the model can inspect.<br><span style="color:red;">Use resources for facts, documents, or data the model should read but not modify.</span></li>
+<li>MCP prompt = a prebuilt runtime prompt with fixed instructions and named placeholders.<br><span style="color:red;">The fixed language is already there, and the caller fills in the variable parts when the prompt runs.</span></li>
+<li>MCP errors should include <code>isError</code>, category, retryable flag, and human-readable explanation.<br><span style="color:red;">Make errors structured so the model can tell what failed, whether to retry, and how to explain the failure.</span></li>
 </ul>
 <h4 id="tool-choice"><code>tool_choice</code></h4>
-<div class="table-wrap"><table><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td><code>auto</code></td><td>Claude may call a tool or answer normally</td></tr><tr><td><code>any</code></td><td>Claude must call some tool</td></tr><tr><td>forced tool</td><td>Claude must call named tool</td></tr></tbody></table></div>
+<div class="table-wrap"><table><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td><code>auto</code></td><td>Claude may call a tool or answer normally.<br><span style="color:red;">Use this when you want Claude to decide whether a tool is needed.</span></td></tr><tr><td><code>any</code></td><td>Claude must call some tool.<br><span style="color:red;">Use this when tool use is required, but any eligible tool is acceptable.</span></td></tr><tr><td>forced tool</td><td>Claude must call named tool.<br><span style="color:red;">Use this when you want one exact tool and no alternative.</span></td></tr></tbody></table></div>
 <h4 id="claude-code">Claude Code</h4>
 <div class="table-wrap"><table><thead><tr><th>Need</th><th>Use</th></tr></thead><tbody><tr><td>Shared repo/project instructions</td><td><code>CLAUDE.md</code></td></tr><tr><td>Path-scoped conventions</td><td><code>.claude/rules/</code> with YAML frontmatter/globs</td></tr><tr><td>Reusable slash workflow</td><td><code>.claude/commands/</code></td></tr><tr><td>Reusable task capability</td><td><code>.claude/skills/</code> with <code>SKILL.md</code></td></tr><tr><td>Complex/architectural change</td><td>plan mode</td></tr><tr><td>Simple local change</td><td>direct execution</td></tr><tr><td>CI non-interactive run</td><td><code>claude -p</code> / <code>--print</code></td></tr><tr><td>Structured CI output</td><td><code>--output-format json</code>, <code>--json-schema</code></td></tr><tr><td>Long session cleanup</td><td><code>/compact</code></td></tr><tr><td>Persistent useful project knowledge</td><td><code>/memory</code></td></tr><tr><td>Continue named session</td><td><code>--resume &lt;session-name&gt;</code></td></tr><tr><td>Explore divergent approaches</td><td><code>fork_session</code></td></tr></tbody></table></div>
 <h4 id="structured-output">Structured Output</h4>
