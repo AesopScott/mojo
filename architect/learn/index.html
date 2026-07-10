@@ -164,6 +164,7 @@ If stop_reason == "end_turn":
 <li>No multi-turn tool calling support.<br><span style="color:red;">Use batches for one-shot jobs, not back-and-forth agent loops.</span></li>
 <li>Good for overnight reports.<br><span style="color:red;">Batch processing works well when you can submit work, walk away, and review results later.</span></li>
 <li>Bad for blocking pre-merge checks.<br><span style="color:red;">Do not use batches when someone needs immediate feedback before continuing.</span></li>
+<li>Separate API, same key, workspace scoped.<br><span style="color:red;">Message Batches is its own API path, but it uses the same API key as other API calls. Access is scoped to the workspace, which is the container for your organization’s API access, billing, and resources.</span></li>
 </ul>
 <h4 id="context-and-reliability">Context and Reliability</h4>
 <ul>
