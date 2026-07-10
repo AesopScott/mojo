@@ -152,7 +152,7 @@ If stop_reason == "end_turn":
 <li>Use nullable fields instead of forcing hallucinated values.<br><span style="color:red;">If the value can be unknown or missing, let it be null rather than making Claude invent something plausible.</span></li>
 <li>Use enums for finite choices.<br><span style="color:red;">Use enums when the field should only accept a closed set of values, like status labels or category names.</span></li>
 <li>Use <code>"other"</code> plus detail field for unknown categories.<br><span style="color:red;">Give Claude a safe escape hatch for cases that do not fit your enum, then capture the explanation in a detail field.</span></li>
-<li>Validate with Pydantic or equivalent.<br><span style="color:red;">Run a validator after the model responds so bad shapes or missing fields are caught before downstream code uses them.</span></li>
+<li>Validate with Pydantic or another schema validator.<br><span style="color:red;">Run a validator after the model responds so bad shapes or missing fields are caught before downstream code uses them.</span></li>
 <li>Retry with validation feedback.<br><span style="color:red;">If validation fails, send the errors back so Claude can repair the output instead of guessing silently.</span></li>
 <li>Include field-level confidence and evidence for extraction.<br><span style="color:red;">For each extracted field, store how sure the model is and what source text supports the value.</span></li>
 </ul>
