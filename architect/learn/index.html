@@ -168,7 +168,7 @@ If stop_reason == "end_turn":
 </ul>
 <h4 id="context-and-reliability">Context and Reliability</h4>
 <ul>
-<li>Use progressive summarization for long sessions.<br><span style="color:red;">Summarize as the task grows so the important state stays visible and the chat does not rot from sheer length.</span></li>
+<li>Use progressive summarization for long sessions.<br><span style="color:red;">Summarize as the task grows so the important state stays visible and the chat does not rot from sheer length.<br>- don’t ask for one giant final summary<br>- ask the model to keep compressing the running state as the session evolves</span></li>
 <li>Avoid lost-in-the-middle by ordering and extracting key facts.<br><span style="color:red;">Put the critical items where they are easiest to find and keep the most important facts near the top.</span></li>
 <li>Use scratchpad files for long codebase exploration.<br><span style="color:red;">Move working notes into files when the investigation gets too large for chat alone.</span></li>
 <li>Do not paste whole repos into context.<br><span style="color:red;">Bring only the relevant files, snippets, or summaries so the model can focus on what matters.</span></li>
