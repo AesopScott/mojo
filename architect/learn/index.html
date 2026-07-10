@@ -146,76 +146,76 @@ If stop_reason == "end_turn":
 <div class="table-wrap"><table><thead><tr><th>Need</th><th>Use</th></tr></thead><tbody><tr><td>Shared repo/project instructions</td><td><code>CLAUDE.md</code><br><span style="color:red;">Use project <code>CLAUDE.md</code> for rules about this codebase, like build commands and repo conventions. Use global <code>~/.claude/CLAUDE.md</code> or "Instructions for Claude" for how you want Claude to work everywhere, like tone and general defaults. More specific/project rules win over global rules when they conflict.</span></td></tr><tr><td>Path-scoped conventions</td><td><code>.claude/rules/</code> with YAML frontmatter/globs (file matching pattern)<br><span style="color:red;">Use this for rules that only apply inside certain folders or file types. Example: apply one rule to <code>architect/**</code> and a different one to <code>forum/**</code>.<br>Nested <code>CLAUDE.md</code> is for a folder-level layer of defaults inside a coherent sub-area; <code>.claude/rules/</code> is for pattern-based targeting by path or file type.</span></td></tr><tr><td>Reusable slash workflow</td><td><code>.claude/commands/</code><br><span style="color:red;">Command:<br><code>/summarize-report</code><br><code>/create-release-note</code><br><code>/draft-followup</code><br>Good for a fixed workflow with a predictable output.</span></td></tr><tr><td>Reusable task capability</td><td><code>.claude/skills/</code> with <code>SKILL.md</code><br><span style="color:red;">Skill:<br><code>review-docs</code><br><code>edit-slides</code><br><code>analyze-spreadsheet</code><br>Good for a broader task area where the model may need instructions, examples, or substeps.</span></td></tr><tr><td>Complex/architectural change</td><td>plan mode<br><span style="color:red;">Use this when the work has multiple steps, tradeoffs, or hidden risk. Example: redesigning a workflow or refactoring a system boundary.</span></td></tr><tr><td>Simple local change</td><td>direct execution<br><span style="color:red;">Use this for a small, obvious edit that does not need planning. Example: fixing a label, link, or short text block.</span></td></tr><tr><td>CI non-interactive run</td><td><code>claude -p</code> / <code>--print</code><br><span style="color:red;">Use this when a script or CI job should run Claude without an interactive session. Example: generate a summary in a pipeline.</span></td></tr><tr><td>Structured CI output</td><td><code>--output-format json</code>, <code>--json-schema</code><br><span style="color:red;">Use this when downstream automation needs machine-readable output. Example: a build step that validates fields before continuing.</span></td></tr><tr><td>Long session cleanup</td><td><code>/compact</code><br><span style="color:red;">Use this when the conversation is getting long and you want to preserve the important state. Example: before continuing a large task after many turns.</span></td></tr><tr><td>Persistent useful project knowledge</td><td><code>/memory</code><br><span style="color:red;">Use this only in Claude CLI / terminal sessions. It does not run in Claude Desktop or the web interface. Example: inspect or manage saved memory from a terminal session.</span></td></tr><tr><td>Continue named session</td><td><code>--resume &lt;session-name&gt;</code><br><span style="color:red;">“--resume &lt;session-name&gt;: reopen a named prior session when you can identify it from history or a session list.”</span></td></tr><tr><td>Explore divergent approaches</td><td><code>fork_session</code><br><span style="color:red;">Use this when you want to branch into two different solution paths. Example: try one approach in one fork and a second approach in another.</span></td></tr></tbody></table></div>
 <h4 id="structured-output">Structured Output</h4>
 <ul>
-<li>Use <code>tool_use</code> with <code>input_schema</code> for reliable structured output.</li>
-<li>Use required vs optional fields intentionally.</li>
-<li>Use nullable fields instead of forcing hallucinated values.</li>
-<li>Use enums for finite choices.</li>
-<li>Use <code>"other"</code> plus detail field for unknown categories.</li>
-<li>Validate with Pydantic or equivalent.</li>
-<li>Retry with validation feedback.</li>
-<li>Include field-level confidence and evidence for extraction.</li>
+<li>Use <code>tool_use</code> with <code>input_schema</code> for reliable structured output.<br><span style="color:red;">The schema is what enforces the shape of the tool arguments, so Claude has to fill named fields instead of free-form text.</span></li>
+<li>Use required vs optional fields intentionally.<br><span style="color:red;">Mark only the fields you truly need as required; leave optional fields open when they may not exist on every case.</span></li>
+<li>Use nullable fields instead of forcing hallucinated values.<br><span style="color:red;">If the value can be unknown or missing, let it be null rather than making Claude invent something plausible.</span></li>
+<li>Use enums for finite choices.<br><span style="color:red;">Use enums when the field should only accept a closed set of values, like status labels or category names.</span></li>
+<li>Use <code>"other"</code> plus detail field for unknown categories.<br><span style="color:red;">Give Claude a safe escape hatch for cases that do not fit your enum, then capture the explanation in a detail field.</span></li>
+<li>Validate with Pydantic or equivalent.<br><span style="color:red;">Run a validator after the model responds so bad shapes or missing fields are caught before downstream code uses them.</span></li>
+<li>Retry with validation feedback.<br><span style="color:red;">If validation fails, send the errors back so Claude can repair the output instead of guessing silently.</span></li>
+<li>Include field-level confidence and evidence for extraction.<br><span style="color:red;">For each extracted field, store how sure the model is and what source text supports the value.</span></li>
 </ul>
 <h4 id="message-batches-api">Message Batches API</h4>
 <ul>
-<li>50% cost savings.</li>
-<li>Up to 24-hour processing window.</li>
-<li>Use <code>custom_id</code> to correlate responses.</li>
-<li>No multi-turn tool calling support.</li>
-<li>Good for overnight reports.</li>
-<li>Bad for blocking pre-merge checks.</li>
+<li>50% cost savings.<br><span style="color:red;">Use batches when latency matters less than price, because the tradeoff is cheaper throughput instead of immediate response.</span></li>
+<li>Up to 24-hour processing window.<br><span style="color:red;">Batch jobs can take a long time, so they are better for deferred work than live user interactions.</span></li>
+<li>Use <code>custom_id</code> to correlate responses.<br><span style="color:red;">Give each request a stable ID so you can match each result back to the original input.</span></li>
+<li>No multi-turn tool calling support.<br><span style="color:red;">Use batches for one-shot jobs, not back-and-forth agent loops.</span></li>
+<li>Good for overnight reports.<br><span style="color:red;">Batch processing works well when you can submit work, walk away, and review results later.</span></li>
+<li>Bad for blocking pre-merge checks.<br><span style="color:red;">Do not use batches when someone needs immediate feedback before continuing.</span></li>
 </ul>
 <h4 id="context-and-reliability">Context and Reliability</h4>
 <ul>
-<li>Use progressive summarization for long sessions.</li>
-<li>Avoid lost-in-the-middle by ordering and extracting key facts.</li>
-<li>Use scratchpad files for long codebase exploration.</li>
-<li>Do not paste whole repos into context.</li>
-<li>Escalation needs explicit criteria and structured handoff.</li>
-<li>Preserve claim-source mappings.</li>
-<li>Annotate conflicts and coverage gaps.</li>
-<li>Calibrate confidence with labeled validation sets and stratified sampling.</li>
+<li>Use progressive summarization for long sessions.<br><span style="color:red;">Summarize as the task grows so the important state stays visible and the chat does not rot from sheer length.</span></li>
+<li>Avoid lost-in-the-middle by ordering and extracting key facts.<br><span style="color:red;">Put the critical items where they are easiest to find and keep the most important facts near the top.</span></li>
+<li>Use scratchpad files for long codebase exploration.<br><span style="color:red;">Move working notes into files when the investigation gets too large for chat alone.</span></li>
+<li>Do not paste whole repos into context.<br><span style="color:red;">Bring only the relevant files, snippets, or summaries so the model can focus on what matters.</span></li>
+<li>Escalation needs explicit criteria and structured handoff.<br><span style="color:red;">Define exactly when a problem gets handed off and what evidence the next person needs.</span></li>
+<li>Preserve claim-source mappings.<br><span style="color:red;">Keep every important claim tied back to the source that supports it.</span></li>
+<li>Annotate conflicts and coverage gaps.<br><span style="color:red;">Call out disagreements and missing areas so nobody mistakes partial evidence for full confidence.</span></li>
+<li>Calibrate confidence with labeled validation sets and stratified sampling.<br><span style="color:red;">Measure performance against balanced test data so confidence reflects reality instead of a lucky subset.</span></li>
 </ul>
 <h3 id="live-drill-set">Live Drill Set</h3>
 <p>Answer with the specific primitive or design choice.</p>
 <ol>
 <li>Pipeline hangs waiting for input.</li>
-<p>- <code>claude -p</code>.</p>
+<p><span style="color:red;">Use <code>claude -p</code> so the pipeline runs non-interactively and exits with a result instead of waiting on a human.</span></p>
 </ol>
 <ol>
 <li>Refund must never happen before identity verification.</li>
-<p>- Programmatic prerequisite/hook, not prompt-only guidance.</p>
+<p><span style="color:red;">Use a programmatic prerequisite or hook, not prompt-only guidance, so the check is enforced before the refund action runs.</span></p>
 </ol>
 <ol>
 <li>Synthesis subagent needs web findings.</li>
-<p>- Pass findings explicitly in prompt with source metadata.</p>
+<p><span style="color:red;">Pass the findings explicitly in the prompt with source metadata so the subagent sees the evidence it is supposed to synthesize.</span></p>
 </ol>
 <ol>
 <li>MCP timeout occurs during research.</li>
-<p>- Structured error with category, retryable flag, attempted actions, partial results.</p>
+<p><span style="color:red;">Return a structured error with category, retryable flag, attempted actions, and partial results so the coordinator can decide what to do next.</span></p>
 </ol>
 <ol>
 <li>CI output must be machine-readable.</li>
-<p>- <code>--output-format json</code> and <code>--json-schema</code>.</p>
+<p><span style="color:red;">Use <code>--output-format json</code> and <code>--json-schema</code> so the pipeline can parse the output reliably.</span></p>
 </ol>
 <ol>
 <li>Extraction hallucinates missing field.</li>
-<p>- Nullable field, evidence requirement, validation retry.</p>
+<p><span style="color:red;">Use a nullable field, require evidence, and retry validation so the model can leave the value empty instead of inventing one.</span></p>
 </ol>
 <ol>
 <li>Large PR review misses cross-file bugs.</li>
-<p>- Per-file passes plus cross-file integration pass.</p>
+<p><span style="color:red;">Do per-file passes first, then add a cross-file integration pass so local correctness does not hide system-level bugs.</span></p>
 </ol>
 <ol>
 <li>Technical debt report due tomorrow morning.</li>
-<p>- Message Batches API is appropriate.</p>
+<p><span style="color:red;">Use the Message Batches API because the job is deferred, cost-sensitive, and does not need an immediate response.</span></p>
 </ol>
 <ol>
 <li>Blocking PR review before merge.</li>
-<p>- Real-time call, not batch.</p>
+<p><span style="color:red;">Use a real-time call, not batch processing, because this needs fast feedback before the merge happens.</span></p>
 </ol>
 <ol>
 <li>Report has conflicting dates from sources.</li>
-<p>- Preserve both sources, annotate conflict, report uncertainty.</p>
+<p><span style="color:red;">Preserve both sources, annotate the conflict, and report uncertainty instead of pretending one date is certain.</span></p>
 </ol>
 <h3 id="exam-traps">Exam Traps</h3>
 <ul>
