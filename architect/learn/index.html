@@ -117,11 +117,17 @@ If stop_reason == "end_turn":
 <h4 id="multi-agent-systems">Multi-Agent Systems</h4>
 <ul>
 <li>Coordinator owns decomposition, routing, error handling, and aggregation.</li>
+<li><span style="color:red;">Decomposition means breaking one large task into smaller sub-tasks before routing them.</span></li>
 <li>Subagents have isolated context.</li>
+<li><span style="color:red;">Each subagent only sees the context you explicitly give it.</span></li>
 <li>Pass all needed context explicitly in subagent prompt.</li>
+<li><span style="color:red;">Include the facts, constraints, and source material the subagent needs up front.</span></li>
 <li>Use structured context with source URLs, document names, page numbers, and metadata.</li>
+<li><span style="color:red;">That means hand off exact references so the subagent can find and verify the source quickly.</span></li>
 <li>Spawn parallel subagents with multiple <code>Task</code> tool calls in one coordinator response.</li>
+<li><span style="color:red;">Yes, Task is a real tool call, and multiple independent calls can run at once.</span></li>
 <li>Coordinator must have <code>allowedTools</code> including <code>Task</code> to spawn subagents.</li>
+<li><span style="color:red;">The coordinator cannot launch subagents unless Task is enabled in its allowed tools.</span></li>
 </ul>
 <h4 id="hooks">Hooks</h4>
 <ul>
