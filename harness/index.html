@@ -620,6 +620,7 @@
 
     <div class="quick-links" aria-label="Class sections">
       <a href="#definition">Definition</a>
+      <a href="#stack">Harness vs prompt</a>
       <a href="#board">Skill board</a>
       <a href="#vendor">Vendor controls</a>
       <a href="#works">How it works</a>
@@ -667,6 +668,104 @@
               A harness becomes useful when it can be repeated as a skill, script,
               config, eval, workflow, guardrail, or release gate.
             </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="stack">
+        <div class="section-header">
+          <div>
+            <p class="kicker">Harness engineering</p>
+            <h2>Prompt engineering changes the conversation. Harness engineering changes the AI development environment.</h2>
+          </div>
+          <p>
+            Prompt engineering still matters, but it is one input. Harness engineering decides
+            what the model can see, which files and tools are available, what gets retrieved,
+            what happens before and after the response, and how the work is verified.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <strong>Prompt layer</strong>
+            <h3>Change what the model thinks right now</h3>
+            <p>
+              A prompt changes the current interaction: explain this code, write tests,
+              use a careful tone, reason step by step, or return JSON. It may not persist
+              unless the harness saves it.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Harness layer</strong>
+            <h3>Change what the model is allowed and able to do</h3>
+            <p>
+              A harness controls loaded files, durable memory, tools, MCP servers,
+              model routing, context injection, output checks, human gates, and recovery behavior.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Application layer</strong>
+            <h3>Package the behavior into a product workflow</h3>
+            <p>
+              The user sees an AI development tool, coding agent, review workflow,
+              training board, or automation. The harness is the operating layer that
+              makes the same LLM feel useful for that job.
+            </p>
+          </article>
+        </div>
+
+        <div class="grid-2" style="margin-top: 24px;">
+          <article class="callout good">
+            <strong>AI stack</strong>
+            <h3>Application -> harness / agent -> LLM -> transformer</h3>
+            <p>
+              Most beginners focus on the model. Builders spend more time in the middle:
+              instructions, retrieval, files, tools, memory, permissions, orchestration,
+              evals, traces, and deployment gates.
+            </p>
+          </article>
+          <article class="callout warning">
+            <strong>Development example</strong>
+            <h3>Do not just prompt "be an expert developer."</h3>
+            <p>
+              Build a harness that loads AGENTS.md, reads README and architecture notes,
+              exposes git and test tools, retrieves project memory, runs checks, captures
+              diffs, and requires approval before production or destructive changes.
+            </p>
+          </article>
+        </div>
+
+        <div class="section-header" style="margin-top: 38px;">
+          <div>
+            <p class="kicker">What can be manipulated</p>
+            <h2>Harnesses are changed by files, capabilities, triggers, and workflow rules.</h2>
+          </div>
+          <p>
+            The discipline is not clever wording. The discipline is shaping the environment
+            around the model so the AI development workflow is repeatable, observable, and bounded.
+          </p>
+        </div>
+
+        <div class="grid-4">
+          <article class="skill-card">
+            <strong>Files</strong>
+            <h3>Persistent project instructions</h3>
+            <p>AGENTS.md, CLAUDE.md, README.md, .mcp.json, IDE rules, Copilot instructions, memory files, package.json, policy files, and manifests.</p>
+          </article>
+          <article class="skill-card">
+            <strong>Capabilities</strong>
+            <h3>What the AI can actually do</h3>
+            <p>Read and write files, run tests, use git, call APIs, browse docs, query data, generate artifacts, schedule work, and invoke MCP tools.</p>
+          </article>
+          <article class="skill-card">
+            <strong>Triggers</strong>
+            <h3>What activates behavior</h3>
+            <p>Startup, directory detection, file type, keywords like build or deploy, connected tools, user identity, project identity, and queue events.</p>
+          </article>
+          <article class="skill-card">
+            <strong>Orchestration</strong>
+            <h3>What happens before and after</h3>
+            <p>Retrieve memory, load docs, choose model, call tools, run tests, review output, capture evidence, escalate blockers, and package handoffs.</p>
           </article>
         </div>
       </section>
