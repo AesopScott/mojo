@@ -1,6 +1,6 @@
 ---
 name: parallel-executor
-description: Use when working on the Tool Registry harness and you need a repeatable performance control: Caches tool results, runs safe tools in parallel, and keeps sandboxes warm to cut execution latency.
+description: "Use when working on the Tool Registry harness and you need performance control: Caches tool results, runs safe tools in parallel, and keeps sandboxes warm to cut execution latency."
 ---
 
 # Parallel Executor
@@ -11,41 +11,84 @@ description: Use when working on the Tool Registry harness and you need a repeat
 - Axis: Performance
 - Command: /parallel-executor
 
-## Purpose
+## What This Skill Does
 
 Caches tool results, runs safe tools in parallel, and keeps sandboxes warm to cut execution latency.
 
+Changing this harness changes executable authority: which tools may run, which require dry-run or sandboxing, which actions must be reversible, and where rollback is defined.
+
+This is a working harness-control runbook. Use it to inspect the current boundary, choose a small control change, define tests, and produce an implementation-ready patch plan.
+
 ## Use This Skill When
 
-- You are designing or reviewing the Tool Registry harness.
-- You need to tune the performance boundary without changing the whole system.
-- You want a reusable control pattern that can be installed, reviewed, and improved.
+- You are changing or reviewing the Tool Registry harness.
+- You need to reduce latency, friction, repeated work, or blocked throughput.
+- You need a bounded change that can be tested before it affects real users, money, secrets, production, or external systems.
 
-## Inputs
+## Required Inputs
 
-- Current objective and project scope.
-- The harness behavior being tuned.
-- Relevant limits, gates, risks, costs, latency targets, or proof requirements.
-- Existing scripts, config, policies, or logs that show how the harness currently behaves.
+- Current objective or task the harness must support.
+- Current config, script, prompt, policy, UI, queue, route, or workflow that controls this boundary.
+- One concrete failure, bottleneck, cost problem, missing capability, or operator complaint.
+- Existing logs, traces, screenshots, examples, diffs, or event records if available.
+- Authority limit: what the skill may change without human approval.
 
-## Process
+## Quick Start
 
-1. Identify the controlled boundary for the Tool Registry harness.
-2. State the current failure mode or opportunity in one sentence.
-3. Choose the smallest rule, script, config, or checklist that changes that boundary.
-4. Define how the change will be verified before it is trusted.
-5. Document what blocks, escalates, or requires human review.
+1. Name the exact boundary: `Tool Registry` / `Performance`.
+2. Answer: What path is currently slow, repeated, blocking, or over-synchronized?
+3. Pick one lever from the list below.
+4. Propose the smallest rule, config, script, checklist, UI, prompt, or test change that moves that lever.
+5. Run or define one positive test and one boundary test.
+6. Stop and escalate if the change touches secrets, spending, production, customer communication, deletion, access control, legal/medical/HR decisions, or public claims.
 
-## Output
+## Control Levers
 
-Return a concise harness update with:
+- Tool-result cache
+- Parallel safe-tool exec
+- Warm sandboxes
 
-- Boundary controlled.
-- Proposed change.
-- Expected benefit.
-- Required proof.
-- Failure or rollback behavior.
+## Basic Procedure
+
+1. Inspect current state. Identify the file, prompt, API route, policy, config, data source, queue, or human step that currently owns the boundary.
+2. Write the observed failure mode in one sentence: "Parallel Executor is needed because ..."
+3. Choose one lever only. Avoid combining multiple behavior changes unless the first change cannot work alone.
+4. Define the control change as one of: config value, allowlist/denylist, checklist, test, prompt clause, route rule, UI affordance, script, policy gate, or log field.
+5. Define allowed behavior and blocked behavior. The blocked behavior is mandatory for capability and safety-related changes.
+6. Add observability: log, trace, counter, screenshot, audit note, or before/after measurement.
+7. Verify locally or in dry-run first. Use mocked data if live execution would spend money or affect users.
+8. Produce an implementation handoff with exact files, exact tests, rollback path, and approval gate.
+
+## Verification
+
+Use this minimum evidence before trusting the change:
+
+- Evidence type: before/after timing, queue depth, stall count, retry count, or operator wait time.
+- Positive test: a normal request uses `Parallel Executor` and produces the expected controlled behavior.
+- Boundary test: an overreach, missing-input, unsafe, expensive, or unsupported request is blocked, downgraded, or escalated.
+- Regression check: existing Tool Registry behavior that should not change still works.
+- Rollback check: previous behavior can be restored by reverting the specific rule, config, script, prompt, or file.
+
+## Output Format
+
+Return this structure:
+
+```markdown
+## Parallel Executor Harness Update
+
+Boundary: Tool Registry / Performance
+Problem: <one sentence>
+Selected lever: <one lever>
+Change: <smallest concrete change>
+Files or systems touched: <paths, configs, tools, policies, or human steps>
+Allowed behavior: <what may happen>
+Blocked behavior: <what must not happen>
+Verification: <positive test, boundary test, regression check>
+Evidence captured: <logs, traces, screenshots, costs, timings, or audit records>
+Rollback: <how to undo>
+Approval needed: <none or specific human gate>
+```
 
 ## Safety
 
-Do not grant new runtime authority, spend money, deploy, modify secrets, or bypass approval gates unless the operator explicitly authorizes that action.
+Do not grant new runtime authority, spend money, deploy, modify secrets, delete data, contact external users, change access control, or bypass approval gates unless the operator explicitly authorizes that action. If authority is unclear, stop with a blocker question and state the exact approval needed.

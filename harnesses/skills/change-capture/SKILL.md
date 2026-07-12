@@ -1,6 +1,6 @@
 ---
 name: change-capture
-description: Use when working on the Browser Capture harness and you need a repeatable cost efficiency control: Captures only on detected change and reuses browser sessions to reduce screenshot and compute cost.
+description: "Use when working on the Browser Capture harness and you need cost efficiency control: Captures only on detected change and reuses browser sessions to reduce screenshot and compute cost."
 ---
 
 # Change Capture
@@ -8,44 +8,87 @@ description: Use when working on the Browser Capture harness and you need a repe
 ## Harness
 
 - Harness: Browser Capture
-- Axis: Cost Efficiency
+- Axis: Cost efficiency
 - Command: /change-capture
 
-## Purpose
+## What This Skill Does
 
 Captures only on detected change and reuses browser sessions to reduce screenshot and compute cost.
 
+Changing this harness changes visual proof collection: when the browser is opened, what can be navigated, which screenshots or DOM evidence are captured, and how visual regressions are detected.
+
+This is a working harness-control runbook. Use it to inspect the current boundary, choose a small control change, define tests, and produce an implementation-ready patch plan.
+
 ## Use This Skill When
 
-- You are designing or reviewing the Browser Capture harness.
-- You need to tune the cost efficiency boundary without changing the whole system.
-- You want a reusable control pattern that can be installed, reviewed, and improved.
+- You are changing or reviewing the Browser Capture harness.
+- You need to bound spend, token use, storage, calls, review effort, or compute waste.
+- You need a bounded change that can be tested before it affects real users, money, secrets, production, or external systems.
 
-## Inputs
+## Required Inputs
 
-- Current objective and project scope.
-- The harness behavior being tuned.
-- Relevant limits, gates, risks, costs, latency targets, or proof requirements.
-- Existing scripts, config, policies, or logs that show how the harness currently behaves.
+- Current objective or task the harness must support.
+- Current config, script, prompt, policy, UI, queue, route, or workflow that controls this boundary.
+- One concrete failure, bottleneck, cost problem, missing capability, or operator complaint.
+- Existing logs, traces, screenshots, examples, diffs, or event records if available.
+- Authority limit: what the skill may change without human approval.
 
-## Process
+## Quick Start
 
-1. Identify the controlled boundary for the Browser Capture harness.
-2. State the current failure mode or opportunity in one sentence.
-3. Choose the smallest rule, script, config, or checklist that changes that boundary.
-4. Define how the change will be verified before it is trusted.
-5. Document what blocks, escalates, or requires human review.
+1. Name the exact boundary: `Browser Capture` / `Cost efficiency`.
+2. Answer: What work is spending too much money, tokens, storage, calls, or review effort?
+3. Pick one lever from the list below.
+4. Propose the smallest rule, config, script, checklist, UI, prompt, or test change that moves that lever.
+5. Run or define one positive test and one boundary test.
+6. Stop and escalate if the change touches secrets, spending, production, customer communication, deletion, access control, legal/medical/HR decisions, or public claims.
 
-## Output
+## Control Levers
 
-Return a concise harness update with:
+- Screenshot frequency
+- Capture-on-change only
+- Session reuse
 
-- Boundary controlled.
-- Proposed change.
-- Expected benefit.
-- Required proof.
-- Failure or rollback behavior.
+## Basic Procedure
+
+1. Inspect current state. Identify the file, prompt, API route, policy, config, data source, queue, or human step that currently owns the boundary.
+2. Write the observed failure mode in one sentence: "Change Capture is needed because ..."
+3. Choose one lever only. Avoid combining multiple behavior changes unless the first change cannot work alone.
+4. Define the control change as one of: config value, allowlist/denylist, checklist, test, prompt clause, route rule, UI affordance, script, policy gate, or log field.
+5. Define allowed behavior and blocked behavior. The blocked behavior is mandatory for capability and safety-related changes.
+6. Add observability: log, trace, counter, screenshot, audit note, or before/after measurement.
+7. Verify locally or in dry-run first. Use mocked data if live execution would spend money or affect users.
+8. Produce an implementation handoff with exact files, exact tests, rollback path, and approval gate.
+
+## Verification
+
+Use this minimum evidence before trusting the change:
+
+- Evidence type: before/after cost, token count, call count, storage size, review volume, or rejected waste.
+- Positive test: a normal request uses `Change Capture` and produces the expected controlled behavior.
+- Boundary test: an overreach, missing-input, unsafe, expensive, or unsupported request is blocked, downgraded, or escalated.
+- Regression check: existing Browser Capture behavior that should not change still works.
+- Rollback check: previous behavior can be restored by reverting the specific rule, config, script, prompt, or file.
+
+## Output Format
+
+Return this structure:
+
+```markdown
+## Change Capture Harness Update
+
+Boundary: Browser Capture / Cost efficiency
+Problem: <one sentence>
+Selected lever: <one lever>
+Change: <smallest concrete change>
+Files or systems touched: <paths, configs, tools, policies, or human steps>
+Allowed behavior: <what may happen>
+Blocked behavior: <what must not happen>
+Verification: <positive test, boundary test, regression check>
+Evidence captured: <logs, traces, screenshots, costs, timings, or audit records>
+Rollback: <how to undo>
+Approval needed: <none or specific human gate>
+```
 
 ## Safety
 
-Do not grant new runtime authority, spend money, deploy, modify secrets, or bypass approval gates unless the operator explicitly authorizes that action.
+Do not grant new runtime authority, spend money, deploy, modify secrets, delete data, contact external users, change access control, or bypass approval gates unless the operator explicitly authorizes that action. If authority is unclear, stop with a blocker question and state the exact approval needed.
