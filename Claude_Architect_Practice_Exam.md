@@ -2131,7 +2131,7 @@ These are not exam scenarios. They are fast recall drills for teaching, warmups,
    Answer: Emit multiple Task tool calls in one coordinator response.
    Guidance: Parallel delegation is a coordination pattern, not separate user turns.
 
-7. When should a workflow use a deterministic gate or hook?
+7. When should a workflow use a deterministic solution like a gate or hook?
    Answer: When a rule must be enforced reliably before an action.
    Guidance: Refund thresholds, identity checks, and permission checks should not rely on prompt text alone.
 

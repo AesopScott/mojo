@@ -351,7 +351,7 @@ const speedRoundTopics = {
     ["What is a coordinator responsible for in a multi-agent system?", "Decomposition, routing, aggregation, and error handling.", "Subagents do focused work; the coordinator owns the overall task state."],
     ["Do subagents automatically inherit parent context?", "No.", "Pass source material, constraints, and expected output explicitly."],
     ["How do you spawn parallel subagents?", "Emit multiple Task tool calls in one coordinator response.", "Parallel delegation is a coordination pattern, not separate user turns."],
-    ["When should a workflow use a deterministic gate or hook?", "When a rule must be enforced reliably before an action.", "Refund thresholds, identity checks, and permission checks should not rely on prompt text alone."],
+    ["When should a workflow use a deterministic solution like a gate or hook?", "When a rule must be enforced reliably before an action.", "Refund thresholds, identity checks, and permission checks should not rely on prompt text alone."],
     ["What should the coordinator do when subagent coverage is incomplete?", "Send targeted follow-up tasks or escalate the gap.", "Iterative refinement is expected when evidence is missing."],
     ["What is context isolation good for?", "Reducing cross-task contamination and keeping specialists focused.", "Isolation helps, but only if the coordinator passes needed context."],
     ["What should happen to partial failures in a multi-agent system?", "They should be captured, surfaced, and handled by the coordinator.", "Hiding failures creates false confidence."],
