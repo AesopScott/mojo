@@ -2115,7 +2115,7 @@ These are not exam scenarios. They are fast recall drills for teaching, warmups,
    Answer: end_turn.
    Guidance: When Claude is done using tools, the final answer is returned on end_turn.
 
-3. What is the anti-pattern for loop completion?
+3. What is a common way that we might test for loop completion incorrectly because it is brittle and inconsistent?
    Answer: Checking assistant text for words like complete or done.
    Guidance: Text parsing is brittle; use explicit stop_reason values.
 

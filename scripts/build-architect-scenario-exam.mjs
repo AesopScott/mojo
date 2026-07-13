@@ -347,7 +347,7 @@ const speedRoundTopics = {
       `<span>The loop is driven by <code>stop_reason</code>, not by parsing the assistant's prose.</span><ol class="stop-reason-list"><li><code>end_turn</code></li><li><code>max_tokens</code></li><li><code>stop_sequence</code></li><li><code>tool_use</code></li><li><code>pause_turn</code></li><li><code>refusal</code></li><li><code>model_context_window_exceeded</code></li></ol>`,
     ],
     ["What stop_reason normally ends an agent loop?", "end_turn.", "When Claude is done using tools, the final answer is returned on end_turn."],
-    ["What is the anti-pattern for loop completion?", "Checking assistant text for words like complete or done.", "Text parsing is brittle; use explicit stop_reason values."],
+    ["What is a common way that we might test for loop completion incorrectly because it is brittle and inconsistent?", "Checking assistant text for words like complete or done.", "Text parsing is brittle; use explicit stop_reason values."],
     ["What is a coordinator responsible for in a multi-agent system?", "Decomposition, routing, aggregation, and error handling.", "Subagents do focused work; the coordinator owns the overall task state."],
     ["Do subagents automatically inherit parent context?", "No.", "Pass source material, constraints, and expected output explicitly."],
     ["How do you spawn parallel subagents?", "Emit multiple Task tool calls in one coordinator response.", "Parallel delegation is a coordination pattern, not separate user turns."],
