@@ -2157,7 +2157,7 @@ These are not exam scenarios. They are fast recall drills for teaching, warmups,
 
 13. What should a coordinator aggregate?
    Answer: Findings, confidence, sources, errors, and unresolved gaps.
-   Guidance: Aggregation is more than summarization.
+   Guidance: A coordinator is not just writing a nicer summary of subagent outputs. It is responsible for combining the work into a usable decision package. Aggregation is more than summarization.
 
 14. When should a coordinator ask for clarification?
    Answer: When required inputs or decision criteria are missing.

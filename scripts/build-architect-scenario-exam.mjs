@@ -357,7 +357,12 @@ const speedRoundTopics = {
     ["What should happen to partial failures in a multi-agent system?", "They should be captured, surfaced, and handled by the coordinator.", "Hiding failures creates false confidence."],
     ["What is the safest way to handle an irreversible action?", "Require explicit prerequisites and a programmatic control before tool execution.", "The exam favors enforceable guardrails for high-impact actions."],
     ["What is a good subagent prompt include?", "Task, relevant context, sources, constraints, output schema, and success criteria.", "A subagent cannot reliably infer missing context."],
-    ["What should a coordinator aggregate?", "Findings, confidence, sources, errors, and unresolved gaps.", "Aggregation is more than summarization."],
+    [
+      "What should a coordinator aggregate?",
+      "Findings, confidence, sources, errors, and unresolved gaps.",
+      "A coordinator is not just writing a nicer summary of subagent outputs. It is responsible for combining the work into a usable decision package. Aggregation is more than summarization.",
+      `<span class="red-guidance">A coordinator is not just writing a nicer summary of subagent outputs. It is responsible for combining the work into a usable decision package.</span> Aggregation is more than summarization.`,
+    ],
     ["When should a coordinator ask for clarification?", "When required inputs or decision criteria are missing.", "Clarification beats guessing."],
     ["What is over-decomposition?", "Splitting work so narrowly that important coverage is lost.", "Subtasks should map to meaningful responsibility boundaries."],
     ["What is under-decomposition?", "Giving one agent too much broad work without specialization.", "Complex scenarios often benefit from role-based subagents."],
@@ -867,6 +872,7 @@ const css = `      :root { color-scheme: light; }
       .answer-panel p + p { margin-top: 8px; }
       .stop-reason-list { color: #b42318; margin: 8px 0 0 22px; padding: 0; font-weight: 800; }
       .stop-reason-list code { color: #b42318; border-color: #f3b3ac; background: #fff4f2; }
+      .red-guidance { color: #b42318; font-weight: 900; }
       .speed-intro { max-width: 850px; margin: 0 0 20px; }
       .speed-domain { border-top: 1px solid #eadfc9; padding-top: 26px; margin-top: 28px; }
       .speed-domain h3 { margin: 0 0 14px; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: 0; }

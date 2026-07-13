@@ -68,6 +68,7 @@
       .answer-panel p + p { margin-top: 8px; }
       .stop-reason-list { color: #b42318; margin: 8px 0 0 22px; padding: 0; font-weight: 800; }
       .stop-reason-list code { color: #b42318; border-color: #f3b3ac; background: #fff4f2; }
+      .red-guidance { color: #b42318; font-weight: 900; }
       .speed-intro { max-width: 850px; margin: 0 0 20px; }
       .speed-domain { border-top: 1px solid #eadfc9; padding-top: 26px; margin-top: 28px; }
       .speed-domain h3 { margin: 0 0 14px; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: 0; }
@@ -3947,7 +3948,7 @@
     <h4>What should a coordinator aggregate?</h4>
     <div class="answer-panel" id="speed-agentic-architecture-orchestration-13" hidden>
       <p><strong>Answer:</strong> Findings, confidence, sources, errors, and unresolved gaps.</p>
-      <p><strong>Guidance:</strong> Aggregation is more than summarization.</p>
+      <div class="guidance-block"><strong>Guidance:</strong> <span class="red-guidance">A coordinator is not just writing a nicer summary of subagent outputs. It is responsible for combining the work into a usable decision package.</span> Aggregation is more than summarization.</div>
     </div>
   </article>
 <article class="speed-card">
