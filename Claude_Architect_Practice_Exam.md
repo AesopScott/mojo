@@ -2109,7 +2109,7 @@ These are not exam scenarios. They are fast recall drills for teaching, warmups,
 
 1. What controls the Agent SDK loop after Claude returns tool_use?
    Answer: Execute the requested tool, append the tool result, and call Claude again.
-   Guidance: The loop is driven by stop_reason, not by parsing the assistant's prose.
+   Guidance: The loop is driven by stop_reason, not by parsing the assistant's prose. Valid stop_reason values: end_turn, max_tokens, stop_sequence, tool_use, pause_turn, refusal, model_context_window_exceeded.
 
 2. What stop_reason normally ends an agent loop?
    Answer: end_turn.

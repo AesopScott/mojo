@@ -340,7 +340,12 @@ const questionSet = [
 
 const speedRoundTopics = {
   [domains[0]]: [
-    ["What controls the Agent SDK loop after Claude returns tool_use?", "Execute the requested tool, append the tool result, and call Claude again.", "The loop is driven by stop_reason, not by parsing the assistant's prose."],
+    [
+      "What controls the Agent SDK loop after Claude returns tool_use?",
+      "Execute the requested tool, append the tool result, and call Claude again.",
+      "The loop is driven by stop_reason, not by parsing the assistant's prose. Valid stop_reason values: end_turn, max_tokens, stop_sequence, tool_use, pause_turn, refusal, model_context_window_exceeded.",
+      `<span>The loop is driven by <code>stop_reason</code>, not by parsing the assistant's prose.</span><ol class="stop-reason-list"><li><code>end_turn</code></li><li><code>max_tokens</code></li><li><code>stop_sequence</code></li><li><code>tool_use</code></li><li><code>pause_turn</code></li><li><code>refusal</code></li><li><code>model_context_window_exceeded</code></li></ol>`,
+    ],
     ["What stop_reason normally ends an agent loop?", "end_turn.", "When Claude is done using tools, the final answer is returned on end_turn."],
     ["What is the anti-pattern for loop completion?", "Checking assistant text for words like complete or done.", "Text parsing is brittle; use explicit stop_reason values."],
     ["What is a coordinator responsible for in a multi-agent system?", "Decomposition, routing, aggregation, and error handling.", "Subagents do focused work; the coordinator owns the overall task state."],
@@ -645,11 +650,12 @@ const speedRounds = domains.map((domain) => ({
   items: [
     ...speedRoundTopics[domain],
     ...(speedTrapTopics[domain] ?? []),
-  ].map(([prompt, answer, guidance], index) => ({
+  ].map(([prompt, answer, guidance, guidanceHtml], index) => ({
     id: `${slug(domain)}-${index + 1}`,
     prompt,
     answer,
     guidance,
+    guidanceHtml,
   })),
 }));
 
@@ -768,7 +774,9 @@ ${round.items.map((item, index) => `<article class="speed-card">
     <h4>${esc(item.prompt)}</h4>
     <div class="answer-panel" id="speed-${item.id}" hidden>
       <p><strong>Answer:</strong> ${esc(item.answer)}</p>
-      <p><strong>Guidance:</strong> ${esc(item.guidance)}</p>
+      ${item.guidanceHtml
+        ? `<div class="guidance-block"><strong>Guidance:</strong> ${item.guidanceHtml}</div>`
+        : `<p><strong>Guidance:</strong> ${esc(item.guidance)}</p>`}
     </div>
   </article>`).join("\n")}
 </section>`;
@@ -857,6 +865,8 @@ const css = `      :root { color-scheme: light; }
       .answer-panel { margin-top: 12px; border-left: 4px solid #e0b33c; background: #fff7df; padding: 12px 14px; border-radius: 6px; line-height: 1.6; }
       .answer-panel p { margin: 0; }
       .answer-panel p + p { margin-top: 8px; }
+      .stop-reason-list { color: #b42318; margin: 8px 0 0 22px; padding: 0; font-weight: 800; }
+      .stop-reason-list code { color: #b42318; border-color: #f3b3ac; background: #fff4f2; }
       .speed-intro { max-width: 850px; margin: 0 0 20px; }
       .speed-domain { border-top: 1px solid #eadfc9; padding-top: 26px; margin-top: 28px; }
       .speed-domain h3 { margin: 0 0 14px; font-size: clamp(1.35rem, 2.5vw, 1.9rem); letter-spacing: 0; }
