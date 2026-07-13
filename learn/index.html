@@ -102,28 +102,11 @@
             <div class="aac-zoom-metrics">
               <span><b data-meetup-rsvps>0</b> RSVP count</span>
             </div>
-            <div class="aac-zoom-feed">
-              
-              <a class="aac-zoom-event" href="https://www.meetup.com/advanced-ai-concepts-atlanta/events/315556783/" target="_blank" rel="noopener">
-                <span><b>Global - Dev Automation and Harness Engineering I</b> Sun, Jul 12, 8:00 AM Mountain / Sun, Jul 12, 2:00 PM GMT</span>
-                <small>https://www.meetup.com/advanced-ai-concepts-atlanta/events/315556783/</small>
-              </a>
-              <a class="aac-zoom-event" href="https://www.meetup.com/advanced-ai-concepts/events/315536188/" target="_blank" rel="noopener">
-                <span><b>Anthropic Certified Architect Prep</b> Fri, Jul 17, 6:00 PM Mountain / Sat, Jul 18, 12:00 AM GMT</span>
-                <small>https://www.meetup.com/advanced-ai-concepts/events/315536188/</small>
-              </a>
-              <a class="aac-zoom-event" href="https://www.meetup.com/advanced-ai-concepts-the-triangle/events/315538152/" target="_blank" rel="noopener">
-                <span><b>Global - Anthropic Certified Architect Prep</b> Sun, Jul 19, 8:00 AM Mountain / Sun, Jul 19, 2:00 PM GMT</span>
-                <small>https://www.meetup.com/advanced-ai-concepts-the-triangle/events/315538152/</small>
-              </a>
-              <a class="aac-zoom-event" href="https://www.meetup.com/advanced-ai-concepts/events/315538414/" target="_blank" rel="noopener">
-                <span><b>AI Governance for AI Developers</b> Fri, Jul 24, 6:00 PM Mountain / Sat, Jul 25, 12:00 AM GMT</span>
-                <small>https://www.meetup.com/advanced-ai-concepts/events/315538414/</small>
-              </a>
-              <a class="aac-zoom-event" href="https://www.meetup.com/advanced-ai-concepts/events/315538632/" target="_blank" rel="noopener">
-                <span><b>Global - AI Governance for AI Developers</b> Sun, Jul 26, 8:00 AM Mountain / Sun, Jul 26, 2:00 PM GMT</span>
-                <small>https://www.meetup.com/advanced-ai-concepts/events/315538632/</small>
-              </a>
+            <div class="aac-zoom-feed" data-featured-classes>
+              <span class="aac-zoom-event">
+                <span><b>Loading actual Meetup schedule...</b></span>
+                <small>Updated from Meetup automatically.</small>
+              </span>
             </div>
           </div>
         </div>
@@ -770,11 +753,55 @@
         var panel = document.getElementById('aac-zoom-status');
         var leaders = document.querySelector('[data-group-leaders]');
         var leaderList = document.querySelector('[data-group-leader-list]');
+        var featuredList = document.querySelector('[data-featured-classes]');
 
         var rsvps = panel ? panel.querySelector('[data-meetup-rsvps]') : null;
 
         function setText(el, value) {
           if (el) el.textContent = value;
+        }
+
+        function escapeHtml(value) {
+          return String(value || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+        }
+
+        function loadFeaturedClasses() {
+          if (!featuredList) return;
+          fetch('/api/learn-schedule?v=learn-featured-20260713')
+            .then(function(r) { return r.ok ? r.json() : null; })
+            .then(function(data) {
+              if (!data || !data.ok) return;
+              var events = Array.isArray(data.featured) ? data.featured : [];
+              if (!events.length && Array.isArray(data.events)) events = data.events;
+              if (!events.length) {
+                featuredList.innerHTML = '<span class="aac-zoom-event"><span><b>No upcoming classes found.</b></span><small>Meetup may still be updating.</small></span>';
+                return;
+              }
+              var mountainFormatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Denver',
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                timeZoneName: 'short'
+              });
+              featuredList.innerHTML = events.slice(0, 6).map(function(event) {
+                var date = new Date(event.dateTime);
+                var mountain = isNaN(date.getTime()) ? String(event.mountainTime || '') : mountainFormatter.format(date);
+                var link = String(event.joinUrl || event.eventUrl || '/learn/#events');
+                var label = event.joinUrl ? event.joinUrl : 'RSVP on Meetup';
+                return '<a class="aac-zoom-event" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">'
+                  + '<span><b>' + escapeHtml(event.title) + '</b> ' + escapeHtml(mountain) + '</span>'
+                  + '<small>' + escapeHtml(label) + '</small>'
+                  + '</a>';
+              }).join('');
+            })
+            .catch(function() {});
         }
 
         var regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
@@ -847,8 +874,10 @@
 
         loadRsvpCount();
         loadGroupLeaders();
+        loadFeaturedClasses();
         window.setInterval(loadRsvpCount, 300000);
         window.setInterval(loadGroupLeaders, 3600000);
+        window.setInterval(loadFeaturedClasses, 300000);
       })();
     </script>
   </body>
