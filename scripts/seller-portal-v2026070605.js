@@ -286,11 +286,13 @@
   function renderChecklist() {
     const seller = state.seller || {};
     const selected = selectedProduct() || state.products[0] || {};
-    const listingFeeReady = Boolean(selected.listingFeeWaived || selected.listingFeeStatus === 'waived' || selected.listingFeeStatus === 'paid');
+    const listingFeeReady = Boolean(selected.listingFeeWaived || selected.listingFeeStatus === 'waived' || selected.listingFeeStatus === 'paid' || selected.listingFeeStatus === 'payment_submitted');
     const listingFeeText = listingFeeReady
       ? selected.listingFeeStatus === 'paid'
         ? 'Paid.'
-        : 'Waived by Mojo.'
+        : selected.listingFeeStatus === 'payment_submitted'
+          ? 'Payment details submitted.'
+          : 'Waived by Mojo.'
       : 'Pay the one-time $100 listing fee before launch.';
     const sellerToken = state.inviteToken || seller.sellerToken || '';
     const onboardingUrl = `/products/pages/seller-onboarding.html?email=${encodeURIComponent(state.email)}&token=${encodeURIComponent(sellerToken)}`;
@@ -352,7 +354,7 @@
       return '';
     }
 
-    return '<div class="sync-note" style="margin-top:12px;">The $100 listing fee is paid by PayPal or Zelle before contract signing. If you already submitted payment details, Mojo will verify the payment before launch.</div>';
+    return '<div class="sync-note" style="margin-top:12px;">The $100 listing fee is paid by PayPal or Zelle before contract signing. Submit the payment details from your onboarding link to continue.</div>';
   }
 
   function preventDisabledOnboardingLink(event) {

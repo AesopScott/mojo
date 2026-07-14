@@ -399,7 +399,7 @@ exports.getSellerOnboardingState = onRequest(
       const listingFeeWaived = Boolean(product?.data?.listingFeeWaived || listingFeeStatus === 'waived');
       const listingFeePaid = listingFeeStatus === 'paid';
       const listingFeePaymentSubmitted = listingFeeStatus === 'payment_submitted';
-      const listingFeeReady = Boolean(!product || listingFeeWaived || listingFeePaid);
+      const listingFeeReady = Boolean(!product || listingFeeWaived || listingFeePaid || listingFeePaymentSubmitted);
       const contractSigned = Boolean(seller.contractSignedAt);
       const payoutPreferenceProvided = Boolean(seller.payoutPreferenceStatus === 'provided' || seller.payoutPreference);
       const nextStep = !listingFeeReady ? 'fee' : payoutPreferenceProvided ? 'success' : contractSigned ? 'payout' : 'contract';
@@ -502,7 +502,7 @@ exports.submitListingFeePayment = onRequest(
         ok: true,
         productId: product.id,
         listingFeeStatus: 'payment_submitted',
-        message: 'Listing fee payment details submitted. Mojo will verify the payment before contract signing.',
+        message: 'Listing fee payment details submitted. You can now review and sign the seller agreement.',
       });
     } catch (err) {
       console.error('[submitListingFeePayment] error:', err);
@@ -559,9 +559,9 @@ exports.signContract = onRequest(
       const product = await findSellerOnboardingProduct(email);
       if (product) {
         const listingFeeStatus = product.data?.listingFeeStatus || null;
-        const listingFeeReady = Boolean(product.data?.listingFeeWaived || listingFeeStatus === 'waived' || listingFeeStatus === 'paid');
+        const listingFeeReady = Boolean(product.data?.listingFeeWaived || listingFeeStatus === 'waived' || listingFeeStatus === 'paid' || listingFeeStatus === 'payment_submitted');
         if (!listingFeeReady) {
-          res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid or waived before signing the seller agreement.' });
+          res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid or waived before signing the seller agreement. If you paid by PayPal or Zelle, submit the payment details first.' });
           return;
         }
       }
@@ -1094,12 +1094,12 @@ exports.sellerSubmitProductForLaunch = onRequest(
       const update = buildSellerProductUpdate(req.body, product);
       const priceCents = parsePositiveCents(req.body?.priceCents) || parsePositiveCents(product.price);
       const billingPeriod = normalizeBillingPeriod(req.body?.billingPeriod || product.billingPeriod || product.pricingModel);
-      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid');
+      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid' || product.listingFeeStatus === 'payment_submitted');
 
       if (!listingFeeReady) {
         res.status(409).json({
           ok: false,
-          message: 'The $100 listing fee must be paid or waived before this product can launch.',
+          message: 'The $100 listing fee must be paid, waived, or submitted with payment details before this product can launch.',
         });
         return;
       }
@@ -2485,9 +2485,9 @@ exports.adminFinalizeProduct = onRequest(
       }
 
       const product = productSnap.data();
-      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid');
+      const listingFeeReady = Boolean(product.listingFeeWaived || product.listingFeeStatus === 'waived' || product.listingFeeStatus === 'paid' || product.listingFeeStatus === 'payment_submitted');
       if (!listingFeeReady) {
-        res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid or waived before publishing' });
+        res.status(409).json({ ok: false, message: 'The $100 listing fee must be paid, waived, or submitted with payment details before publishing' });
         return;
       }
 
