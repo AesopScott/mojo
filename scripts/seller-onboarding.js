@@ -136,10 +136,13 @@
           throw new Error(data.message || 'Failed to submit listing fee payment details');
         }
 
-        onboardingState = { ...onboardingState, listingFeeStatus: 'payment_submitted', nextStep: 'fee' };
-        listingFeeForm.style.display = 'none';
-        const pendingEl = getRequiredElement('listing-fee-pending');
-        pendingEl.style.display = 'flex';
+        onboardingState = {
+          ...onboardingState,
+          listingFeeStatus: 'payment_submitted',
+          listingFeeReady: true,
+          nextStep: 'contract',
+        };
+        showStep('contract');
       } catch (err) {
         showError(err.message);
         submitListingFeeBtn.disabled = false;
@@ -179,7 +182,7 @@
           throw new Error('Missing email. Please check your link.');
         }
         if (!onboardingState.listingFeeReady) {
-          throw new Error('The $100 listing fee must be paid or waived before the seller agreement can be signed.');
+          throw new Error('The $100 listing fee must be paid or waived before the seller agreement can be signed. If you paid by PayPal or Zelle, submit the payment details first.');
         }
 
         const response = await fetch(

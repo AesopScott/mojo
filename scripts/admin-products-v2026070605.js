@@ -416,7 +416,7 @@
               <div class="meta-value">${escapeHtml(formatValue(listingFeePayment.reference, 'Not provided'))}</div>
             </div>
           </div>
-          <button class="btn-mark-fee-paid btn-save" type="button" style="margin-top:12px;">Mark Fee Paid</button>
+          <div class="subtle" style="margin-top:12px;">Payment details were submitted by the seller. This is not a contract-signing approval gate.</div>
         </div>`
       : '';
     const sellerReady = product.status === 'ready_for_launch' || payoutStatus === 'provided';
@@ -485,31 +485,8 @@
 
     const resendContractBtn = div.querySelector('.btn-resend-contract');
     const resendOnboardingBtn = div.querySelector('.btn-resend-onboarding');
-    const markFeePaidBtn = div.querySelector('.btn-mark-fee-paid');
     const deleteBtn = div.querySelector('.btn-delete');
     const archiveBtn = div.querySelector('.btn-archive');
-
-    if (markFeePaidBtn) {
-      markFeePaidBtn.addEventListener('click', async () => {
-        if (!confirm(`Mark the $100 listing fee paid for "${product.name}"? Only do this after verifying the PayPal or Zelle payment.`)) return;
-
-        try {
-          markFeePaidBtn.disabled = true;
-          markFeePaidBtn.textContent = 'Saving...';
-          await adminRequest('adminMarkListingFeePaid', {
-            method: 'POST',
-            body: { productId },
-          });
-          showMessage(`Listing fee marked paid for ${product.name}`, 'success');
-          setTimeout(() => loadOnboardingProducts(), 1000);
-        } catch (err) {
-          console.error('[admin-products] mark listing fee paid error:', err);
-          showMessage(err.message || 'Error marking listing fee paid', 'error');
-          markFeePaidBtn.disabled = false;
-          markFeePaidBtn.textContent = 'Mark Fee Paid';
-        }
-      });
-    }
 
     resendContractBtn.addEventListener('click', async () => {
       try {
