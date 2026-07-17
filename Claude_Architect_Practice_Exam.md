@@ -40,87 +40,360 @@ In pilot testing, Claude sometimes writes that the customer is verified before t
 
 ### Questions 1-11
 
-1. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **1**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-2. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **2**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-3. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **3**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-4. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **4**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-5. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **5**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-6. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **6**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-7. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **7**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-8. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **8**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-9. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **9**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-10. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **10**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-11. [Context Management & Reliability] A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **11**
+**Domain:** Context Management & Reliability
+
+A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
    A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.
    B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.
    C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.
    D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.
-   Answer: B. The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.** ✅ Correct
+
+The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
 
 
 ## Scenario 2: Order replacement triage across carriers
@@ -143,87 +416,360 @@ The first implementation lets the model call replacement_order whenever it predi
 
 ### Questions 12-22
 
-12. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **12**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-13. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **13**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-14. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **14**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-15. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **15**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-16. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **16**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-17. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **17**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-18. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **18**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-19. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **19**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-20. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **20**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-21. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **21**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-22. [Context Management & Reliability] A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **22**
+**Domain:** Context Management & Reliability
+
+A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
    A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.
    B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.
    C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.
    D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.
-   Answer: B. The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.** ✅ Correct
+
+The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
 
 
 ## Scenario 3: Healthcare appointment support
@@ -246,87 +792,360 @@ During review, the agent sometimes attempts to reschedule before patient verific
 
 ### Questions 23-33
 
-23. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **23**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-24. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **24**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-25. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **25**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-26. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **26**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-27. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **27**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-28. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **28**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-29. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **29**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-30. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **30**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-31. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **31**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-32. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **32**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-33. [Context Management & Reliability] A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **33**
+**Domain:** Context Management & Reliability
+
+A long support conversation contains account IDs, invoice IDs, refund amounts, and a policy exception from earlier turns. Claude is starting to miss those facts. What is the best fix? (Select 1.)
    A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.
    B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.
    C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.
    D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.
-   Answer: B. The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude to maintain a running natural-language summary of the whole transcript after each turn.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**B. Extract durable facts into a compact case block and re-anchor that block near the current task on each turn.** ✅ Correct
+
+The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**C. Move the complete transcript into a long-context prompt so the earlier IDs remain available.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
+**D. Store the transcript in an MCP resource and let the support subagent retrieve whatever it needs.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam trap is lossy summarization of IDs and amounts. Preserve durable facts in a structured case block placed where the model can use it.
+
 
 
 ## Scenario 4: Legacy API migration
@@ -349,87 +1168,360 @@ A trial run edited generated client files, skipped the repo migration guide, and
 
 ### Questions 34-44
 
-34. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **34**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-35. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **35**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-36. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **36**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-37. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **37**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-38. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **38**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-39. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **39**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-40. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **40**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-41. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **41**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-42. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **42**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-43. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **43**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-44. [Claude Code Configuration & Workflows] The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **44**
+**Domain:** Claude Code Configuration & Workflows
+
+The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
    A. In each developer's user-level Claude config so the rule follows their personal workflow.
    B. In a project-level CLAUDE.md or equivalent committed repository instruction file.
    C. Inside a slash command used by the release lead when preparing pull requests.
    D. In the CI failure prompt so Claude sees the rule only when a check fails.
-   Answer: B. Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. In each developer's user-level Claude config so the rule follows their personal workflow.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**B. In a project-level CLAUDE.md or equivalent committed repository instruction file.** ✅ Correct
+
+Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**C. Inside a slash command used by the release lead when preparing pull requests.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**D. In the CI failure prompt so Claude sees the rule only when a check fails.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
 
 
 ## Scenario 5: Frontend accessibility repair
@@ -452,87 +1544,360 @@ In the first attempt, Claude changed unrelated colors, created a new button abst
 
 ### Questions 45-55
 
-45. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **45**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-46. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **46**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-47. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **47**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-48. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **48**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-49. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **49**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-50. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **50**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-51. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **51**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-52. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **52**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-53. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **53**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-54. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **54**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-55. [Claude Code Configuration & Workflows] The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **55**
+**Domain:** Claude Code Configuration & Workflows
+
+The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
    A. In each developer's user-level Claude config so the rule follows their personal workflow.
    B. In a project-level CLAUDE.md or equivalent committed repository instruction file.
    C. Inside a slash command used by the release lead when preparing pull requests.
    D. In the CI failure prompt so Claude sees the rule only when a check fails.
-   Answer: B. Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. In each developer's user-level Claude config so the rule follows their personal workflow.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**B. In a project-level CLAUDE.md or equivalent committed repository instruction file.** ✅ Correct
+
+Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**C. Inside a slash command used by the release lead when preparing pull requests.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**D. In the CI failure prompt so Claude sees the rule only when a check fails.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
 
 
 ## Scenario 6: CI failure repair
@@ -555,87 +1920,360 @@ A previous run updated multiple packages without proving they caused the failure
 
 ### Questions 56-66
 
-56. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **56**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-57. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **57**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-58. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **58**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-59. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **59**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-60. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **60**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-61. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **61**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-62. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **62**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-63. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **63**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-64. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **64**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-65. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **65**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-66. [Claude Code Configuration & Workflows] The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **66**
+**Domain:** Claude Code Configuration & Workflows
+
+The team wants every clone of the repository to follow the same lint-before-commit rule. Where should that shared Claude Code instruction live? (Select 1.)
    A. In each developer's user-level Claude config so the rule follows their personal workflow.
    B. In a project-level CLAUDE.md or equivalent committed repository instruction file.
    C. Inside a slash command used by the release lead when preparing pull requests.
    D. In the CI failure prompt so Claude sees the rule only when a check fails.
-   Answer: B. Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. In each developer's user-level Claude config so the rule follows their personal workflow.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**B. In a project-level CLAUDE.md or equivalent committed repository instruction file.** ✅ Correct
+
+Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**C. Inside a slash command used by the release lead when preparing pull requests.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
+**D. In the CI failure prompt so Claude sees the rule only when a check fails.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Team-shared rules belong in committed project instructions. User-level memory is private and will not travel with the repo.
+
 
 
 ## Scenario 7: Competitive intelligence report
@@ -658,94 +2296,390 @@ The initial design produced a polished report but lost citations for several cla
 
 ### Questions 67-78
 
-67. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **67**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-68. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **68**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-69. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **69**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-70. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **70**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-71. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **71**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-72. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **72**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-73. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **73**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-74. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **74**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-75. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **75**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-76. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **76**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-77. [Agentic Architecture & Orchestration] One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **77**
+**Domain:** Agentic Architecture & Orchestration
+
+One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
    A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.
    B. Retry or replace only the failed subtask and preserve successful side-effecting work.
    C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.
    D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.
-   Answer: B. Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
 
-78. [Tool Design & MCP Integration] The MCP server for competitor research can run on the same machine as the client during analyst workflows. Which transport is the better default? (Select 1.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**B. Retry or replace only the failed subtask and preserve successful side-effecting work.** ✅ Correct
+
+Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+
+**Question:** **78**
+**Domain:** Tool Design & MCP Integration
+
+The MCP server for competitor research can run on the same machine as the client during analyst workflows. Which transport is the better default? (Select 1.)
    A. stdio, because the server can run locally without HTTP authentication and network overhead.
    B. SSE, because it matches the same HTTP pattern the production web app will eventually use.
    C. SSE, because it makes logs and authentication centralized even for a single local analyst.
    D. stdio for reads and SSE for writes so the model can choose the safer transport per call.
-   Answer: A. For same-machine MCP servers, stdio is the exam-favored default. SSE is for remote or shared-host servers that need HTTP access patterns.
+
+**Answer:** **A**
+
+**Explanation:**
+
+**A. stdio, because the server can run locally without HTTP authentication and network overhead.** ✅ Correct
+
+For same-machine MCP servers, stdio is the exam-favored default. SSE is for remote or shared-host servers that need HTTP access patterns.
+
+**B. SSE, because it matches the same HTTP pattern the production web app will eventually use.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A because For same-machine MCP servers, stdio is the exam-favored default. SSE is for remote or shared-host servers that need HTTP access patterns.
+
+**C. SSE, because it makes logs and authentication centralized even for a single local analyst.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A because For same-machine MCP servers, stdio is the exam-favored default. SSE is for remote or shared-host servers that need HTTP access patterns.
+
+**D. stdio for reads and SSE for writes so the model can choose the safer transport per call.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A because For same-machine MCP servers, stdio is the exam-favored default. SSE is for remote or shared-host servers that need HTTP access patterns.
+
 
 
 ## Scenario 8: Regulatory change monitor
@@ -768,87 +2702,360 @@ In testing, collection agents included unrelated jurisdictions, extraction agent
 
 ### Questions 79-89
 
-79. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **79**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-80. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **80**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-81. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **81**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-82. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **82**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-83. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **83**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-84. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **84**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-85. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **85**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-86. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **86**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-87. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **87**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-88. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **88**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-89. [Agentic Architecture & Orchestration] One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **89**
+**Domain:** Agentic Architecture & Orchestration
+
+One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
    A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.
    B. Retry or replace only the failed subtask and preserve successful side-effecting work.
    C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.
    D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.
-   Answer: B. Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**B. Retry or replace only the failed subtask and preserve successful side-effecting work.** ✅ Correct
+
+Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
 
 
 ## Scenario 9: Technical architecture due diligence
@@ -871,87 +3078,360 @@ The first memo overstated conclusions based on job postings and treated old GitH
 
 ### Questions 90-100
 
-90. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **90**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-91. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **91**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-92. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **92**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-93. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **93**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-94. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **94**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-95. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **95**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-96. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **96**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-97. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **97**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-98. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **98**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-99. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **99**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-100. [Agentic Architecture & Orchestration] One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **100**
+**Domain:** Agentic Architecture & Orchestration
+
+One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
    A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.
    B. Retry or replace only the failed subtask and preserve successful side-effecting work.
    C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.
    D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.
-   Answer: B. Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**B. Retry or replace only the failed subtask and preserve successful side-effecting work.** ✅ Correct
+
+Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
 
 
 ## Scenario 10: Internal developer assistant rollout
@@ -974,95 +3454,395 @@ Early users report confident answers from outdated docs and inconsistent handoff
 
 ### Questions 101-112
 
-101. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **101**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-102. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **102**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-103. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **103**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-104. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **104**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-105. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **105**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-106. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **106**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-107. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **107**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-108. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **108**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-109. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **109**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-110. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **110**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-111. [Context Management & Reliability] A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **111**
+**Domain:** Context Management & Reliability
+
+A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
    A. Cache the stable system prompt prefix.
    B. Cache the reusable few-shot examples when they remain identical.
    C. Cache the full prompt including the user question so repeated users get faster responses.
    D. Cache only the retrieved documents because they are usually the largest part of the prompt.
    E. Avoid caching few-shot examples because examples can bias later tasks.
-   Answer: A, B. Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
 
-112. [Tool Design & MCP Integration] Three tools are described as 'gets user info': get_user, lookup_user, and find_customer. Claude picks randomly. What is the best fix? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Cache the stable system prompt prefix.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**B. Cache the reusable few-shot examples when they remain identical.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**C. Cache the full prompt including the user question so repeated users get faster responses.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**D. Cache only the retrieved documents because they are usually the largest part of the prompt.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**E. Avoid caching few-shot examples because examples can bias later tasks.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+
+**Question:** **112**
+**Domain:** Tool Design & MCP Integration
+
+Three tools are described as 'gets user info': get_user, lookup_user, and find_customer. Claude picks randomly. What is the best fix? (Select 1.)
    A. Keep the tools separate but add a system prompt telling Claude to choose carefully.
    B. Rewrite descriptions with purpose, when-to-use guidance, example arguments, and possible error conditions.
    C. Rename the tools with longer names but keep the existing descriptions to avoid changing behavior.
    D. Route all three through one wrapper tool that decides which backend call to make from Claude's prose.
-   Answer: B. Tool descriptions are selection controls. Ambiguous sibling tools need disambiguation rules, examples, and error contracts.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Keep the tools separate but add a system prompt telling Claude to choose carefully.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Tool descriptions are selection controls. Ambiguous sibling tools need disambiguation rules, examples, and error contracts.
+
+**B. Rewrite descriptions with purpose, when-to-use guidance, example arguments, and possible error conditions.** ✅ Correct
+
+Tool descriptions are selection controls. Ambiguous sibling tools need disambiguation rules, examples, and error contracts.
+
+**C. Rename the tools with longer names but keep the existing descriptions to avoid changing behavior.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Tool descriptions are selection controls. Ambiguous sibling tools need disambiguation rules, examples, and error contracts.
+
+**D. Route all three through one wrapper tool that decides which backend call to make from Claude's prose.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Tool descriptions are selection controls. Ambiguous sibling tools need disambiguation rules, examples, and error contracts.
+
 
 
 ## Scenario 11: Data science notebook assistant
@@ -1085,88 +3865,365 @@ A pilot answer invented a column name, gave a confident model explanation despit
 
 ### Questions 113-123
 
-113. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **113**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-114. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **114**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-115. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **115**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-116. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **116**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-117. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **117**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-118. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **118**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-119. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **119**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-120. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **120**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-121. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **121**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-122. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **122**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-123. [Context Management & Reliability] A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **123**
+**Domain:** Context Management & Reliability
+
+A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
    A. Cache the stable system prompt prefix.
    B. Cache the reusable few-shot examples when they remain identical.
    C. Cache the full prompt including the user question so repeated users get faster responses.
    D. Cache only the retrieved documents because they are usually the largest part of the prompt.
    E. Avoid caching few-shot examples because examples can bias later tasks.
-   Answer: A, B. Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Cache the stable system prompt prefix.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**B. Cache the reusable few-shot examples when they remain identical.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**C. Cache the full prompt including the user question so repeated users get faster responses.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**D. Cache only the retrieved documents because they are usually the largest part of the prompt.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**E. Avoid caching few-shot examples because examples can bias later tasks.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
 
 
 ## Scenario 12: Architecture decision support
@@ -1189,88 +4246,365 @@ The first workflow produced polished ADRs that skipped nonfunctional requirement
 
 ### Questions 124-134
 
-124. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **124**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-125. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **125**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-126. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **126**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-127. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **127**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-128. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **128**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-129. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **129**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-130. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **130**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-131. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **131**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-132. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **132**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-133. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **133**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-134. [Context Management & Reliability] A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **134**
+**Domain:** Context Management & Reliability
+
+A developer assistant uses a 50,000-token stable system prompt, a fixed set of few-shot examples, and a unique user question each turn. Which two prompt-caching choices are best? (Select 2.)
    A. Cache the stable system prompt prefix.
    B. Cache the reusable few-shot examples when they remain identical.
    C. Cache the full prompt including the user question so repeated users get faster responses.
    D. Cache only the retrieved documents because they are usually the largest part of the prompt.
    E. Avoid caching few-shot examples because examples can bias later tasks.
-   Answer: A, B. Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Cache the stable system prompt prefix.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**B. Cache the reusable few-shot examples when they remain identical.** ✅ Correct
+
+Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**C. Cache the full prompt including the user question so repeated users get faster responses.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**D. Cache only the retrieved documents because they are usually the largest part of the prompt.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
+**E. Avoid caching few-shot examples because examples can bias later tasks.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Prompt caching pays off on repeated stable prefixes, not one-off user turns or stale evidence that must be refreshed.
+
 
 
 ## Scenario 13: Automated pull request repair
@@ -1293,87 +4627,360 @@ In dry runs, Claude fixed lint errors but ignored a failing integration test. An
 
 ### Questions 135-145
 
-135. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **135**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-136. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **136**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-137. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **137**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-138. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **138**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-139. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **139**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-140. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **140**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-141. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **141**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-142. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **142**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-143. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **143**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-144. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **144**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-145. [Prompt Engineering & Structured Output] A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **145**
+**Domain:** Prompt Engineering & Structured Output
+
+A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
    A. Keep the prompt broad but require Claude to include a confidence score for each concern.
    B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.
    C. Let Claude produce a natural-language severity label and fail on high or critical findings.
    D. Send the entire repository context so Claude has enough background to judge concerns more accurately.
-   Answer: B. The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Keep the prompt broad but require Claude to include a confidence score for each concern.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.** ✅ Correct
+
+The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**C. Let Claude produce a natural-language severity label and fail on high or critical findings.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**D. Send the entire repository context so Claude has enough background to judge concerns more accurately.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
 
 
 ## Scenario 14: Release note generation from commits
@@ -1396,87 +5003,360 @@ A trial note included internal refactors as customer features and missed a migra
 
 ### Questions 146-156
 
-146. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **146**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-147. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **147**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-148. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **148**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-149. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **149**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-150. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **150**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-151. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **151**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-152. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **152**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-153. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **153**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-154. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **154**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-155. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **155**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-156. [Prompt Engineering & Structured Output] A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **156**
+**Domain:** Prompt Engineering & Structured Output
+
+A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
    A. Keep the prompt broad but require Claude to include a confidence score for each concern.
    B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.
    C. Let Claude produce a natural-language severity label and fail on high or critical findings.
    D. Send the entire repository context so Claude has enough background to judge concerns more accurately.
-   Answer: B. The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Keep the prompt broad but require Claude to include a confidence score for each concern.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.** ✅ Correct
+
+The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**C. Let Claude produce a natural-language severity label and fail on high or critical findings.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**D. Send the entire repository context so Claude has enough background to judge concerns more accurately.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
 
 
 ## Scenario 15: Security patch verification
@@ -1499,87 +5379,360 @@ A previous agent upgraded a root dependency but missed a service-specific overri
 
 ### Questions 157-167
 
-157. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **157**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-158. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **158**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-159. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **159**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-160. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **160**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-161. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **161**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-162. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **162**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-163. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **163**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-164. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **164**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-165. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **165**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-166. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **166**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-167. [Prompt Engineering & Structured Output] A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **167**
+**Domain:** Prompt Engineering & Structured Output
+
+A CI review prompt says 'review this PR carefully' and the pipeline fails on vague model concern. What should the architect change? (Select 1.)
    A. Keep the prompt broad but require Claude to include a confidence score for each concern.
    B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.
    C. Let Claude produce a natural-language severity label and fail on high or critical findings.
    D. Send the entire repository context so Claude has enough background to judge concerns more accurately.
-   Answer: B. The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Keep the prompt broad but require Claude to include a confidence score for each concern.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**B. Fail only on schema-named categories with mechanically checkable criteria, such as security violation or breaking API change.** ✅ Correct
+
+The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**C. Let Claude produce a natural-language severity label and fail on high or critical findings.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
+**D. Send the entire repository context so Claude has enough background to judge concerns more accurately.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The trap is vague adjectives driving false positives. CI gates need explicit categories and checkable criteria.
+
 
 
 ## Scenario 16: Invoice extraction pipeline
@@ -1602,88 +5755,365 @@ The first pipeline returned valid-looking JSON even when totals did not reconcil
 
 ### Questions 168-178
 
-168. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **168**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-169. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **169**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-170. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **170**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-171. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **171**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-172. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **172**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-173. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **173**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-174. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **174**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-175. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **175**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-176. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **176**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-177. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **177**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-178. [Prompt Engineering & Structured Output] An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **178**
+**Domain:** Prompt Engineering & Structured Output
+
+An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
    A. Require source spans or page references for extracted fields.
    B. Run semantic validation and retry with the specific validation error.
    C. Add a prompt instruction telling Claude to be stricter about unsupported fields.
    D. Accept parsed JSON automatically and sample a small percentage later for quality review.
    E. Use a broader schema with optional fields so unusual documents do not fail validation.
-   Answer: A, B. Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Require source spans or page references for extracted fields.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**B. Run semantic validation and retry with the specific validation error.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**C. Add a prompt instruction telling Claude to be stricter about unsupported fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**D. Accept parsed JSON automatically and sample a small percentage later for quality review.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**E. Use a broader schema with optional fields so unusual documents do not fail validation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
 
 
 ## Scenario 17: Contract obligation extraction
@@ -1706,88 +6136,365 @@ A pilot extracted obligations but dropped page references and treated definition
 
 ### Questions 179-189
 
-179. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **179**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-180. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **180**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-181. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **181**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-182. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **182**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-183. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **183**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-184. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **184**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-185. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **185**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-186. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **186**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-187. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **187**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-188. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **188**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-189. [Prompt Engineering & Structured Output] An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **189**
+**Domain:** Prompt Engineering & Structured Output
+
+An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
    A. Require source spans or page references for extracted fields.
    B. Run semantic validation and retry with the specific validation error.
    C. Add a prompt instruction telling Claude to be stricter about unsupported fields.
    D. Accept parsed JSON automatically and sample a small percentage later for quality review.
    E. Use a broader schema with optional fields so unusual documents do not fail validation.
-   Answer: A, B. Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Require source spans or page references for extracted fields.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**B. Run semantic validation and retry with the specific validation error.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**C. Add a prompt instruction telling Claude to be stricter about unsupported fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**D. Accept parsed JSON automatically and sample a small percentage later for quality review.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**E. Use a broader schema with optional fields so unusual documents do not fail validation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
 
 
 ## Scenario 18: Support ticket classification
@@ -1810,88 +6517,365 @@ The first batch overused high severity, invented taxonomy labels, and mixed cust
 
 ### Questions 190-200
 
-190. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **190**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-191. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **191**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-192. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **192**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-193. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **193**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-194. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **194**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-195. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **195**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-196. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **196**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-197. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **197**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-198. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **198**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-199. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **199**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-200. [Prompt Engineering & Structured Output] An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **200**
+**Domain:** Prompt Engineering & Structured Output
+
+An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
    A. Require source spans or page references for extracted fields.
    B. Run semantic validation and retry with the specific validation error.
    C. Add a prompt instruction telling Claude to be stricter about unsupported fields.
    D. Accept parsed JSON automatically and sample a small percentage later for quality review.
    E. Use a broader schema with optional fields so unusual documents do not fail validation.
-   Answer: A, B. Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Require source spans or page references for extracted fields.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**B. Run semantic validation and retry with the specific validation error.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**C. Add a prompt instruction telling Claude to be stricter about unsupported fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**D. Accept parsed JSON automatically and sample a small percentage later for quality review.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**E. Use a broader schema with optional fields so unusual documents do not fail validation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
 
 
 ## Scenario 19: Clinical intake normalization
@@ -1914,88 +6898,365 @@ A test run inferred urgency from symptom wording without routing criteria and su
 
 ### Questions 201-211
 
-201. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **201**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-202. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **202**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-203. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **203**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-204. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **204**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-205. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **205**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-206. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **206**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-207. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **207**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-208. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **208**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-209. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **209**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-210. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **210**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-211. [Prompt Engineering & Structured Output] An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **211**
+**Domain:** Prompt Engineering & Structured Output
+
+An extraction pipeline returns schema-valid JSON, but review finds unsupported fields and missing source evidence. Which two changes best improve reliability? (Select 2.)
    A. Require source spans or page references for extracted fields.
    B. Run semantic validation and retry with the specific validation error.
    C. Add a prompt instruction telling Claude to be stricter about unsupported fields.
    D. Accept parsed JSON automatically and sample a small percentage later for quality review.
    E. Use a broader schema with optional fields so unusual documents do not fail validation.
-   Answer: A, B. Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Require source spans or page references for extracted fields.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**B. Run semantic validation and retry with the specific validation error.** ✅ Correct
+
+Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**C. Add a prompt instruction telling Claude to be stricter about unsupported fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**D. Accept parsed JSON automatically and sample a small percentage later for quality review.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
+**E. Use a broader schema with optional fields so unusual documents do not fail validation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Parsing is not enough. Extraction needs evidence-bearing fields plus validation feedback when content is unsupported or inconsistent.
+
 
 
 ## Scenario 20: Incident postmortem evidence synthesis
@@ -2018,87 +7279,360 @@ The initial postmortem mixed speculation with facts and lost timezone informatio
 
 ### Questions 212-222
 
-212. [Agentic Architecture & Orchestration] Given this case, what is the best orchestration boundary for Claude? (Select 1.)
+**Question:** **212**
+**Domain:** Agentic Architecture & Orchestration
+
+Given this case, what is the best orchestration boundary for Claude? (Select 1.)
    A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.
    B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.
    C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.
    D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.
-   Answer: B. The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
 
-213. [Agentic Architecture & Orchestration] Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Use a single long-running assistant prompt that describes the desired workflow and asks Claude to decide when each step is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**B. Use a coordinator loop that advances on tool_use, appends tool results, terminates on end_turn, and delegates only explicitly scoped work.** ✅ Correct
+
+The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**C. Run each tool in a fixed sequence before calling Claude, then ask Claude to summarize the collected results.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+**D. Give each specialist subagent the full transcript and let the final subagent decide when the overall task is complete.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because The exam favors explicit agent loops and scoped delegation, not free-form state transitions or assumed shared context.
+
+
+**Question:** **213**
+**Domain:** Agentic Architecture & Orchestration
+
+Which two design choices best reduce unsafe autonomous action in this scenario? (Select 2.)
    A. Programmatic gates or hooks around irreversible or high-risk tools.
    B. A broader context window that includes the full policy manual for every request.
    C. Clear escalation criteria with structured handoff fields.
    D. A prompt instruction telling Claude to be conservative with high-impact actions.
    E. A post-hoc audit report that reviews completed actions once per day.
-   Answer: A, C. Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
 
-214. [Tool Design & MCP Integration] Which tool design is most appropriate for the system described in the case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Programmatic gates or hooks around irreversible or high-risk tools.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**B. A broader context window that includes the full policy manual for every request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**C. Clear escalation criteria with structured handoff fields.** ✅ Correct
+
+Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**D. A prompt instruction telling Claude to be conservative with high-impact actions.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+**E. A post-hoc audit report that reviews completed actions once per day.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Risky actions need enforceable gates and explicit escalation paths. Prompt-only controls and hidden failures are weak patterns.
+
+
+**Question:** **214**
+**Domain:** Tool Design & MCP Integration
+
+Which tool design is most appropriate for the system described in the case? (Select 1.)
    A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.
    B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.
    C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.
    D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.
-   Answer: B. Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
 
-215. [Tool Design & MCP Integration] If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. A small set of broad workflow tools that accept natural-language task descriptions so Claude has flexibility.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**B. Narrow tools with typed inputs, precise descriptions, error states, and documented prerequisites.** ✅ Correct
+
+Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**C. A single orchestration tool that internally calls the right service and returns a concise success or failure message.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+**D. Tools that return human-readable summaries with enough detail for Claude to infer status and next steps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Exam-style tool design emphasizes narrow, well-described tools with explicit schemas, errors, and prerequisites.
+
+
+**Question:** **215**
+**Domain:** Tool Design & MCP Integration
+
+If this system exposes context through MCP, which two resources or tools are best aligned to the case? (Select 2.)
    A. A resource that provides approved policy or taxonomy data with version metadata.
    B. A tool that performs a controlled external action only after required identifiers are present.
    C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.
    D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.
    E. A project-level MCP resource that is available but not explicitly passed to subagents.
-   Answer: A, B. MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
 
-216. [Claude Code Configuration & Workflows] For implementation work related to this case, what should Claude Code do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. A resource that provides approved policy or taxonomy data with version metadata.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**B. A tool that performs a controlled external action only after required identifiers are present.** ✅ Correct
+
+MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**C. A resource that exposes recent related tickets without source labels so Claude can infer patterns quickly.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**D. A tool that accepts a free-form instruction and chooses the downstream API operation internally.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+**E. A project-level MCP resource that is available but not explicitly passed to subagents.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because MCP should expose controlled resources and tools with clear contracts, not uncontrolled data or arbitrary execution.
+
+
+**Question:** **216**
+**Domain:** Claude Code Configuration & Workflows
+
+For implementation work related to this case, what should Claude Code do first? (Select 1.)
    A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.
    B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.
    C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.
    D. Run the broadest available test command first so the failure output determines where to inspect.
-   Answer: B. Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
 
-217. [Claude Code Configuration & Workflows] Which two Claude Code workflow controls are most important here? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Start by editing the file most likely to contain the behavior, then adjust the plan after tests fail.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**B. Read repository instructions, inspect existing patterns, and produce a plan before changing files.** ✅ Correct
+
+Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**C. Ask Claude Code to generate a complete patch from the issue description before spending context on repository exploration.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+**D. Run the broadest available test command first so the failure output determines where to inspect.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Claude Code exam questions reward respecting local instructions, planning, and matching existing patterns before edits.
+
+
+**Question:** **217**
+**Domain:** Claude Code Configuration & Workflows
+
+Which two Claude Code workflow controls are most important here? (Select 2.)
    A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.
    B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.
    C. Run focused verification commands and report what did or did not run.
    D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.
    E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.
-   Answer: A, C. Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
 
-218. [Prompt Engineering & Structured Output] Which prompt/output strategy best fits this case? (Select 1.)
+**Answer:** **A, C**
+
+**Explanation:**
+
+**A. Use CLAUDE.md or AGENTS.md rules to encode repository constraints.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**B. Prefer a repository-wide cleanup pass before the requested change so hidden inconsistencies do not remain.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**C. Run focused verification commands and report what did or did not run.** ✅ Correct
+
+Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**D. Keep project rules in the developer's user-level Claude memory so they apply across all repositories.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+**E. Use only the generic Claude Code workflow so custom skills do not bias the implementation.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, C because Repo-local rules and focused verification are central. Unrelated churn and destructive operations are anti-patterns.
+
+
+**Question:** **218**
+**Domain:** Prompt Engineering & Structured Output
+
+Which prompt/output strategy best fits this case? (Select 1.)
    A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.
    B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.
    C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.
    D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.
-   Answer: B. Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
 
-219. [Prompt Engineering & Structured Output] Which two prompt details should be preserved in the case output? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Ask Claude for a concise paragraph, then use regex extraction for fields that downstream systems need.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**B. Use a structured output schema with required fields, examples for edge cases, and validation feedback on retry.** ✅ Correct
+
+Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**C. Use a detailed prose template with headings, then ask Claude to keep the same headings on every response.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+**D. Use a schema for the final response but avoid retry feedback so the model does not overfit to validator wording.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Structured output, examples, and validation loops are the reliable pattern for scenario-grade exam questions.
+
+
+**Question:** **219**
+**Domain:** Prompt Engineering & Structured Output
+
+Which two prompt details should be preserved in the case output? (Select 2.)
    A. Source or evidence references for important claims.
    B. Assumptions, uncertainty, or review flags when evidence is incomplete.
    C. A concise confidence score without requiring the source evidence behind it.
    D. A final natural-language rationale that explains why validation warnings can be accepted.
    E. A compact summary of reasoning steps instead of source-linked output fields.
-   Answer: A, B. The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
 
-220. [Context Management & Reliability] What is the strongest context-management improvement for this scenario? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Source or evidence references for important claims.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**B. Assumptions, uncertainty, or review flags when evidence is incomplete.** ✅ Correct
+
+The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**C. A concise confidence score without requiring the source evidence behind it.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**D. A final natural-language rationale that explains why validation warnings can be accepted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+**E. A compact summary of reasoning steps instead of source-linked output fields.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because The exam rewards source-grounded outputs and explicit uncertainty, not unsupported guarantees or hidden reasoning dumps.
+
+
+**Question:** **220**
+**Domain:** Context Management & Reliability
+
+What is the strongest context-management improvement for this scenario? (Select 1.)
    A. Send the complete available history so Claude can decide which details matter.
    B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.
    C. Summarize the entire context at each turn and rely on the summary as the source of truth.
    D. Give each subagent access to the same large context bundle so no context is accidentally omitted.
-   Answer: B. Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
 
-221. [Context Management & Reliability] Which two reliability behaviors should the final system demonstrate? (Select 2.)
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Send the complete available history so Claude can decide which details matter.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**B. Keep critical constraints, current evidence, and decision criteria compact, explicit, and near the task they control.** ✅ Correct
+
+Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**C. Summarize the entire context at each turn and rely on the summary as the source of truth.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+**D. Give each subagent access to the same large context bundle so no context is accidentally omitted.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Good context management is selective, ordered, source-linked, and explicit about what each agent receives.
+
+
+**Question:** **221**
+**Domain:** Context Management & Reliability
+
+Which two reliability behaviors should the final system demonstrate? (Select 2.)
    A. Escalate or ask for clarification when required evidence is missing.
    B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.
    C. Use cached prior results when the same user or repository appears in a later request.
    D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.
    E. Prefer an answer with caveats over asking for clarification when the user expects speed.
-   Answer: A, B. Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
 
-222. [Agentic Architecture & Orchestration] One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
+**Answer:** **A, B**
+
+**Explanation:**
+
+**A. Escalate or ask for clarification when required evidence is missing.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**B. Disclose unresolved tool errors or low-confidence evidence in the appropriate internal handoff.** ✅ Correct
+
+Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**C. Use cached prior results when the same user or repository appears in a later request.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**D. Preserve only the final synthesized answer so reviewers are not distracted by intermediate uncertainty.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+**E. Prefer an answer with caveats over asking for clarification when the user expects speed.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is A, B because Reliable systems surface missing evidence, tool failures, and uncertainty through the right channel.
+
+
+**Question:** **222**
+**Domain:** Agentic Architecture & Orchestration
+
+One research subagent fails after other subagents have already stored findings and created review artifacts. What should the coordinator do first? (Select 1.)
    A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.
    B. Retry or replace only the failed subtask and preserve successful side-effecting work.
    C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.
    D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.
-   Answer: B. Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**Answer:** **B**
+
+**Explanation:**
+
+**A. Rerun the full workflow so all subagent outputs are produced from the same fresh context.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**B. Retry or replace only the failed subtask and preserve successful side-effecting work.** ✅ Correct
+
+Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**C. Ask the synthesis subagent to proceed using the successful outputs and mark the missing section as low confidence.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
+**D. Merge the failed subagent's partial notes into the final answer and let human reviewers catch any gaps.** ❌ Incorrect
+
+This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is B because Blanket retries can duplicate side effects and waste work. The coordinator should isolate the failed subtask and make the gap visible.
+
 
 
 # Speed Round

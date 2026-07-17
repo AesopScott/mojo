@@ -602,6 +602,7 @@ const practiceCases = cases.slice(0, 20).map((item) => ({
 }));
 
 const totalScenarioQuestions = practiceCases.reduce((total, item) => total + item.questions.length, 0);
+const QUESTIONS_PER_PAGE = 20;
 
 function renderCases(renderCase) {
   let firstQuestion = 1;
@@ -611,6 +612,30 @@ function renderCases(renderCase) {
     return rendered;
   });
 }
+
+function scenarioQuestionEntries() {
+  const entries = [];
+  let qn = 1;
+  practiceCases.forEach((item, caseIndex) => {
+    const questions = item.questions ?? questionSet;
+    questions.forEach((q, localIndex) => {
+      entries.push({
+        item,
+        caseIndex: caseIndex + 1,
+        localIndex,
+        q,
+        qn,
+      });
+      qn += 1;
+    });
+  });
+  return entries;
+}
+
+const scenarioPages = Array.from(
+  { length: Math.ceil(totalScenarioQuestions / QUESTIONS_PER_PAGE) },
+  (_, index) => scenarioQuestionEntries().slice(index * QUESTIONS_PER_PAGE, (index + 1) * QUESTIONS_PER_PAGE),
+);
 
 const speedTrapTopics = {
   [domains[0]]: [
@@ -682,6 +707,30 @@ function answerText(answer) {
   return answer.join(", ");
 }
 
+function optionExplanation(q, letter) {
+  if (q.answer.includes(letter)) {
+    return q.explanation;
+  }
+  return `This is a plausible distractor, but it does not best satisfy the scenario constraints. The correct answer is ${answerText(q.answer)} because ${q.explanation}`;
+}
+
+function renderOptionExplanationMd(q, letter, optionText) {
+  const status = q.answer.includes(letter) ? "✅ Correct" : "❌ Incorrect";
+  return [
+    `**${letter}. ${optionText}** ${status}`,
+    "",
+    optionExplanation(q, letter),
+  ].join("\n");
+}
+
+function renderOptionExplanationHtml(q, letter, optionText) {
+  const isCorrect = q.answer.includes(letter);
+  return `<div class="option-explanation ${isCorrect ? "is-correct" : "is-incorrect"}">
+      <p><strong>${letter}. ${esc(optionText)}</strong> <span class="option-status">${isCorrect ? "Correct" : "Incorrect"}</span></p>
+      <p>${esc(optionExplanation(q, letter))}</p>
+    </div>`;
+}
+
 function renderCaseMd(item, caseIndex, firstQuestion) {
   const lines = [];
   const questions = item.questions ?? questionSet;
@@ -704,11 +753,23 @@ function renderCaseMd(item, caseIndex, firstQuestion) {
   lines.push("");
   questions.forEach((q, idx) => {
     const qn = firstQuestion + idx;
-    lines.push(`${qn}. [${q.domain}] ${q.stem} (Select ${q.select}.)`);
-    "ABCDE".slice(0, q.options.length).split("").forEach((letter, optionIndex) => {
+    const letters = "ABCDE".slice(0, q.options.length).split("");
+    lines.push(`**Question:** **${qn}**`);
+    lines.push(`**Domain:** ${q.domain}`);
+    lines.push("");
+    lines.push(`${q.stem} (Select ${q.select}.)`);
+    letters.forEach((letter, optionIndex) => {
       lines.push(`   ${letter}. ${q.options[optionIndex]}`);
     });
-    lines.push(`   Answer: ${answerText(q.answer)}. ${q.explanation}`);
+    lines.push("");
+    lines.push(`**Answer:** **${answerText(q.answer)}**`);
+    lines.push("");
+    lines.push("**Explanation:**");
+    lines.push("");
+    letters.forEach((letter, optionIndex) => {
+      lines.push(renderOptionExplanationMd(q, letter, q.options[optionIndex]));
+      lines.push("");
+    });
     lines.push("");
   });
   return lines.join("\n");
@@ -722,11 +783,17 @@ function renderQuestionHtml(q, qn, caseIndex, idx) {
       <span class="scenario-pill">${esc(q.domain)}</span>
       <button class="answer-toggle" type="button" data-target="${id}" aria-expanded="false">Show answer</button>
     </div>
-    <h4><span class="question-number">${qn}</span>. ${esc(q.stem)} <span class="select-note">(Select ${q.select}.)</span></h4>
+    <div class="question-label"><strong>Question:</strong> <strong>${qn}</strong></div>
+    <div class="question-source">Mojo AI Studio</div>
+    <h4>${esc(q.stem)} <span class="select-note">(Select ${q.select}.)</span></h4>
     <ul class="answer-options">
 ${optionLetters.map((letter, optionIndex) => `      <li><span>${letter}.</span> ${esc(q.options[optionIndex])}</li>`).join("\n")}
     </ul>
-    <div class="answer-panel" id="${id}" hidden><strong>Correct answer:</strong> ${esc(answerText(q.answer))}. ${esc(q.explanation)}</div>
+    <div class="answer-panel" id="${id}" hidden>
+      <div class="answer-summary"><strong>Answer:</strong> <strong>${esc(answerText(q.answer))}</strong></div>
+      <div class="explanation-heading"><strong>Explanation:</strong></div>
+${optionLetters.map((letter, optionIndex) => renderOptionExplanationHtml(q, letter, q.options[optionIndex])).join("\n")}
+    </div>
   </section>`;
 }
 
@@ -753,6 +820,67 @@ ${item.constraints.map((constraint) => `      <li>${esc(constraint)}</li>`).join
   <h4 class="question-set-title">Questions ${firstQuestion}-${firstQuestion + questions.length - 1}</h4>
 ${questions.map((q, idx) => renderQuestionHtml(q, firstQuestion + idx, caseIndex, idx)).join("\n")}
 </section>`;
+}
+
+function renderCaseSliceHtml(item, caseIndex, entries) {
+  const first = entries[0].qn;
+  const last = entries[entries.length - 1].qn;
+  return `<section class="case-file" id="scenario-${caseIndex}-questions-${first}-${last}">
+  <div class="case-file-head">
+    <span class="scenario-pill">Scenario ${caseIndex}</span>
+    <span class="case-type">${esc(item.type)}</span>
+  </div>
+  <h3>${esc(item.title)}</h3>
+  <div class="case-brief">
+    <p><strong>Case file:</strong> ${esc(item.org)} is preparing a Claude architecture for the following situation.</p>
+    <p>${esc(item.situation)}</p>
+    <p>${esc(item.architecture)}</p>
+    <p>${esc(item.failure)}</p>
+  </div>
+  <div class="case-artifacts">
+    <h4>Constraints and artifacts</h4>
+    <ul>
+${item.constraints.map((constraint) => `      <li>${esc(constraint)}</li>`).join("\n")}
+    </ul>
+  </div>
+  <h4 class="question-set-title">Questions ${first}-${last}</h4>
+${entries.map((entry) => renderQuestionHtml(entry.q, entry.qn, caseIndex, entry.localIndex)).join("\n")}
+</section>`;
+}
+
+function renderScenarioPageControls() {
+  return `<nav class="scenario-page-controls" aria-label="Scenario question pages">
+${scenarioPages.map((page, index) => {
+  const first = page[0].qn;
+  const last = page[page.length - 1].qn;
+  return `  <button type="button" data-scenario-page="${index + 1}" aria-pressed="${index === 0 ? "true" : "false"}">Page ${index + 1}<span>Q${first}-${last}</span></button>`;
+}).join("\n")}
+</nav>`;
+}
+
+function renderScenarioPageHtml(pageEntries, pageIndex) {
+  const groups = [];
+  for (const entry of pageEntries) {
+    const current = groups[groups.length - 1];
+    if (!current || current.caseIndex !== entry.caseIndex) {
+      groups.push({ caseIndex: entry.caseIndex, item: entry.item, entries: [entry] });
+    } else {
+      current.entries.push(entry);
+    }
+  }
+  return `<section class="scenario-page" data-scenario-page-panel="${pageIndex + 1}" ${pageIndex === 0 ? "" : "hidden"}>
+  <div class="scenario-page-head">
+    <h4>Question Page ${pageIndex + 1}</h4>
+    <p>Questions ${pageEntries[0].qn}-${pageEntries[pageEntries.length - 1].qn} of ${totalScenarioQuestions}</p>
+  </div>
+${groups.map((group) => renderCaseSliceHtml(group.item, group.caseIndex, group.entries)).join("\n")}
+  ${renderScenarioPageControls()}
+</section>`;
+}
+
+function renderScenarioPagesHtml() {
+  return `${renderScenarioPageControls()}
+${scenarioPages.map(renderScenarioPageHtml).join("\n")}`;
 }
 
 function renderSpeedRoundMd(round) {
@@ -845,6 +973,15 @@ const css = `      :root { color-scheme: light; }
       .mode-toggle button { appearance: none; border: 0; border-radius: 6px; min-height: 38px; padding: 0 14px; background: transparent; color: #3b372f; font-weight: 900; cursor: pointer; }
       .mode-toggle button[aria-pressed="true"] { background: #161618; color: #fff; }
       .exam-mode[hidden] { display: none; }
+      .scenario-page[hidden] { display: none; }
+      .scenario-page-controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 24px; padding: 12px; border: 1px solid #e1d6c2; border-radius: 8px; background: #fffaf0; }
+      .scenario-page-controls button { appearance: none; border: 1px solid #cdbf9f; border-radius: 8px; min-height: 44px; padding: 6px 10px; background: #fff; color: #211f1b; font-weight: 900; cursor: pointer; }
+      .scenario-page-controls button span { display: block; color: #6a6254; font-size: .76rem; font-weight: 800; margin-top: 2px; }
+      .scenario-page-controls button[aria-pressed="true"] { background: #161618; border-color: #161618; color: #fff; }
+      .scenario-page-controls button[aria-pressed="true"] span { color: rgba(255,255,255,.74); }
+      .scenario-page-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 18px 0 12px; }
+      .scenario-page-head h4 { margin: 0; font-size: 1.1rem; }
+      .scenario-page-head p { margin: 0; color: #625b4f; font-weight: 800; }
       .case-file { border: 1px solid #d9ceb9; border-radius: 8px; margin: 34px 0 46px; background: #fffaf0; overflow: hidden; }
       .case-file-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 20px; background: #17171f; color: #fff; }
       .case-file h3 { margin: 0; padding: 22px 20px 0; font-size: clamp(1.45rem, 2.8vw, 2.15rem); letter-spacing: 0; }
@@ -860,6 +997,8 @@ const css = `      :root { color-scheme: light; }
       .case-file-head .scenario-pill { background: #f5d36b; color: #141414; }
       .case-type { font-weight: 800; font-size: .92rem; color: rgba(255,255,255,.78); text-align: right; }
       .exam-question h4 { margin: 0 0 12px; font-size: 1.05rem; line-height: 1.45; }
+      .question-label { margin: 0 0 4px; font-size: .96rem; }
+      .question-source { margin: 0 0 10px; color: #625b4f; font-size: .82rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
       .question-number { color: #7a4f00; font-weight: 900; }
       .select-note { color: #5d5b55; font-weight: 700; }
       .answer-options { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
@@ -870,6 +1009,12 @@ const css = `      :root { color-scheme: light; }
       .answer-panel { margin-top: 12px; border-left: 4px solid #e0b33c; background: #fff7df; padding: 12px 14px; border-radius: 6px; line-height: 1.6; }
       .answer-panel p { margin: 0; }
       .answer-panel p + p { margin-top: 8px; }
+      .answer-summary { margin-bottom: 12px; font-size: 1.02rem; }
+      .explanation-heading { margin: 12px 0 8px; }
+      .option-explanation { border-top: 1px solid #eadfc9; padding-top: 12px; margin-top: 12px; }
+      .option-explanation .option-status { color: #7a4f00; font-weight: 900; margin-left: 6px; }
+      .option-explanation.is-correct .option-status { color: #0f7a3d; }
+      .option-explanation.is-incorrect .option-status { color: #b42318; }
       .stop-reason-list { color: #b42318; margin: 8px 0 0 22px; padding: 0; font-weight: 800; }
       .stop-reason-list code { color: #b42318; border-color: #f3b3ac; background: #fff4f2; }
       .red-guidance { color: #b42318; font-weight: 900; }
@@ -890,6 +1035,8 @@ const css = `      :root { color-scheme: light; }
         .architect-content { padding: 20px; }
         .mode-toggle { top: 188px; width: 100%; }
         .mode-toggle button { flex: 1; }
+        .scenario-page-head { align-items: flex-start; flex-direction: column; }
+        .scenario-page-controls button { flex: 1 1 92px; }
         .case-file-head, .exam-question-head, .speed-card-head { align-items: flex-start; flex-direction: column; }
         .case-type { text-align: left; }
       }`;
@@ -955,8 +1102,8 @@ ${css}
         <section class="exam-mode" id="scenario-mode">
           <h3>Scenario-Based Practice Bank</h3>
           <p>This prep bank is structured like the exam: read a scenario case file, then answer the questions that belong to that case. The real exam has 60 questions across 4 scenarios drawn from the official scenario bank. This practice bank includes ${totalScenarioQuestions} scenario-based questions and ${totalSpeedDrills} speed-round questions.</p>
-          <p>Each question states how many answers to select. Use the answer buttons only after committing to a choice.</p>
-${renderCases(renderCaseHtml).join("\n")}
+          <p>Each question states how many answers to select. Scenario questions are split into pages of ${QUESTIONS_PER_PAGE}. Use the answer buttons only after committing to a choice.</p>
+${renderScenarioPagesHtml()}
         </section>
         <section class="exam-mode" id="speed-mode" hidden>
           <h3>Speed Round</h3>
@@ -990,6 +1137,22 @@ ${speedRounds.map(renderSpeedRoundHtml).join("\n")}
               section.setAttribute('hidden', '');
             }
           });
+          return;
+        }
+        const scenarioPageButton = event.target.closest('[data-scenario-page]');
+        if (scenarioPageButton) {
+          const page = scenarioPageButton.dataset.scenarioPage;
+          document.querySelectorAll('[data-scenario-page]').forEach((button) => {
+            button.setAttribute('aria-pressed', String(button.dataset.scenarioPage === page));
+          });
+          document.querySelectorAll('[data-scenario-page-panel]').forEach((panel) => {
+            if (panel.dataset.scenarioPagePanel === page) {
+              panel.removeAttribute('hidden');
+            } else {
+              panel.setAttribute('hidden', '');
+            }
+          });
+          document.getElementById('scenario-mode')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;
         }
         const button = event.target.closest('.answer-toggle');
