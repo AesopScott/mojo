@@ -577,9 +577,6 @@ function recordingsMarkup() {
   return `
           <div class="aac-recordings">
             <span>Session recordings</span>
-            <a href="https://us06web.zoom.us/rec/share/KJsIxKONslD8sCx4HIdsXfJW9QCb_dP1vU_sSoexx_uGqoyIufxXiK4poMuLuEA9.fwxtpi4s6K8nGWIg" target="_blank" rel="noopener">
-              <b>Anthropic Certified Architect Prep</b>
-            </a>
             <a href="https://us06web.zoom.us/rec/share/zlNdU7FC5yIq4bQLnNwBU6-LWl8N-0gfShopEbGB0WF-5154YEP-FegxjnP5mhaT.fB0gFzF6KGAFoLxr" target="_blank" rel="noopener">
               <b>Building Your Own AI Command Center</b>
             </a>
@@ -594,6 +591,9 @@ function recordingsMarkup() {
             </a>
             <a href="https://us06web.zoom.us/rec/share/fF6ap-TIucLP-EpSZiWXs7KyG267hqB1nALwNLgsb2EMaRLAj7iK6l7TGV-Ue_pN.LuAGfMZoWqvPK5FZ" target="_blank" rel="noopener">
               <b>Orchestrator-led AI Development I</b>
+            </a>
+            <a href="https://us06web.zoom.us/rec/share/KJsIxKONslD8sCx4HIdsXfJW9QCb_dP1vU_sSoexx_uGqoyIufxXiK4poMuLuEA9.fwxtpi4s6K8nGWIg" target="_blank" rel="noopener">
+              <b>Anthropic Certified Architect Prep</b>
             </a>
           </div>`;
 }
