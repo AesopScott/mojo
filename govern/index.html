@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Gov AI Now is a student-facing AI governance training dashboard for developers and public-sector teams learning practical controls, review paths, and templates."
+    />
+    <title>Gov AI Now | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/govern/" />
+    <meta name="theme-color" content="#f7faf8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/govern/" />
+    <meta property="og:title" content="Gov AI Now: Practical AI Governance for Public Agencies" />
+    <meta
+      property="og:description"
+      content="A hands-on training dashboard for developers learning how to turn AI governance into visible, repeatable controls."
+    />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Gov AI Now: Practical AI Governance for Public Agencies" />
+    <meta
+      name="twitter:description"
+      content="A hands-on class for moving from AI enthusiasm to accountable adoption."
+    />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Gov AI Now: Practical AI Governance for Public Agencies","description":"Student-facing AI governance training for developers and public-sector teams.","provider":{"@type":"Organization","name":"Mojo AI Studio","sameAs":"https://mojoaistudio.com/"},"url":"https://mojoaistudio.com/govern/"}</script>
+    <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+    <link rel="stylesheet" href="/govern/govern.css?v=__CACHE_BUST__" />
+  </head>
+  <body class="govern-page">
+    <header class="gov-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/">Learn</a>
+          <a href="/govern/" class="active">Govern</a>
+          <a href="/architect/learn/">Architect Training</a>
+          <a href="/forum/">Forum</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="/learn/">More classes</a>
+        </div>
+      </nav>
+
+      <section class="gov-dashboard">
+        <div class="gov-title">
+          <p class="kicker">Student training dashboard</p>
+          <h1>Gov AI Now: Practical AI Governance for Public Agencies</h1>
+          <p>
+            A hands-on class for moving from AI enthusiasm to accountable adoption.
+            You will learn how to turn governance into concrete development controls.
+          </p>
+        </div>
+        <aside class="session-panel" aria-label="Session details">
+          <span>Session date</span>
+          <strong>July 25, 2026</strong>
+          <p>Developer focus: intake, risk tiering, procurement questions, human oversight, monitoring, and incident response.</p>
+          <div class="lesson-progress" aria-label="Lesson progress">
+            <span data-progress-bar></span>
+          </div>
+          <b><span data-progress-text>14</span>% of sections visited</b>
+        </aside>
+      </section>
+    </header>
+
+    <main class="gov-main">
+      <nav class="module-tabs" aria-label="Course sections">
+        <button class="active" type="button" data-tab-button="overview"><span></span>Overview</button>
+        <button type="button" data-tab-button="case"><span></span>GovAI Coalition Case</button>
+        <button type="button" data-tab-button="framework"><span></span>Governance Framework</button>
+        <button type="button" data-tab-button="workshop"><span></span>Workshop</button>
+        <button type="button" data-tab-button="templates"><span></span>Templates</button>
+        <button type="button" data-tab-button="instructor"><span></span>Instructor Notes</button>
+        <button type="button" data-tab-button="sources"><span></span>Sources</button>
+      </nav>
+
+      <section class="module active" id="overview" data-module>
+        <div class="module-grid">
+          <article class="lesson-card primary-card">
+            <p class="section-label">Start here</p>
+            <h2>AI governance is how an agency decides what can ship.</h2>
+            <p>
+              Governance answers the questions behind responsible AI use: what may be used,
+              by whom, for what purpose, with what data, under what controls, and how the system
+              is monitored after launch.
+            </p>
+            <p>
+              As a developer, your job is not to memorize policy language. Your job is to make
+              the policy visible in the product lifecycle: intake, architecture, evaluation,
+              release review, logging, monitoring, rollback, and user support.
+            </p>
+            <div class="student-prompt">
+              <b>Student prompt</b>
+              <span>Think of one AI feature you have built or used. Where would an agency record the owner, data, risk, approval, and monitoring plan?</span>
+            </div>
+          </article>
+
+          <article class="lesson-card">
+            <p class="section-label">Key contrast</p>
+            <div class="contrast-columns">
+              <div>
+                <h3>Ungoverned AI</h3>
+                <ul>
+                  <li>Scattered tools and shadow pilots</li>
+                  <li>Unclear data handling</li>
+                  <li>Vendor promises without evidence</li>
+                  <li>No inventory, monitoring, or redress</li>
+                </ul>
+              </div>
+              <div>
+                <h3>Governed AI</h3>
+                <ul>
+                  <li>Approved use cases and named owners</li>
+                  <li>Risk review before procurement or launch</li>
+                  <li>Human oversight matched to impact</li>
+                  <li>Incident response and public transparency</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="lesson-card objectives-card">
+            <p class="section-label">What you will leave with</p>
+            <h2>A starter governance operating model.</h2>
+            <ol>
+              <li>Explain AI governance in government work.</li>
+              <li>Separate AI use, AI governance, and AI compliance.</li>
+              <li>Map a use case to low, moderate, or high impact.</li>
+              <li>Identify controls developers can implement and prove.</li>
+              <li>Use the GovAI Coalition model as a practical reference, not as legal advice.</li>
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="case" data-module hidden>
+        <div class="module-grid case-grid">
+          <article class="lesson-card primary-card">
+            <p class="section-label">Case study</p>
+            <h2>Gov AI Now is our course frame. The GovAI Coalition is the practical public-sector model.</h2>
+            <p>
+              Public sources do not point to one clear public entity named exactly "Gov AI Now,"
+              so this class uses that name as the learning theme. The focal case is the GovAI
+              Coalition because it has practical resources public agencies can study and adapt.
+            </p>
+            <p>
+              The Coalition began in 2023 after agencies faced shared questions about privacy,
+              safety, and responsible AI use. San Jose helped lead early work by creating
+              generative AI guidance and sharing it so other agencies could adapt instead of
+              starting from a blank page.
+            </p>
+            <div class="notice-box">
+              <b>Important boundary</b>
+              <span>This training aid is independent. Templates and examples are not legal advice and must be adapted to local law, policy, data rules, security requirements, and community expectations.</span>
+            </div>
+          </article>
+
+          <aside class="case-stats">
+            <div><b>2023</b><span>Coalition formed around shared government AI governance questions.</span></div>
+            <div><b>900+</b><span>Agencies across seven countries reported by the 2026 summit overview.</span></div>
+            <div><b>3,000+</b><span>Members from 900+ agencies reported in the April 2026 update.</span></div>
+            <div><b>Useful</b><span>Templates, procurement guidance, factsheets, incident plans, and worksheets.</span></div>
+          </aside>
+
+          <article class="lesson-card">
+            <p class="section-label">Developer lens</p>
+            <h2>Shared standards become product requirements.</h2>
+            <div class="pathway-list">
+              <span><b>Policy template</b> turns into acceptable-use rules and release criteria.</span>
+              <span><b>Use-case worksheet</b> turns into intake fields and review routing.</span>
+              <span><b>Vendor factsheet</b> turns into procurement questions, audit rights, and data terms.</span>
+              <span><b>Incident plan</b> turns into escalation, logging, evidence preservation, and rollback.</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="module" id="framework" data-module hidden>
+        <div class="framework-grid">
+          <article class="lesson-card primary-card">
+            <p class="section-label">Governance framework</p>
+            <h2>Five pillars to check before a public AI system launches.</h2>
+            <p>
+              These pillars are adapted from the CDT checklist developed with the GovAI Coalition.
+              Click each pillar and translate it into developer evidence.
+            </p>
+            <div class="pillar-list" role="tablist" aria-label="Governance pillars">
+              <button class="active" type="button" data-pillar="0">Public Transparency and Stakeholder Engagement</button>
+              <button type="button" data-pillar="1">Accuracy and Reliability</button>
+              <button type="button" data-pillar="2">Governance and Coordination</button>
+              <button type="button" data-pillar="3">Privacy and Security</button>
+              <button type="button" data-pillar="4">Safety, Rights, and Legal Compliance</button>
+            </div>
+            <div class="pillar-detail" data-pillar-detail></div>
+          </article>
+
+          <aside class="lesson-card stack-card">
+            <p class="section-label">Minimum viable AI governance stack</p>
+            <h2>Mark what your agency already has.</h2>
+            <div class="stack-meter"><span data-stack-meter></span></div>
+            <p><b data-stack-count>0</b> of 10 controls marked present.</p>
+            <div class="stack-list">
+              <label><input type="checkbox" value="AI inventory" />AI inventory</label>
+              <label><input type="checkbox" value="Acceptable use policy" />Acceptable use policy</label>
+              <label><input type="checkbox" value="Risk classification" />Risk classification</label>
+              <label><input type="checkbox" value="Review pathway" />AI governance board or review pathway</label>
+              <label><input type="checkbox" value="Procurement requirements" />Procurement/vendor requirements</label>
+              <label><input type="checkbox" value="Privacy security legal review" />Privacy/security/legal review</label>
+              <label><input type="checkbox" value="Human oversight rules" />Human oversight rules</label>
+              <label><input type="checkbox" value="Monitoring audit plan" />Monitoring and audit plan</label>
+              <label><input type="checkbox" value="Incident response" />Incident response process</label>
+              <label><input type="checkbox" value="Public feedback loop" />Public notice, explanation, and feedback loop</label>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="module" id="workshop" data-module hidden>
+        <div class="workshop-grid">
+          <article class="lesson-card primary-card">
+            <p class="section-label">25-35 minute activity</p>
+            <h2>Scenario: city permit assistant</h2>
+            <p>
+              A city wants to deploy an AI assistant to help residents understand permit
+              requirements and draft application materials. Your group will map the use case,
+              choose a risk tier, and identify the controls needed before launch.
+            </p>
+            <div class="risk-picker" aria-label="Risk tier">
+              <button type="button" data-risk="Low impact">Low impact</button>
+              <button class="active" type="button" data-risk="Moderate impact">Moderate impact</button>
+              <button type="button" data-risk="High impact">High impact</button>
+            </div>
+            <div class="worksheet-grid">
+              <label>What is the use case?<textarea data-worksheet="What is the use case?"></textarea></label>
+              <label>What data will it touch?<textarea data-worksheet="What data will it touch?"></textarea></label>
+              <label>Who is affected?<textarea data-worksheet="Who is affected?"></textarea></label>
+              <label>What could go wrong?<textarea data-worksheet="What could go wrong?"></textarea></label>
+              <label>What human review is needed?<textarea data-worksheet="What human review is needed?"></textarea></label>
+              <label>What should procurement require from the vendor?<textarea data-worksheet="What should procurement require from the vendor?"></textarea></label>
+              <label>What should be disclosed to the public?<textarea data-worksheet="What should be disclosed to the public?"></textarea></label>
+              <label>What metrics should be monitored after launch?<textarea data-worksheet="What metrics should be monitored after launch?"></textarea></label>
+            </div>
+            <div class="action-row">
+              <button class="action-button dark-action" type="button" data-copy-worksheet>Copy worksheet</button>
+              <button class="action-button" type="button" data-download-worksheet>Download worksheet</button>
+            </div>
+          </article>
+
+          <aside class="lesson-card coach-card">
+            <p class="section-label">Facilitator prompts</p>
+            <h2>Push the group from idea to controls.</h2>
+            <ul>
+              <li>What resident harm would make this unacceptable?</li>
+              <li>Where should the assistant refuse, escalate, or cite source policy?</li>
+              <li>What evidence would a developer need before release?</li>
+              <li>What must the vendor prove before integration?</li>
+              <li>What would you monitor weekly after launch?</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="module" id="templates" data-module hidden>
+        <article class="lesson-card primary-card">
+          <p class="section-label">Starter templates</p>
+          <h2>Use these cards when your team needs governance before it has a full program.</h2>
+          <div class="template-grid">
+            <article data-template-card>
+              <h3>AI Use Case Intake Form</h3>
+              <p><b>Use this when:</b> a team wants to try, buy, build, or materially change an AI-enabled system.</p>
+              <p><b>Minimum fields:</b> owner, purpose, user group, data involved, decision impact, vendor/model, launch date, risk guess.</p>
+              <button type="button">Copy card</button>
+            </article>
+            <article data-template-card>
+              <h3>AI Risk Review Checklist</h3>
+              <p><b>Use this when:</b> a use case touches residents, employees, benefits, enforcement, public safety, or sensitive data.</p>
+              <p><b>Minimum fields:</b> impact tier, affected groups, failure modes, required controls, approver, review interval.</p>
+              <button type="button">Copy card</button>
+            </article>
+            <article data-template-card>
+              <h3>Vendor AI Factsheet Questions</h3>
+              <p><b>Use this when:</b> procurement needs more than a sales answer about how the system works and how risks are managed.</p>
+              <p><b>Minimum fields:</b> training data, model updates, security posture, testing results, audit rights, subprocessors, data retention.</p>
+              <button type="button">Copy card</button>
+            </article>
+            <article data-template-card>
+              <h3>AI Incident Response Mini-Plan</h3>
+              <p><b>Use this when:</b> an AI system produces harmful, inaccurate, insecure, biased, or unauthorized outputs.</p>
+              <p><b>Minimum fields:</b> trigger, triage owner, containment, public notice threshold, evidence to preserve, relaunch criteria.</p>
+              <button type="button">Copy card</button>
+            </article>
+            <article data-template-card>
+              <h3>Public Notice Template</h3>
+              <p><b>Use this when:</b> residents or employees should know an AI system is being used in a service workflow.</p>
+              <p><b>Minimum fields:</b> plain-language purpose, human role, data used, limitations, contact, appeal or correction path.</p>
+              <button type="button">Copy card</button>
+            </article>
+            <article data-template-card>
+              <h3>Department AI Policy Starter</h3>
+              <p><b>Use this when:</b> a department needs baseline rules before teams independently adopt AI tools.</p>
+              <p><b>Minimum fields:</b> allowed uses, prohibited uses, data rules, approval path, training requirement, monitoring cadence.</p>
+              <button type="button">Copy card</button>
+            </article>
+          </div>
+        </article>
+      </section>
+
+      <section class="module" id="instructor" data-module hidden>
+        <div class="instructor-grid">
+          <article class="lesson-card primary-card">
+            <p class="section-label">Instructor notes</p>
+            <h2>Teach from the same page students are using.</h2>
+            <div class="timeline">
+              <div><b>0:00-0:05</b><span>Opening: why governance now</span></div>
+              <div><b>0:05-0:15</b><span>GovAI Coalition case</span></div>
+              <div><b>0:15-0:30</b><span>Governance framework</span></div>
+              <div><b>0:30-0:55</b><span>Workshop scenario</span></div>
+              <div><b>0:55-1:10</b><span>Report-out</span></div>
+              <div><b>1:10-1:20</b><span>What to implement in first 30 days</span></div>
+              <div><b>1:20-1:30</b><span>Q&A</span></div>
+            </div>
+          </article>
+          <aside class="lesson-card close-card">
+            <p class="section-label">Closing message</p>
+            <h2>The goal is not to slow AI down.</h2>
+            <p>The goal is to make AI use legible, accountable, and resilient enough to scale.</p>
+            <h3>First 30 days</h3>
+            <ol>
+              <li>Publish a draft acceptable-use policy.</li>
+              <li>Open an AI use-case inventory.</li>
+              <li>Create a lightweight review path for new AI systems.</li>
+              <li>Add vendor AI questions to procurement intake.</li>
+              <li>Define incident reporting and escalation.</li>
+            </ol>
+          </aside>
+        </div>
+      </section>
+
+      <section class="module" id="sources" data-module hidden>
+        <article class="lesson-card primary-card">
+          <p class="section-label">Sources and boundaries</p>
+          <h2>Reference links for deeper study.</h2>
+          <p>
+            This is an independent training aid. It does not imply official affiliation with
+            the GovAI Coalition, San Jose, CDT, GSA, NIST, GAO, OECD, OMB, or the European Union.
+          </p>
+          <div class="source-list">
+            <a href="https://digitalgovernmenthub.org/library/govai-coalition-templates-and-resources/" target="_blank" rel="noopener">GovAI Coalition Templates and Resources, Digital Government Hub</a>
+            <a href="https://govai.substack.com/p/the-govai-coalition-this-is-just" target="_blank" rel="noopener">GovAI Coalition update: This is Just the Beginning</a>
+            <a href="https://events.govtech.com/GovAI-Coalition-Summit" target="_blank" rel="noopener">GovAI Coalition Summit 2026 overview</a>
+            <a href="https://cdt.org/insights/ai-governance-checklist-for-state-and-local-leaders-advancing-responsible-ai-adoption-and-use-in-the-public-sector/" target="_blank" rel="noopener">CDT AI Governance Checklist for State and Local Leaders</a>
+            <a href="https://coe.gsa.gov/communities/AITraining.html" target="_blank" rel="noopener">GSA AI Training Series for Government Employees</a>
+            <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI Risk Management Framework</a>
+            <a href="https://www.gao.gov/products/gao-21-519sp" target="_blank" rel="noopener">GAO AI Accountability Framework</a>
+            <a href="https://www.oecd.org/en/publications/2025/06/governing-with-artificial-intelligence_398fa287.html" target="_blank" rel="noopener">OECD Governing with Artificial Intelligence</a>
+            <a href="https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf" target="_blank" rel="noopener">OMB M-25-21</a>
+            <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">EU AI Act official timeline</a>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>Gov AI Now is a Mojo AI Studio class aid for practical public-sector AI governance.</p>
+      </div>
+      <div>
+        <b>Course</b>
+        <a href="#top">Back to top</a>
+        <a href="/learn/">More live classes</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/request/">Custom development</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+
+    <div class="toast" role="status" aria-live="polite" data-toast></div>
+    <script src="/govern/govern.js?v=__CACHE_BUST__"></script>
+  </body>
+</html>

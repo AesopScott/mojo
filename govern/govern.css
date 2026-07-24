@@ -1,0 +1,580 @@
+.govern-page {
+  --gov-ink: #152323;
+  --gov-muted: #5c6f69;
+  --gov-line: rgba(21, 35, 35, 0.14);
+  --gov-soft: #eef5f1;
+  --gov-paper: #fbfdfb;
+  --gov-mint: #2f8f71;
+  --gov-blue: #315b9d;
+  --gov-gold: #c98e2d;
+  --gov-red: #b85444;
+  color: var(--gov-ink);
+  background:
+    radial-gradient(circle at top left, rgba(47, 143, 113, 0.14), transparent 34rem),
+    linear-gradient(180deg, #f9fcfa 0%, #eef5f1 58%, #f8fbf8 100%);
+}
+
+.gov-header,
+.gov-main {
+  width: min(1220px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.gov-header {
+  padding-top: 108px;
+}
+
+.gov-dashboard {
+  min-height: 430px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 28px;
+  align-items: stretch;
+  padding: 44px 0 22px;
+}
+
+.gov-title {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  padding: 42px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 243, 0.96)),
+    linear-gradient(90deg, rgba(49, 91, 157, 0.12), transparent);
+  box-shadow: 0 24px 68px rgba(21, 35, 35, 0.11);
+}
+
+.gov-title h1 {
+  max-width: 860px;
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.7rem);
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.gov-title p:not(.kicker) {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: var(--gov-muted);
+  font-size: 1.14rem;
+  line-height: 1.7;
+}
+
+.session-panel,
+.lesson-card,
+.case-stats div {
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 48px rgba(21, 35, 35, 0.09);
+}
+
+.session-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px;
+}
+
+.session-panel span,
+.section-label {
+  color: var(--gov-muted);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.session-panel strong {
+  font-size: 2rem;
+}
+
+.session-panel p {
+  margin: 0;
+  color: var(--gov-muted);
+  line-height: 1.6;
+}
+
+.lesson-progress,
+.stack-meter {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e1ebe6;
+}
+
+.lesson-progress span,
+.stack-meter span {
+  display: block;
+  width: 14%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gov-mint), var(--gov-blue));
+  transition: width 0.24s ease;
+}
+
+.module-tabs {
+  position: sticky;
+  top: 92px;
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 40px rgba(21, 35, 35, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.module-tabs button,
+.pillar-list button,
+.risk-picker button,
+.action-button,
+[data-template-card] button {
+  min-height: 42px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  color: var(--gov-ink);
+  background: #fff;
+  font-weight: 820;
+}
+
+.module-tabs button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  color: #425750;
+}
+
+.module-tabs button span {
+  width: 9px;
+  height: 9px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+
+.module-tabs button.active,
+.pillar-list button.active,
+.risk-picker button.active,
+.dark-action {
+  color: #fff;
+  border-color: var(--gov-ink);
+  background: var(--gov-ink);
+}
+
+.module-tabs button.visited span {
+  background: var(--gov-mint);
+  border-color: var(--gov-mint);
+}
+
+.module {
+  padding: 22px 0 48px;
+}
+
+.module-grid,
+.case-grid,
+.framework-grid,
+.workshop-grid,
+.instructor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(310px, 0.65fr);
+  gap: 18px;
+}
+
+.module-grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+}
+
+.primary-card {
+  grid-column: span 1;
+}
+
+.lesson-card {
+  padding: 28px;
+}
+
+.lesson-card h2,
+.lesson-card h3,
+.lesson-card p {
+  margin-top: 0;
+}
+
+.lesson-card h2 {
+  margin-bottom: 14px;
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.lesson-card h3 {
+  margin-bottom: 10px;
+  font-size: 1.04rem;
+}
+
+.lesson-card p,
+.lesson-card li,
+.lesson-card span {
+  line-height: 1.63;
+}
+
+.lesson-card p,
+.lesson-card li {
+  color: var(--gov-muted);
+}
+
+.student-prompt,
+.notice-box {
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+  padding: 16px;
+  border: 1px solid rgba(47, 143, 113, 0.28);
+  border-radius: 8px;
+  background: #eef8f2;
+}
+
+.student-prompt b,
+.notice-box b {
+  color: var(--gov-ink);
+}
+
+.contrast-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.contrast-columns > div {
+  min-height: 100%;
+  padding: 18px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: var(--gov-paper);
+}
+
+.contrast-columns ul,
+.objectives-card ol,
+.coach-card ul,
+.close-card ol {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.objectives-card {
+  grid-column: 1 / -1;
+}
+
+.objectives-card ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.objectives-card li {
+  padding: 14px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: var(--gov-paper);
+}
+
+.case-stats {
+  display: grid;
+  gap: 12px;
+}
+
+.case-stats div {
+  display: grid;
+  gap: 4px;
+  padding: 20px;
+}
+
+.case-stats b {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.case-stats span {
+  color: var(--gov-muted);
+}
+
+.pathway-list {
+  display: grid;
+  gap: 10px;
+}
+
+.pathway-list span {
+  display: block;
+  padding: 14px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  color: var(--gov-muted);
+  background: var(--gov-paper);
+}
+
+.pathway-list b {
+  color: var(--gov-ink);
+}
+
+.pillar-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(130px, 1fr));
+  gap: 8px;
+  margin: 22px 0;
+}
+
+.pillar-list button {
+  padding: 12px;
+  text-align: left;
+}
+
+.pillar-detail {
+  min-height: 180px;
+  padding: 20px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: var(--gov-paper);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tag-row span {
+  padding: 7px 10px;
+  border: 1px solid rgba(49, 91, 157, 0.2);
+  border-radius: 999px;
+  color: #234b87;
+  background: rgba(49, 91, 157, 0.08);
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.stack-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.stack-list label {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 10px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  color: var(--gov-muted);
+  background: var(--gov-paper);
+}
+
+.stack-list input {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  accent-color: var(--gov-mint);
+}
+
+.risk-picker,
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.risk-picker button,
+.action-button,
+[data-template-card] button {
+  padding: 0 15px;
+}
+
+.worksheet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.worksheet-grid label {
+  display: grid;
+  gap: 8px;
+  color: var(--gov-ink);
+  font-weight: 780;
+}
+
+.worksheet-grid textarea {
+  min-height: 116px;
+  resize: vertical;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--gov-ink);
+  background: #fff;
+  font: inherit;
+  line-height: 1.45;
+}
+
+.coach-card {
+  position: sticky;
+  top: 170px;
+  align-self: start;
+  border-color: rgba(201, 142, 45, 0.28);
+  background: #fffaf0;
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+[data-template-card] {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: var(--gov-paper);
+}
+
+[data-template-card] h3,
+[data-template-card] p {
+  margin: 0;
+}
+
+[data-template-card] button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.timeline {
+  display: grid;
+  gap: 10px;
+}
+
+.timeline div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  background: var(--gov-paper);
+}
+
+.timeline b {
+  color: var(--gov-blue);
+}
+
+.source-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.source-list a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  color: var(--gov-ink);
+  background: var(--gov-paper);
+}
+
+.source-list a::after {
+  content: "Open";
+  color: var(--gov-blue);
+  font-weight: 850;
+}
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 20;
+  min-width: 190px;
+  transform: translateY(18px);
+  opacity: 0;
+  pointer-events: none;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--gov-ink);
+  box-shadow: 0 16px 40px rgba(21, 35, 35, 0.2);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (max-width: 980px) {
+  .gov-dashboard,
+  .module-grid,
+  .case-grid,
+  .framework-grid,
+  .workshop-grid,
+  .instructor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .objectives-card ol,
+  .template-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pillar-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .coach-card {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  .gov-header {
+    padding-top: 124px;
+  }
+
+  .gov-title,
+  .session-panel,
+  .lesson-card {
+    padding: 20px;
+  }
+
+  .module-tabs {
+    top: 104px;
+  }
+
+  .contrast-columns,
+  .objectives-card ol,
+  .pillar-list,
+  .worksheet-grid,
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline div,
+  .source-list a {
+    grid-template-columns: 1fr;
+  }
+}
