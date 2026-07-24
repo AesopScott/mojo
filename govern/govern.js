@@ -183,6 +183,19 @@
     });
   }
 
+  document.querySelectorAll("[data-copy-file]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        const path = button.getAttribute("data-copy-file");
+        const response = await fetch(path);
+        if (!response.ok) throw new Error("Policy download failed");
+        copyText(await response.text(), "Policy copied");
+      } catch {
+        showToast("Policy copy failed");
+      }
+    });
+  });
+
   const downloadButton = document.querySelector("[data-download-worksheet]");
   if (downloadButton) {
     downloadButton.addEventListener("click", downloadWorksheet);
