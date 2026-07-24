@@ -103,7 +103,8 @@
       .join("\n\n");
 
     return [
-      "Gov AI Now workshop worksheet",
+      "AI Governance for Developers workshop worksheet",
+      "GAIN focus: record the use case, risk tier, controls, evidence, and monitoring plan in Govern AI Now.",
       "Scenario: A city wants to deploy an AI assistant to help residents understand permit requirements and draft application materials.",
       `Risk tier: ${riskTier}`,
       "",
@@ -127,7 +128,7 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "gov-ai-now-workshop-worksheet.txt";
+    link.download = "ai-governance-developers-gain-worksheet.txt";
     document.body.appendChild(link);
     link.click();
     link.remove();
