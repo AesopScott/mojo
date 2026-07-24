@@ -120,8 +120,8 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="eyebrow">Joining session</div>
     <h1><?= htmlspecialchars($title) ?></h1>
     <?php if ($dateLabel !== ''): ?><div class="date"><?= htmlspecialchars($dateLabel) ?></div><?php endif; ?>
-    <p>The verified Zoom room is open. Click the join button when you are ready.</p>
-    <a class="button" href="<?= htmlspecialchars($goUrl) ?>" id="join">Join Now</a>
+    <p>The verified Zoom room is open. You will not be redirected automatically. Click the button when you are ready.</p>
+    <a class="button" href="<?= htmlspecialchars($goUrl) ?>" id="join">Join the Zoom Session</a>
     <?= learning_links_html() ?>
 </main>
 </body>

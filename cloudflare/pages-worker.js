@@ -172,7 +172,7 @@ function handleJoinSession(url) {
   return joinSessionPage(
     session.title,
     "Joining session",
-    "The verified Zoom room is open. Click the join button when you are ready.",
+    "The verified Zoom room is open. You will not be redirected automatically. Click the button when you are ready.",
     goUrl,
     formatMountainDate(session.date),
   );
@@ -190,7 +190,7 @@ function joinSessionPage(title, heading, body, goUrl, dateLabel = "") {
     <a href="https://25experts.com/videos.html">25 AI Experts Video Curation</a>
   </nav>`;
   const button = goUrl
-    ? `<a class="button" href="${escapeHtml(goUrl)}" id="join">Join Now</a>`
+    ? `<a class="button" href="${escapeHtml(goUrl)}" id="join">Join the Zoom Session</a>`
     : "";
 
   return new Response(`<!DOCTYPE html>
