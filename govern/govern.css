@@ -457,6 +457,21 @@
   margin: 0;
 }
 
+[data-template-text] {
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--gov-line);
+  border-radius: 8px;
+  color: #243832;
+  background: #fff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
 [data-template-card] button {
   margin-top: auto;
   align-self: flex-start;

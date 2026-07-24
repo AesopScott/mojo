@@ -284,43 +284,271 @@
       <section class="module" id="templates" data-module hidden>
         <article class="lesson-card primary-card">
           <p class="section-label">Starter templates</p>
-          <h2>Use these cards when your team needs governance before it has a full program.</h2>
+          <h2>Copy these starter templates into GAIN or a working document.</h2>
           <div class="template-grid">
             <article data-template-card>
               <h3>AI Use Case Intake Form</h3>
-              <p><b>Use this when:</b> a team wants to try, buy, build, or materially change an AI-enabled system.</p>
-              <p><b>Minimum fields:</b> owner, purpose, user group, data involved, decision impact, vendor/model, launch date, risk guess.</p>
-              <button type="button">Copy card</button>
+              <p>Start here when a team wants to try, buy, build, or materially change an AI-enabled system.</p>
+              <pre data-template-text>AI USE CASE INTAKE
+
+Use case name:
+Department / program:
+Business owner:
+Technical owner:
+Proposed launch date:
+
+1. Purpose
+What problem will this AI system help solve?
+
+2. Users
+Who will use it internally?
+Who may be affected externally?
+
+3. AI capability
+What does the system generate, classify, recommend, predict, summarize, or automate?
+
+4. Data
+What data will be entered?
+Does it include personal, confidential, regulated, or sensitive data?
+Where will data be stored, logged, or retained?
+
+5. Decision impact
+Will the output affect benefits, services, enforcement, eligibility, employment, safety, or legal rights?
+
+6. Vendor / model
+Vendor or system name:
+Model or product version:
+Is the model configurable or retrainable by the agency?
+
+7. Initial risk guess
+Low / Moderate / High:
+Why?
+
+8. GAIN record
+GAIN use case ID:
+Required next review:</pre>
+              <button type="button">Copy template</button>
             </article>
             <article data-template-card>
               <h3>AI Risk Review Checklist</h3>
-              <p><b>Use this when:</b> a use case touches residents, employees, benefits, enforcement, public safety, or sensitive data.</p>
-              <p><b>Minimum fields:</b> impact tier, affected groups, failure modes, required controls, approver, review interval.</p>
-              <button type="button">Copy card</button>
+              <p>Use this to decide the control level before procurement, pilot, or launch.</p>
+              <pre data-template-text>AI RISK REVIEW CHECKLIST
+
+Use case name:
+GAIN use case ID:
+Reviewer:
+Review date:
+
+1. Impact tier
+[ ] Low impact
+[ ] Moderate impact
+[ ] High impact
+Reason for tier:
+
+2. Affected groups
+Who could benefit?
+Who could be harmed?
+Are any vulnerable or protected groups affected?
+
+3. Failure modes
+[ ] Incorrect output
+[ ] Biased or discriminatory output
+[ ] Privacy exposure
+[ ] Security misuse
+[ ] Overreliance by staff
+[ ] Lack of appeal or correction path
+[ ] Other:
+
+4. Required controls
+[ ] Human review
+[ ] Public notice
+[ ] Data minimization
+[ ] Vendor factsheet
+[ ] Evaluation/test results
+[ ] Monitoring plan
+[ ] Incident response plan
+[ ] Legal/privacy/security review
+
+5. Decision
+Approved / Approved with conditions / Not approved:
+Conditions:
+Review interval:
+Approver:</pre>
+              <button type="button">Copy template</button>
             </article>
             <article data-template-card>
               <h3>Vendor AI Factsheet Questions</h3>
-              <p><b>Use this when:</b> procurement needs more than a sales answer about how the system works and how risks are managed.</p>
-              <p><b>Minimum fields:</b> training data, model updates, security posture, testing results, audit rights, subprocessors, data retention.</p>
-              <button type="button">Copy card</button>
+              <p>Use this when procurement needs concrete answers before buying or integrating an AI system.</p>
+              <pre data-template-text>VENDOR AI FACTSHEET QUESTIONS
+
+Product / vendor:
+Agency use case:
+Procurement owner:
+
+1. System purpose
+What AI capability is included?
+What decisions or recommendations does it support?
+
+2. Model and training
+What model type is used?
+What data was used to train or tune it?
+Can agency data be used for training or improvement?
+
+3. Data handling
+What data is collected?
+Where is it stored?
+How long is it retained?
+Who can access it?
+List subprocessors:
+
+4. Testing and limitations
+What accuracy, reliability, bias, and safety testing has been performed?
+What known limitations should users understand?
+
+5. Security and audit
+What security certifications or controls apply?
+Can the agency audit logs, prompts, outputs, and configuration changes?
+
+6. Model updates
+How are model changes announced?
+Can the agency delay or reject material model changes?
+
+7. Contract requirements
+Required data terms:
+Required audit rights:
+Required incident notification timeline:
+Required human oversight features:</pre>
+              <button type="button">Copy template</button>
             </article>
             <article data-template-card>
               <h3>AI Incident Response Mini-Plan</h3>
-              <p><b>Use this when:</b> an AI system produces harmful, inaccurate, insecure, biased, or unauthorized outputs.</p>
-              <p><b>Minimum fields:</b> trigger, triage owner, containment, public notice threshold, evidence to preserve, relaunch criteria.</p>
-              <button type="button">Copy card</button>
+              <p>Use this before launch so the team knows what to do when something goes wrong.</p>
+              <pre data-template-text>AI INCIDENT RESPONSE MINI-PLAN
+
+System name:
+GAIN use case ID:
+Incident owner:
+Backup owner:
+
+1. Incident triggers
+[ ] Harmful or unsafe output
+[ ] Materially inaccurate output
+[ ] Privacy or security issue
+[ ] Biased or discriminatory behavior
+[ ] Unauthorized use
+[ ] Vendor/model change caused unexpected behavior
+
+2. First response
+Who triages the report?
+How quickly must triage begin?
+Where is evidence stored?
+
+3. Containment
+Can the feature be paused?
+Can access be limited?
+Can outputs be blocked or reviewed before release?
+
+4. Notification
+Who must be notified internally?
+When should legal/privacy/security be notified?
+When should the public or affected users be notified?
+
+5. Evidence to preserve
+Prompts:
+Outputs:
+Logs:
+Model/vendor version:
+User impact:
+Screenshots or records:
+
+6. Relaunch criteria
+What must be fixed?
+Who approves relaunch?
+What monitoring is required after relaunch?</pre>
+              <button type="button">Copy template</button>
             </article>
             <article data-template-card>
               <h3>Public Notice Template</h3>
-              <p><b>Use this when:</b> residents or employees should know an AI system is being used in a service workflow.</p>
-              <p><b>Minimum fields:</b> plain-language purpose, human role, data used, limitations, contact, appeal or correction path.</p>
-              <button type="button">Copy card</button>
+              <p>Use this when residents, employees, or applicants should know AI is used in a service workflow.</p>
+              <pre data-template-text>PUBLIC NOTICE TEMPLATE
+
+Title:
+Agency / department:
+Last updated:
+
+We use an AI-supported tool to:
+[plain-language purpose]
+
+Where it is used:
+[service, page, form, call center, staff workflow, etc.]
+
+What the AI does:
+[summarizes, drafts, classifies, recommends, answers questions, etc.]
+
+What people should know:
+- A human remains responsible for:
+- The AI may be limited by:
+- The AI should not be used for:
+
+Data used:
+[describe categories of data]
+
+Human review:
+[explain when staff review or approve outputs]
+
+Questions, corrections, or appeal:
+Contact:
+Response timeline:
+How to request human review:</pre>
+              <button type="button">Copy template</button>
             </article>
             <article data-template-card>
               <h3>Department AI Policy Starter</h3>
-              <p><b>Use this when:</b> a department needs baseline rules before teams independently adopt AI tools.</p>
-              <p><b>Minimum fields:</b> allowed uses, prohibited uses, data rules, approval path, training requirement, monitoring cadence.</p>
-              <button type="button">Copy card</button>
+              <p>Use this to give teams baseline rules while the broader governance program matures.</p>
+              <pre data-template-text>DEPARTMENT AI POLICY STARTER
+
+Department:
+Policy owner:
+Effective date:
+Review date:
+
+1. Purpose
+This policy explains how our department may use AI tools responsibly while protecting privacy, security, public trust, and legal obligations.
+
+2. Allowed uses
+Staff may use approved AI tools for:
+- Drafting internal text:
+- Summarizing non-sensitive material:
+- Brainstorming:
+- Code or data support:
+- Other:
+
+3. Prohibited uses
+Staff may not use AI tools to:
+- Enter restricted or sensitive data into unapproved tools
+- Make final eligibility, enforcement, employment, legal, or safety decisions without required review
+- Represent AI output as verified fact without checking
+- Bypass procurement, records, privacy, or security rules
+
+4. Approval path
+New AI use cases must be recorded in GAIN.
+Moderate/high impact uses require review by:
+
+5. Data rules
+Allowed data:
+Restricted data:
+Retention/logging requirements:
+
+6. Human oversight
+Outputs must be reviewed by:
+High-impact decisions require:
+
+7. Monitoring
+Owner:
+Metrics:
+Review cadence:
+Incident reporting path:</pre>
+              <button type="button">Copy template</button>
             </article>
           </div>
         </article>

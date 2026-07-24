@@ -180,10 +180,12 @@
     if (!button) return;
     button.addEventListener("click", () => {
       const title = card.querySelector("h3")?.textContent || "Template card";
-      const body = Array.from(card.querySelectorAll("p"))
-        .map((paragraph) => paragraph.textContent.trim())
-        .join("\n");
-      copyText(`${title}\n${body}`, `${title} copied`);
+      const template = card.querySelector("[data-template-text]")?.textContent.trim();
+      if (!template) {
+        showToast("Template text missing");
+        return;
+      }
+      copyText(template, `${title} copied`);
     });
   });
 
