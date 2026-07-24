@@ -93,6 +93,25 @@
   font-size: 2rem;
 }
 
+.lesson-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 8px;
+  background: var(--gov-ink);
+  color: white;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.lesson-link:hover {
+  background: var(--gov-accent);
+  color: var(--gov-ink);
+}
+
 .session-panel p {
   margin: 0;
   color: var(--gov-muted);
