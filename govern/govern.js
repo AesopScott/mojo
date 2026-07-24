@@ -170,6 +170,19 @@
     copyWorksheet.addEventListener("click", () => copyText(worksheetText(), "Worksheet copied"));
   }
 
+  const copyPolicy = document.querySelector("[data-copy-policy]");
+  if (copyPolicy) {
+    copyPolicy.addEventListener("click", async () => {
+      try {
+        const response = await fetch("/govern/downloads/ai-acceptable-use-policy-draft.md");
+        if (!response.ok) throw new Error("Policy download failed");
+        copyText(await response.text(), "Policy copied");
+      } catch {
+        showToast("Policy copy failed");
+      }
+    });
+  }
+
   const downloadButton = document.querySelector("[data-download-worksheet]");
   if (downloadButton) {
     downloadButton.addEventListener("click", downloadWorksheet);
