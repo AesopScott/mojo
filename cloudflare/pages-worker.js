@@ -60,11 +60,25 @@ const JOIN_SESSIONS = {
 
 const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
 const LEARN_SCHEDULE_CACHE_SECONDS = 300;
-const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule:v3-members-rsvps";
+const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule:v4-network-events";
 const LEARN_RSVP_CACHE_SECONDS = 300;
-const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count";
+const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count:v2-network-events";
 const MEETUP_OAUTH_TOKEN_KEY = "meetup:oauth-token";
 const MEETUP_OAUTH_STATE_PREFIX = "meetup:oauth-state:";
+const LEARN_NETWORK_EVENT_RULES = [
+  {
+    id: "bmad-method-2026-07-31",
+    titleIncludes: "The BMAD Method",
+    title: "The BMAD Method for Context-Engineered AI Development  (Guest Speaker)",
+    dateTime: "2026-08-01T00:00:00Z",
+  },
+  {
+    id: "ai-local-hardware-2026-08-01",
+    titleIncludes: "AI on Local Hardware",
+    title: "AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)",
+    dateTime: "2026-08-01T14:00:00Z",
+  },
+];
 
 export default {
   async fetch(request, env, ctx) {
@@ -373,6 +387,7 @@ async function buildLearnSchedule(env) {
   }
 
   events.sort((a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime) || a.title.localeCompare(b.title));
+  const networkEvents = learnNetworkEvents(events);
 
   return {
     ok: true,
@@ -382,10 +397,13 @@ async function buildLearnSchedule(env) {
     mountainTimezone: "America/Denver",
     groupCount: groups.length,
     eventCount: events.length,
+    networkEventCount: networkEvents.length,
     rsvpCount: learnRsvpTotal(events),
+    networkRsvpCount: learnNetworkRsvpTotal(networkEvents),
     groups,
     events,
-    featured: featuredLearnEvents(events),
+    networkEvents,
+    featured: featuredLearnEvents(networkEvents),
   };
 }
 
@@ -773,7 +791,7 @@ async function meetupNetworkGroups(token) {
 async function meetupGroupEventsBatch(token, groups) {
   const fields = groups.map((group, index) => `g${index}: groupByUrlname(urlname:${JSON.stringify(group.urlname)}){
     events(first:100,status:ACTIVE,sort:ASC){
-      edges{ node{ id title dateTime eventUrl howToFindUs rsvps{ totalCount } } }
+      edges{ node{ id title dateTime eventUrl howToFindUs rsvps{ totalCount } networkEvent{ id title eventTime groupCount status timezone } } }
     }
   }`).join("\n");
   const data = await meetupGraphQL(token, `query{
@@ -824,6 +842,14 @@ function normalizeLearnEvent(event, group) {
     joinUrl,
     hasPhpJoinLink: Boolean(joinUrl),
     rsvps: Number(event.rsvps?.totalCount || 0),
+    networkEvent: event.networkEvent ? {
+      id: String(event.networkEvent.id || "").trim(),
+      title: String(event.networkEvent.title || "").trim(),
+      eventTime: String(event.networkEvent.eventTime || "").trim(),
+      groupCount: Number(event.networkEvent.groupCount || 0),
+      status: String(event.networkEvent.status || "").trim(),
+      timezone: String(event.networkEvent.timezone || "").trim(),
+    } : null,
   };
 }
 
@@ -856,13 +882,142 @@ function featuredLearnEvents(events) {
   const seen = new Set();
   const featured = [];
   for (const event of events) {
-    const key = `${event.title}|${new Date(event.dateTime).toISOString().slice(0, 16)}`;
+    const key = String(event.networkKey || `${event.title}|${new Date(event.dateTime).toISOString().slice(0, 16)}`);
     if (seen.has(key)) continue;
     seen.add(key);
     featured.push(event);
     if (featured.length >= 6) break;
   }
   return featured;
+}
+
+function learnNetworkEvents(events) {
+  const grouped = new Map();
+  for (const event of events || []) {
+    const rule = learnNetworkEventRule(event);
+    const networkId = String(event.networkEvent?.id || "").trim();
+    const networkTime = String(event.networkEvent?.eventTime || "").trim();
+    const key = networkId
+      ? `network:${networkId}`
+      : rule
+        ? `rule:${rule.id}`
+        : `title:${normalizeLearnTitle(event.title)}|${mountainDateKey(event.dateTime) || isoMinute(event.dateTime)}`;
+    const canonicalDateTime = rule?.dateTime || networkTime || event.dateTime;
+    let aggregate = grouped.get(key);
+    if (!aggregate) {
+      aggregate = {
+        id: key.replace(/[^A-Za-z0-9_-]+/g, "-").replace(/^-+|-+$/g, ""),
+        networkKey: key,
+        meetupNetworkEventId: networkId || "",
+        title: rule?.title || event.networkEvent?.title || event.title,
+        dateTime: canonicalDateTime,
+        mountainTime: formatMountainDate(canonicalDateTime),
+        eventUrl: event.eventUrl || "",
+        joinUrl: event.joinUrl || "",
+        hasPhpJoinLink: Boolean(event.joinUrl),
+        groupCount: 0,
+        meetupGroupCount: Number(event.networkEvent?.groupCount || 0),
+        chapterEventCount: 0,
+        rsvps: 0,
+        groups: [],
+        _groupsByUrlname: new Map(),
+      };
+      grouped.set(key, aggregate);
+    }
+
+    aggregate.chapterEventCount += 1;
+    aggregate.meetupGroupCount = Math.max(aggregate.meetupGroupCount || 0, Number(event.networkEvent?.groupCount || 0));
+    if (!aggregate.joinUrl && event.joinUrl) {
+      aggregate.joinUrl = event.joinUrl;
+      aggregate.hasPhpJoinLink = true;
+    }
+    if (!aggregate.eventUrl && event.eventUrl) aggregate.eventUrl = event.eventUrl;
+
+    const groupEntry = {
+      eventId: event.id,
+      eventUrl: event.eventUrl,
+      dateTime: event.dateTime,
+      mountainTime: event.mountainTime,
+      groupUrlname: event.groupUrlname,
+      groupName: event.groupName,
+      city: event.city,
+      timezone: event.timezone,
+      rsvps: Number(event.rsvps || 0),
+    };
+    const existingGroup = aggregate._groupsByUrlname.get(event.groupUrlname);
+    if (!existingGroup || betterNetworkGroupEvent(groupEntry, existingGroup, aggregate.dateTime)) {
+      aggregate._groupsByUrlname.set(event.groupUrlname, groupEntry);
+    }
+  }
+
+  return [...grouped.values()]
+    .map((event) => {
+      const groups = [...event._groupsByUrlname.values()]
+        .sort((a, b) => String(a.city || a.groupName || "").localeCompare(String(b.city || b.groupName || "")));
+      const rsvps = groups.reduce((sum, group) => sum + Number(group.rsvps || 0), 0);
+      const { _groupsByUrlname, ...publicEvent } = event;
+      return {
+        ...publicEvent,
+        groupCount: groups.length,
+        rsvps,
+        groups,
+      };
+    })
+    .sort((a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime) || a.title.localeCompare(b.title));
+}
+
+function learnNetworkEventRule(event) {
+  const title = normalizeLearnTitle(event?.title || "");
+  const joinSession = Object.entries(JOIN_SESSIONS).find(([, session]) => normalizeLearnTitle(session.title) === title);
+  if (joinSession) {
+    const [id, session] = joinSession;
+    return {
+      id,
+      title: session.title,
+      dateTime: session.date,
+    };
+  }
+
+  return LEARN_NETWORK_EVENT_RULES.find((rule) => title.includes(normalizeLearnTitle(rule.titleIncludes))) || null;
+}
+
+function betterNetworkGroupEvent(candidate, existing, canonicalDateTime) {
+  const canonical = Date.parse(canonicalDateTime || "");
+  const candidateTime = Date.parse(candidate.dateTime || "");
+  const existingTime = Date.parse(existing.dateTime || "");
+  if (Number.isFinite(canonical) && Number.isFinite(candidateTime) && Number.isFinite(existingTime)) {
+    return Math.abs(candidateTime - canonical) < Math.abs(existingTime - canonical);
+  }
+  return Number(candidate.rsvps || 0) > Number(existing.rsvps || 0);
+}
+
+function learnNetworkRsvpTotal(networkEvents) {
+  return (networkEvents || []).reduce((sum, event) => sum + Number(event.rsvps || 0), 0);
+}
+
+function normalizeLearnTitle(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isoMinute(value) {
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) ? date.toISOString().slice(0, 16) : "";
+}
+
+function mountainDateKey(value) {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "";
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Denver",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const part = (type) => parts.find((item) => item.type === type)?.value || "";
+  return `${part("year")}-${part("month")}-${part("day")}`;
 }
 
 function learnRsvpTotal(events) {
@@ -879,19 +1034,35 @@ function learnRsvpTotal(events) {
 
 function learnRsvpPayload(payload) {
   const events = Array.isArray(payload.events) ? payload.events : [];
+  const networkEvents = Array.isArray(payload.networkEvents) ? payload.networkEvents : learnNetworkEvents(events);
   return {
     ok: true,
-    count: Number(payload.rsvpCount ?? learnRsvpTotal(events)),
-    event_count: Number(payload.eventCount || events.length || 0),
+    count: Number(payload.networkRsvpCount ?? learnNetworkRsvpTotal(networkEvents)),
+    event_count: Number(payload.networkEventCount || networkEvents.length || 0),
+    raw_event_count: Number(payload.eventCount || events.length || 0),
     source: payload.source || "meetup",
     updatedAt: payload.refreshedAt || new Date().toISOString(),
-    breakdown: events.map((event) => ({
+    breakdown: networkEvents.map((event) => ({
       id: event.id,
+      networkKey: event.networkKey,
+      meetupNetworkEventId: event.meetupNetworkEventId,
       title: event.title,
       dateTime: event.dateTime,
+      mountainTime: event.mountainTime,
       eventUrl: event.eventUrl,
-      groupUrlname: event.groupUrlname,
+      groupCount: Number(event.groupCount || 0),
+      chapterEventCount: Number(event.chapterEventCount || 0),
       rsvps: Number(event.rsvps || 0),
+      groups: Array.isArray(event.groups) ? event.groups.map((group) => ({
+        eventId: group.eventId,
+        eventUrl: group.eventUrl,
+        groupUrlname: group.groupUrlname,
+        groupName: group.groupName,
+        city: group.city,
+        dateTime: group.dateTime,
+        mountainTime: group.mountainTime,
+        rsvps: Number(group.rsvps || 0),
+      })) : [],
     })),
   };
 }
@@ -921,7 +1092,9 @@ function learnScheduleFallback(error) {
     mountainTimezone: "America/Denver",
     groupCount: 1,
     eventCount: events.length,
+    networkEventCount: events.length,
     rsvpCount: 0,
+    networkRsvpCount: 0,
     groups: [{
       urlname: LEARN_SOURCE_GROUP,
       name: "Advanced AI Concepts",
@@ -932,6 +1105,7 @@ function learnScheduleFallback(error) {
       link: "https://www.meetup.com/advanced-ai-concepts/",
     }],
     events,
+    networkEvents: learnNetworkEvents(events),
     featured: events,
   };
 }
