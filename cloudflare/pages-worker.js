@@ -924,6 +924,143 @@ async function handleMeetupAdmin(request, env, url) {
     return json({ ok: true, group: data.groupByUrlname, events });
   }
 
+  if (action === "meetup-group" || action === "group") {
+    const token = await meetupAccessToken(env);
+    const urlname = String(url.searchParams.get("urlname") || "").trim().toLowerCase();
+    if (!/^[a-z0-9-]{3,120}$/.test(urlname)) {
+      return json({ ok: false, error: "Provide a valid urlname." }, 422);
+    }
+
+    const data = await meetupGraphQL(token, `query($urlname:String!){
+      groupByUrlname(urlname:$urlname){
+        id
+        name
+        description
+        customMemberLabel
+        urlname
+        timezone
+        city
+        state
+        country
+        zip
+        link
+        activeTopics{ id name urlkey }
+        keyGroupPhoto{ id baseUrl standardUrl thumbUrl }
+        proNetwork{ id urlname name }
+      }
+    }`, { urlname });
+
+    return json({ ok: true, group: data.groupByUrlname || null });
+  }
+
+  if (action === "copy-city") {
+    if (request.method !== "POST") {
+      return json({ ok: false, error: "Use POST for copy-city." }, 405);
+    }
+
+    const payload = await request.json().catch(() => ({}));
+    const name = String(payload.name || "").trim();
+    const city = String(payload.city || "").trim();
+    const urlname = String(payload.urlname || "").trim().toLowerCase();
+    const country = String(payload.country || "us").trim().toLowerCase();
+    const latitude = Number(payload.latitude);
+    const longitude = Number(payload.longitude);
+    const sourceUrlname = String(payload.source || LEARN_SOURCE_GROUP).trim().toLowerCase();
+    if (payload.confirm !== name || !name || !city || !/^[a-z0-9-]{3,120}$/.test(urlname)) {
+      return json({
+        ok: false,
+        error: "Provide name, city, urlname, and confirm matching name.",
+      }, 422);
+    }
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+      return json({ ok: false, error: "Provide numeric latitude and longitude." }, 422);
+    }
+
+    const token = await meetupWriteAccessToken(env);
+    const existingData = await meetupGraphQL(token, `query($urlname:String!){
+      groupByUrlname(urlname:$urlname){
+        id name urlname city state country zip link proNetwork{ id urlname name }
+      }
+    }`, { urlname });
+    if (existingData.groupByUrlname) {
+      return json({ ok: true, created: false, reason: "Group already exists.", group: existingData.groupByUrlname });
+    }
+
+    const sourceData = await meetupGraphQL(token, `query($urlname:String!){
+      groupByUrlname(urlname:$urlname){
+        id
+        name
+        description
+        customMemberLabel
+        activeTopics{ id name urlkey }
+        proNetwork{ id urlname name }
+      }
+    }`, { urlname: sourceUrlname });
+    const source = sourceData.groupByUrlname;
+    if (!source) {
+      return json({ ok: false, error: "Source group was not found." }, 404);
+    }
+
+    const draftInput = {
+      name,
+      description: String(source.description || ""),
+      customMembersLabel: String(source.customMemberLabel || "Members"),
+      topics: (source.activeTopics || []).map((topic) => topic.id).filter(Boolean),
+      urlname,
+      location: {
+        pointLocation: { latitude, longitude },
+      },
+    };
+
+    const draftData = await meetupGraphQL(token, `mutation($input:CreateGroupDraftInput!){
+      createGroupDraft(input:$input){
+        token
+        group{ id name urlname city state country zip link proNetwork{ id urlname name } }
+        errors{ message field code }
+      }
+    }`, { input: draftInput });
+    const draft = draftData.createGroupDraft || {};
+    if ((draft.errors || []).length || !draft.token) {
+      return json({ ok: false, error: "Draft creation failed.", errors: draft.errors || [] }, 500);
+    }
+
+    const publishData = await meetupGraphQL(token, `mutation($input:PublishGroupDraftInput!){
+      publishGroupDraft(input:$input){
+        group{ id name urlname city state country zip link proNetwork{ id urlname name } }
+        errors{ message field code }
+      }
+    }`, { input: { token: draft.token } });
+    const publish = publishData.publishGroupDraft || {};
+    const publishedGroup = publish.group;
+    if ((publish.errors || []).length || !publishedGroup?.id) {
+      return json({ ok: false, error: "Group publish failed.", errors: publish.errors || [] }, 500);
+    }
+
+    let network = null;
+    let networkErrors = [];
+    const networkId = source.proNetwork?.id;
+    if (networkId) {
+      const networkData = await meetupGraphQL(token, `mutation($input:AddGroupToNetworkInput!){
+        addGroupToNetwork(input:$input){
+          group{ id name urlname city state country zip link proNetwork{ id urlname name } }
+          network{ id urlname name }
+          errors{ message field code }
+        }
+      }`, { input: { networkId, groupId: publishedGroup.id } });
+      const networkResult = networkData.addGroupToNetwork || {};
+      network = networkResult.group || null;
+      networkErrors = networkResult.errors || [];
+    }
+
+    return json({
+      ok: networkErrors.length === 0,
+      created: true,
+      country,
+      group: network || publishedGroup,
+      networkErrors,
+    }, networkErrors.length === 0 ? 200 : 207);
+  }
+
   if (action === "meetup-create-event") {
     if (request.method !== "POST") {
       return json({ ok: false, error: "Use POST for meetup-create-event." }, 405);
