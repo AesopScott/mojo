@@ -6,7 +6,7 @@
 /maps/org-chart/O0/ /maps/org-chart/ 301
 /m3 /m8 301
 /m3.html /m8 301
-/watch /learn/ 301
+/watch /watch/ 301
 /api/* /404.html 404
 /oauth/* /404.html 404
 /sellers/* /404.html 404
@@ -23,4 +23,3 @@
 /welcomeback/* /harnesses/:splat 301
 /learn /learn/ 301
 /architect/train /architect/train/ 301
-/watch/* /learn/:splat 301
