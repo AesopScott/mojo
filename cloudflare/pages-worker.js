@@ -421,6 +421,15 @@ async function meetupAccessToken(env) {
 }
 
 async function meetupWriteAccessToken(env) {
+  const direct = String(env.MEETUP_ACCESS_TOKEN || "").trim();
+  if (direct) return direct;
+
+  const jsonToken = String(env.MEETUP_OAUTH_TOKEN_JSON || "").trim();
+  if (jsonToken) {
+    const parsed = JSON.parse(jsonToken);
+    if (parsed.access_token) return parsed.access_token;
+  }
+
   if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
     return meetupJwtAccessToken(env);
   }
