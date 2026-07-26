@@ -897,10 +897,10 @@ function learnNetworkEvents(events) {
     const rule = learnNetworkEventRule(event);
     const networkId = String(event.networkEvent?.id || "").trim();
     const networkTime = String(event.networkEvent?.eventTime || "").trim();
-    const key = networkId
-      ? `network:${networkId}`
-      : rule
-        ? `rule:${rule.id}`
+    const key = rule
+      ? `rule:${rule.id}`
+      : networkId
+        ? `network:${networkId}`
         : `title:${normalizeLearnTitle(event.title)}|${mountainDateKey(event.dateTime) || isoMinute(event.dateTime)}`;
     const canonicalDateTime = rule?.dateTime || networkTime || event.dateTime;
     let aggregate = grouped.get(key);
@@ -909,6 +909,7 @@ function learnNetworkEvents(events) {
         id: key.replace(/[^A-Za-z0-9_-]+/g, "-").replace(/^-+|-+$/g, ""),
         networkKey: key,
         meetupNetworkEventId: networkId || "",
+        meetupNetworkEventIds: networkId ? [networkId] : [],
         title: rule?.title || event.networkEvent?.title || event.title,
         dateTime: canonicalDateTime,
         mountainTime: formatMountainDate(canonicalDateTime),
@@ -927,6 +928,10 @@ function learnNetworkEvents(events) {
 
     aggregate.chapterEventCount += 1;
     aggregate.meetupGroupCount = Math.max(aggregate.meetupGroupCount || 0, Number(event.networkEvent?.groupCount || 0));
+    if (networkId && !aggregate.meetupNetworkEventIds.includes(networkId)) {
+      aggregate.meetupNetworkEventIds.push(networkId);
+      aggregate.meetupNetworkEventIds.sort();
+    }
     if (!aggregate.joinUrl && event.joinUrl) {
       aggregate.joinUrl = event.joinUrl;
       aggregate.hasPhpJoinLink = true;
