@@ -1317,6 +1317,45 @@ async function handleMeetupAdmin(request, env, url) {
     }, errors.length === 0 && result.event ? 200 : 500);
   }
 
+  if (action === "meetup-edit-event") {
+    if (request.method !== "POST") {
+      return json({ ok: false, error: "Use POST for meetup-edit-event." }, 405);
+    }
+
+    const payload = await request.json().catch(() => ({}));
+    const input = payload.input;
+    if (payload.confirm !== "meetup-edit-event" || !input || typeof input !== "object" || !input.eventId) {
+      return json({
+        ok: false,
+        error: "Provide confirm=meetup-edit-event and input with eventId.",
+      }, 422);
+    }
+
+    const token = await meetupWriteAccessToken(env);
+    const data = await meetupGraphQL(token, `mutation($input:EditEventInput!){
+      editEvent(input:$input){
+        event{
+          id
+          title
+          eventUrl
+          status
+          dateTime
+          duration
+          group{ id name urlname }
+          networkEvent{ id title eventTime groupCount status timezone }
+        }
+        errors{ message field code }
+      }
+    }`, { input });
+    const result = data.editEvent || {};
+    const errors = result.errors || [];
+    return json({
+      ok: errors.length === 0 && Boolean(result.event),
+      event: result.event || null,
+      errors,
+    }, errors.length === 0 && result.event ? 200 : 500);
+  }
+
   return json({ ok: false, error: "Unknown action." }, 404);
 }
 
