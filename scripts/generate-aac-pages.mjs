@@ -636,6 +636,9 @@ function recordingsMarkup() {
             <a href="https://us06web.zoom.us/rec/share/KJsIxKONslD8sCx4HIdsXfJW9QCb_dP1vU_sSoexx_uGqoyIufxXiK4poMuLuEA9.fwxtpi4s6K8nGWIg" target="_blank" rel="noopener">
               <b>Anthropic Certified Architect Prep</b>
             </a>
+            <a href="https://us06web.zoom.us/rec/share/Sg91tml6BsS1-JGHbMJKdBizNC-TJ4cZNmoHQyHfA5WweyztFx-BbyFw4HbsFK2F.Q2MxRqxMPzigalVV" target="_blank" rel="noopener">
+              <b>Global - AI Governance for AI Developers</b>
+            </a>
           </div>`;
 }
 
