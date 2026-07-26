@@ -340,6 +340,7 @@ function groupTimeZones(): array {
         'advanced-ai-concepts-atlanta' => 'America/New_York',
         'advanced-ai-concepts-boston' => 'America/New_York',
         'advanced-ai-concepts-chicago' => 'America/Chicago',
+        'advanced-ai-concepts-chennai' => 'Asia/Kolkata',
         'advanced-ai-concepts' => 'America/Denver',
         'advanced-ai-concepts-columbus' => 'America/New_York',
         'advanced-ai-concepts-dallas' => 'America/Chicago',

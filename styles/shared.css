@@ -1660,6 +1660,25 @@ p {
   padding-bottom: 18px;
 }
 
+.aac-empty-events {
+  grid-column: 1 / -1;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(23, 32, 51, 0.08);
+}
+
+.aac-empty-events h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.aac-empty-events p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .aac-city-card img {
   width: 100%;
   aspect-ratio: 1.91 / 1;

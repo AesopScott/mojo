@@ -21,6 +21,7 @@ const cities = [
   { city: "Dallas-Fort Worth", state: "TX", slug: "dallas", urlname: "advanced-ai-concepts-dallas" },
   { city: "San Francisco", state: "CA", slug: "san-francisco", urlname: "advanced-ai-concepts-san-francisco" },
   { city: "Chicago", state: "IL", slug: "chicago", urlname: "advanced-ai-concepts-chicago" },
+  { city: "Chennai", state: "TN", slug: "chennai", urlname: "advanced-ai-concepts-chennai" },
   { city: "Los Angeles", state: "CA", slug: "los-angeles", urlname: "advanced-ai-concepts-los-angeles" },
   { city: "New York", state: "NY", slug: "new-york", urlname: "advanced-ai-concepts-new-york" },
   { city: "Boston", state: "MA", slug: "boston", urlname: "advanced-ai-concepts-boston" },
@@ -516,6 +517,14 @@ function breadcrumbSchema(items) {
 }
 
 function eventsMarkup(events) {
+  if (!events.length) {
+    return `
+          <div class="aac-empty-events">
+            <h2>No upcoming sessions are posted yet.</h2>
+            <p>Join the local Meetup group to get notified when the next Advanced AI Concepts session opens.</p>
+          </div>`;
+  }
+
   return events.map((event) => `
           <a class="aac-event-card" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener">
             <img src="${escapeHtml(event.featuredEventPhoto?.standardUrl || "/assets/advanced-ai-concepts/og-hub.jpg")}" alt="" />
@@ -684,12 +693,16 @@ function hubPage(chapters, globalEvents) {
           <a class="button dark" data-city-group-link href="${escapeHtml(hubChapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(hubChapters[0]?.city || "selected city")} group</a>
         </div>
         <div class="aac-event-list" data-city-events>
-          ${hubChapters.map((chapter, index) => chapter.events.map((event) => `
+          ${hubChapters.some((chapter) => chapter.events.length) ? hubChapters.map((chapter, index) => chapter.events.map((event) => `
           <a class="aac-row-card aac-session-card${eventStateClass(event)}" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
             <span>${escapeHtml(eventDateLabel(event.dateTime))}</span>
             <p>${escapeHtml(event.title)}</p>
             <strong>RSVP</strong>
-          </a>`).join("")).join("")}
+          </a>`).join("")).join("") : `
+          <div class="aac-empty-events">
+            <h2>No upcoming sessions are posted yet.</h2>
+            <p>Choose your city and join the local Meetup group to get notified when the next session opens.</p>
+          </div>`}
         </div>
         <script>
           (() => {
@@ -697,7 +710,7 @@ function hubPage(chapters, globalEvents) {
             const groupLink = document.querySelector("[data-city-group-link]");
             const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
             const chapterSlugs = ${JSON.stringify(Object.fromEntries(hubChapters.map((chapter) => [chapter.urlname, chapter.slug])))};
-            if (!select || !cards.length) return;
+            if (!select) return;
             const syncCity = () => {
               const selected = select.selectedOptions[0];
               if (groupLink && selected) {
@@ -965,11 +978,13 @@ async function generateOgImage(sourceImage, chapter, filename) {
 }
 
 async function main() {
-  let env = {};
+  let env = { ...process.env };
   try {
-    env = readEnv(await fs.readFile(ENV_PATH, "utf8"));
+    env = { ...env, ...readEnv(await fs.readFile(ENV_PATH, "utf8")) };
   } catch (error) {
-    console.warn(`Using fallback Advanced AI Concepts sessions: ${path.basename(ENV_PATH)} could not be read.`);
+    if (!env.MEETUP_ADMIN_KEY) {
+      console.warn(`Using fallback Advanced AI Concepts sessions: ${path.basename(ENV_PATH)} could not be read.`);
+    }
   }
 
   if (!env.MEETUP_ADMIN_KEY) {
