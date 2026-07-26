@@ -1,17 +1,43 @@
 .govern-page {
-  --gov-ink: #152323;
-  --gov-muted: #5c6f69;
-  --gov-line: rgba(21, 35, 35, 0.14);
-  --gov-soft: #eef5f1;
-  --gov-paper: #fbfdfb;
-  --gov-mint: #2f8f71;
-  --gov-blue: #315b9d;
-  --gov-gold: #c98e2d;
-  --gov-red: #b85444;
+  --gov-ink: #f4f1e8;
+  --gov-muted: #b8c2b8;
+  --gov-line: rgba(244, 241, 232, 0.16);
+  --gov-soft: #121713;
+  --gov-paper: #171e19;
+  --gov-surface: #101511;
+  --gov-elevated: #1e2720;
+  --gov-mint: #5ee0a6;
+  --gov-blue: #8ebcff;
+  --gov-gold: #f0bd62;
+  --gov-red: #ff8f7c;
+  --gov-accent: #f0bd62;
   color: var(--gov-ink);
   background:
-    radial-gradient(circle at top left, rgba(47, 143, 113, 0.14), transparent 34rem),
-    linear-gradient(180deg, #f9fcfa 0%, #eef5f1 58%, #f8fbf8 100%);
+    radial-gradient(circle at top left, rgba(94, 224, 166, 0.18), transparent 34rem),
+    radial-gradient(circle at 85% 8%, rgba(240, 189, 98, 0.12), transparent 26rem),
+    linear-gradient(180deg, #0b0f0d 0%, #111811 52%, #0d120f 100%);
+}
+
+.govern-page .site-nav {
+  border-color: rgba(244, 241, 232, 0.12);
+  background: rgba(11, 15, 13, 0.84);
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(16px);
+}
+
+.govern-page .site-nav a {
+  color: rgba(244, 241, 232, 0.78);
+}
+
+.govern-page .site-nav a:hover,
+.govern-page .site-nav a.active {
+  color: var(--gov-ink);
+}
+
+.govern-page .button.ghost {
+  border-color: rgba(240, 189, 98, 0.44);
+  color: var(--gov-ink);
+  background: rgba(240, 189, 98, 0.12);
 }
 
 .gov-header,
@@ -42,9 +68,9 @@
   border: 1px solid var(--gov-line);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(239, 247, 243, 0.96)),
-    linear-gradient(90deg, rgba(49, 91, 157, 0.12), transparent);
-  box-shadow: 0 24px 68px rgba(21, 35, 35, 0.11);
+    linear-gradient(135deg, rgba(30, 39, 32, 0.96), rgba(16, 21, 17, 0.96)),
+    linear-gradient(90deg, rgba(94, 224, 166, 0.1), transparent);
+  box-shadow: 0 24px 68px rgba(0, 0, 0, 0.34);
 }
 
 .gov-title h1 {
@@ -68,8 +94,8 @@
 .case-stats div {
   border: 1px solid var(--gov-line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 18px 48px rgba(21, 35, 35, 0.09);
+  background: rgba(23, 30, 25, 0.94);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
 }
 
 .session-panel {
@@ -101,15 +127,15 @@
   min-height: 42px;
   padding: 0 16px;
   border-radius: 8px;
-  background: var(--gov-ink);
-  color: white;
+  background: var(--gov-accent);
+  color: #111811;
   font-weight: 850;
   text-decoration: none;
 }
 
 .lesson-link:hover {
-  background: var(--gov-accent);
-  color: var(--gov-ink);
+  background: var(--gov-mint);
+  color: #0b0f0d;
 }
 
 .session-panel p {
@@ -123,7 +149,7 @@
   height: 10px;
   overflow: hidden;
   border-radius: 999px;
-  background: #e1ebe6;
+  background: rgba(244, 241, 232, 0.12);
 }
 
 .lesson-progress span,
@@ -146,8 +172,8 @@
   padding: 10px;
   border: 1px solid var(--gov-line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 16px 40px rgba(21, 35, 35, 0.08);
+  background: rgba(16, 21, 17, 0.86);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
   backdrop-filter: blur(14px);
 }
 
@@ -160,8 +186,17 @@
   border: 1px solid var(--gov-line);
   border-radius: 8px;
   color: var(--gov-ink);
-  background: #fff;
+  background: #141b16;
   font-weight: 820;
+}
+
+.module-tabs button:hover,
+.pillar-list button:hover,
+.risk-picker button:hover,
+.action-button:hover,
+[data-template-card] button:hover {
+  border-color: rgba(94, 224, 166, 0.42);
+  background: #1e2720;
 }
 
 .module-tabs button {
@@ -170,7 +205,7 @@
   align-items: center;
   gap: 8px;
   padding: 0 14px;
-  color: #425750;
+  color: var(--gov-muted);
 }
 
 .module-tabs button span {
@@ -185,13 +220,18 @@
 .risk-picker button.active,
 .dark-action {
   color: #fff;
-  border-color: var(--gov-ink);
-  background: var(--gov-ink);
+  border-color: rgba(240, 189, 98, 0.7);
+  background: linear-gradient(135deg, #2c2414, #5b421b);
 }
 
 .module-tabs button.visited span {
   background: var(--gov-mint);
   border-color: var(--gov-mint);
+}
+
+.action-button,
+.source-list a {
+  text-decoration: none;
 }
 
 .module {
@@ -255,9 +295,9 @@
   gap: 6px;
   margin-top: 22px;
   padding: 16px;
-  border: 1px solid rgba(47, 143, 113, 0.28);
+  border: 1px solid rgba(94, 224, 166, 0.34);
   border-radius: 8px;
-  background: #eef8f2;
+  background: rgba(94, 224, 166, 0.1);
 }
 
 .student-prompt b,
@@ -373,10 +413,10 @@
 
 .tag-row span {
   padding: 7px 10px;
-  border: 1px solid rgba(49, 91, 157, 0.2);
+  border: 1px solid rgba(142, 188, 255, 0.28);
   border-radius: 999px;
-  color: #234b87;
-  background: rgba(49, 91, 157, 0.08);
+  color: var(--gov-blue);
+  background: rgba(142, 188, 255, 0.1);
   font-size: 0.88rem;
   font-weight: 750;
 }
@@ -440,17 +480,23 @@
   border-radius: 8px;
   padding: 12px;
   color: var(--gov-ink);
-  background: #fff;
+  background: #0d130f;
   font: inherit;
   line-height: 1.45;
+}
+
+.worksheet-grid textarea:focus {
+  outline: 2px solid rgba(94, 224, 166, 0.44);
+  outline-offset: 2px;
+  border-color: rgba(94, 224, 166, 0.64);
 }
 
 .coach-card {
   position: sticky;
   top: 170px;
   align-self: start;
-  border-color: rgba(201, 142, 45, 0.28);
-  background: #fffaf0;
+  border-color: rgba(240, 189, 98, 0.36);
+  background: rgba(58, 43, 19, 0.72);
 }
 
 .template-grid {
@@ -467,9 +513,9 @@
   align-items: center;
   margin: 20px 0 18px;
   padding: 18px;
-  border: 1px solid rgba(47, 143, 113, 0.28);
+  border: 1px solid rgba(94, 224, 166, 0.34);
   border-radius: 8px;
-  background: #eef8f2;
+  background: rgba(94, 224, 166, 0.1);
 }
 
 .policy-download h3,
@@ -504,7 +550,7 @@
   padding: 16px;
   border: 1px solid var(--gov-line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--gov-paper);
 }
 
 .policy-library h3,
@@ -548,8 +594,8 @@
   padding: 12px;
   border: 1px solid var(--gov-line);
   border-radius: 8px;
-  color: #243832;
-  background: #fff;
+  color: #dfe7dc;
+  background: #0d130f;
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
   font-size: 0.82rem;
   line-height: 1.45;
@@ -597,6 +643,11 @@
   background: var(--gov-paper);
 }
 
+.source-list a:hover {
+  border-color: rgba(142, 188, 255, 0.36);
+  background: var(--gov-elevated);
+}
+
 .source-list a::after {
   content: "Open";
   color: var(--gov-blue);
@@ -615,14 +666,31 @@
   padding: 12px 14px;
   border-radius: 8px;
   color: #fff;
-  background: var(--gov-ink);
-  box-shadow: 0 16px 40px rgba(21, 35, 35, 0.2);
+  background: #111811;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.36);
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .toast.show {
   transform: translateY(0);
   opacity: 1;
+}
+
+.govern-page .site-footer {
+  border-top-color: rgba(244, 241, 232, 0.12);
+  background: #090d0b;
+}
+
+.govern-page .site-footer p {
+  color: var(--gov-muted);
+}
+
+.govern-page .site-footer a:not(.brand) {
+  color: rgba(244, 241, 232, 0.74);
+}
+
+.govern-page .site-footer a:not(.brand):hover {
+  color: var(--gov-accent);
 }
 
 @media (max-width: 980px) {
