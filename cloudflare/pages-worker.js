@@ -63,6 +63,8 @@ const LEARN_SCHEDULE_CACHE_SECONDS = 300;
 const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule:v3-members-rsvps";
 const LEARN_RSVP_CACHE_SECONDS = 300;
 const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count";
+const MEETUP_OAUTH_TOKEN_KEY = "meetup:oauth-token";
+const MEETUP_OAUTH_STATE_PREFIX = "meetup:oauth-state:";
 
 export default {
   async fetch(request, env, ctx) {
@@ -76,6 +78,14 @@ export default {
 
     if (url.pathname === "/api/meetup-admin" || url.pathname === "/api/meetup-admin.php") {
       return handleMeetupAdmin(request, env, url);
+    }
+
+    if (url.pathname === "/api/meetup-oauth-start") {
+      return handleMeetupOauthStart(request, env, url);
+    }
+
+    if (url.pathname === "/oauth/meetup/callback") {
+      return handleMeetupOauthCallback(request, env, url);
     }
 
     if (url.pathname === "/api/sms-reminders" || url.pathname === "/api/sms-reminders.php") {
@@ -389,6 +399,9 @@ async function meetupAccessToken(env) {
     if (parsed.access_token) return parsed.access_token;
   }
 
+  const storedToken = await meetupStoredAccessToken(env);
+  if (storedToken) return storedToken;
+
   if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
     return meetupJwtAccessToken(env);
   }
@@ -430,6 +443,9 @@ async function meetupWriteAccessToken(env) {
     if (parsed.access_token) return parsed.access_token;
   }
 
+  const storedToken = await meetupStoredAccessToken(env);
+  if (storedToken) return storedToken;
+
   if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
     return meetupJwtAccessToken(env);
   }
@@ -454,6 +470,49 @@ async function meetupWriteAccessToken(env) {
   }
 
   return meetupAccessToken(env);
+}
+
+async function meetupStoredAccessToken(env) {
+  if (!env.SMS_REMINDERS) return "";
+  const stored = await env.SMS_REMINDERS.get(MEETUP_OAUTH_TOKEN_KEY, "json");
+  if (!stored?.access_token) return "";
+
+  const storedAt = Date.parse(stored.stored_at || "");
+  const expiresIn = Number(stored.expires_in || 0);
+  const stillFresh = Number.isFinite(storedAt)
+    && expiresIn > 0
+    && Date.now() < storedAt + (expiresIn - 60) * 1000;
+  if (stillFresh) return stored.access_token;
+
+  if (!stored.refresh_token) return stored.access_token;
+  return meetupRefreshStoredToken(env, stored);
+}
+
+async function meetupRefreshStoredToken(env, stored) {
+  const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
+  const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  if (!clientId || !clientSecret) return stored.access_token || "";
+
+  const body = new URLSearchParams({
+    client_id: clientId,
+    client_secret: clientSecret,
+    grant_type: "refresh_token",
+    refresh_token: String(stored.refresh_token || ""),
+  });
+  const response = await fetch("https://secure.meetup.com/oauth2/access", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.access_token) return stored.access_token || "";
+
+  const refreshed = {
+    ...payload,
+    stored_at: new Date().toISOString(),
+  };
+  await env.SMS_REMINDERS.put(MEETUP_OAUTH_TOKEN_KEY, JSON.stringify(refreshed));
+  return refreshed.access_token;
 }
 
 async function meetupJwtAccessToken(env) {
@@ -535,6 +594,155 @@ async function meetupGraphQL(token, query, variables = {}) {
     throw new Error("Meetup GraphQL request failed.");
   }
   return payload.data;
+}
+
+async function handleMeetupOauthStart(request, env, url) {
+  if (!isAuthorized(request, env, url)) {
+    return json({ ok: false, error: "Unauthorized." }, 401);
+  }
+  if (!env.SMS_REMINDERS) {
+    return json({ ok: false, error: "OAuth state storage is not configured." }, 503);
+  }
+
+  const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
+  if (!clientId) {
+    return json({ ok: false, error: "MEETUP_CLIENT_ID is not configured." }, 503);
+  }
+
+  const redirectUri = meetupRedirectUri(env, url);
+  const state = cryptoRandomHex(16);
+  await env.SMS_REMINDERS.put(`${MEETUP_OAUTH_STATE_PREFIX}${state}`, JSON.stringify({
+    createdAt: new Date().toISOString(),
+  }), { expirationTtl: 600 });
+
+  const authorizeUrl = new URL("https://secure.meetup.com/oauth2/authorize");
+  authorizeUrl.searchParams.set("client_id", clientId);
+  authorizeUrl.searchParams.set("response_type", "code");
+  authorizeUrl.searchParams.set("redirect_uri", redirectUri);
+  authorizeUrl.searchParams.set("state", state);
+
+  return Response.redirect(authorizeUrl.toString(), 302);
+}
+
+async function handleMeetupOauthCallback(request, env, url) {
+  const error = url.searchParams.get("error") || "";
+  if (error) {
+    return meetupOauthPage("Authorization declined", "Meetup returned an authorization error.", { error }, 400);
+  }
+
+  if (!env.SMS_REMINDERS) {
+    return meetupOauthPage("Storage not configured", "OAuth token storage is not configured for this site.", {}, 503);
+  }
+
+  const code = String(url.searchParams.get("code") || "").trim();
+  const state = String(url.searchParams.get("state") || "").trim();
+  if (!code || !state) {
+    return meetupOauthPage("Missing authorization code", "Meetup did not provide the expected OAuth code and state.", {}, 400);
+  }
+
+  const stateKey = `${MEETUP_OAUTH_STATE_PREFIX}${state}`;
+  const storedState = await env.SMS_REMINDERS.get(stateKey, "json");
+  if (!storedState) {
+    return meetupOauthPage("Authorization expired", "The OAuth state expired or was already used. Start a new Meetup authorization session.", {}, 400);
+  }
+  await env.SMS_REMINDERS.delete(stateKey);
+
+  const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
+  const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  if (!clientId || !clientSecret) {
+    return meetupOauthPage("Missing Meetup credentials", "The site needs MEETUP_CLIENT_ID and MEETUP_CLIENT_SECRET to exchange the OAuth code.", {
+      hasClientId: Boolean(clientId),
+      hasClientSecret: Boolean(clientSecret),
+    }, 503);
+  }
+
+  const response = await fetch("https://secure.meetup.com/oauth2/access", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      grant_type: "authorization_code",
+      redirect_uri: meetupRedirectUri(env, url),
+      code,
+    }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.access_token) {
+    return meetupOauthPage("Token exchange rejected", "Meetup did not accept the authorization code exchange.", {
+      httpStatus: response.status,
+      error: payload.error || null,
+      errorDescription: payload.error_description || null,
+    }, 502);
+  }
+
+  const token = {
+    ...payload,
+    stored_at: new Date().toISOString(),
+  };
+  await env.SMS_REMINDERS.put(MEETUP_OAUTH_TOKEN_KEY, JSON.stringify(token));
+
+  let self = null;
+  try {
+    const data = await meetupGraphQL(token.access_token, "query { self { id name } }");
+    self = data.self || null;
+  } catch {
+    self = null;
+  }
+
+  return meetupOauthPage("Meetup authorization connected", "The Meetup OAuth session is connected and stored for Mojo admin actions.", {
+    tokenType: token.token_type || null,
+    expiresIn: token.expires_in || null,
+    hasRefreshToken: Boolean(token.refresh_token),
+    self,
+  });
+}
+
+function meetupRedirectUri(env, url) {
+  return String(env.MEETUP_REDIRECT_URI || "").trim() || `${url.origin}/oauth/meetup/callback`;
+}
+
+function cryptoRandomHex(byteLength) {
+  const bytes = new Uint8Array(byteLength);
+  crypto.getRandomValues(bytes);
+  return [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function meetupOauthPage(title, message, details = {}, status = 200) {
+  return new Response(`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)} - Mojo AI Studio</title>
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #0b1020; color: #f8fafc; }
+    main { max-width: 760px; margin: 64px auto; padding: 0 24px; }
+    .card { border: 1px solid rgba(148,163,184,.24); border-radius: 8px; padding: 24px; background: #111827; }
+    .eyebrow { color: #67e8f9; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 12px 0; font-size: 30px; }
+    p { color: #cbd5e1; line-height: 1.6; }
+    pre { white-space: pre-wrap; color: #d1fae5; background: #06121f; border-radius: 8px; padding: 14px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <div class="eyebrow">Meetup OAuth</div>
+      <h1>${escapeHtml(title)}</h1>
+      <p>${escapeHtml(message)}</p>
+      ${Object.keys(details).length ? `<pre>${escapeHtml(JSON.stringify(details, null, 2))}</pre>` : ""}
+    </section>
+  </main>
+</body>
+</html>`, {
+    status,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+    },
+  });
 }
 
 async function meetupNetworkGroups(token) {
