@@ -1928,6 +1928,255 @@ a[aria-disabled="true"] {
   margin-bottom: 4px;
 }
 
+/* ─── Pi class page ─── */
+
+.pi-header {
+  width: 100%;
+}
+
+.pi-hero {
+  width: min(1220px, calc(100% - 32px));
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.55fr);
+  gap: 32px;
+  align-items: stretch;
+  padding: 70px 0 42px;
+}
+
+.pi-hero-copy {
+  display: grid;
+  align-content: center;
+}
+
+.pi-hero h1 {
+  max-width: 760px;
+  margin-bottom: 18px;
+  font-size: clamp(3rem, 6vw, 5.8rem);
+  line-height: 0.94;
+}
+
+.pi-hero-copy > p {
+  max-width: 680px;
+  font-size: 1.12rem;
+}
+
+.pi-hero-actions,
+.pi-command-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pi-lesson-card,
+.pi-panel,
+.pi-auth-card,
+.pi-file-grid article,
+.pi-note,
+.pi-callout,
+.pi-roadmap article {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(23, 32, 51, 0.08);
+}
+
+.pi-lesson-card {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 26px;
+}
+
+.pi-lesson-card span,
+.pi-panel-label,
+.pi-auth-card span {
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pi-lesson-card h2 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+}
+
+.pi-lesson-card p,
+.pi-lesson-card ol {
+  margin: 0;
+}
+
+.pi-lesson-card ol {
+  display: grid;
+  gap: 8px;
+  padding-left: 20px;
+  color: #3e4c61;
+}
+
+.pi-section {
+  padding: 34px 0;
+}
+
+.pi-section-heading {
+  max-width: 780px;
+  margin-bottom: 22px;
+}
+
+.pi-section-heading h2 {
+  margin-bottom: 12px;
+  font-size: clamp(2rem, 4vw, 4rem);
+}
+
+.pi-two-column,
+.pi-auth-grid,
+.pi-roadmap {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pi-panel,
+.pi-auth-card,
+.pi-note,
+.pi-callout {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 22px;
+}
+
+.pi-panel-muted {
+  background: #f8fbff;
+}
+
+.pi-panel h3,
+.pi-auth-card h3,
+.pi-callout h3 {
+  margin: 0;
+  font-size: 1.45rem;
+}
+
+.pi-panel p,
+.pi-auth-card p,
+.pi-note p,
+.pi-callout p,
+.pi-roadmap p {
+  margin: 0;
+}
+
+.pi-panel pre,
+.pi-auth-card pre,
+.pi-command-row pre {
+  max-width: 100%;
+  margin: 0;
+  overflow-x: auto;
+  border: 1px solid rgba(23, 32, 51, 0.12);
+  border-radius: 8px;
+  background: #121827;
+  color: #e8eefb;
+}
+
+.pi-panel pre,
+.pi-auth-card pre {
+  padding: 14px;
+}
+
+.pi-command-row pre {
+  flex: 1 1 320px;
+  padding: 16px;
+}
+
+.pi-panel code,
+.pi-auth-card code,
+.pi-command-row code,
+.pi-file-grid code,
+.pi-note code,
+.pi-callout code {
+  font-family: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.88rem;
+}
+
+.pi-file-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.pi-file-grid article {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+}
+
+.pi-file-grid b,
+.pi-roadmap b {
+  color: var(--ink);
+}
+
+.pi-file-grid code {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: #eef3f8;
+  color: #243145;
+}
+
+.pi-file-grid p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.pi-note,
+.pi-callout {
+  margin-top: 16px;
+  border-color: rgba(15, 118, 110, 0.2);
+  background: #f1fbf8;
+}
+
+.pi-auth-grid {
+  align-items: start;
+}
+
+.pi-callout {
+  max-width: 780px;
+}
+
+.pi-roadmap {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pi-roadmap article {
+  display: grid;
+  gap: 9px;
+  padding: 18px;
+}
+
+.pi-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding: 20px 0 58px;
+}
+
+.pi-sources b {
+  margin-right: 4px;
+}
+
+.pi-sources a {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  color: #405064;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
 /* ─── Footer ─── */
 
 .site-footer {
@@ -2131,6 +2380,7 @@ a[aria-disabled="true"] {
 
   .pathway-grid,
   .hero,
+  .pi-hero,
   .aac-city-hero,
   .aac-build-difference,
   .aac-sms-signup,
@@ -2151,6 +2401,7 @@ a[aria-disabled="true"] {
 
   .app-grid,
   .bundle-grid,
+  .pi-file-grid,
   .aac-city-grid,
   .aac-events-grid,
   .detail-grid {
@@ -2217,6 +2468,10 @@ a[aria-disabled="true"] {
 
   .app-grid,
   .bundle-grid,
+  .pi-two-column,
+  .pi-auth-grid,
+  .pi-file-grid,
+  .pi-roadmap,
   .aac-city-grid,
   .aac-events-grid,
   .aac-build-points,

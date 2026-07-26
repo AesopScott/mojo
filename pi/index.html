@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A beginner-friendly Mojo AI Studio class on installing Pi, finding its configuration files, and authenticating with OpenRouter or API keys."
+    />
+    <title>Pi Class | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/pi/" />
+    <meta name="theme-color" content="#0f0f1a" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/pi/" />
+    <meta property="og:title" content="Pi Class | Mojo AI Studio" />
+    <meta
+      property="og:description"
+      content="Learn Pi from first principles: global installation, configuration files, provider login, and API-key authentication."
+    />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Pi Class | Mojo AI Studio" />
+    <meta
+      name="twitter:description"
+      content="A living beginner class on installing, configuring, authenticating, and safely using Pi."
+    />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/og-image.png" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Pi Class","url":"https://mojoaistudio.com/pi/","description":"A beginner-friendly Mojo AI Studio class on installing Pi, finding its configuration files, and authenticating with OpenRouter or API keys.","provider":{"@type":"Organization","name":"Mojo AI Studio","url":"https://mojoaistudio.com/"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mojo AI Studio","item":"https://mojoaistudio.com/"},{"@type":"ListItem","position":2,"name":"Pi Class","item":"https://mojoaistudio.com/pi/"}]}</script>
+    <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+  </head>
+  <body>
+    <header class="site-header pi-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/">Learn</a>
+          <a href="/pi/" class="active">Pi Class</a>
+          <a href="/govern/">Govern</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button ghost" href="#lesson-01">Start lesson 01</a>
+        </div>
+      </nav>
+
+      <section class="pi-hero">
+        <div class="pi-hero-copy">
+          <p class="kicker">Mojo AI Studio class notes</p>
+          <h1>Learning Pi from the ground up.</h1>
+          <p>
+            This is the living class page for learning Pi as a terminal coding agent:
+            where it installs, where it stores settings, and how it connects to model
+            providers like OpenRouter.
+          </p>
+          <div class="pi-hero-actions">
+            <a class="button dark" href="#lesson-01">Read the first lesson</a>
+            <a class="button ghost" href="https://pi.dev/docs/latest" target="_blank" rel="noopener">Pi docs</a>
+          </div>
+        </div>
+        <aside class="pi-lesson-card" aria-label="Current class progress">
+          <span>Current lesson</span>
+          <h2>Install, configure, authenticate</h2>
+          <p>
+            Built from the first setup conversation: npm, global installs, Pi's
+            configuration folder, OpenRouter login, and API-key authentication.
+          </p>
+          <ol>
+            <li>Find the installed Pi command.</li>
+            <li>Find Pi's user configuration files.</li>
+            <li>Connect Pi to a model provider.</li>
+          </ol>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="section pi-section" id="lesson-01">
+        <div class="pi-section-heading">
+          <p class="kicker">Lesson 01</p>
+          <h2>What did installing Pi actually do?</h2>
+          <p>
+            Pi was installed as a global npm package. That means npm placed a
+            small command shim on your PATH, and that shim launches Pi's CLI code
+            from the global npm package folder.
+          </p>
+        </div>
+
+        <div class="pi-two-column">
+          <article class="pi-panel">
+            <span class="pi-panel-label">Windows example</span>
+            <h3>Where Pi installs globally</h3>
+            <p>
+              On Scott's Windows machine, PowerShell finds the Pi command here:
+            </p>
+            <pre><code>C:\Users\scott\AppData\Roaming\npm\pi.ps1</code></pre>
+            <p>
+              The installed package code lives here:
+            </p>
+            <pre><code>C:\Users\scott\AppData\Roaming\npm\node_modules\@earendil-works\pi-coding-agent</code></pre>
+            <p>
+              The command shim ultimately launches:
+            </p>
+            <pre><code>...\@earendil-works\pi-coding-agent\dist\cli.js</code></pre>
+          </article>
+
+          <article class="pi-panel pi-panel-muted">
+            <span class="pi-panel-label">Try it yourself</span>
+            <h3>Commands that reveal the install</h3>
+            <p>Use these from PowerShell to see where your own copy is installed.</p>
+            <pre><code>Get-Command pi
+npm root -g
+npm prefix -g
+npm list -g @earendil-works/pi-coding-agent --depth=0</code></pre>
+            <p>
+              Useful mental model: npm installed a released package. It is not a
+              fork or live source checkout, so updates arrive only when you update Pi.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section pi-section" id="configuration">
+        <div class="pi-section-heading">
+          <p class="kicker">Configuration</p>
+          <h2>Where Pi keeps your settings and login state.</h2>
+          <p>
+            Pi separates the installed program from your personal settings,
+            cached model lists, credentials, sessions, and project trust decisions.
+          </p>
+        </div>
+
+        <div class="pi-file-grid" aria-label="Pi configuration files">
+          <article>
+            <b>Global Pi folder</b>
+            <code>~/.pi/agent</code>
+            <p>On Windows: <code>C:\Users\scott\.pi\agent</code></p>
+          </article>
+          <article>
+            <b>Settings</b>
+            <code>~/.pi/agent/settings.json</code>
+            <p>Stores defaults such as theme, default provider, and default model.</p>
+          </article>
+          <article>
+            <b>Authentication</b>
+            <code>~/.pi/agent/auth.json</code>
+            <p>Stores OAuth tokens or API-key credentials. Do not share this file.</p>
+          </article>
+          <article>
+            <b>Model cache</b>
+            <code>~/.pi/agent/models-store.json</code>
+            <p>Caches provider model catalogs so Pi can show available models.</p>
+          </article>
+          <article>
+            <b>Sessions</b>
+            <code>~/.pi/agent/sessions/</code>
+            <p>Stores saved Pi conversations and session history.</p>
+          </article>
+          <article>
+            <b>Project trust</b>
+            <code>~/.pi/agent/trust.json</code>
+            <p>Appears after saving trust decisions with <code>/trust</code>.</p>
+          </article>
+        </div>
+
+        <div class="pi-note">
+          <b>Project-specific configuration</b>
+          <p>
+            A project can also contain <code>.pi/settings.json</code> and other
+            <code>.pi</code> resources. Pi asks about project trust before loading
+            those resources, but project trust is not a sandbox.
+          </p>
+        </div>
+      </section>
+
+      <section class="section pi-section" id="authentication">
+        <div class="pi-section-heading">
+          <p class="kicker">Authentication</p>
+          <h2>Two ways Pi connects to model providers.</h2>
+          <p>
+            Pi does not require a separate Pi account in the normal beginner flow.
+            Instead, it authenticates with providers that can serve models.
+          </p>
+        </div>
+
+        <div class="pi-auth-grid">
+          <article class="pi-auth-card">
+            <span>Method 1</span>
+            <h3>Subscription or OAuth login</h3>
+            <p>
+              Start Pi, run <code>/login</code>, and choose a provider. This can
+              open a browser authorization flow. OpenRouter's authorization flow
+              signs you in and creates provider credentials for Pi to use.
+            </p>
+            <pre><code>pi
+/login openrouter</code></pre>
+            <p>
+              Pi's built-in subscription-style login options include ChatGPT
+              Plus/Pro through Codex, Claude Pro/Max, GitHub Copilot, xAI,
+              OpenRouter, and Radius.
+            </p>
+          </article>
+
+          <article class="pi-auth-card">
+            <span>Method 2</span>
+            <h3>API-key authentication</h3>
+            <p>
+              An API key is a secret token from a provider. You can set it as an
+              environment variable before launching Pi, or enter it through
+              <code>/login</code> so Pi stores it in <code>auth.json</code>.
+            </p>
+            <pre><code>$env:OPENROUTER_API_KEY="your-openrouter-key"
+pi --provider openrouter</code></pre>
+            <p>
+              Other common provider variables include <code>OPENAI_API_KEY</code>,
+              <code>ANTHROPIC_API_KEY</code>, and <code>GEMINI_API_KEY</code>.
+            </p>
+          </article>
+        </div>
+
+        <div class="pi-callout">
+          <h3>What "logged in" means</h3>
+          <p>
+            If Pi says you are logged into OpenRouter, Pi has credentials it can
+            use to request models through your OpenRouter account. The next step
+            is choosing a model with <code>/model</code>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section pi-section" id="safety">
+        <div class="pi-section-heading">
+          <p class="kicker">Safety note</p>
+          <h2>Tool access is the real permission boundary.</h2>
+          <p>
+            By default, Pi can use tools such as read, write, edit, and bash.
+            If you want a read-only learning session, start Pi with only read
+            tools enabled.
+          </p>
+        </div>
+        <div class="pi-command-row">
+          <pre><code>pi --tools read,grep,find,ls</code></pre>
+          <pre><code>pi --exclude-tools bash</code></pre>
+        </div>
+      </section>
+
+      <section class="section pi-section" id="class-log">
+        <div class="pi-section-heading">
+          <p class="kicker">Class log</p>
+          <h2>What we will add next.</h2>
+        </div>
+        <div class="pi-roadmap">
+          <article>
+            <b>Next lesson</b>
+            <p>Choosing a model, understanding provider/model names, and switching models inside Pi.</p>
+          </article>
+          <article>
+            <b>After that</b>
+            <p>Starting Pi read-only, then safely allowing edits once the task is clear.</p>
+          </article>
+          <article>
+            <b>Later</b>
+            <p>Forks, upstream pull requests, Pi packages, and how people share changes.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section pi-sources" aria-label="Sources">
+        <b>Sources</b>
+        <a href="https://pi.dev/docs/latest" target="_blank" rel="noopener">Pi documentation</a>
+        <a href="https://pi.dev/docs/latest/quickstart" target="_blank" rel="noopener">Pi quickstart</a>
+        <a href="https://pi.dev/docs/latest/providers" target="_blank" rel="noopener">Pi providers</a>
+        <a href="https://pi.dev/docs/latest/security" target="_blank" rel="noopener">Pi security</a>
+        <a href="https://pi.dev/docs/latest/settings" target="_blank" rel="noopener">Pi settings</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="/">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <p>Practical AI classes for builders learning by doing.</p>
+      </div>
+      <div>
+        <b>Class</b>
+        <a href="#lesson-01">Install</a>
+        <a href="#configuration">Configuration</a>
+        <a href="#authentication">Authentication</a>
+      </div>
+      <div>
+        <b>Studio</b>
+        <a href="/learn/">Learn</a>
+        <a href="/request/">Request a build</a>
+        <a href="mailto:admin@MojoAiStudio.com">Contact</a>
+      </div>
+    </footer>
+  </body>
+</html>
