@@ -230,12 +230,35 @@ async function fetchMeetupGroupEvents(env, urlname) {
 }`;
 
   try {
-    return await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname });
+    const payload = await callAdmin(env.MEETUP_ADMIN_KEY, { action: "meetup-events", urlname });
+    if (payload.group && Array.isArray(payload.events)) {
+      return {
+        ok: true,
+        result: {
+          response: {
+            data: {
+              groupByUrlname: {
+                ...payload.group,
+                events: {
+                  totalCount: payload.events.length,
+                  edges: payload.events.map((event) => ({ node: event })),
+                },
+              },
+            },
+          },
+        },
+      };
+    }
+    return payload;
   } catch (err) {
-    return {
-      ok: true,
-      result: await meetupGraphQL(env, query, { urlname }),
-    };
+    try {
+      return await callAdmin(env.MEETUP_ADMIN_KEY, { action: "events", urlname });
+    } catch {
+      return {
+        ok: true,
+        result: await meetupGraphQL(env, query, { urlname }),
+      };
+    }
   }
 }
 
