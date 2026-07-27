@@ -15,6 +15,34 @@ const ASSET_DIR = path.join(ROOT, "assets", "advanced-ai-concepts");
 const FALLBACK_HERO_IMAGE = path.join(ASSET_DIR, "hero.jpg");
 const FALLBACK_OG_IMAGE = path.join(ASSET_DIR, "og-hub.jpg");
 const GLOBAL_ACTIVITY_GROUP = "advanced-ai-concepts-global-london";
+const SOURCE_GROUP_URLNAME = "advanced-ai-concepts";
+
+const canonicalClassRules = [
+  {
+    id: "bmad-method-2026-07-31",
+    titleIncludes: "The BMAD Method",
+    title: "The BMAD Method for Context-Engineered AI Development  (Guest Speaker)",
+    dateTime: "2026-08-01T00:00:00Z",
+  },
+  {
+    id: "ai-local-hardware-2026-08-01",
+    titleIncludes: "AI on Local Hardware",
+    title: "AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)",
+    dateTime: "2026-08-01T14:00:00Z",
+  },
+  {
+    id: "fable5-quality-global-2026-08-09",
+    titleIncludes: "Global - Get Fable 5 Quality From Low-Cost AI Models",
+    title: "Global - Get Fable 5 Quality From Low-Cost AI Models",
+    dateTime: "2026-08-09T14:00:00Z",
+  },
+  {
+    id: "fable5-quality-2026-08-07",
+    titleIncludes: "Get Fable 5 Quality From Low-Cost AI Models",
+    title: "Get Fable 5 Quality From Low-Cost AI Models",
+    dateTime: "2026-08-08T00:00:00Z",
+  },
+];
 
 const cities = [
   { city: "Colorado Springs/Denver", state: "CO", slug: "colorado-springs", urlname: "advanced-ai-concepts" },
@@ -374,6 +402,28 @@ function eventMonthDay(dateTime) {
   }).format(new Date(dateTime));
 }
 
+function classDateLabel(dateTime) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "America/Denver",
+  }).format(new Date(dateTime)).replace(",", "") + " Mountain";
+}
+
+function gmtDateLabel(dateTime) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
+  }).format(new Date(dateTime)).replace(",", "") + " GMT";
+}
+
 function activityDateFromSource(dateTime, daysToAdd = 0) {
   const match = String(dateTime).match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!match) return null;
@@ -437,14 +487,7 @@ function gmtActivityTimeLabel(dateTime, daysToAdd, hour) {
 }
 
 function activityDateLabel(event, pairedEvent) {
-  const isGlobal = /^Global\s*-\s*/i.test(event.title || "");
-  const sourceEvent = isGlobal && pairedEvent ? pairedEvent : event;
-  const daysToAdd = isGlobal && pairedEvent ? 2 : 0;
-  const hour = isGlobal ? 8 : 18;
-  const dayLabel = activityDateFromSource(sourceEvent.dateTime, daysToAdd);
-  if (!dayLabel) return eventDateLabel(event.dateTime).replace("local time", "Mountain time");
-  const gmtLabel = gmtActivityTimeLabel(sourceEvent.dateTime, daysToAdd, hour);
-  return `${dayLabel}, ${isGlobal ? "8:00 AM" : "6:00 PM"} Mountain${gmtLabel ? ` / ${gmtLabel}` : ""}`;
+  return `${classDateLabel(event.dateTime)} / ${gmtDateLabel(event.dateTime)}`;
 }
 
 function jsonLdScript(data) {
@@ -573,6 +616,73 @@ function activityTopicKey(title) {
     .toLowerCase();
 }
 
+function normalizeClassTitle(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function canonicalClassRule(event) {
+  const title = normalizeClassTitle(event?.title);
+  return canonicalClassRules.find((rule) => title.includes(normalizeClassTitle(rule.titleIncludes))) || null;
+}
+
+function eventCanonicalDate(event) {
+  const rule = canonicalClassRule(event);
+  return rule?.dateTime || event?.networkEvent?.eventTime || event?.dateTime || "";
+}
+
+function canonicalClassKey(event) {
+  const rule = canonicalClassRule(event);
+  if (rule) return `rule:${rule.id}`;
+  const networkId = String(event?.networkEvent?.id || "").trim();
+  if (networkId) return `network:${networkId}`;
+  return `title:${normalizeClassTitle(event?.title)}|${eventDateLabel(event?.dateTime)}`;
+}
+
+function betterCanonicalClassEvent(candidate, current) {
+  if (!current) return true;
+
+  const canonicalTime = Date.parse(eventCanonicalDate(candidate));
+  const candidateTime = Date.parse(candidate?._sourceDateTime || candidate?.dateTime || "");
+  const currentTime = Date.parse(current?._sourceDateTime || current?.dateTime || "");
+  const candidateSource = candidate?.groupUrlname === SOURCE_GROUP_URLNAME ? 1 : 0;
+  const currentSource = current?.groupUrlname === SOURCE_GROUP_URLNAME ? 1 : 0;
+
+  if (candidateSource !== currentSource) return candidateSource > currentSource;
+  if (Number.isFinite(canonicalTime) && Number.isFinite(candidateTime) && Number.isFinite(currentTime)) {
+    const candidateDistance = Math.abs(candidateTime - canonicalTime);
+    const currentDistance = Math.abs(currentTime - canonicalTime);
+    if (candidateDistance !== currentDistance) return candidateDistance < currentDistance;
+  }
+
+  return Number(candidate?.rsvps?.totalCount || 0) > Number(current?.rsvps?.totalCount || 0);
+}
+
+function canonicalClassEvents(events) {
+  const grouped = new Map();
+  for (const event of events.filter(isPublicUpcomingEvent)) {
+    const key = canonicalClassKey(event);
+    const rule = canonicalClassRule(event);
+    const current = grouped.get(key);
+    if (betterCanonicalClassEvent(event, current)) {
+      grouped.set(key, {
+        ...event,
+        title: rule?.title || event.title,
+        _sourceDateTime: event.dateTime,
+        dateTime: rule?.dateTime || event.dateTime,
+        _groupCount: 1,
+      });
+    } else if (current) {
+      current._groupCount += 1;
+    }
+  }
+
+  return [...grouped.values()]
+    .sort((a, b) => Date.parse(a.dateTime) - Date.parse(b.dateTime) || String(a.title).localeCompare(String(b.title)));
+}
+
 function eventStateClass(event) {
   return "";
 }
@@ -647,7 +757,19 @@ function hubPage(chapters, globalEvents) {
     ...chapter,
     events: chapter.events.filter(isPublicUpcomingEvent),
   }));
-  const homeEvents = hubChapters[0]?.events || [];
+  const classEvents = canonicalClassEvents([
+    ...hubChapters.flatMap((chapter) => chapter.events.map((event) => ({
+      ...event,
+      groupUrlname: chapter.urlname,
+      groupCity: chapter.city,
+      groupMeetupUrl: chapter.meetupUrl,
+    }))),
+    ...globalEvents.map((event) => ({
+      ...event,
+      groupUrlname: GLOBAL_ACTIVITY_GROUP,
+      groupCity: "Global",
+    })),
+  ]);
   const body = `
       <section class="aac-hero">
         <div>
@@ -655,7 +777,7 @@ function hubPage(chapters, globalEvents) {
           <h1>Practical AI conversations for builders.</h1>
           <p>Join live online sessions about AI command centers, agentic workflows, memory, and the systems behind modern AI products.</p>
           <div class="aac-actions">
-            <a class="button dark" href="#events">Find your city</a>
+            <a class="button dark" href="#events">See classes</a>
             <a class="button ghost" href="#events">Upcoming events</a>
           </div>
           <div class="aac-group-leaders" data-group-leaders hidden>
@@ -683,7 +805,7 @@ function hubPage(chapters, globalEvents) {
               <span><b data-meetup-rsvps>0</b> RSVP count</span>
             </div>
             <div class="aac-zoom-feed">
-              ${zoomEventLinksMarkup(homeEvents, globalEvents)}
+              ${zoomEventLinksMarkup(classEvents)}
             </div>
           </div>
         </div>
@@ -713,77 +835,21 @@ function hubPage(chapters, globalEvents) {
       <section class="section aac-section" id="events">
         <div class="aac-section-heading">
           <p class="kicker">Upcoming sessions</p>
-          <h2>Same live sessions, shared across every city.</h2>
-          <p>Each event is limited to 100 people.</p>
+          <h2>Upcoming live classes.</h2>
+          <p>Current classes published on Meetup.</p>
         </div>
-        <div class="aac-city-session-picker">
-          <label for="aac-session-city">City</label>
-          <select id="aac-session-city" data-city-select>
-            ${hubChapters.map((chapter, index) => `
-            <option value="${escapeHtml(chapter.slug)}" data-urlname="${escapeHtml(chapter.urlname)}" data-group-url="${escapeHtml(chapter.meetupUrl)}"${index === 0 ? " selected" : ""}>${escapeHtml(chapter.city)}</option>`).join("")}
-          </select>
-        </div>
-        <div class="aac-city-group-card">
-          <p>Join the local Meetup group, then RSVP for an upcoming session. Each event is limited to 100 people.</p>
-          <a class="button dark" data-city-group-link href="${escapeHtml(hubChapters[0]?.meetupUrl || "https://www.meetup.com/advanced-ai-concepts/")}" target="_blank" rel="noopener">Join the ${escapeHtml(hubChapters[0]?.city || "selected city")} group</a>
-        </div>
-        <div class="aac-event-list" data-city-events>
-          ${hubChapters.some((chapter) => chapter.events.length) ? hubChapters.map((chapter, index) => chapter.events.map((event) => `
-          <a class="aac-row-card aac-session-card${eventStateClass(event)}" data-city="${escapeHtml(chapter.slug)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener"${index === 0 ? "" : " hidden"}>
-            <span>${escapeHtml(eventDateLabel(event.dateTime))}</span>
+        <div class="aac-event-list">
+          ${classEvents.length ? classEvents.map((event) => `
+          <a class="aac-row-card aac-session-card${eventStateClass(event)}" href="${escapeHtml(event.eventUrl)}" target="_blank" rel="noopener">
+            <span>${escapeHtml(classDateLabel(event.dateTime))}</span>
             <p>${escapeHtml(event.title)}</p>
             <strong>RSVP</strong>
-          </a>`).join("")).join("") : `
+          </a>`).join("") : `
           <div class="aac-empty-events">
             <h2>No upcoming sessions are posted yet.</h2>
-            <p>Choose your city and join the local Meetup group to get notified when the next session opens.</p>
+            <p>Join the Advanced AI Concepts Meetup group to get notified when the next session opens.</p>
           </div>`}
         </div>
-        <script>
-          (() => {
-            const select = document.querySelector("[data-city-select]");
-            const groupLink = document.querySelector("[data-city-group-link]");
-            const cards = [...document.querySelectorAll("[data-city-events] [data-city]")];
-            const chapterSlugs = ${JSON.stringify(Object.fromEntries(hubChapters.map((chapter) => [chapter.urlname, chapter.slug])))};
-            if (!select) return;
-            const syncCity = () => {
-              const selected = select.selectedOptions[0];
-              if (groupLink && selected) {
-                groupLink.href = selected.dataset.groupUrl || groupLink.href;
-                groupLink.textContent = "Join the " + selected.textContent + " group";
-              }
-              cards.forEach((card) => {
-                card.hidden = card.dataset.city !== select.value;
-              });
-            };
-            const renderCityOptions = (groups) => {
-              if (!Array.isArray(groups) || !groups.length) return;
-              const currentUrlname = select.selectedOptions[0]?.dataset.urlname || "";
-              select.innerHTML = groups.map((group) => {
-                const urlname = String(group.urlname || "");
-                const value = chapterSlugs[urlname] || urlname;
-                const label = String(group.city || "Meetup").replace("Washington, DC", "Washington,\\u00a0DC");
-                const link = String(group.link || (urlname ? "https://www.meetup.com/" + urlname + "/" : ""));
-                const option = document.createElement("option");
-                option.value = value;
-                option.dataset.urlname = urlname;
-                option.dataset.groupUrl = link;
-                option.textContent = label;
-                if (urlname === currentUrlname) option.selected = true;
-                return option.outerHTML;
-              }).join("");
-              syncCity();
-            };
-            fetch('/api/meetup-group-leaders?limit=100')
-              .then((response) => response.ok ? response.json() : null)
-              .then((data) => {
-                if (data && data.ok) renderCityOptions(data.groups);
-              })
-              .catch(() => {});
-            select.addEventListener("change", syncCity);
-            syncCity();
-          })();
-        </script>
       </section>
     </main>
     <footer class="site-footer">
