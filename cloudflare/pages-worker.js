@@ -370,12 +370,12 @@ async function handleLearnGroupLeaders(request, env, url) {
 }
 
 async function buildLearnSchedule(env) {
-  const token = await meetupAccessToken(env).catch(() => "");
-  const groups = await meetupNetworkGroups(token);
+  const token = await meetupWriteAccessToken(env).catch(() => meetupAccessToken(env).catch(() => ""));
+  const groups = await meetupNetworkGroups(token, env);
   const eventsByGroup = {};
 
   for (const batch of chunk(groups, 20)) {
-    Object.assign(eventsByGroup, await meetupGroupEventsBatch(token, batch));
+    Object.assign(eventsByGroup, await meetupGroupEventsBatch(token, batch, env));
   }
 
   const events = [];
@@ -424,11 +424,11 @@ async function meetupAccessToken(env) {
     return meetupJwtAccessToken(env);
   }
 
-  if (String(env.MEETUP_ENABLE_REFRESH_TOKEN || "") !== "1") return "";
-
   const refreshToken = String(env.MEETUP_REFRESH_TOKEN || "").trim();
   const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
   const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  const redirectUri = String(env.MEETUP_REDIRECT_URI || "").trim();
+  if (!refreshToken && !clientId && !clientSecret) return "";
   if (!refreshToken || !clientId || !clientSecret) {
     throw new Error("Meetup credentials are not configured for learn schedule refresh.");
   }
@@ -439,6 +439,7 @@ async function meetupAccessToken(env) {
     grant_type: "refresh_token",
     refresh_token: refreshToken,
   });
+  if (redirectUri) body.set("redirect_uri", redirectUri);
   const response = await fetch("https://secure.meetup.com/oauth2/access", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -471,6 +472,7 @@ async function meetupWriteAccessToken(env) {
   const refreshToken = String(env.MEETUP_REFRESH_TOKEN || "").trim();
   const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
   const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  const redirectUri = String(env.MEETUP_REDIRECT_URI || "").trim();
   if (refreshToken && clientId && clientSecret) {
     const body = new URLSearchParams({
       client_id: clientId,
@@ -478,6 +480,7 @@ async function meetupWriteAccessToken(env) {
       grant_type: "refresh_token",
       refresh_token: refreshToken,
     });
+    if (redirectUri) body.set("redirect_uri", redirectUri);
     const response = await fetch("https://secure.meetup.com/oauth2/access", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -509,6 +512,7 @@ async function meetupStoredAccessToken(env) {
 async function meetupRefreshStoredToken(env, stored) {
   const clientId = String(env.MEETUP_CLIENT_ID || "").trim();
   const clientSecret = String(env.MEETUP_CLIENT_SECRET || "").trim();
+  const redirectUri = String(env.MEETUP_REDIRECT_URI || "").trim();
   if (!clientId || !clientSecret) return stored.access_token || "";
 
   const body = new URLSearchParams({
@@ -517,6 +521,7 @@ async function meetupRefreshStoredToken(env, stored) {
     grant_type: "refresh_token",
     refresh_token: String(stored.refresh_token || ""),
   });
+  if (redirectUri) body.set("redirect_uri", redirectUri);
   const response = await fetch("https://secure.meetup.com/oauth2/access", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -598,7 +603,7 @@ function base64UrlEncode(value) {
   return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
 }
 
-async function meetupGraphQL(token, query, variables = {}) {
+async function meetupGraphQL(token, query, variables = {}, options = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
@@ -608,8 +613,18 @@ async function meetupGraphQL(token, query, variables = {}) {
     body: JSON.stringify({ query, variables }),
   });
   const payload = await response.json().catch(() => ({}));
+  const invalidToken = JSON.stringify(payload.errors || "").includes("access_token_invalid");
+  if (invalidToken && options.env && !options.retried) {
+    const freshToken = await meetupWriteAccessToken(options.env).catch(() => "");
+    if (freshToken) {
+      return meetupGraphQL(freshToken, query, variables, { ...options, retried: true });
+    }
+  }
   if (!response.ok || payload.errors) {
-    throw new Error("Meetup GraphQL request failed.");
+    const message = Array.isArray(payload.errors) && payload.errors[0]?.message
+      ? payload.errors[0].message
+      : "Meetup GraphQL request failed.";
+    throw new Error(message);
   }
   return payload.data;
 }
@@ -763,7 +778,7 @@ function meetupOauthPage(title, message, details = {}, status = 200) {
   });
 }
 
-async function meetupNetworkGroups(token) {
+async function meetupNetworkGroups(token, env) {
   const groups = [];
   let after = null;
   do {
@@ -776,7 +791,7 @@ async function meetupNetworkGroups(token) {
           }
         }
       }
-    }`, { urlname: LEARN_SOURCE_GROUP, after });
+    }`, { urlname: LEARN_SOURCE_GROUP, after }, { env });
     const search = data.groupByUrlname?.proNetwork?.groupsSearch;
     if (!search) break;
     groups.push(...search.edges.map((edge) => normalizeLearnGroup(edge.node)));
@@ -788,7 +803,7 @@ async function meetupNetworkGroups(token) {
     .sort((a, b) => learnGroupLabel(a).localeCompare(learnGroupLabel(b)));
 }
 
-async function meetupGroupEventsBatch(token, groups) {
+async function meetupGroupEventsBatch(token, groups, env) {
   const fields = groups.map((group, index) => `g${index}: groupByUrlname(urlname:${JSON.stringify(group.urlname)}){
     events(first:100,status:ACTIVE,sort:ASC){
       edges{ node{ id title dateTime eventUrl howToFindUs rsvps{ totalCount } networkEvent{ id title eventTime groupCount status timezone } } }
@@ -796,7 +811,7 @@ async function meetupGroupEventsBatch(token, groups) {
   }`).join("\n");
   const data = await meetupGraphQL(token, `query{
     ${fields}
-  }`);
+  }`, {}, { env });
   const eventsByGroup = {};
   groups.forEach((group, index) => {
     eventsByGroup[group.urlname] = data[`g${index}`]?.events?.edges?.map((edge) => edge.node) || [];
