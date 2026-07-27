@@ -407,20 +407,27 @@ async function buildLearnSchedule(env) {
   };
 }
 
-async function meetupAccessToken(env) {
+async function meetupAccessToken(env, options = {}) {
+  const forceFresh = options.forceFresh === true;
   const direct = String(env.MEETUP_ACCESS_TOKEN || "").trim();
-  if (direct) return direct;
+  if (direct && !forceFresh) return direct;
 
   const jsonToken = String(env.MEETUP_OAUTH_TOKEN_JSON || "").trim();
-  if (jsonToken) {
+  if (jsonToken && !forceFresh) {
     const parsed = JSON.parse(jsonToken);
     if (parsed.access_token) return parsed.access_token;
   }
 
-  const storedToken = await meetupStoredAccessToken(env);
+  const storedToken = forceFresh ? "" : await meetupStoredAccessToken(env);
   if (storedToken) return storedToken;
 
-  if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
+  if (
+    !forceFresh &&
+    env.MEETUP_MEMBER_ID &&
+    env.MEETUP_SIGNING_KEY_ID &&
+    env.MEETUP_PRIVATE_KEY &&
+    env.MEETUP_CLIENT_ID
+  ) {
     return meetupJwtAccessToken(env);
   }
 
@@ -452,20 +459,27 @@ async function meetupAccessToken(env) {
   return payload.access_token;
 }
 
-async function meetupWriteAccessToken(env) {
+async function meetupWriteAccessToken(env, options = {}) {
+  const forceFresh = options.forceFresh === true;
   const direct = String(env.MEETUP_ACCESS_TOKEN || "").trim();
-  if (direct) return direct;
+  if (direct && !forceFresh) return direct;
 
   const jsonToken = String(env.MEETUP_OAUTH_TOKEN_JSON || "").trim();
-  if (jsonToken) {
+  if (jsonToken && !forceFresh) {
     const parsed = JSON.parse(jsonToken);
     if (parsed.access_token) return parsed.access_token;
   }
 
-  const storedToken = await meetupStoredAccessToken(env);
+  const storedToken = forceFresh ? "" : await meetupStoredAccessToken(env);
   if (storedToken) return storedToken;
 
-  if (env.MEETUP_MEMBER_ID && env.MEETUP_SIGNING_KEY_ID && env.MEETUP_PRIVATE_KEY && env.MEETUP_CLIENT_ID) {
+  if (
+    !forceFresh &&
+    env.MEETUP_MEMBER_ID &&
+    env.MEETUP_SIGNING_KEY_ID &&
+    env.MEETUP_PRIVATE_KEY &&
+    env.MEETUP_CLIENT_ID
+  ) {
     return meetupJwtAccessToken(env);
   }
 
@@ -490,7 +504,7 @@ async function meetupWriteAccessToken(env) {
     if (response.ok && payload.access_token) return payload.access_token;
   }
 
-  return meetupAccessToken(env);
+  return meetupAccessToken(env, { forceFresh });
 }
 
 async function meetupStoredAccessToken(env) {
@@ -615,7 +629,7 @@ async function meetupGraphQL(token, query, variables = {}, options = {}) {
   const payload = await response.json().catch(() => ({}));
   const invalidToken = JSON.stringify(payload.errors || "").includes("access_token_invalid");
   if (invalidToken && options.env && !options.retried) {
-    const freshToken = await meetupWriteAccessToken(options.env).catch(() => "");
+    const freshToken = await meetupWriteAccessToken(options.env, { forceFresh: true }).catch(() => "");
     if (freshToken) {
       return meetupGraphQL(freshToken, query, variables, { ...options, retried: true });
     }
