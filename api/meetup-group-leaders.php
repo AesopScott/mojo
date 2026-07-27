@@ -167,6 +167,10 @@ function groupsRefreshToken(string $tokenPath): array {
         throw new RuntimeException('Stored Meetup token has no refresh token.');
     }
 
+    if (groupsEnvValue('MEETUP_CLIENT_ID') === '' || groupsEnvValue('MEETUP_CLIENT_SECRET') === '') {
+        throw new RuntimeException('Meetup token refresh requires MEETUP_CLIENT_ID and MEETUP_CLIENT_SECRET.');
+    }
+
     [$status, $responseBody] = groupsPostForm(MEETUP_GROUPS_TOKEN_ENDPOINT, [
         'client_id' => groupsEnvValue('MEETUP_CLIENT_ID'),
         'client_secret' => groupsEnvValue('MEETUP_CLIENT_SECRET'),
@@ -209,7 +213,33 @@ function groupsGraphQL(string $query, array $variables, string $tokenPath): arra
         throw new RuntimeException('Meetup GraphQL request failed.');
     }
 
+    if (!empty($payload['errors'])) {
+        throw new RuntimeException('Meetup GraphQL returned errors.');
+    }
+
     return $payload;
+}
+
+function groupsUsableCount(array $payload): int {
+    $groups = $payload['groups'] ?? [];
+    if (!is_array($groups)) {
+        return 0;
+    }
+
+    $usable = 0;
+    foreach ($groups as $group) {
+        if (!is_array($group)) {
+            continue;
+        }
+
+        $city = trim((string) ($group['city'] ?? ''));
+        $members = (int) ($group['members'] ?? 0);
+        if ($city !== '' && $members > 0) {
+            $usable += 1;
+        }
+    }
+
+    return $usable;
 }
 
 function groupsFreshCache(string $path, int $minimumGroups = 1): ?array {
@@ -227,7 +257,7 @@ function groupsFreshCache(string $path, int $minimumGroups = 1): ?array {
         return null;
     }
 
-    if (count($payload['groups'] ?? []) < $minimumGroups) {
+    if (groupsUsableCount($payload) < $minimumGroups) {
         return null;
     }
 
@@ -295,6 +325,11 @@ GRAPHQL, [
         return $b['members'] <=> $a['members'];
     });
 
+    $expectedGroups = (int) ($payload['data']['proNetwork']['groupsSearch']['totalCount'] ?? 0);
+    if (count($groups) === 0 || ($expectedGroups > 0 && count($groups) < min($expectedGroups, 25))) {
+        throw new RuntimeException('Meetup group leaders payload was incomplete.');
+    }
+
     return [
         'ok' => true,
         'groups' => array_slice($groups, 0, $limit),
@@ -324,7 +359,7 @@ try {
     groupsRespond(200, $payload);
 } catch (Throwable $error) {
     $stale = is_readable($cachePath) ? json_decode((string) file_get_contents($cachePath), true) : null;
-    if (is_array($stale)) {
+    if (is_array($stale) && groupsUsableCount($stale) >= max(5, min($limit, 10))) {
         $stale['stale'] = true;
         $stale['ok'] = true;
         $stale['groups'] = array_slice($stale['groups'] ?? [], 0, $limit);
