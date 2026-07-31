@@ -50,12 +50,20 @@ const JOIN_SESSIONS = {
     duration: 120,
     zoomUrl: "https://us06web.zoom.us/j/81053958115?pwd=eY5KL5ZHFVAUIkieefFhPHKLDwXpZm.1",
   },
-  "fable5-quality": {
-    title: "Get Fable 5 Quality From Low-Cost AI Models",
-    date: "2026-08-08T00:00:00Z",
-    duration: 120,
-    zoomUrl: "https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1",
-  },
+  "fable5-quality": [
+    {
+      title: "AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)",
+      date: "2026-08-01T14:00:00Z",
+      duration: 120,
+      zoomUrl: "https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1",
+    },
+    {
+      title: "Get Fable 5 Quality From Low-Cost AI Models",
+      date: "2026-08-08T00:00:00Z",
+      duration: 120,
+      zoomUrl: "https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1",
+    },
+  ],
   "fable5-quality-global": {
     title: "Global - Get Fable 5 Quality From Low-Cost AI Models",
     date: "2026-08-09T14:00:00Z",
@@ -158,7 +166,7 @@ export default {
 
 function handleJoinSession(url) {
   const id = (url.searchParams.get("id") || "").trim();
-  const session = JOIN_SESSIONS[id];
+  const session = resolveJoinSession(id);
   if (!session) {
     return new Response("Session not found.\n", {
       status: 404,
@@ -206,6 +214,28 @@ function handleJoinSession(url) {
     goUrl,
     formatMountainDate(session.date),
   );
+}
+
+function joinSessionVariants(entry) {
+  if (!entry) return [];
+  return Array.isArray(entry) ? entry : [entry];
+}
+
+function resolveJoinSession(id, now = Date.now()) {
+  return joinSessionVariants(JOIN_SESSIONS[id])
+    .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
+    .find((session) => {
+      const start = Date.parse(session.date);
+      if (!Number.isFinite(start)) return true;
+      const windowClose = start + Number(session.duration || 0) * 60 * 1000 + 45 * 60 * 1000;
+      return now <= windowClose;
+    }) || joinSessionVariants(JOIN_SESSIONS[id]).at(-1) || null;
+}
+
+function allJoinSessions() {
+  return Object.entries(JOIN_SESSIONS).flatMap(([id, entry]) => (
+    joinSessionVariants(entry).map((session) => [id, session])
+  ));
 }
 
 function joinSessionPage(title, heading, body, goUrl, dateLabel = "") {
@@ -893,7 +923,7 @@ function joinSessionUrlForEvent(event) {
   const instant = Date.parse(event.dateTime || "");
   if (!title || !Number.isFinite(instant)) return "";
 
-  const match = Object.entries(JOIN_SESSIONS).find(([, session]) => (
+  const match = allJoinSessions().find(([, session]) => (
     session.title === title && Date.parse(session.date) === instant
   ));
   return match ? `https://mojoaistudio.com/api/join-session.php?id=${encodeURIComponent(match[0])}` : "";
@@ -1008,7 +1038,7 @@ function learnNetworkEvents(events) {
 
 function learnNetworkEventRule(event) {
   const title = normalizeLearnTitle(event?.title || "");
-  const joinSession = Object.entries(JOIN_SESSIONS).find(([, session]) => normalizeLearnTitle(session.title) === title);
+  const joinSession = allJoinSessions().find(([, session]) => normalizeLearnTitle(session.title) === title);
   if (joinSession) {
     const [id, session] = joinSession;
     return {
@@ -1108,7 +1138,7 @@ function learnRsvpPayload(payload) {
 }
 
 function learnScheduleFallback(error) {
-  const events = Object.entries(JOIN_SESSIONS).map(([id, session]) => ({
+  const events = allJoinSessions().map(([id, session]) => ({
     id,
     title: session.title,
     dateTime: session.date,

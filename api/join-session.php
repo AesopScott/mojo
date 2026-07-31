@@ -39,10 +39,18 @@ $sessions = [
         'zoom_url' => 'https://us06web.zoom.us/j/81053958115?pwd=eY5KL5ZHFVAUIkieefFhPHKLDwXpZm.1',
     ],
     'fable5-quality' => [
-        'title' => 'Get Fable 5 Quality From Low-Cost AI Models',
-        'date' => '2026-08-08T00:00:00Z',
-        'duration' => 120,
-        'zoom_url' => 'https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1',
+        [
+            'title' => 'AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)',
+            'date' => '2026-08-01T14:00:00Z',
+            'duration' => 120,
+            'zoom_url' => 'https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1',
+        ],
+        [
+            'title' => 'Get Fable 5 Quality From Low-Cost AI Models',
+            'date' => '2026-08-08T00:00:00Z',
+            'duration' => 120,
+            'zoom_url' => 'https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1',
+        ],
     ],
     'fable5-quality-global' => [
         'title' => 'Global - Get Fable 5 Quality From Low-Cost AI Models',
@@ -59,7 +67,7 @@ if ($id === '' || !isset($sessions[$id])) {
     join_error('Session not found.');
 }
 
-$session = $sessions[$id];
+$session = resolve_join_session($sessions[$id]);
 $title = (string) $session['title'];
 $date = (string) $session['date'];
 $duration = max(0, (int) $session['duration']);
@@ -161,6 +169,27 @@ function learning_links_html(): string {
         . '<a href="https://aesopacademy.org">Aesop AI Academy</a>'
         . '<a href="https://25experts.com/videos.html">25 AI Experts Video Curation</a>'
         . '</nav>';
+}
+
+function resolve_join_session(array $entry): array {
+    $variants = isset($entry['title']) ? [$entry] : $entry;
+    usort($variants, static fn(array $a, array $b): int => strtotime((string) $a['date']) <=> strtotime((string) $b['date']));
+
+    $now = time();
+    foreach ($variants as $session) {
+        $startTs = strtotime((string) ($session['date'] ?? ''));
+        if (!$startTs) {
+            return $session;
+        }
+
+        $duration = max(0, (int) ($session['duration'] ?? 0));
+        $windowClose = $startTs + $duration * 60 + 45 * 60;
+        if ($now <= $windowClose) {
+            return $session;
+        }
+    }
+
+    return $variants[array_key_last($variants)];
 }
 
 function format_session_date(string $date): string {
