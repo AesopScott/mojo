@@ -14,6 +14,12 @@ const FORUM_LOGIN_CODE_TTL_MINUTES = 15;
 const FORUM_ADMIN_EMAILS = new Set(["scott@mojoaistudio.com"]);
 
 const JOIN_SESSIONS = {
+  BMAD: {
+    title: "The BMAD Method for Context-Engineered AI Development (Guest Speaker)",
+    date: "2026-08-01T00:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85732762670?pwd=hm3bfMBfcDsvCD5tiCtS7u0aenc8Ub.1",
+  },
   harness: {
     title: "Global - Dev Automation and Harness Engineering I",
     date: "2026-07-12T14:00:00Z",
