@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A Friday workshop page for teaching the BMAD Method for context-engineered AI development." />
+    <title>Introduction to BMAD | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/bmad/" />
+    <meta name="theme-color" content="#101827" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/bmad/" />
+    <meta property="og:title" content="Introduction to BMAD | Mojo AI Studio" />
+    <meta property="og:description" content="Teach the BMAD Method as a practical lifecycle for context-engineered AI development." />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/bmad/slide-1.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Introduction to BMAD | Mojo AI Studio" />
+    <meta name="twitter:description" content="Teach the BMAD Method as a practical lifecycle for context-engineered AI development." />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/bmad/slide-1.png" />
+    <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      body {
+        background: #f6f8fb;
+      }
+
+      .bmad-shell {
+        color: #172033;
+      }
+
+      .bmad-hero,
+      .bmad-section,
+      .bmad-footer {
+        width: min(1180px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .bmad-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+        gap: 36px;
+        align-items: center;
+        padding: 54px 0 48px;
+      }
+
+      .bmad-eyebrow,
+      .bmad-label {
+        margin: 0 0 12px;
+        color: #0f766e;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .bmad-hero h1 {
+        margin: 0;
+        max-width: 780px;
+        font-size: clamp(2.5rem, 7vw, 5.7rem);
+        line-height: 0.96;
+        letter-spacing: 0;
+      }
+
+      .bmad-hero p {
+        max-width: 650px;
+        color: #4f5f75;
+        font-size: 1.12rem;
+        line-height: 1.7;
+      }
+
+      .bmad-actions,
+      .bmad-link-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .bmad-hero-image,
+      .bmad-slide,
+      .bmad-image-strip img {
+        border: 1px solid rgba(23, 32, 51, 0.14);
+        border-radius: 8px;
+        box-shadow: 0 20px 54px rgba(23, 32, 51, 0.14);
+        background: #fff;
+      }
+
+      .bmad-hero-image {
+        width: 100%;
+        display: block;
+      }
+
+      .bmad-band {
+        padding: 52px 0;
+        border-top: 1px solid rgba(23, 32, 51, 0.09);
+      }
+
+      .bmad-band.alt {
+        background: #fff;
+      }
+
+      .bmad-section {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: 34px;
+        align-items: start;
+      }
+
+      .bmad-section h2 {
+        margin: 0;
+        font-size: clamp(1.8rem, 4vw, 3.2rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .bmad-section p,
+      .bmad-section li {
+        color: #56657b;
+        line-height: 1.7;
+      }
+
+      .bmad-stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .bmad-card-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .bmad-card {
+        min-height: 150px;
+        padding: 18px;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .bmad-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+      }
+
+      .bmad-card p {
+        margin: 0;
+      }
+
+      .bmad-slide {
+        width: 100%;
+        display: block;
+      }
+
+      .bmad-callout {
+        padding: 24px;
+        border-left: 5px solid #22a06b;
+        background: #eef8f4;
+      }
+
+      .bmad-callout p {
+        margin: 0;
+        color: #26354b;
+        font-size: 1.08rem;
+      }
+
+      .bmad-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .bmad-table th,
+      .bmad-table td {
+        padding: 14px;
+        border-bottom: 1px solid rgba(23, 32, 51, 0.09);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .bmad-table th {
+        color: #172033;
+        background: #f0f4f8;
+        font-size: 0.9rem;
+      }
+
+      .bmad-table td {
+        color: #536278;
+      }
+
+      .bmad-image-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .bmad-image-strip img {
+        width: 100%;
+        display: block;
+      }
+
+      .bmad-footer {
+        padding: 44px 0 64px;
+      }
+
+      .bmad-footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        background: #101827;
+        color: #fff;
+      }
+
+      .bmad-footer-inner p {
+        margin: 0;
+        color: #dce6f2;
+      }
+
+      .bmad-footer-inner h2 {
+        margin: 0 0 8px;
+        font-size: 1.55rem;
+      }
+
+      @media (max-width: 900px) {
+        .site-header {
+          padding-top: 224px;
+        }
+
+        .bmad-hero,
+        .bmad-section {
+          grid-template-columns: 1fr;
+        }
+
+        .bmad-card-grid,
+        .bmad-image-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .bmad-hero {
+          padding-top: 34px;
+        }
+      }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Introduction to BMAD","description":"A practical workshop on the BMAD Method for context-engineered AI development.","provider":{"@type":"Organization","name":"Mojo AI Studio","sameAs":"https://mojoaistudio.com/"}}</script>
+  </head>
+  <body class="bmad-shell">
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/" class="active">Learn</a>
+          <a href="/govern/">Govern</a>
+          <a href="/architect/learn/">Architect Training</a>
+          <a href="/forum/">Forum</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button dark" href="/bmad/hands-on/">Hands-on lab</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="bmad-hero" aria-labelledby="bmad-title">
+        <div>
+          <p class="bmad-eyebrow">Friday workshop</p>
+          <h1 id="bmad-title">Introduction to BMAD</h1>
+          <p>
+            BMAD turns AI development from a drifting chat session into a context-engineered lifecycle:
+            roles, artifacts, checkpoints, implementation loops, and course correction before code runs away
+            from the actual objective.
+          </p>
+          <div class="bmad-actions">
+            <a class="button dark" href="/bmad/hands-on/">Open hands-on lab</a>
+            <a class="button ghost" href="#framework">Compare frameworks</a>
+          </div>
+        </div>
+        <img class="bmad-hero-image" src="/assets/bmad/slide-1.png" alt="Advanced AI Concepts title slide for the BMAD Method" />
+      </section>
+
+      <section class="bmad-band alt" aria-labelledby="why-bmad">
+        <div class="bmad-section">
+          <div>
+            <p class="bmad-label">The problem</p>
+            <h2 id="why-bmad">AI projects drift when context is treated as disposable.</h2>
+          </div>
+          <div class="bmad-stack">
+            <p>
+              A product idea usually arrives through leadership, customers, or a team lead. It moves through
+              ideation, planning, build work, and then changes as new information appears. Agentic AI speeds up
+              every one of those phases, which means weak context management creates mistakes faster too.
+            </p>
+            <div class="bmad-card-grid">
+              <article class="bmad-card">
+                <strong>Track the objective</strong>
+                <p>Keep the work tied to the user, business goal, and acceptance criteria.</p>
+              </article>
+              <article class="bmad-card">
+                <strong>Track the context</strong>
+                <p>Make decisions durable through PRDs, architecture, UX, epics, and user stories.</p>
+              </article>
+              <article class="bmad-card">
+                <strong>Track the progress</strong>
+                <p>Move the AI through visible artifacts instead of invisible conversational momentum.</p>
+              </article>
+              <article class="bmad-card">
+                <strong>Course correct</strong>
+                <p>Use documented handoffs and review loops when the plan changes.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bmad-band" aria-labelledby="scaling">
+        <div class="bmad-section">
+          <div>
+            <p class="bmad-label">Scaling up</p>
+            <h2 id="scaling">BMAD sits beyond vibe coding and simple prompt engineering.</h2>
+          </div>
+          <div class="bmad-stack">
+            <img class="bmad-slide" src="/assets/bmad/slide-5.png" alt="Scaling path from vibe coding to agentic methodologies" />
+            <p>
+              The class moves from informal AI coding toward repeatable AI development systems: persistent
+              instructions, project documents, model context protocols, spec-driven work, and eventually an
+              orchestrated method that produces the planning artifacts before implementation starts.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="bmad-band alt" id="framework" aria-labelledby="framework-title">
+        <div class="bmad-section">
+          <div>
+            <p class="bmad-label">Framework landscape</p>
+            <h2 id="framework-title">BMAD is a method, not just a spec folder.</h2>
+          </div>
+          <div class="bmad-stack">
+            <table class="bmad-table">
+              <thead>
+                <tr>
+                  <th>Approach</th>
+                  <th>Class framing</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Spec-driven development</td>
+                  <td>Useful for structuring requirements and implementation intent.</td>
+                </tr>
+                <tr>
+                  <td>Context engineering</td>
+                  <td>Gives the AI stable instructions, project memory, and retrieval context.</td>
+                </tr>
+                <tr>
+                  <td>BMAD Method</td>
+                  <td>Orchestrates role-based planning, dev, QA, artifacts, and correction loops before and during code.</td>
+                </tr>
+              </tbody>
+            </table>
+            <img class="bmad-slide" src="/assets/bmad/slide-6.png" alt="Agentic AI framework comparison slide including BMAD Method" />
+          </div>
+        </div>
+      </section>
+
+      <section class="bmad-band" aria-labelledby="strengths">
+        <div class="bmad-section">
+          <div>
+            <p class="bmad-label">What to emphasize</p>
+            <h2 id="strengths">The value is agility as code.</h2>
+          </div>
+          <div class="bmad-stack">
+            <div class="bmad-callout">
+              <p>
+                BMAD is strongest when the class sees it as a disciplined way to convert product thinking into
+                AI-readable artifacts, then keep development moving through reviewable loops.
+              </p>
+            </div>
+            <div class="bmad-image-strip" aria-label="Supporting slide thumbnails">
+              <img src="/assets/bmad/slide-8.png" alt="Greenfield and brownfield slide" />
+              <img src="/assets/bmad/slide-11.png" alt="BMAD shortcomings slide" />
+              <img src="/assets/bmad/slide-12.png" alt="BMAD strengths and velocity slide" />
+            </div>
+            <p>
+              Teach both sides: BMAD can multiply velocity for experienced AI developers, but teams still need
+              to plug holes, build their own loops, manage tool friction, and keep humans accountable for
+              product judgment.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bmad-footer">
+      <div class="bmad-footer-inner">
+        <div>
+          <h2>Next: run the lab.</h2>
+          <p>Move from the method overview into setup, artifacts, reporting, and implementation flow.</p>
+        </div>
+        <a class="button light" href="/bmad/hands-on/">Open hands-on lab</a>
+      </div>
+    </footer>
+  </body>
+</html>

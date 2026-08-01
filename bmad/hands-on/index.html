@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hands-on BMAD lab page for installing the method, walking the artifacts, and teaching the implementation lifecycle." />
+    <title>BMAD Hands-On Lab | Mojo AI Studio</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mojoaistudio.com/bmad/hands-on/" />
+    <meta name="theme-color" content="#101827" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/bmad/hands-on/" />
+    <meta property="og:title" content="BMAD Hands-On Lab | Mojo AI Studio" />
+    <meta property="og:description" content="Install BMAD, inspect the lifecycle, and walk through the artifacts behind context-engineered AI development." />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/bmad/slide-18.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="BMAD Hands-On Lab | Mojo AI Studio" />
+    <meta name="twitter:description" content="Install BMAD, inspect the lifecycle, and walk through the artifacts behind context-engineered AI development." />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/bmad/slide-18.png" />
+    <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      body {
+        background: #f6f8fb;
+      }
+
+      .lab-shell {
+        color: #172033;
+      }
+
+      .lab-hero,
+      .lab-section,
+      .lab-footer {
+        width: min(1180px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .lab-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.95fr);
+        gap: 36px;
+        align-items: center;
+        padding: 54px 0 48px;
+      }
+
+      .lab-eyebrow,
+      .lab-label {
+        margin: 0 0 12px;
+        color: #0f766e;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .lab-hero h1 {
+        margin: 0;
+        max-width: 820px;
+        font-size: clamp(2.4rem, 6vw, 5.1rem);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .lab-hero p,
+      .lab-section p,
+      .lab-section li {
+        color: #56657b;
+        line-height: 1.7;
+      }
+
+      .lab-hero p {
+        max-width: 680px;
+        font-size: 1.12rem;
+      }
+
+      .lab-actions,
+      .lab-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .lab-slide,
+      .lab-hero-image {
+        width: 100%;
+        display: block;
+        border: 1px solid rgba(23, 32, 51, 0.14);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 20px 54px rgba(23, 32, 51, 0.14);
+      }
+
+      .lab-band {
+        padding: 52px 0;
+        border-top: 1px solid rgba(23, 32, 51, 0.09);
+      }
+
+      .lab-band.alt {
+        background: #fff;
+      }
+
+      .lab-section {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
+        gap: 34px;
+        align-items: start;
+      }
+
+      .lab-section h2 {
+        margin: 0;
+        font-size: clamp(1.8rem, 4vw, 3.2rem);
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .lab-stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .lab-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .lab-card {
+        min-height: 130px;
+        padding: 18px;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        background: #fff;
+      }
+
+      .lab-card strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #172033;
+      }
+
+      .lab-card p {
+        margin: 0;
+      }
+
+      .lab-code {
+        overflow-x: auto;
+        margin: 0;
+        padding: 18px;
+        border-radius: 8px;
+        color: #eef8f4;
+        background: #101827;
+      }
+
+      .lab-code code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 0.98rem;
+      }
+
+      .lab-list {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .lab-list li {
+        padding: 13px 15px;
+        border-left: 4px solid #22a06b;
+        background: #eef8f4;
+      }
+
+      .lab-footer {
+        padding: 44px 0 64px;
+      }
+
+      .lab-footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+        border: 1px solid rgba(23, 32, 51, 0.12);
+        border-radius: 8px;
+        background: #101827;
+        color: #fff;
+      }
+
+      .lab-footer-inner p {
+        margin: 0;
+        color: #dce6f2;
+      }
+
+      .lab-footer-inner h2 {
+        margin: 0 0 8px;
+        font-size: 1.55rem;
+      }
+
+      @media (max-width: 900px) {
+        .site-header {
+          padding-top: 224px;
+        }
+
+        .lab-hero,
+        .lab-section,
+        .lab-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .lab-hero {
+          padding-top: 34px;
+        }
+      }
+    </style>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"BMAD Hands-On Lab","description":"A hands-on lab for installing BMAD and teaching its artifacts, reporting, and implementation lifecycle.","provider":{"@type":"Organization","name":"Mojo AI Studio","sameAs":"https://mojoaistudio.com/"}}</script>
+  </head>
+  <body class="lab-shell">
+    <header class="site-header" id="top">
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Mojo AI Studio home">
+          <img class="brand-logo" src="/assets/logo.png" alt="" width="54" height="36" />
+          <span>Mojo AI Studio</span>
+        </a>
+        <div class="nav-links">
+          <a href="/buy/">Buy</a>
+          <a href="/sell">Sell</a>
+          <a href="/sell/fractional-caio-ciso/">Fractional CAIO/CISO</a>
+          <a href="/request/">Request</a>
+          <a href="/learn/" class="active">Learn</a>
+          <a href="/govern/">Govern</a>
+          <a href="/architect/learn/">Architect Training</a>
+          <a href="/forum/">Forum</a>
+        </div>
+        <div class="nav-actions">
+          <a class="button dark" href="/bmad/">BMAD overview</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lab-hero" aria-labelledby="lab-title">
+        <div>
+          <p class="lab-eyebrow">Hands-on class</p>
+          <h1 id="lab-title">BMAD lab: from install to first artifacts.</h1>
+          <p>
+            This page is the working half of the Friday session: set up the tools, show what BMAD creates under
+            the hood, connect reporting, and walk the class through the implementation lifecycle.
+          </p>
+          <div class="lab-actions">
+            <a class="button dark" href="#install">Start with install</a>
+            <a class="button ghost" href="https://docs.bmad-method.org/" target="_blank" rel="noopener">BMAD docs</a>
+          </div>
+        </div>
+        <img class="lab-hero-image" src="/assets/bmad/slide-17.png" alt="BMAD hands-on transition slide" />
+      </section>
+
+      <section class="lab-band alt" id="install" aria-labelledby="install-title">
+        <div class="lab-section">
+          <div>
+            <p class="lab-label">Setup</p>
+            <h2 id="install-title">Install BMAD where the AI can work with the project.</h2>
+          </div>
+          <div class="lab-stack">
+            <img class="lab-slide" src="/assets/bmad/slide-18.png" alt="BMAD install requirements and commands" />
+            <div class="lab-grid">
+              <article class="lab-card">
+                <strong>Platform</strong>
+                <p>Use VS Code with Claude, ChatGPT, or the AI coding app the class already has installed.</p>
+              </article>
+              <article class="lab-card">
+                <strong>Prerequisites</strong>
+                <p>Node.js, Python, Git, and the MCP or reporting integration of choice.</p>
+              </article>
+            </div>
+            <pre class="lab-code"><code>npx bmad-method install
+bmad-prd</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-band" aria-labelledby="under-title">
+        <div class="lab-section">
+          <div>
+            <p class="lab-label">Under the hood</p>
+            <h2 id="under-title">BMAD turns one idea into a chain of teachable artifacts.</h2>
+          </div>
+          <div class="lab-stack">
+            <img class="lab-slide" src="/assets/bmad/slide-9.png" alt="BMAD skills and context under the hood" />
+            <ul class="lab-list">
+              <li>Research brief, PRD, architecture, and UI/UX documents establish the operating context.</li>
+              <li>Epics and user stories split the work into reviewable implementation chunks.</li>
+              <li>Implementation cycles, quick-dev flow, brownfield documentation, and testing loops keep the work from drifting.</li>
+              <li>MCP and reporting integrations make progress visible outside the chat window.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-band alt" aria-labelledby="reporting-title">
+        <div class="lab-section">
+          <div>
+            <p class="lab-label">Reporting</p>
+            <h2 id="reporting-title">Make the development loop observable.</h2>
+          </div>
+          <div class="lab-stack">
+            <img class="lab-slide" src="/assets/bmad/slide-10.png" alt="BMAD MCP reporting example with Jira" />
+            <p>
+              The lab should show how a team can expose status, assignments, artifacts, and work items through the
+              tools it already uses. That turns BMAD from a local prompt convention into a team development system.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-band" aria-labelledby="execution-title">
+        <div class="lab-section">
+          <div>
+            <p class="lab-label">Execution model</p>
+            <h2 id="execution-title">Set expectations for real production work.</h2>
+          </div>
+          <div class="lab-stack">
+            <img class="lab-slide" src="/assets/bmad/slide-14.png" alt="BMAD execution timeline slide" />
+            <div class="lab-grid">
+              <article class="lab-card">
+                <strong>Planning and architecture</strong>
+                <p>Analysis, research, planning, and UX can take 20 to 30 hours before implementation.</p>
+              </article>
+              <article class="lab-card">
+                <strong>Team infrastructure</strong>
+                <p>Actions, pipelines, loops, and team configuration can take about a week.</p>
+              </article>
+              <article class="lab-card">
+                <strong>Implementation</strong>
+                <p>Implementation, convergence, and hardening move the project toward production readiness.</p>
+              </article>
+              <article class="lab-card">
+                <strong>First app ramp</strong>
+                <p>Expect extra ramp time the first time a team builds this way.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-band alt" aria-labelledby="links-title">
+        <div class="lab-section">
+          <div>
+            <p class="lab-label">Reference links</p>
+            <h2 id="links-title">Give students the source materials before they leave.</h2>
+          </div>
+          <div class="lab-stack">
+            <img class="lab-slide" src="/assets/bmad/slide-16.png" alt="BMAD GitHub Discord and docs links" />
+            <div class="lab-links">
+              <a class="button dark" href="https://github.com/bmad-code-org/bmad-method" target="_blank" rel="noopener">GitHub</a>
+              <a class="button ghost" href="https://discord.gg/f2CJBnFwY" target="_blank" rel="noopener">Discord</a>
+              <a class="button ghost" href="https://docs.bmad-method.org/" target="_blank" rel="noopener">Docs</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="lab-footer">
+      <div class="lab-footer-inner">
+        <div>
+          <h2>Return to the overview.</h2>
+          <p>Use the overview page to frame the method before starting the lab.</p>
+        </div>
+        <a class="button light" href="/bmad/">BMAD overview</a>
+      </div>
+    </footer>
+  </body>
+</html>
