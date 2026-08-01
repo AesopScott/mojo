@@ -591,6 +591,9 @@ function recordingsMarkup() {
             <a href="/assets/advanced-ai-concepts/optimizing-ai-memory.zip" download>
               <b>Optimizing AI Memory.zip</b>
             </a>
+            <a href="https://us06web.zoom.us/rec/share/sAC3vUZG46uzYtY4KiR7ST52RVktMYimfOS6i6S1qzyZdV3jXE1zMZPty7QcFo6H.dKkIyPVP4kAT1DJq?pwd=DBqbK2vQbJlBg62OcgAAIAAAACAs8fJwPnLzo31AyCD8uKhjJ1wKDjwB-GxgT6munu4nAm4y-IK7nUGf-AwlCgD7yzAwMDAwNA" target="_blank" rel="noopener">
+              <b>The BMAD Method for Context-Engineered AI Development</b>
+            </a>
           </div>`;
 }
 
