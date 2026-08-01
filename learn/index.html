@@ -203,8 +203,14 @@
               }).join("");
             };
 
-            fetch('/assets/advanced-ai-concepts/eventbrite-classes.json')
-              .then((response) => response.ok ? response.json() : null)
+            const loadClasses = (url) => fetch(url, { cache: "no-store" })
+              .then((response) => response.ok ? response.json() : null);
+
+            loadClasses('/api/eventbrite-classes')
+              .then((data) => {
+                if (data && data.ok && Array.isArray(data.events) && data.events.length) return data;
+                return loadClasses('/assets/advanced-ai-concepts/eventbrite-classes.json');
+              })
               .then((data) => {
                 if (!data || !data.ok) return;
                 const events = Array.isArray(data.events) ? data.events : [];
@@ -212,7 +218,16 @@
                 renderFeatured(events);
               })
               .catch(() => {
-                eventList.innerHTML = '<span class="aac-row-card aac-session-card">The Eventbrite class schedule could not load.</span>';
+                return loadClasses('/assets/advanced-ai-concepts/eventbrite-classes.json')
+                  .then((data) => {
+                    if (!data || !data.ok) throw new Error("fallback failed");
+                    const events = Array.isArray(data.events) ? data.events : [];
+                    renderEvents(events);
+                    renderFeatured(events);
+                  })
+                  .catch(() => {
+                    eventList.innerHTML = '<span class="aac-row-card aac-session-card">The Eventbrite class schedule could not load.</span>';
+                  });
               });
           })();
         </script>

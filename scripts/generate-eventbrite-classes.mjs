@@ -74,12 +74,25 @@ function normalizeEvent(event) {
 async function main() {
   const env = readEnv(await fs.readFile(ENV_PATH, "utf8"));
   const orgId = requireEnv(env, "EVENTBRITE_ORGANIZATION_ID");
-  const payload = await eventbrite(
-    env,
-    `/organizations/${orgId}/events/?status=live,started&order_by=start_asc&expand=ticket_availability,venue,organizer`,
-  );
+  let continuation = "";
+  const allEvents = [];
+  do {
+    const params = new URLSearchParams({
+      status: "live,started",
+      order_by: "start_asc",
+      expand: "ticket_availability,venue,organizer",
+      page_size: "100",
+    });
+    if (continuation) params.set("continuation", continuation);
+    const payload = await eventbrite(env, `/organizations/${orgId}/events/?${params.toString()}`);
+    allEvents.push(...(payload.events || []));
+    continuation = payload.pagination?.has_more_items && payload.pagination?.continuation
+      ? String(payload.pagination.continuation)
+      : "";
+  } while (continuation);
+
   const now = Date.now();
-  const events = (payload.events || [])
+  const events = allEvents
     .map(normalizeEvent)
     .filter((event) => {
       const end = Date.parse(event.end.utc || event.end.local);

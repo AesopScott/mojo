@@ -95,6 +95,9 @@ const LEARN_SCHEDULE_CACHE_SECONDS = 300;
 const LEARN_SCHEDULE_CACHE_KEY = "https://mojoaistudio.com/api/learn-schedule:v4-network-events";
 const LEARN_RSVP_CACHE_SECONDS = 300;
 const LEARN_RSVP_CACHE_KEY = "https://mojoaistudio.com/api/meetup-rsvp-count:v2-network-events";
+const EVENTBRITE_API_BASE = "https://www.eventbriteapi.com/v3";
+const EVENTBRITE_CLASSES_CACHE_SECONDS = 60 * 60 * 24;
+const EVENTBRITE_CLASSES_CACHE_KEY = "https://mojoaistudio.com/api/eventbrite-classes:v1";
 const MEETUP_OAUTH_TOKEN_KEY = "meetup:oauth-token";
 const MEETUP_OAUTH_STATE_PREFIX = "meetup:oauth-state:";
 const LEARN_NETWORK_EVENT_RULES = [
@@ -151,6 +154,10 @@ export default {
 
     if (url.pathname === "/api/learn-schedule") {
       return handleLearnSchedule(request, env, url);
+    }
+
+    if (url.pathname === "/api/eventbrite-classes" || url.pathname === "/api/eventbrite-classes.php") {
+      return handleEventbriteClasses(env, url);
     }
 
     if (url.pathname === "/api/meetup-rsvp-count" || url.pathname === "/api/meetup-rsvp-count.php") {
@@ -364,6 +371,24 @@ async function handleLearnSchedule(request, env, url) {
   }
 }
 
+async function handleEventbriteClasses(env, url) {
+  const force = url.searchParams.get("refresh") === "1" || url.searchParams.get("refresh") === "true";
+  const cache = caches.default;
+  const cacheRequest = new Request(EVENTBRITE_CLASSES_CACHE_KEY);
+
+  if (!force) {
+    const cached = await cache.match(cacheRequest);
+    if (cached) return cached;
+  }
+
+  const payload = await buildEventbriteClasses(env);
+  const response = jsonWithHeaders(payload, 200, {
+    "Cache-Control": `public, max-age=${EVENTBRITE_CLASSES_CACHE_SECONDS}`,
+  });
+  await cache.put(cacheRequest, response.clone());
+  return response;
+}
+
 async function handleLearnRsvpCount(request, env, url) {
   const force = url.searchParams.get("refresh") === "1" || url.searchParams.get("refresh") === "true";
   const cache = caches.default;
@@ -470,6 +495,99 @@ async function buildLearnSchedule(env) {
     networkEvents,
     featured: featuredLearnEvents(networkEvents),
   };
+}
+
+async function buildEventbriteClasses(env) {
+  const orgId = requiredConfig(env, "EVENTBRITE_ORGANIZATION_ID");
+  let continuation = "";
+  const events = [];
+
+  do {
+    const params = new URLSearchParams({
+      status: "live,started",
+      order_by: "start_asc",
+      expand: "ticket_availability,venue,organizer",
+      page_size: "100",
+    });
+    if (continuation) params.set("continuation", continuation);
+
+    const payload = await eventbriteGet(
+      env,
+      `/organizations/${encodeURIComponent(orgId)}/events/?${params.toString()}`,
+    );
+    events.push(...(Array.isArray(payload.events) ? payload.events : []));
+    continuation = payload.pagination?.has_more_items && payload.pagination?.continuation
+      ? String(payload.pagination.continuation)
+      : "";
+  } while (continuation);
+
+  const now = Date.now();
+  const upcoming = events
+    .map(normalizeEventbriteEvent)
+    .filter((event) => {
+      const end = Date.parse(event.end.utc || event.end.local);
+      const start = Date.parse(event.start.utc || event.start.local);
+      return Number.isFinite(end) ? end >= now : Number.isFinite(start) && start >= now;
+    })
+    .sort((a, b) => Date.parse(a.start.utc || a.start.local) - Date.parse(b.start.utc || b.start.local));
+
+  return {
+    ok: true,
+    source: "eventbrite",
+    organizerUrl: "https://www.eventbrite.com/o/121594610555",
+    refreshedAt: new Date().toISOString(),
+    cacheSeconds: EVENTBRITE_CLASSES_CACHE_SECONDS,
+    eventCount: upcoming.length,
+    events: upcoming,
+  };
+}
+
+async function eventbriteGet(env, route) {
+  const response = await fetch(`${EVENTBRITE_API_BASE}${route}`, {
+    headers: {
+      Authorization: `Bearer ${requiredConfig(env, "EVENTBRITE_PRIVATE_TOKEN")}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    const message = payload.error_description || payload.error || "Eventbrite request failed.";
+    throw new Error(message);
+  }
+  return payload;
+}
+
+function normalizeEventbriteEvent(event) {
+  return {
+    id: String(event.id || ""),
+    title: String(event.name?.text || event.name?.html || "Mojo AI Studio class"),
+    description: String(event.summary || ""),
+    url: String(event.url || ""),
+    status: String(event.status || ""),
+    online: Boolean(event.online_event),
+    capacity: Number(event.capacity || 0),
+    start: {
+      utc: String(event.start?.utc || ""),
+      local: String(event.start?.local || ""),
+      timezone: String(event.start?.timezone || "America/Denver"),
+    },
+    end: {
+      utc: String(event.end?.utc || ""),
+      local: String(event.end?.local || ""),
+      timezone: String(event.end?.timezone || "America/Denver"),
+    },
+    availability: {
+      hasAvailableTickets: Boolean(event.ticket_availability?.has_available_tickets),
+      isSoldOut: Boolean(event.ticket_availability?.is_sold_out),
+      price: String(event.ticket_availability?.minimum_ticket_price?.display || "Free"),
+    },
+  };
+}
+
+function requiredConfig(env, name) {
+  const value = String(env[name] || "").trim();
+  if (!value) throw new Error(`${name} is not configured.`);
+  return value;
 }
 
 async function meetupAccessToken(env, options = {}) {

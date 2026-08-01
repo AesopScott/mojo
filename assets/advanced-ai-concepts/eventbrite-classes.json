@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "eventbrite",
-  "refreshedAt": "2026-08-01T13:46:44.988Z",
+  "refreshedAt": "2026-08-01T14:15:28.126Z",
   "eventCount": 8,
   "events": [
     {
@@ -23,8 +23,8 @@
         "timezone": "America/Denver"
       },
       "availability": {
-        "hasAvailableTickets": true,
-        "isSoldOut": false,
+        "hasAvailableTickets": false,
+        "isSoldOut": true,
         "price": "0.00 USD"
       }
     },
