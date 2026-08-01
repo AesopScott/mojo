@@ -588,10 +588,7 @@ function recordingsMarkup() {
             <a href="https://us06web.zoom.us/rec/share/4ftkrnvu4CLYJx2rpxGV5TUWhH3CEP6ctiHSUtTruQABPjVAcnleUSQTQhbYOFTP.8OU90dklGyCDA728" target="_blank" rel="noopener">
               <b>Multi-Agent Systems</b>
             </a>
-            <a href="/assets/advanced-ai-concepts/optimizing-ai-memory.zip" download>
-              <b>Optimizing AI Memory.zip</b>
-            </a>
-            <a href="https://us06web.zoom.us/rec/share/sAC3vUZG46uzYtY4KiR7ST52RVktMYimfOS6i6S1qzyZdV3jXE1zMZPty7QcFo6H.dKkIyPVP4kAT1DJq?pwd=DBqbK2vQbJlBg62OcgAAIAAAACAs8fJwPnLzo31AyCD8uKhjJ1wKDjwB-GxgT6munu4nAm4y-IK7nUGf-AwlCgD7yzAwMDAwNA" target="_blank" rel="noopener">
+            <a href="https://us06web.zoom.us/rec/share/hCYTiDqM6DR21bTjHxeKOcRF9FnjuwyGhqnkfT620aYI1Oe75oO_fxO_eK5epBme.J-NImPxb9sKce6Uf" target="_blank" rel="noopener">
               <b>The BMAD Method for Context-Engineered AI Development</b>
             </a>
           </div>`;
