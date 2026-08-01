@@ -116,6 +116,17 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    if (url.pathname === "/assets/advanced-ai-concepts/optimizing-ai-memory.zip") {
+      return new Response("Not found.\n", {
+        status: 404,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-store",
+          "X-Content-Type-Options": "nosniff",
+        },
+      });
+    }
+
     if (url.pathname === "/social.html") {
       const assetUrl = new URL("/products/pages/admin-social", url);
       assetUrl.search = url.search;
