@@ -44,7 +44,25 @@ $sessions = [
         'duration' => 900,
         'zoom_url' => 'https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1',
     ],
+    'ai-local-hardware' => [
+        'title' => 'AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)',
+        'date' => '2026-08-01T14:00:00Z',
+        'duration' => 900,
+        'zoom_url' => 'https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1',
+    ],
+    'local-ai' => [
+        'title' => 'AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)',
+        'date' => '2026-08-01T14:00:00Z',
+        'duration' => 900,
+        'zoom_url' => 'https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1',
+    ],
     'fable5-quality' => [
+        [
+            'title' => 'AI on Local Hardware: What Works, What Doesn’t, and Why (Guest Speaker)',
+            'date' => '2026-08-01T14:00:00Z',
+            'duration' => 900,
+            'zoom_url' => 'https://us06web.zoom.us/j/86864498455?pwd=x129KcedwcVKYJ9PMTkjGKzGcvZ6q1.1',
+        ],
         [
             'title' => 'Get Fable 5 Quality From Low-Cost AI Models',
             'date' => '2026-08-08T00:00:00Z',
