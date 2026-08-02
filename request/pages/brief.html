@@ -54,6 +54,10 @@
         border-color: var(--blue);
       }
 
+      .field input[type="file"] {
+        padding: 10px 12px;
+      }
+
       .field textarea {
         min-height: 120px;
         resize: vertical;
@@ -124,6 +128,7 @@
           id="brief-form"
           method="POST"
           action="/api/submit-brief"
+          enctype="multipart/form-data"
           novalidate
         >
           <div class="field">
@@ -235,6 +240,17 @@
             ></textarea>
           </div>
 
+          <div class="field">
+            <label for="quote-file">Upload your quote or project brief</label>
+            <input
+              id="quote-file"
+              name="quoteFile"
+              type="file"
+              accept=".pdf,.doc,.docx,.txt,.rtf,.png,.jpg,.jpeg,.webp"
+            />
+            <span class="hint">Optional. PDF, Word, text, or image files up to 8 MB.</span>
+          </div>
+
           <div class="form-submit">
             <button class="button dark" type="submit">Submit quote →</button>
             <p class="form-note">We'll respond within two business days about fit, discount, teaching boundaries, and resale licensing.</p>
@@ -252,7 +268,7 @@
         <p>Teaching AI agency for practical product builds.</p>
       </div>
       <div>
-        <b>Request</b>
+        <b>Build</b>
         <a href="/build.html">How it works</a>
         <a href="/request/pages/brief.html">Start your intake</a>
         <a href="mailto:admin@MojoAiStudio.com">Contact</a>

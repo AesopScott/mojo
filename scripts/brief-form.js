@@ -1,7 +1,7 @@
 /**
  * brief-form.js — Client-side handler for the teaching build intake form.
  *
- * Submits form data as JSON to /api/submit-brief.
+ * Submits form data and an optional quote file to /api/submit-brief.
  * On success, redirects to the confirmation page.
  * On failure, shows an inline error without losing the user's data.
  */
@@ -20,21 +20,23 @@
 
     var submitBtn = form.querySelector('[type="submit"]');
     var originalText = submitBtn.textContent;
+    var fileInput = form.querySelector('input[type="file"][name="quoteFile"]');
+    var quoteFile = fileInput && fileInput.files ? fileInput.files[0] : null;
+    var maxFileSize = 8 * 1024 * 1024;
+
+    if (quoteFile && quoteFile.size > maxFileSize) {
+      showError('Please upload a quote file smaller than 8 MB.');
+      return;
+    }
+
     submitBtn.textContent = 'Submitting…';
     submitBtn.disabled = true;
 
-    var data = {};
-    var fields = form.querySelectorAll('input, select, textarea');
-    fields.forEach(function (field) {
-      if (field.name) {
-        data[field.name] = field.value;
-      }
-    });
+    var data = new FormData(form);
 
     fetch('/api/submit-brief', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: data,
     })
       .then(function (res) {
         if (!res.ok) {
