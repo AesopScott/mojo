@@ -30,6 +30,65 @@
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Mojo AI Studio","item":"https://mojoaistudio.com/"},{"@type":"ListItem","position":2,"name":"Advanced AI Concepts","item":"https://mojoaistudio.com/learn/"}]}</script>
 
     <link rel="stylesheet" href="/styles/shared.css?v=__CACHE_BUST__" />
+    <style>
+      .meetup-moved-banner {
+        margin: 28px auto 0;
+        width: min(1120px, calc(100% - 40px));
+        border: 1px solid rgba(103, 232, 249, 0.34);
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(8, 47, 73, 0.94), rgba(15, 23, 42, 0.96));
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+        color: #f8fafc;
+        padding: clamp(22px, 4vw, 38px);
+      }
+
+      .meetup-moved-banner span {
+        color: #67e8f9;
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .meetup-moved-banner h2 {
+        font-size: clamp(1.7rem, 4vw, 3rem);
+        line-height: 1.05;
+        margin: 0 0 12px;
+      }
+
+      .meetup-moved-banner p {
+        color: #dbeafe;
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        line-height: 1.55;
+        margin: 0;
+        max-width: 760px;
+      }
+
+      .meetup-moved-banner a {
+        align-items: center;
+        background: #67e8f9;
+        border-radius: 8px;
+        color: #06121f;
+        display: inline-flex;
+        font-weight: 800;
+        margin-top: 20px;
+        padding: 12px 16px;
+        text-decoration: none;
+      }
+
+      .meetup-moved-banner a:focus,
+      .meetup-moved-banner a:hover {
+        background: #a5f3fc;
+      }
+
+      @media (max-width: 640px) {
+        .meetup-moved-banner {
+          width: min(100% - 24px, 1120px);
+        }
+      }
+    </style>
   </head>
   <body>
     <header class="site-header aac-header" id="top">
@@ -52,6 +111,13 @@
           <a class="button dark" href="/learn/#events">Register on Eventbrite</a>
         </div>
       </nav>
+
+      <section class="meetup-moved-banner" aria-labelledby="meetup-moved-title">
+        <span>Meetup group moved</span>
+        <h2 id="meetup-moved-title">Meetup.com has moved to Advanced AI Training.</h2>
+        <p>All Meetup activity for these classes is now in the new group. Join the new group here and use this as the current Meetup address.</p>
+        <a href="https://www.meetup.com/advanced-ai-training" target="_blank" rel="noopener">https://www.meetup.com/advanced-ai-training</a>
+      </section>
       
       <section class="aac-hero">
         <div>
