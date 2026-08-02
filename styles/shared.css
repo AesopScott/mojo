@@ -169,15 +169,69 @@ a {
 }
 
 .nav-links {
+  align-items: center;
   gap: 22px;
   color: rgba(255, 255, 255, 0.74);
   font-size: 0.95rem;
   font-family: var(--brand-ui);
 }
 
-.nav-links a.active {
+.nav-links a.active,
+.nav-dropdown.is-active > summary {
   color: var(--cyan);
   font-weight: 700;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+  cursor: pointer;
+  list-style: none;
+}
+
+.nav-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown > summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 230px;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid rgba(0, 230, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(10, 15, 30, 0.96);
+  box-shadow: 0 20px 44px rgba(10, 15, 30, 0.26);
+}
+
+.nav-dropdown-menu a {
+  padding: 10px 12px;
+  border-radius: 6px;
+}
+
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a:focus-visible,
+.nav-dropdown-menu a.active {
+  color: var(--white);
+  background: rgba(0, 230, 255, 0.12);
 }
 
 .button,
@@ -2202,6 +2256,11 @@ a[aria-disabled="true"] {
     flex-wrap: wrap;
   }
 
+  .nav-dropdown-menu {
+    right: auto;
+    left: 0;
+  }
+
   .pathway-grid,
   .hero,
   .aac-city-hero,
@@ -2256,9 +2315,20 @@ a[aria-disabled="true"] {
 
   .nav-actions,
   .nav-actions .button,
+  .nav-dropdown,
+  .nav-dropdown-menu,
   .hero-search button,
   .price-panel button {
     width: 100%;
+  }
+
+  .nav-dropdown > summary {
+    width: 100%;
+  }
+
+  .nav-dropdown-menu {
+    position: static;
+    margin-top: 10px;
   }
 
   .hero {
