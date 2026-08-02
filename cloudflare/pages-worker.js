@@ -2999,11 +2999,78 @@ function cleanText(value, maxLength) {
     .slice(0, maxLength);
 }
 
+function cleanAttachmentFilename(value) {
+  return cleanText(value, 160).replace(/[\\/:*?"<>|\u0000-\u001F]/g, "_") || "mojo-build-quote";
+}
+
+function arrayBufferToBase64(buffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+  }
+
+  return btoa(binary);
+}
+
 function publicError(message, status) {
   const err = new Error(message);
   err.publicMessage = message;
   err.status = status;
   return err;
+}
+
+const BRIEF_UPLOAD_MAX_BYTES = 8 * 1024 * 1024;
+
+async function parseSubmitBriefRequest(request) {
+  const contentType = request.headers.get("Content-Type") || "";
+
+  if (contentType.toLowerCase().includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const data = {};
+    const fields = [
+      "projectName",
+      "contactName",
+      "contactEmail",
+      "problemDescription",
+      "currentTools",
+      "quoteStatus",
+      "builderPriority",
+      "teachingPermission",
+      "interviewCount",
+      "timeline",
+      "budget",
+      "anythingElse",
+    ];
+
+    for (const field of fields) {
+      data[field] = String(formData.get(field) || "");
+    }
+
+    const file = formData.get("quoteFile");
+    if (file && typeof file.arrayBuffer === "function" && file.size > 0) {
+      if (file.size > BRIEF_UPLOAD_MAX_BYTES) {
+        throw publicError("Quote file must be smaller than 8 MB.", 413);
+      }
+
+      data.quoteFile = {
+        filename: cleanAttachmentFilename(file.name || "mojo-build-quote"),
+        content: arrayBufferToBase64(await file.arrayBuffer()),
+        size: file.size,
+        type: cleanText(file.type || "application/octet-stream", 120),
+      };
+    }
+
+    return data;
+  }
+
+  try {
+    return await request.json();
+  } catch {
+    throw publicError("Expected JSON or multipart form body.", 400);
+  }
 }
 
 async function handleSubmitBrief(request, env) {
@@ -3017,9 +3084,9 @@ async function handleSubmitBrief(request, env) {
 
   let data;
   try {
-    data = await request.json();
-  } catch {
-    return json({ ok: false, message: "Expected JSON body." }, 400);
+    data = await parseSubmitBriefRequest(request);
+  } catch (err) {
+    return json({ ok: false, message: err.publicMessage || "Could not read submission." }, err.status || 400);
   }
 
   const required = ["projectName", "contactName", "contactEmail", "problemDescription"];
@@ -3044,6 +3111,7 @@ async function handleSubmitBrief(request, env) {
     timeline: String(data.timeline || "").trim(),
     budget: String(data.budget || "").trim(),
     anythingElse: String(data.anythingElse || "").trim(),
+    quoteFile: data.quoteFile || null,
   };
 
   const adminEmail = String(env.MOJO_ADMIN_EMAIL || "admin@mojoaistudio.com").trim();
@@ -3056,6 +3124,7 @@ async function handleSubmitBrief(request, env) {
     ["Outside quote status", record.quoteStatus || "(not specified)"],
     ["Teaching permission", record.teachingPermission || "(not specified)"],
     ["Current tools", record.currentTools || "(not specified)"],
+    ["Uploaded file", record.quoteFile ? `${record.quoteFile.filename} (${Math.ceil(record.quoteFile.size / 1024)} KB)` : "(none)"],
   ];
 
   const adminHtml = `<p>New Teaching AI Agency quote intake submitted via MojoAiStudio.com.</p>
@@ -3083,6 +3152,12 @@ ${record.anythingElse ? `<h3>Anything else</h3><p>${escapeHtml(record.anythingEl
       reply_to: email,
       subject: `[Mojo Teaching Build] ${record.projectName} - ${record.contactName}`,
       html: adminHtml,
+      ...(record.quoteFile ? {
+        attachments: [{
+          filename: record.quoteFile.filename,
+          content: record.quoteFile.content,
+        }],
+      } : {}),
     }),
   });
 

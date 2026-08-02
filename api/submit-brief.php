@@ -2,7 +2,7 @@
 /**
  * submit-brief.php — Custom development brief intake endpoint.
  *
- * Accepts:  POST /api/submit-brief   Content-Type: application/json
+ * Accepts:  POST /api/submit-brief   Content-Type: application/json or multipart/form-data
  * Sends:    Email to ADMIN_EMAIL (default: admin@mojoaistudio.com)
  * Returns:  JSON { "ok": true }  |  { "ok": false, "message": "..." }
  *
@@ -39,14 +39,42 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// ── Parse JSON body ──────────────────────────────────────────────────────────
-$raw = file_get_contents('php://input');
-$data = json_decode($raw, true);
+// ── Parse JSON or multipart form body ────────────────────────────────────────
+$contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+$data = [];
+$uploadedFile = null;
 
-if (!is_array($data)) {
-    http_response_code(400);
-    echo json_encode(['ok' => false, 'message' => 'Invalid JSON body.']);
-    exit;
+if (stripos($contentType, 'multipart/form-data') !== false) {
+    $data = $_POST;
+
+    if (
+        isset($_FILES['quoteFile']) &&
+        is_array($_FILES['quoteFile']) &&
+        ($_FILES['quoteFile']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE
+    ) {
+        if ($_FILES['quoteFile']['error'] !== UPLOAD_ERR_OK) {
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'message' => 'Quote file could not be uploaded.']);
+            exit;
+        }
+
+        if (($_FILES['quoteFile']['size'] ?? 0) > 8 * 1024 * 1024) {
+            http_response_code(413);
+            echo json_encode(['ok' => false, 'message' => 'Quote file must be smaller than 8 MB.']);
+            exit;
+        }
+
+        $uploadedFile = $_FILES['quoteFile'];
+    }
+} else {
+    $raw = file_get_contents('php://input');
+    $data = json_decode($raw, true);
+
+    if (!is_array($data)) {
+        http_response_code(400);
+        echo json_encode(['ok' => false, 'message' => 'Invalid JSON body.']);
+        exit;
+    }
 }
 
 // ── Validate required fields ─────────────────────────────────────────────────
@@ -72,6 +100,12 @@ if (!empty($missing)) {
 function clean(string $value): string {
     // Strip tags, collapse whitespace
     return trim(strip_tags(preg_replace('/\s+/', ' ', $value)));
+}
+
+function clean_filename(string $value): string {
+    $name = preg_replace('/[\\\\\/:*?"<>|\x00-\x1F]+/', '_', basename($value));
+    $name = trim($name ?: 'mojo-build-quote');
+    return substr($name, 0, 160);
 }
 
 $projectName        = clean($data['projectName'] ?? '');
@@ -126,6 +160,12 @@ if ($anythingElse !== '') {
     $body .= $anythingElse . "\n\n";
 }
 
+if ($uploadedFile !== null) {
+    $body .= "UPLOADED FILE\n";
+    $body .= str_repeat('─', 56) . "\n";
+    $body .= clean_filename($uploadedFile['name'] ?? 'mojo-build-quote') . ' (' . (int) ceil(($uploadedFile['size'] ?? 0) / 1024) . " KB)\n\n";
+}
+
 $body .= str_repeat('─', 56) . "\n";
 $body .= "Reply to: {$contactEmail}\n";
 
@@ -134,10 +174,33 @@ $headers  = 'From: Mojo AI Studio <' . $fromEmail . '>' . "\r\n";
 $headers .= 'Reply-To: ' . $contactName . ' <' . $contactEmail . '>' . "\r\n";
 $headers .= 'X-Mailer: MojoAiStudio-BriefForm/1.0' . "\r\n";
 $headers .= 'MIME-Version: 1.0' . "\r\n";
-$headers .= 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+
+$mailBody = $body;
+
+if ($uploadedFile !== null) {
+    $boundary = 'mojo-brief-' . bin2hex(random_bytes(12));
+    $filename = clean_filename($uploadedFile['name'] ?? 'mojo-build-quote');
+    $mimeType = $uploadedFile['type'] ?: 'application/octet-stream';
+    $attachment = chunk_split(base64_encode(file_get_contents($uploadedFile['tmp_name'])));
+
+    $headers .= 'Content-Type: multipart/mixed; boundary="' . $boundary . '"' . "\r\n";
+
+    $mailBody  = '--' . $boundary . "\r\n";
+    $mailBody .= "Content-Type: text/plain; charset=utf-8\r\n";
+    $mailBody .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
+    $mailBody .= $body . "\r\n";
+    $mailBody .= '--' . $boundary . "\r\n";
+    $mailBody .= 'Content-Type: ' . $mimeType . '; name="' . $filename . '"' . "\r\n";
+    $mailBody .= "Content-Transfer-Encoding: base64\r\n";
+    $mailBody .= 'Content-Disposition: attachment; filename="' . $filename . '"' . "\r\n\r\n";
+    $mailBody .= $attachment . "\r\n";
+    $mailBody .= '--' . $boundary . "--\r\n";
+} else {
+    $headers .= 'Content-Type: text/plain; charset=utf-8' . "\r\n";
+}
 
 // ── Send ─────────────────────────────────────────────────────────────────────
-$sent = mail($adminEmail, $subject, $body, $headers, '-f' . $fromEmail);
+$sent = mail($adminEmail, $subject, $mailBody, $headers, '-f' . $fromEmail);
 
 if (!$sent) {
     // Log failure server-side without leaking details to client
