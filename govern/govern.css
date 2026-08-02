@@ -20,24 +20,6 @@
   background-size: 120px 100%, auto, auto, auto;
 }
 
-.govern-page .site-nav {
-  border-color: rgba(0, 230, 255, 0.32);
-  background:
-    linear-gradient(90deg, rgba(0, 230, 255, 0.11), transparent 28%, rgba(22, 102, 255, 0.12)),
-    rgba(10, 15, 30, 0.88);
-  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.36);
-  backdrop-filter: blur(16px);
-}
-
-.govern-page .site-nav a {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.govern-page .site-nav a:hover,
-.govern-page .site-nav a.active {
-  color: var(--gov-ink);
-}
-
 .govern-page .button.ghost {
   border-color: rgba(0, 230, 255, 0.32);
   color: var(--gov-ink);
