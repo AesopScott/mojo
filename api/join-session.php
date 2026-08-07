@@ -68,6 +68,7 @@ $sessions = [
             'date' => '2026-08-08T00:00:00Z',
             'duration' => 120,
             'zoom_url' => 'https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1',
+            'canceled' => true,
         ],
     ],
     'fable5-quality-global' => [
@@ -75,6 +76,7 @@ $sessions = [
         'date' => '2026-08-09T14:00:00Z',
         'duration' => 120,
         'zoom_url' => 'https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1',
+        'canceled' => true,
     ],
 ];
 
@@ -99,6 +101,20 @@ $startTs = strtotime($date);
 $now = time();
 $windowOpen = $startTs ? $startTs - 15 * 60 : 0;
 $windowClose = $startTs ? $startTs + $duration * 60 + 45 * 60 : 0;
+$dateLabel = format_session_date($date);
+
+if (!empty($session['canceled'])) {
+    join_info(
+        $title,
+        'Class canceled',
+        'This class is canceled due to a scheduling conflict. Please visit mojoaistudio.com/learn for the new Meetup group information. For questions, use the Discord server at https://discord.gg/.',
+        [
+            ['href' => 'https://mojoaistudio.com/learn/', 'label' => 'New Meetup group information'],
+            ['href' => 'https://discord.gg/', 'label' => 'Discord questions'],
+        ],
+        $dateLabel
+    );
+}
 
 if ($startTs && $now < $windowOpen) {
     $minutes = (int) ceil(($windowOpen - $now) / 60);
@@ -119,7 +135,6 @@ if ($startTs && $now > $windowClose) {
 }
 
 $goUrl = '/api/join-session.php?id=' . rawurlencode($id) . '&go=1';
-$dateLabel = format_session_date($date);
 
 if ($go) {
     header('Location: ' . $zoomUrl, true, 302);
@@ -167,22 +182,34 @@ function join_error(string $message): void {
     exit;
 }
 
-function join_info(string $title, string $heading, string $body): void {
+function join_info(string $title, string $heading, string $body, array $extraLinks = [], string $dateLabel = ''): void {
     header('Content-Type: text/html; charset=utf-8');
     echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">';
     echo '<meta name="viewport" content="width=device-width,initial-scale=1">';
     echo '<title>' . htmlspecialchars($title) . ' - Mojo AI Studio</title>';
-    echo '<style>body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#f8fafc}main{max-width:680px;margin:64px auto;padding:0 24px;text-align:center}p{color:#cbd5e1;line-height:1.6}.learn-links{display:grid;gap:10px;margin:34px auto 0;max-width:420px}.learn-links a{color:#67e8f9;text-decoration:none;border:1px solid rgba(103,232,249,.32);border-radius:8px;padding:11px 14px}.learn-links a:hover{background:rgba(103,232,249,.1)}</style>';
+    echo '<style>body{margin:0;font-family:Arial,sans-serif;background:#0b1020;color:#f8fafc}main{max-width:680px;margin:64px auto;padding:0 24px;text-align:center}p{color:#cbd5e1;line-height:1.6}.date{color:#94a3b8;font-size:14px;margin-bottom:28px}.learn-links{display:grid;gap:10px;margin:34px auto 0;max-width:420px}.learn-links a{color:#67e8f9;text-decoration:none;border:1px solid rgba(103,232,249,.32);border-radius:8px;padding:11px 14px}.learn-links a:hover{background:rgba(103,232,249,.1)}</style>';
     echo '</head><body><main><h1>' . htmlspecialchars($heading) . '</h1>';
     echo '<h2>' . htmlspecialchars($title) . '</h2>';
-    echo '<p>' . $body . '</p>';
-    echo learning_links_html();
+    if ($dateLabel !== '') {
+        echo '<div class="date">' . htmlspecialchars($dateLabel) . '</div>';
+    }
+    echo '<p>' . htmlspecialchars($body) . '</p>';
+    echo learning_links_html($extraLinks);
     echo '</main></body></html>';
     exit;
 }
 
-function learning_links_html(): string {
-    return '<nav class="learn-links" aria-label="Learning links">'
+function learning_links_html(array $extraLinks = []): string {
+    $html = '<nav class="learn-links" aria-label="Learning links">';
+    foreach ($extraLinks as $link) {
+        $href = htmlspecialchars((string) ($link['href'] ?? ''));
+        $label = htmlspecialchars((string) ($link['label'] ?? ''));
+        if ($href !== '' && $label !== '') {
+            $html .= '<a href="' . $href . '">' . $label . '</a>';
+        }
+    }
+
+    return $html
         . '<a href="https://mojoaistudio.com/learn">Mojo AI Studio Learning</a>'
         . '<a href="https://aesopacademy.org">Aesop AI Academy</a>'
         . '<a href="https://25experts.com/videos.html">25 AI Experts Video Curation</a>'
