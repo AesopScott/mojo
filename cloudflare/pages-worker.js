@@ -80,6 +80,7 @@ const JOIN_SESSIONS = {
       date: "2026-08-08T00:00:00Z",
       duration: 120,
       zoomUrl: "https://us06web.zoom.us/j/88950821744?pwd=18zMBj0WwuBgm1Df4AJIdF1t7t8RAF.1",
+      canceled: true,
     },
   ],
   "fable5-quality-global": {
@@ -87,6 +88,7 @@ const JOIN_SESSIONS = {
     date: "2026-08-09T14:00:00Z",
     duration: 120,
     zoomUrl: "https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1",
+    canceled: true,
   },
 };
 
@@ -219,6 +221,20 @@ function handleJoinSession(url) {
   const windowOpen = start - 15 * 60 * 1000;
   const windowClose = start + session.duration * 60 * 1000 + 45 * 60 * 1000;
 
+  if (session.canceled) {
+    return joinSessionPage(
+      session.title,
+      "Class canceled",
+      "This class is canceled due to a scheduling conflict. Please visit mojoaistudio.com/learn for the new Meetup group information. For questions, use the Discord server at https://discord.gg/.",
+      null,
+      formatMountainDate(session.date),
+      [
+        { href: "https://mojoaistudio.com/learn/", label: "New Meetup group information" },
+        { href: "https://discord.gg/", label: "Discord questions" },
+      ],
+    );
+  }
+
   if (Number.isFinite(start) && now < windowOpen) {
     const minutes = Math.ceil((windowOpen - now) / 60000);
     return joinSessionPage(
@@ -274,13 +290,17 @@ function allJoinSessions() {
   ));
 }
 
-function joinSessionPage(title, heading, body, goUrl, dateLabel = "") {
+function joinSessionPage(title, heading, body, goUrl, dateLabel = "", extraLinks = []) {
   const safeTitle = escapeHtml(title);
   const safeHeading = escapeHtml(heading);
   const safeBody = escapeHtml(body);
   const safeDate = escapeHtml(dateLabel);
+  const extraLinksHtml = extraLinks.map((link) => (
+    `<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`
+  )).join("");
   const learningLinks = `
   <nav class="learn-links" aria-label="Learning links">
+    ${extraLinksHtml}
     <a href="https://mojoaistudio.com/learn">Mojo AI Studio Learning</a>
     <a href="https://aesopacademy.org">Aesop AI Academy</a>
     <a href="https://25experts.com/videos.html">25 AI Experts Video Curation</a>
