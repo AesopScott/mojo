@@ -2310,7 +2310,6 @@ a[aria-disabled="true"] {
   text-transform: uppercase;
 }
 
-.fable-formula pre,
 .fable-template {
   margin: 0;
   overflow-x: auto;
@@ -2320,9 +2319,31 @@ a[aria-disabled="true"] {
   line-height: 1.65;
 }
 
-.fable-formula pre {
-  padding: 20px;
+.fable-equation {
+  display: grid;
+  gap: 12px;
+  padding: 24px;
   border-radius: 8px;
+  color: #f8fbff;
+  background: #0A0F1E;
+}
+
+.fable-equation p,
+.fable-equation b {
+  color: #f8fbff;
+  font-family: var(--brand-ui);
+  font-size: clamp(1.25rem, 2.6vw, 2.05rem);
+  font-weight: 850;
+  line-height: 1.16;
+  overflow-wrap: anywhere;
+}
+
+.fable-equation p {
+  margin: 0;
+}
+
+.fable-equation b {
+  color: var(--cyan);
 }
 
 .fable-section {
