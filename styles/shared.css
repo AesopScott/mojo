@@ -2226,6 +2226,315 @@ a[aria-disabled="true"] {
   flex-shrink: 0;
 }
 
+/* --- Fable training page --- */
+
+.fable-header {
+  padding-top: 118px;
+}
+
+.fable-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 0.82fr);
+  gap: 32px;
+  align-items: stretch;
+  padding: 56px 0 44px;
+}
+
+.fable-hero-copy {
+  display: grid;
+  align-content: center;
+  min-height: 520px;
+  padding: clamp(28px, 5vw, 56px);
+  border: 1px solid rgba(0, 230, 255, 0.22);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(10, 15, 30, 0.94), rgba(15, 34, 68, 0.88)),
+    linear-gradient(90deg, rgba(0, 230, 255, 0.16) 1px, transparent 1px);
+  background-size: auto, 88px 100%;
+  color: var(--white);
+  box-shadow: 0 28px 80px rgba(10, 15, 30, 0.24);
+}
+
+.fable-hero-copy h1 {
+  max-width: 840px;
+  color: var(--white);
+  font-size: clamp(3rem, 7vw, 6.1rem);
+}
+
+.fable-hero-copy p:not(.kicker) {
+  max-width: 680px;
+  color: #d8e7ff;
+  font-size: clamp(1.05rem, 2vw, 1.28rem);
+}
+
+.fable-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.fable-formula,
+.fable-lead-panel,
+.fable-injection-callout,
+.fable-quality-grid article,
+.fable-card-grid article,
+.fable-loop article,
+.fable-verification-grid article,
+.fable-escalation li,
+.fable-template,
+.fable-table-wrap,
+.fable-source-list {
+  border: 1px solid rgba(22, 102, 255, 0.14);
+  border-radius: 8px;
+  background: var(--panel-strong);
+  box-shadow: 0 18px 48px rgba(10, 15, 30, 0.08);
+}
+
+.fable-formula {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+  padding: clamp(24px, 4vw, 34px);
+}
+
+.fable-formula span,
+.fable-loop span,
+.fable-source-list a,
+.fable-supply-list span {
+  color: var(--blue);
+  font-family: var(--brand-mono);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.fable-formula pre,
+.fable-template {
+  margin: 0;
+  overflow-x: auto;
+  color: #f8fbff;
+  background: #0A0F1E;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.fable-formula pre {
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.fable-section {
+  padding-block: 44px;
+}
+
+.fable-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.fable-lead-panel {
+  padding: clamp(22px, 3vw, 30px);
+}
+
+.fable-lead-panel p:last-child,
+.fable-formula p:last-child,
+.fable-injection-callout p:last-child,
+.fable-note {
+  margin-bottom: 0;
+}
+
+.fable-section-heading {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.fable-section-heading h2 {
+  max-width: 860px;
+  margin-bottom: 0;
+}
+
+.fable-section-heading > p:not(.kicker) {
+  max-width: 760px;
+  margin-bottom: 0;
+}
+
+.fable-quality-grid,
+.fable-card-grid,
+.fable-verification-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.fable-quality-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.fable-quality-grid article,
+.fable-card-grid article,
+.fable-verification-grid article {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 18px;
+}
+
+.fable-quality-grid b,
+.fable-card-grid b,
+.fable-verification-grid b,
+.fable-escalation b,
+.fable-injection-callout b {
+  font-family: var(--brand-ui);
+  font-size: 1rem;
+  line-height: 1.18;
+}
+
+.fable-quality-grid span,
+.fable-card-grid span,
+.fable-verification-grid span,
+.fable-escalation span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.fable-table-wrap {
+  overflow-x: auto;
+}
+
+.fable-pricing-table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+}
+
+.fable-pricing-table th,
+.fable-pricing-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--soft-line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fable-pricing-table th {
+  color: var(--ink);
+  font-family: var(--brand-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fable-pricing-table td {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.fable-pricing-table td:first-child {
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.fable-pricing-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.fable-note {
+  margin-top: 12px;
+  font-size: 0.92rem;
+}
+
+.fable-card-grid,
+.fable-verification-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.fable-supply-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fable-supply-list span {
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 230, 255, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  text-align: center;
+}
+
+.fable-loop {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.fable-loop article {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.fable-loop b {
+  font-family: var(--brand-ui);
+  font-size: 1.12rem;
+  text-transform: capitalize;
+}
+
+.fable-loop p {
+  margin-bottom: 0;
+  font-size: 0.92rem;
+}
+
+.fable-injection-callout {
+  margin-top: 14px;
+  padding: 22px;
+  border-color: rgba(0, 230, 255, 0.24);
+  background:
+    linear-gradient(135deg, rgba(0, 230, 255, 0.08), rgba(255, 255, 255, 0.96)),
+    #fff;
+}
+
+.fable-template {
+  padding: clamp(20px, 3vw, 28px);
+}
+
+.fable-escalation {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.fable-escalation li {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+
+.fable-source-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+}
+
+.fable-source-list a {
+  padding: 10px 12px;
+  border: 1px solid rgba(0, 230, 255, 0.22);
+  border-radius: 8px;
+  background: rgba(245, 249, 255, 0.9);
+}
+
 /* ─── Responsive ─── */
 
 @media (max-width: 1180px) {
@@ -2235,6 +2544,10 @@ a[aria-disabled="true"] {
 
   .aac-hero h1 {
     font-size: 4.25rem;
+  }
+
+  .fable-quality-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -2263,6 +2576,8 @@ a[aria-disabled="true"] {
 
   .pathway-grid,
   .hero,
+  .fable-hero,
+  .fable-intro,
   .aac-city-hero,
   .aac-build-difference,
   .aac-sms-signup,
@@ -2283,10 +2598,18 @@ a[aria-disabled="true"] {
 
   .app-grid,
   .bundle-grid,
+  .fable-card-grid,
+  .fable-verification-grid,
+  .fable-escalation,
   .aac-city-grid,
   .aac-events-grid,
   .detail-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fable-loop,
+  .fable-supply-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-showcase,
@@ -2335,6 +2658,19 @@ a[aria-disabled="true"] {
     padding-top: 44px;
   }
 
+  .fable-header {
+    padding-top: 180px;
+  }
+
+  .fable-hero {
+    padding-top: 26px;
+  }
+
+  .fable-hero-copy {
+    min-height: 440px;
+    padding: 24px;
+  }
+
   .landing-hero {
     padding-top: 44px;
   }
@@ -2360,6 +2696,12 @@ a[aria-disabled="true"] {
 
   .app-grid,
   .bundle-grid,
+  .fable-quality-grid,
+  .fable-card-grid,
+  .fable-verification-grid,
+  .fable-escalation,
+  .fable-loop,
+  .fable-supply-list,
   .aac-city-grid,
   .aac-events-grid,
   .aac-build-points,
@@ -2425,6 +2767,59 @@ a[aria-disabled="true"] {
 
   .comparison-table div {
     min-width: 620px;
+  }
+
+  .fable-table-wrap {
+    overflow-x: visible;
+  }
+
+  .fable-pricing-table,
+  .fable-pricing-table thead,
+  .fable-pricing-table tbody,
+  .fable-pricing-table tr,
+  .fable-pricing-table td {
+    display: block;
+    min-width: 0;
+  }
+
+  .fable-pricing-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .fable-pricing-table tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  .fable-pricing-table tr {
+    padding: 14px;
+    border: 1px solid var(--soft-line);
+    border-radius: 8px;
+  }
+
+  .fable-pricing-table td {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--soft-line);
+  }
+
+  .fable-pricing-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 3px;
+    color: var(--blue);
+    font-family: var(--brand-mono);
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .fable-pricing-table td:last-child {
+    border-bottom: 0;
   }
 
   .plan-tabs {
