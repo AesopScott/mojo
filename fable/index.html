@@ -69,8 +69,10 @@
         </div>
         <aside class="fable-formula" aria-label="Quality formula">
           <span>Operating thesis</span>
-          <pre><code>Cheap model + strong operating layer + verification loop + escalation path
-= surprisingly high-quality work at much lower cost</code></pre>
+          <div class="fable-equation" aria-label="Cheap model formula">
+            <p>Cheap model + strong operating layer + verification loop + escalation path</p>
+            <b>= surprisingly high-quality work at much lower cost</b>
+          </div>
           <p>Do not ask a cheap model to be smarter. Give it a smarter job, better context, sharper checkpoints, and a clean way to hand off when the risk rises.</p>
         </aside>
       </section>
@@ -83,7 +85,7 @@
           <h2 id="fable-intro-title">The cheap model is only one layer.</h2>
         </div>
         <div class="fable-lead-panel">
-          <p>The class should teach that strong outcomes come from structure, feedback loops, and judgment that frontier agents often have baked in.</p>
+          <p>Strong outcomes come from structure, feedback loops, and judgment that frontier agents often have baked in.</p>
           <p>A cheaper model can do surprising work when the surrounding system supplies tools, files, command results, remembered context, tests, acceptance criteria, and rollback paths.</p>
         </div>
       </section>
@@ -118,7 +120,7 @@
                 <th>Model</th>
                 <th>Input</th>
                 <th>Output</th>
-                <th>Best teaching point</th>
+                <th>How to use it</th>
               </tr>
             </thead>
             <tbody>
@@ -126,19 +128,19 @@
                 <td data-label="Model">Claude Fable 5</td>
                 <td data-label="Input">$10 / 1M input</td>
                 <td data-label="Output">$50 / 1M output</td>
-                <td data-label="Best teaching point">Frontier long-horizon coding quality is expensive, so use it when the task deserves it.</td>
+                <td data-label="How to use it">Use it when the task deserves frontier long-horizon coding quality.</td>
               </tr>
               <tr>
                 <td data-label="Model">GPT-5.6 Sol</td>
                 <td data-label="Input">$5 / 1M input</td>
                 <td data-label="Output">$30 / 1M output</td>
-                <td data-label="Best teaching point">Strong frontier reasoning at lower cost than Fable, still much more than budget models.</td>
+                <td data-label="How to use it">Use it for strong frontier reasoning at lower cost than Fable, while still treating it as a premium path.</td>
               </tr>
               <tr>
                 <td data-label="Model">DeepSeek V4 Flash</td>
                 <td data-label="Input">$0.14 / 1M input cache miss; $0.0028 cache hit</td>
                 <td data-label="Output">$0.28 / 1M output</td>
-                <td data-label="Best teaching point">Cheap enough to teach repetition, tool use, and verification without flinching at every turn.</td>
+                <td data-label="How to use it">Use it for repetition, tool use, verification practice, and low-risk coding loops where cost matters.</td>
               </tr>
             </tbody>
           </table>
@@ -149,12 +151,12 @@
       <section class="section fable-section" aria-labelledby="deepseek-title">
         <div class="fable-section-heading">
           <p class="kicker">Cheap but capable</p>
-          <h2 id="deepseek-title">Why DeepSeek V4 Flash is a good teaching model.</h2>
-          <p>It is inexpensive enough to practice with, but capable enough to show how much the harness changes the result.</p>
+          <h2 id="deepseek-title">Why DeepSeek V4 Flash is a useful practice model.</h2>
+          <p>It is inexpensive enough to practice with, but capable enough to reveal how much the harness changes the result.</p>
         </div>
         <div class="fable-card-grid">
-          <article><b>1M context</b><span>Students can learn context strategy without immediately hitting a tiny window.</span></article>
-          <article><b>Thinking modes</b><span>DeepSeek exposes thinking and non-thinking use patterns, which makes routing easier to teach.</span></article>
+          <article><b>1M context</b><span>You can practice context strategy without immediately hitting a tiny window.</span></article>
+          <article><b>Thinking modes</b><span>DeepSeek exposes thinking and non-thinking use patterns, which makes routing easier to practice.</span></article>
           <article><b>Tool and JSON support</b><span>It can participate in agent workflows instead of only writing chat prose.</span></article>
           <article><b>API compatibility</b><span>OpenAI-compatible and Anthropic-compatible endpoints make it easier to swap into existing harnesses.</span></article>
         </div>
@@ -192,16 +194,16 @@
           <article><span>05</span><b>report</b><p>Explain result, proof, and remaining risk in plain language.</p></article>
         </div>
         <div class="fable-injection-callout">
-          <b>Class rule</b>
-          <p>Use operating text as a per-session layer, not a permanent global default. The point is to make the model behave like a disciplined teammate for this job, then revise the layer as students see where it succeeds or fails.</p>
+          <b>Session rule</b>
+          <p>Use operating text as a per-session layer, not a permanent global default. The point is to make the model behave like a disciplined teammate for this job, then revise the layer as you see where it succeeds or fails.</p>
         </div>
       </section>
 
       <section class="section fable-section" id="prompt-template" aria-labelledby="prompt-template-title">
         <div class="fable-section-heading">
           <p class="kicker">Repeatable prompt</p>
-          <h2 id="prompt-template-title">Give students a prompt skeleton.</h2>
-          <p>The template teaches them to define the work before they judge the model.</p>
+          <h2 id="prompt-template-title">Use this prompt skeleton.</h2>
+          <p>Define the work before you judge the model. A cheap model performs better when the job is shaped before the first answer.</p>
         </div>
         <pre class="fable-template"><code>Goal:
 Context:
@@ -244,7 +246,7 @@ Escalation rule:</code></pre>
         <div class="fable-section-heading">
           <p class="kicker">Class exercises</p>
           <h2 id="exercises-title">Practice the operating discipline.</h2>
-          <p>Students should leave with a repeatable way to judge whether the system is doing real work.</p>
+          <p>Leave with a repeatable way to judge whether the system is doing real work.</p>
         </div>
         <div class="fable-card-grid">
           <article><b>Rewrite a vague request</b><span>Turn "fix this page" into a goal, constraints, done definition, verification, and report format.</span></article>
@@ -258,7 +260,7 @@ Escalation rule:</code></pre>
         <div class="fable-section-heading">
           <p class="kicker">Sources</p>
           <h2 id="sources-title">Docs to keep current.</h2>
-          <p>Use these as the starting references before teaching a live pricing or capability comparison.</p>
+          <p>Use these as the starting references before relying on a live pricing or capability comparison.</p>
         </div>
         <div class="fable-source-list">
           <a href="https://platform.claude.com/docs/en/about-claude/models/introducing-claude-fable-5-and-claude-mythos-5" target="_blank" rel="noopener">Claude Fable 5 model docs</a>
