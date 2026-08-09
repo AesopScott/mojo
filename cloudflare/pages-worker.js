@@ -88,7 +88,6 @@ const JOIN_SESSIONS = {
     date: "2026-08-09T14:00:00Z",
     duration: 120,
     zoomUrl: "https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1",
-    canceled: true,
   },
 };
 
