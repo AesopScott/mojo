@@ -89,6 +89,48 @@ const JOIN_SESSIONS = {
     duration: 120,
     zoomUrl: "https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1",
   },
+  "building-with-pi": {
+    title: "Global - Building With Pi: A Minimal, Extensible Terminal Coding Agent",
+    date: "2026-08-16T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/88981503827?pwd=nkdx71U6mCbUEPUa3ItZBbYEEo6aqR.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 16 at 8:00 AM Mountain Time.",
+  },
+  "building-with-pi-global": {
+    title: "Global - Building With Pi: A Minimal, Extensible Terminal Coding Agent",
+    date: "2026-08-16T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/88981503827?pwd=nkdx71U6mCbUEPUa3ItZBbYEEo6aqR.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 16 at 8:00 AM Mountain Time.",
+  },
+  databricks: {
+    title: "Global - Databricks: Build a Practical Data Foundation for AI",
+    date: "2026-08-23T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 23 at 8:00 AM Mountain Time.",
+  },
+  "building-with-bricks": {
+    title: "Global - Databricks: Build a Practical Data Foundation for AI",
+    date: "2026-08-23T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 23 at 8:00 AM Mountain Time.",
+  },
+  "databricks-global": {
+    title: "Global - Databricks: Build a Practical Data Foundation for AI",
+    date: "2026-08-23T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 23 at 8:00 AM Mountain Time.",
+  },
+  "building-with-bricks-global": {
+    title: "Global - Databricks: Build a Practical Data Foundation for AI",
+    date: "2026-08-23T14:00:00Z",
+    duration: 120,
+    zoomUrl: "https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1",
+    notice: "Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 23 at 8:00 AM Mountain Time.",
+  },
 };
 
 const LEARN_SOURCE_GROUP = "advanced-ai-concepts";
@@ -239,8 +281,9 @@ function handleJoinSession(url) {
     return joinSessionPage(
       session.title,
       "Session has not started yet",
-      `The join link opens 15 minutes before the session. Come back in about ${minutes} minute${minutes === 1 ? "" : "s"}.`,
+      joinSessionBody(session, `The join link opens 15 minutes before the session. Come back in about ${minutes} minute${minutes === 1 ? "" : "s"}.`),
       null,
+      formatMountainDate(session.date),
     );
   }
 
@@ -248,8 +291,9 @@ function handleJoinSession(url) {
     return joinSessionPage(
       session.title,
       "Session has ended",
-      "This session is over. Recordings will be posted after the session.",
+      joinSessionBody(session, "This session is over. Recordings will be posted after the session."),
       null,
+      formatMountainDate(session.date),
     );
   }
 
@@ -261,10 +305,14 @@ function handleJoinSession(url) {
   return joinSessionPage(
     session.title,
     "Joining session",
-    "The verified Zoom room is open. You will not be redirected automatically. Click the button when you are ready.",
+    joinSessionBody(session, "The verified Zoom room is open. You will not be redirected automatically. Click the button when you are ready."),
     goUrl,
     formatMountainDate(session.date),
   );
+}
+
+function joinSessionBody(session, body) {
+  return [session.notice, body].filter(Boolean).join(" ");
 }
 
 function joinSessionVariants(entry) {
