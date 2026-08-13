@@ -77,6 +77,48 @@ $sessions = [
         'duration' => 120,
         'zoom_url' => 'https://us06web.zoom.us/j/84376303791?pwd=CVkOC41z8B73sFoK5hpdHcaC03C79Z.1',
     ],
+    'building-with-pi' => [
+        'title' => 'Global - Building With Pi: A Minimal, Extensible Terminal Coding Agent',
+        'date' => '2026-08-16T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/88981503827?pwd=nkdx71U6mCbUEPUa3ItZBbYEEo6aqR.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 16 at 8:00 AM Mountain Time.',
+    ],
+    'building-with-pi-global' => [
+        'title' => 'Global - Building With Pi: A Minimal, Extensible Terminal Coding Agent',
+        'date' => '2026-08-16T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/88981503827?pwd=nkdx71U6mCbUEPUa3ItZBbYEEo6aqR.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 16 at 8:00 AM Mountain Time.',
+    ],
+    'databricks' => [
+        'title' => 'Global - Databricks: Build a Practical Data Foundation for AI',
+        'date' => '2026-08-23T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 23 at 8:00 AM Mountain Time.',
+    ],
+    'building-with-bricks' => [
+        'title' => 'Global - Databricks: Build a Practical Data Foundation for AI',
+        'date' => '2026-08-23T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. The Friday session is not being held. This class starts Sunday, August 23 at 8:00 AM Mountain Time.',
+    ],
+    'databricks-global' => [
+        'title' => 'Global - Databricks: Build a Practical Data Foundation for AI',
+        'date' => '2026-08-23T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 23 at 8:00 AM Mountain Time.',
+    ],
+    'building-with-bricks-global' => [
+        'title' => 'Global - Databricks: Build a Practical Data Foundation for AI',
+        'date' => '2026-08-23T14:00:00Z',
+        'duration' => 120,
+        'zoom_url' => 'https://us06web.zoom.us/j/85967741814?pwd=xYqBNavDPRn5aodrUgyZlevkbxF2Gf.1',
+        'notice' => 'Mojo AI Studio is only hosting the Sunday Global sessions from now on. This class starts Sunday, August 23 at 8:00 AM Mountain Time.',
+    ],
 ];
 
 $id = trim((string) ($_GET['id'] ?? ''));
@@ -91,6 +133,7 @@ $title = (string) $session['title'];
 $date = (string) $session['date'];
 $duration = max(0, (int) $session['duration']);
 $zoomUrl = trim((string) $session['zoom_url']);
+$notice = trim((string) ($session['notice'] ?? ''));
 
 if ($zoomUrl === '') {
     join_error('The Zoom link for this session is not configured.');
@@ -120,8 +163,11 @@ if ($startTs && $now < $windowOpen) {
     join_info(
         $title,
         'Session has not started yet',
-        'The join link opens 15 minutes before the session. Come back in about '
+        join_session_body($notice, 'The join link opens 15 minutes before the session. Come back in about '
             . $minutes . ' minute' . ($minutes === 1 ? '' : 's') . '.'
+        ),
+        [],
+        $dateLabel
     );
 }
 
@@ -129,7 +175,9 @@ if ($startTs && $now > $windowClose) {
     join_info(
         $title,
         'Session has ended',
-        'This session is over. Recordings will be posted after the session.'
+        join_session_body($notice, 'This session is over. Recordings will be posted after the session.'),
+        [],
+        $dateLabel
     );
 }
 
@@ -166,6 +214,7 @@ header('Content-Type: text/html; charset=utf-8');
     <div class="eyebrow">Joining session</div>
     <h1><?= htmlspecialchars($title) ?></h1>
     <?php if ($dateLabel !== ''): ?><div class="date"><?= htmlspecialchars($dateLabel) ?></div><?php endif; ?>
+    <?php if ($notice !== ''): ?><p><strong><?= htmlspecialchars($notice) ?></strong></p><?php endif; ?>
     <p>The verified Zoom room is open. You will not be redirected automatically. Click the button when you are ready.</p>
     <a class="button" href="<?= htmlspecialchars($goUrl) ?>" id="join">Join the Zoom Session</a>
     <?= learning_links_html() ?>
@@ -196,6 +245,14 @@ function join_info(string $title, string $heading, string $body, array $extraLin
     echo learning_links_html($extraLinks);
     echo '</main></body></html>';
     exit;
+}
+
+function join_session_body(string $notice, string $body): string {
+    if ($notice === '') {
+        return $body;
+    }
+
+    return $notice . "\n\n" . $body;
 }
 
 function learning_links_html(array $extraLinks = []): string {
