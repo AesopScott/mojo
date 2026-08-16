@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Class page for Building Your First Harness With Pi: a practical introduction to small terminal coding agents, project context, tools, guardrails, and reusable AI workflows."
+    />
+    <title>Build Your First Harness With Pi | Mojo AI Studio</title>
+    <link rel="canonical" href="https://mojoaistudio.com/pi/" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0A0F1E" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Mojo AI Studio" />
+    <meta property="og:url" content="https://mojoaistudio.com/pi/" />
+    <meta property="og:title" content="Build Your First Harness With Pi" />
+    <meta
+      property="og:description"
+      content="A two-hour class for learning how a small coding agent becomes a controllable harness: context, tools, policy, memory, verification, and iteration."
+    />
+    <meta property="og:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Build Your First Harness With Pi" />
+    <meta
+      name="twitter:description"
+      content="Student class page for building your first AI harness with Pi."
+    />
+    <meta name="twitter:image" content="https://mojoaistudio.com/assets/ai-software-showcase.png" />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0a0f1e;
+        --muted: #617085;
+        --paper: #f5f7fb;
+        --white: #ffffff;
+        --line: rgba(10, 15, 30, 0.14);
+        --blue: #1666ff;
+        --cyan: #0f8da8;
+        --green: #1f8a5b;
+        --gold: #b7791f;
+        --purple: #6d28d9;
+        --shadow: 0 20px 54px rgba(10, 15, 30, 0.12);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 96px;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--paper);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .topbar {
+        position: fixed;
+        z-index: 20;
+        top: 12px;
+        left: 50%;
+        width: min(1200px, calc(100% - 32px));
+        min-height: 66px;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.68);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 16px 42px rgba(10, 15, 30, 0.13);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: auto;
+        font-weight: 900;
+      }
+
+      .brand-mark {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .nav-links,
+      .hero-actions,
+      .quick-links,
+      .pill-row,
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nav-links {
+        gap: 18px;
+        color: #465469;
+        font-size: 0.95rem;
+      }
+
+      .nav-links a.active {
+        color: var(--ink);
+        font-weight: 850;
+      }
+
+      .button {
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        padding: 0 16px;
+        font-weight: 850;
+      }
+
+      .button.dark {
+        color: #fff;
+        background: var(--ink);
+      }
+
+      .button.light {
+        color: var(--ink);
+        background: #fff;
+        border-color: rgba(255, 255, 255, 0.72);
+      }
+
+      .button.ghost {
+        color: var(--ink);
+        background: #fff;
+        border-color: var(--line);
+      }
+
+      .hero {
+        min-height: 76vh;
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        overflow: hidden;
+        isolation: isolate;
+        padding: 142px 0 58px;
+        color: #fff;
+        background-image:
+          linear-gradient(90deg, rgba(10, 16, 29, 0.96) 0%, rgba(10, 16, 29, 0.78) 52%, rgba(10, 16, 29, 0.38) 100%),
+          url("/assets/ai-software-showcase.png");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        z-index: -1;
+        height: 44%;
+        background: linear-gradient(0deg, rgba(10, 16, 29, 0.82), rgba(10, 16, 29, 0));
+      }
+
+      .wrap {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.72fr);
+        gap: 34px;
+        align-items: end;
+      }
+
+      .kicker {
+        margin: 0 0 14px;
+        color: #93c5fd;
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.08;
+      }
+
+      h1 {
+        max-width: 900px;
+        font-size: clamp(2.5rem, 7vw, 5.9rem);
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 760px;
+        margin: 22px 0 0;
+        color: #dbeafe;
+        font-size: clamp(1.08rem, 2vw, 1.35rem);
+        line-height: 1.58;
+      }
+
+      .hero-actions {
+        margin-top: 28px;
+      }
+
+      .hero-panel {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22);
+        padding: 22px;
+        backdrop-filter: blur(18px);
+      }
+
+      .hero-panel h2 {
+        font-size: 1.45rem;
+      }
+
+      .hero-panel p {
+        color: #dbeafe;
+        line-height: 1.55;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .meta-grid span,
+      .pill {
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 11px 12px;
+        color: #e0f2fe;
+        font-size: 0.9rem;
+      }
+
+      .section {
+        padding: 76px 0;
+      }
+
+      .section.alt {
+        background: #fff;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(240px, 0.55fr) minmax(0, 1fr);
+        gap: 36px;
+        align-items: start;
+        margin-bottom: 28px;
+      }
+
+      .section h2 {
+        font-size: clamp(2rem, 4vw, 3.8rem);
+      }
+
+      .section .lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.12rem;
+        line-height: 1.68;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .card,
+      .module,
+      .script-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .card h3,
+      .module h3,
+      .script-card h3 {
+        font-size: 1.15rem;
+        margin-bottom: 10px;
+      }
+
+      .card p,
+      .module p,
+      .script-card p,
+      .timeline li,
+      .checklist li {
+        color: var(--muted);
+        line-height: 1.62;
+      }
+
+      .tag {
+        display: inline-flex;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        background: rgba(22, 102, 255, 0.1);
+        color: var(--blue);
+        padding: 6px 9px;
+        font-size: 0.76rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .timeline,
+      .checklist {
+        margin: 0;
+        padding-left: 21px;
+      }
+
+      .timeline li,
+      .checklist li {
+        margin: 10px 0;
+      }
+
+      .run-card {
+        display: grid;
+        grid-template-columns: 110px minmax(0, 1fr);
+        gap: 18px;
+        border-top: 1px solid var(--line);
+        padding: 22px 0;
+      }
+
+      .run-card:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+
+      .time {
+        color: var(--blue);
+        font-weight: 900;
+      }
+
+      .run-card h3 {
+        font-size: 1.28rem;
+        margin-bottom: 8px;
+      }
+
+      .run-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        line-height: 1.62;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        border: 1px solid rgba(10, 15, 30, 0.12);
+        border-radius: 8px;
+        background: #101827;
+        color: #e2e8f0;
+        padding: 16px;
+        overflow-x: auto;
+        line-height: 1.55;
+      }
+
+      code {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      .script-card {
+        border-color: rgba(109, 40, 217, 0.24);
+        background: #fbf8ff;
+      }
+
+      .script-card .tag {
+        background: rgba(109, 40, 217, 0.1);
+        color: var(--purple);
+      }
+
+      .worksheet {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .worksheet div {
+        min-height: 118px;
+        border: 1px dashed rgba(10, 15, 30, 0.26);
+        border-radius: 8px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .worksheet b {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      footer {
+        background: #0a0f1e;
+        color: #e2e8f0;
+        padding: 36px 0;
+      }
+
+      footer .wrap {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      footer a {
+        color: #bfdbfe;
+        font-weight: 750;
+      }
+
+      @media (max-width: 860px) {
+        .topbar {
+          position: static;
+          width: auto;
+          transform: none;
+          margin: 12px;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .hero {
+          padding-top: 72px;
+        }
+
+        .hero-grid,
+        .section-head,
+        .two-col,
+        .worksheet {
+          grid-template-columns: 1fr;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .run-card {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+      }
+
+      @media print {
+        .topbar,
+        .hero-actions,
+        footer {
+          display: none;
+        }
+
+        .hero {
+          min-height: auto;
+          color: var(--ink);
+          background: #fff;
+          padding: 24px 0;
+        }
+
+        .hero-copy,
+        .hero-panel p,
+        .meta-grid span {
+          color: var(--ink);
+        }
+
+        .section {
+          padding: 28px 0;
+        }
+
+        .card,
+        .module,
+        .script-card {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="topbar" aria-label="Class navigation">
+      <a class="brand" href="/">
+        <span class="brand-mark">M</span>
+        <span>Mojo AI Studio</span>
+      </a>
+      <div class="nav-links">
+        <a href="#outcomes">Outcomes</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#build">Build</a>
+        <a href="#concepts">Concepts</a>
+        <a href="#worksheet">Worksheet</a>
+      </div>
+      <a class="button dark" href="/api/join-session.php?id=building-with-pi">Join class</a>
+    </nav>
+
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="kicker">Sunday, August 16, 2026 - 8:00 AM Mountain</p>
+          <h1>Build your first harness with Pi.</h1>
+          <p class="hero-copy">
+            Pi is a small terminal coding agent you can understand end to end. The class goal is to turn it from "a chat that edits files" into a controlled harness with context, tools, rules, memory, verification, and a repeatable workflow.
+          </p>
+          <div class="hero-actions">
+            <a class="button light" href="#agenda">See the class path</a>
+            <a class="button ghost" href="#worksheet">Open worksheet</a>
+            <a class="button ghost" href="/harness/" target="_blank" rel="noopener">Harness primer</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Class snapshot">
+          <h2>Class promise</h2>
+          <p>
+            By the end, you should be able to describe the harness around Pi and sketch one practical harness you can build for your own workflow.
+          </p>
+          <div class="meta-grid">
+            <span><b>Audience</b><br />Builders, operators, technical founders</span>
+            <span><b>Length</b><br />Two hours</span>
+            <span><b>Format</b><br />Concept, live build, worksheet</span>
+            <span><b>Output</b><br />A first harness spec</span>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <main>
+      <section class="section alt" id="outcomes">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">What you will learn</p>
+              <h2>Teach Pi as a harness, not as magic.</h2>
+            </div>
+            <p class="lead">
+              The class should make one idea obvious: an AI coding agent is only useful when the system around it controls what it can see, what it can do, how it remembers, and how its work is checked.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <span class="tag">Outcome 1</span>
+              <h3>You can name the harness parts.</h3>
+              <p>Context, instructions, tools, filesystem scope, memory, approval boundaries, verification, and recovery. The model is not the whole product.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Outcome 2</span>
+              <h3>You can run a controlled workflow.</h3>
+              <p>They learn a repeatable loop: orient, plan, edit, verify, summarize, preserve what matters, and avoid uncontrolled changes.</p>
+            </article>
+            <article class="card">
+              <span class="tag">Outcome 3</span>
+              <h3>You can design a first harness.</h3>
+              <p>They leave with a one-page spec for a small harness around a real task: content publishing, repo cleanup, evidence gathering, or customer follow-up.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="agenda">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">Two-hour class path</p>
+              <h2>What we will do together.</h2>
+            </div>
+            <p class="lead">
+              We will move from concept to example to your own first harness spec. The goal is to leave with a pattern you can repeat, not just a vocabulary list.
+            </p>
+          </div>
+
+          <div class="module">
+            <div class="run-card">
+              <div class="time">0:00-0:10</div>
+              <div>
+                <h3>Frame the problem</h3>
+                <p>We will separate the model, the app, the agent, and the harness. Pi gives us a small enough system to see the pieces clearly.</p>
+                <pre><code>Key idea: Pi is not valuable only because it can type code. Pi becomes valuable when we wrap it in a workflow that controls context, tools, verification, and memory.</code></pre>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">0:10-0:25</div>
+              <div>
+                <h3>Show the harness map</h3>
+                <p>Walk through the seven parts: objective, context, instructions, tool boundaries, working memory, verification, and handoff.</p>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">0:25-0:45</div>
+              <div>
+                <h3>Demo a bad uncontrolled run</h3>
+                <p>We will compare a vague request with a controlled request so you can see why ambiguity, missing context, and unchecked edits create risk.</p>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">0:45-1:10</div>
+              <div>
+                <h3>Turn the same task into a harnessed run</h3>
+                <p>Give Pi a goal, constraints, file boundaries, verification requirement, and summary format. Compare the result.</p>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">1:10-1:35</div>
+              <div>
+                <h3>Build the first harness spec</h3>
+                <p>You will choose one recurring task and fill out the worksheet: what gets loaded, what is allowed, what proof is required, and what gets saved.</p>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">1:35-1:55</div>
+              <div>
+                <h3>Group review and upgrades</h3>
+                <p>We will review a few draft harness specs and improve them by adding approval gates, narrower scope, and better verification.</p>
+              </div>
+            </div>
+            <div class="run-card">
+              <div class="time">1:55-2:00</div>
+              <div>
+                <h3>Choose your next build</h3>
+                <p>You will choose one small repeatable loop to try before the next session.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="build">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">Live build</p>
+              <h2>The first harness you can understand.</h2>
+            </div>
+            <p class="lead">
+              We will use a "page update harness" because it is visible, low-risk, and easy to inspect: change a page, verify it, and report exactly what changed.
+            </p>
+          </div>
+          <div class="two-col">
+            <article class="module">
+              <h3>Harness ingredients</h3>
+              <ul class="checklist">
+                <li><b>Objective:</b> update one page for one audience.</li>
+                <li><b>Scope:</b> only the target file and supporting assets.</li>
+                <li><b>Rules:</b> keep design consistent, avoid unrelated edits, preserve secrets.</li>
+                <li><b>Tools:</b> file search, file edit, local server, browser verification.</li>
+                <li><b>Proof:</b> screenshot, link check, no unrelated diff.</li>
+                <li><b>Memory:</b> summarize the reusable lesson for next time.</li>
+              </ul>
+            </article>
+            <article class="module">
+              <h3>Starter prompt</h3>
+              <pre><code>We are updating one page only: /pi/.
+
+Goal: make the page explain what a harness is to a beginner.
+Rules:
+- Do not edit unrelated files.
+- Use existing site patterns.
+- Include a student worksheet.
+- Verify the page renders and links work.
+
+Before editing, inspect the existing site style and summarize the intended change.</code></pre>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="concepts">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">Core concepts</p>
+              <h2>How to think about Pi while you build.</h2>
+            </div>
+            <p class="lead">
+              Pi is a clear lens for understanding AI harnesses. The class is not about installing another tool. It is about learning how a small agent becomes powerful when you define the operating boundary around it.
+            </p>
+          </div>
+          <div class="cards">
+            <article class="script-card">
+              <span class="tag">Analogy</span>
+              <h3>The model is the engine. The harness is the vehicle.</h3>
+              <p>The engine can produce power, but the vehicle provides steering, brakes, dashboard, fuel rules, safety systems, and destination.</p>
+            </article>
+            <article class="script-card">
+              <span class="tag">Correction</span>
+              <h3>Do not say Pi "knows the project."</h3>
+              <p>Say Pi has access to context we choose to load. The harness decides what context is in bounds and how changes are verified.</p>
+            </article>
+            <article class="script-card">
+              <span class="tag">Memorable line</span>
+              <h3>A harness is judgment made repeatable.</h3>
+              <p>If you can describe the decisions a careful human makes around an AI task, you can begin turning those decisions into a harness.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt" id="worksheet">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">Student worksheet</p>
+              <h2>Design your first harness.</h2>
+            </div>
+            <p class="lead">
+              Fill this out for one recurring task. Keep it boring and real. A boring harness that runs every week is better than an impressive demo no one repeats.
+            </p>
+          </div>
+          <div class="worksheet" aria-label="First harness worksheet">
+            <div><b>1. Task</b>What repeatable AI task do you want Pi to help with?</div>
+            <div><b>2. Inputs</b>What files, notes, examples, URLs, or instructions should be loaded?</div>
+            <div><b>3. Boundaries</b>What files, tools, actions, or decisions are out of bounds?</div>
+            <div><b>4. Workflow</b>What steps should happen every time before edits are made?</div>
+            <div><b>5. Verification</b>What proof tells you the work is correct enough to keep?</div>
+            <div><b>6. Handoff</b>What should Pi report, save, or ask after the run?</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="next">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="kicker">Class close</p>
+              <h2>End with one concrete next step.</h2>
+            </div>
+            <p class="lead">
+              The assignment is simple: pick one recurring workflow and write the harness spec before trying to automate it. Your first harness should be small enough that you can explain it in two minutes.
+            </p>
+          </div>
+          <div class="two-col">
+            <article class="module">
+              <h3>Suggested homework</h3>
+              <ol class="timeline">
+                <li>Choose one task you already repeat.</li>
+                <li>Write the six-part harness spec.</li>
+                <li>Run Pi once with the spec.</li>
+                <li>Save what worked and what failed.</li>
+                <li>Bring the failure back to the next class.</li>
+              </ol>
+            </article>
+            <article class="module">
+              <h3>Useful links</h3>
+              <div class="button-row">
+                <a class="button dark" href="/api/join-session.php?id=building-with-pi">Join class</a>
+                <a class="button ghost" href="/harness/">Harness primer</a>
+                <a class="button ghost" href="/harnesses/">Harness board</a>
+                <a class="button ghost" href="/learn/">All classes</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <span>Mojo AI Studio - Building Your First Harness With Pi</span>
+        <a href="#top">Back to top</a>
+      </div>
+    </footer>
+  </body>
+</html>
